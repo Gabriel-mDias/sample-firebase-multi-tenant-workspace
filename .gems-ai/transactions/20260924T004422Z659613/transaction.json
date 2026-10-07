@@ -1,0 +1,9 @@
+{
+  "id": "20260924T004422Z659613",
+  "changed": [
+    ".gems-ai\\.version",
+    ".gems-ai\\schemas\\gems-ai-lock.schema.json",
+    ".gems-ai\\schemas\\gems-ai.schema.json",
+    "gems-ai.lock.json"
+  ]
+}

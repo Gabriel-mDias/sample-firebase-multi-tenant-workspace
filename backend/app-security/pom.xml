@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>br.com.gems</groupId>
+        <artifactId>app</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>app-security</artifactId>
+    <name>App :: Security</name>
+    <description>Resource server Keycloak, conversão de roles do JWT, endpoints públicos e administração de usuários via Admin API. Módulo raiz.</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>br.com.gems</groupId>
+            <artifactId>gems-utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>br.com.gems</groupId>
+            <artifactId>gems-exception</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>br.com.gems</groupId>
+            <artifactId>gems-security-authorization</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>br.com.gems</groupId>
+            <artifactId>gems-keycloak-admin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>br.com.gems</groupId>
+            <artifactId>gems-auditing</artifactId>
+        </dependency>
+
+        <!-- Primeiro classpath de teste deste módulo. Não traz Mockito de propósito: o
+             UsuarioAutenticadoService é testado contra o SecurityContextHolder real, com um Jwt de
+             verdade — mocar o token esconderia justamente o claim ausente. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Os mesmos dois plugins que o `app-core` declara, e pela mesma razão: o Surefire do POM pai
+         anexa `-javaagent:${org.mockito:mockito-core:jar}`, e quem RESOLVE essa propriedade é o
+         goal `properties` do maven-dependency-plugin. Sem este bloco a JVM forkada recebe o
+         placeholder cru e morre com "Error opening zip file or JAR manifest missing". -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,37 @@
+.header-titles {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Os botões de fluxo ficam num card próprio, separados do salvar: são operações de natureza
+   diferente — um grava campos, os outros movem a máquina de estados. */
+.fluxo-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.motivo-cancelamento {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--gems-bg);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.form-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem;
+  justify-content: center;
+}

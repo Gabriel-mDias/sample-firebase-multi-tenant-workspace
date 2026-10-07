@@ -1,0 +1,28 @@
+<span
+  class="tooltip-host"
+  [class.is-open]="open()"
+  (mouseenter)="posicionar()"
+  (mouseleave)="close()"
+  (focusin)="posicionar()"
+  (focusout)="close()"
+>
+  <button
+    #botao
+    type="button"
+    [attr.aria-label]="'Ajuda sobre ' + label()"
+    [attr.aria-describedby]="tooltipId"
+    [attr.aria-expanded]="open()"
+    (click)="toggle()"
+  >
+    <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+  </button>
+  <span
+    #conteudo
+    [id]="tooltipId"
+    class="tooltip-content"
+    role="tooltip"
+    [style.top.px]="posicao().top"
+    [style.left.px]="posicao().left"
+    >{{ text() }}</span
+  >
+</span>

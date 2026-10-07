@@ -1,0 +1,21 @@
+.cpf-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cpf-input-wrapper {
+  flex: 1;
+  min-width: 0;
+}
+
+.cpf-btn-wrapper {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-buscar-cpf {
+  white-space: nowrap;
+}

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <!--
+        Domínio solicitacao. A ORDEM DOS CHANGESETS ABAIXO É OBRIGATÓRIA: ETAPA_SOLICITACAO tem FK
+        para SOLICITACAO, que por sua vez tem FK para PARCEIRO. Inverter quebra no primeiro boot de
+        um banco limpo, e não em ambiente nenhum que já tenha as tabelas.
+    -->
+
+    <changeSet id="create-table-solicitacao" author="app">
+        <comment>
+            Solicitacao.java. CD_SITUACAO é VARCHAR com o nome do enum, não um inteiro ordinal:
+            ordinal quebra em silêncio quando alguém acrescenta uma constante no meio do enum, e o
+            banco passa a dizer outra coisa sem que nada falhe.
+
+            SEM constraint de transição no schema. A máquina de estados vive no enum
+            SituacaoSolicitacao e é aplicada pelo SolicitacaoService — uma CHECK constraint só
+            saberia quais valores existem, não quais transições são válidas a partir de qual origem,
+            que é a regra de verdade.
+
+            DS_MOTIVO_CANCELAMENTO e DT_CONCLUSAO são nuláveis por natureza: só existem depois da
+            transição correspondente.
+        </comment>
+        <createTable tableName="SOLICITACAO">
+            <column name="ID_SOLICITACAO" type="UUID" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="NM_SOLICITACAO" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DS_SOLICITACAO" type="VARCHAR(4000)"/>
+            <column name="CD_SITUACAO" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DS_MOTIVO_CANCELAMENTO" type="VARCHAR(4000)"/>
+            <column name="DT_CONCLUSAO" type="TIMESTAMP"/>
+            <column name="ID_PARCEIRO" type="UUID">
+                <constraints nullable="false" foreignKeyName="FK_SOLICITACAO_PARCEIRO" references="PARCEIRO(ID_PARCEIRO)"/>
+            </column>
+            <column name="DT_CRIACAO" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DT_EXCLUSAO" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-index-solicitacao-situacao" author="app">
+        <comment>A listagem filtra por situação em quase toda abertura de tela.</comment>
+        <createIndex indexName="IDX_SOLICITACAO_SITUACAO" tableName="SOLICITACAO">
+            <column name="CD_SITUACAO"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="create-index-solicitacao-parceiro" author="app">
+        <comment>Índice de apoio para as solicitações de um parceiro.</comment>
+        <createIndex indexName="IDX_SOLICITACAO_PARCEIRO" tableName="SOLICITACAO">
+            <column name="ID_PARCEIRO"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="create-table-etapa-solicitacao" author="app">
+        <comment>
+            EtapaSolicitacao.java. NR_ORDEM é COLUNA, não posição na lista: uma lista Java reordenada
+            não persiste nada, e o @OrderBy do lado do dono precisa de por onde ordenar.
+
+            Depende de SOLICITACAO, criada no changeset acima.
+        </comment>
+        <createTable tableName="ETAPA_SOLICITACAO">
+            <column name="ID_ETAPA_SOLICITACAO" type="UUID" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="NM_ETAPA" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NR_ORDEM" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FL_CONCLUIDA" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DT_CONCLUSAO" type="TIMESTAMP"/>
+            <column name="ID_SOLICITACAO" type="UUID">
+                <constraints nullable="false" foreignKeyName="FK_ETAPA_SOLICITACAO" references="SOLICITACAO(ID_SOLICITACAO)"/>
+            </column>
+            <column name="DT_CRIACAO" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DT_EXCLUSAO" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-index-etapa-solicitacao-ordem" author="app">
+        <comment>Índice composto: a consulta é sempre "etapas desta solicitação, na ordem".</comment>
+        <createIndex indexName="IDX_ETAPA_SOLICITACAO_ORDEM" tableName="ETAPA_SOLICITACAO">
+            <column name="ID_SOLICITACAO"/>
+            <column name="NR_ORDEM"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

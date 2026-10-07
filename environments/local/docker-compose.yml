@@ -1,0 +1,154 @@
+# Ambiente de DESENVOLVIMENTO.
+#
+# Sobe apenas infraestrutura: backend e frontend continuam rodando pela IDE/terminal
+# (`mvnw spring-boot:run` e `npm start`), que é o que dá recarga rápida durante o desenvolvimento.
+# Para ver o sistema empacotado como vai para a VPS, use environments/production.
+#
+# Um único comando basta: `docker compose up -d`. Não existe mais script a rodar depois — o serviço
+# `app-keycloak-config` aplica o realm assim que o Keycloak fica saudável (Princípio IX).
+
+name: app_containers
+
+services:
+  app-postgres:
+    image: postgres:16
+    container_name: app_containers-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_SUPERUSER:-root}
+      POSTGRES_PASSWORD: ${POSTGRES_SUPERUSER_PASSWORD:-root}
+      APP_DB_NAME: ${APP_DB_NAME:-app-db}
+      APP_DB_USER: ${APP_DB_USER:-app-access}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:-app@LocalDev2026!}
+      KEYCLOAK_DB_NAME: ${KEYCLOAK_DB_NAME:-keycloak-db}
+      KEYCLOAK_DB_USER: ${KEYCLOAK_DB_USER:-keycloak-access}
+      KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:-!security@access.g&ms}
+    ports:
+      # Publicado só aqui, para o backend rodando fora do Docker e para inspeção com psql.
+      # Em produção este serviço NÃO publica porta nenhuma.
+      - "5432:5432"
+    volumes:
+      - ../shared/init-postgres.sh:/docker-entrypoint-initdb.d/init-postgres.sh:ro
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${APP_DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    networks:
+      - app-network
+
+  app-keycloak:
+    image: quay.io/keycloak/keycloak:26.0.8
+    container_name: app_containers-keycloak
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://app-postgres:5432/${KEYCLOAK_DB_NAME:-keycloak-db}
+      KC_DB_USERNAME: ${KEYCLOAK_DB_USER:-keycloak-access}
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:-!security@access.g&ms}
+      # Keycloak 26 renomeou KEYCLOAK_ADMIN/_PASSWORD para KC_BOOTSTRAP_ADMIN_*.
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USER:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin@LocalDev2026}
+      # Sem isto o endpoint de saúde na porta 9000 não existe, e o keycloak-config abaixo não tem
+      # como esperar prontidão de verdade.
+      KC_HEALTH_ENABLED: "true"
+      # Desligam o cache de tema: editar um .ftl ou .css do tema `app` exige só um hard-refresh,
+      # sem recriar o contêiner. Exclusivo de desenvolvimento — em produção o cache fica ligado.
+      KC_SPI_THEME_STATIC_MAX_AGE: -1
+      KC_SPI_THEME_CACHE_THEMES: "false"
+      KC_SPI_THEME_CACHE_TEMPLATES: "false"
+    # Sem --import-realm: quem configura o realm é o app-keycloak-config, e ele funciona também
+    # em volume já provisionado — que era exatamente o que o import não fazia.
+    command: start-dev
+    ports:
+      # 8443 aqui é HTTP puro (mapeamento 8443:8080). A porta NÃO significa TLS neste ambiente.
+      - "8443:8080"
+    depends_on:
+      app-postgres:
+        condition: service_healthy
+    volumes:
+      - ../keycloak-theme:/opt/keycloak/themes:ro
+    healthcheck:
+      # A imagem do Keycloak não tem curl nem wget — só bash. Daí o /dev/tcp na mão.
+      # Responder na porta não é prontidão: o que interessa é o /health/ready dizer UP.
+      test:
+        - CMD-SHELL
+        - >
+          exec 3<>/dev/tcp/localhost/9000 &&
+          printf 'GET /health/ready HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&3 &&
+          grep -q '"status": "UP"' <&3
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    networks:
+      - app-network
+
+  app-keycloak-config:
+    image: adorsys/keycloak-config-cli:6.5.1-26.0.5
+    container_name: app_containers-keycloak-config
+    # One-shot: aplica e morre. `restart: no` impede que o Compose o reviva.
+    restart: "no"
+    depends_on:
+      app-keycloak:
+        condition: service_healthy
+    environment:
+      KEYCLOAK_URL: http://app-keycloak:8080
+      KEYCLOAK_USER: ${KEYCLOAK_ADMIN_USER:-admin}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin@LocalDev2026}
+      IMPORT_FILES_LOCATIONS: /config/*.yaml
+      IMPORT_VARSUBSTITUTION_ENABLED: "true"
+      # OBRIGATÓRIO (Princípio IX). Com o cache ligado, a ferramenta pula a reaplicação quando o
+      # arquivo não mudou — e uma alteração feita no console sobrevive a todos os deploys seguintes,
+      # em silêncio. Custa cerca de 1 segundo por execução.
+      IMPORT_CACHE_ENABLED: "false"
+      # Impede que os 7 grupos de perfil, criados pelo PerfilAtuacaoGroupBootstrap, e os clientes
+      # internos do próprio Keycloak sejam considerados órfãos. O controle de estado remoto já
+      # protegeria, mas ser explícito aqui é barato e o efeito de errar é destrutivo.
+      IMPORT_MANAGED_GROUP: no-delete
+      IMPORT_MANAGED_CLIENT: no-delete
+      IMPORT_MANAGED_ROLE: no-delete
+      APP_ORIGIN: ${APP_ORIGIN:-http://localhost:4200}
+      KEYCLOAK_SSL_REQUIRED: ${KEYCLOAK_SSL_REQUIRED:-external}
+      KEYCLOAK_BACKEND_CLIENT_SECRET: ${KEYCLOAK_BACKEND_CLIENT_SECRET:-app-backend-local-secret}
+      APP_ADMIN_EMAIL: ${APP_ADMIN_EMAIL:-admin.app@gems.local}
+      APP_ADMIN_PASSWORD: ${APP_ADMIN_PASSWORD:-Admin@app2026}
+    volumes:
+      - ../shared/keycloak:/config:ro
+    networks:
+      - app-network
+
+  app-localstack:
+    image: localstack/localstack:4.4.0
+    container_name: app_containers-localstack
+    platform: linux/amd64
+    ports:
+      - "4566:4566"
+    environment:
+      - DNS_ADDRESS=0 # Evita o crash instantâneo com a rede UDP do Windows
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - AWS_DEFAULT_REGION=us-east-1
+      - EXTRA_CORS_ALLOWED_ORIGINS=${APP_ORIGIN:-http://localhost:4200}
+    volumes:
+      - localstack_data:/var/lib/localstack
+      - "/var/run/docker.sock:/var/run/docker.sock" # Essencial para o LocalStack operar
+      - ./init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://127.0.0.1:4566/_localstack/health" ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+    name: app_containers_postgres_data
+  localstack_data:
+    name: app_containers_localstack_data
+
+networks:
+  app-network:
+    name: app_containers_network
+    driver: bridge

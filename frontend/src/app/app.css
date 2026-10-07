@@ -1,0 +1,54 @@
+/* Casca autenticada. O `gems-side-menu` usa `:host{display:contents}`, então seus dois filhos
+ * — a barra superior mobile (`.mobile-top-bar`, só ≤768px) e o container do menu
+ * (`.gems-side-menu-container`) — tornam-se filhos diretos deste `.app-shell`.
+ *
+ * Desktop (>768px): layout em LINHA — menu (sticky, 260px) à esquerda, conteúdo à direita.
+ * Mobile (≤768px): o menu vira drawer `position:fixed` (fora do fluxo) e a SDK renderiza a
+ *   barra superior com hambúrguer; portanto empilhamos em COLUNA para a barra ficar no topo. */
+.app-shell {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  background: var(--gems-bg);
+}
+
+/* O `<main>` é a área de conteúdo ao lado da moldura (menu). Os containers da SDK
+ * (`list-container`/`form-container`) já aplicam max-width e padding internos; aqui mantemos
+ * apenas um respiro externo e o scroll independente do menu. `min-width:0` evita overflow
+ * horizontal quando o conteúdo (tabelas) é largo.
+ *
+ * O padding-bottom extra reserva o espaço do rodapé fixo (`app-footer`): como é o
+ * `.app-content` — e não o `body` — que tem `overflow:auto`, o rodapé flutua por
+ * cima do seu conteúdo; sem esse respiro as últimas linhas de tabelas longas
+ * ficariam escondidas atrás dele. */
+.app-content {
+  flex: 1;
+  min-width: 0;
+  padding: 1rem;
+  padding-bottom: calc(1rem + var(--app-footer-height));
+  overflow: auto;
+}
+
+/* Menu colapsado (80px): o `gems-side-menu` já anima sua própria largura;
+ * aqui só replicamos o número via `collapsedChange` (app.ts) para o rodapé
+ * fixo, que não é filho do menu e por isso não herda a largura dele. */
+.app-shell.menu-collapsed {
+  --app-menu-width: 80px;
+}
+
+@media screen and (max-width: 768px) {
+  .app-shell {
+    flex-direction: column;
+
+    /* O menu vira drawer fora do fluxo (position:fixed, translado), então
+       deixa de ocupar espaço na coluna — o rodapé passa a ocupar a largura
+       toda da tela (ver --app-menu-width em app-footer.component.css). */
+    --app-menu-width: 0px;
+  }
+
+  /* Nesta faixa o rodapé cresce para 32px (ver app-footer.component.css);
+     o respiro do conteúdo precisa acompanhar para não ser coberto. */
+  .app-content {
+    padding-bottom: calc(1rem + var(--app-footer-height-mobile));
+  }
+}

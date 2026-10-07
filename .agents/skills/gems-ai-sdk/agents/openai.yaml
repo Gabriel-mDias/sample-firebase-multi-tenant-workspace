@@ -1,0 +1,4 @@
+interface:
+  display_name: "GEMS AI SDK"
+  short_description: "Plan and manage locked GEMS snapshots"
+  default_prompt: "Use $gems-ai-sdk to inspect this repository and propose a safe GEMS snapshot plan."

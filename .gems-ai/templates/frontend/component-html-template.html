@@ -1,0 +1,209 @@
+<!-- origem: local; precedencia: local-vence; versao: 2.0.0 -->
+<!-- ======================================================================= -->
+<!-- 1. LISTAGEM ({entidade}-list.component.html)                           -->
+<!-- ======================================================================= -->
+<div class="list-container animate__animated animate__fadeIn">
+
+  <div class="header">
+    <div class="header-titles">
+      <h2>{Título do Módulo}</h2>
+      <p class="subtitle">Gerencie os(as) {entidades} cadastrados(as).</p>
+    </div>
+    <button class="btn-novo" routerLink="/{modulo}/form">
+      <i class="fa-solid fa-plus"></i> Nova {Entidade}
+    </button>
+  </div>
+
+  <gems-form-card title="Filtros de Pesquisa" (keyup.enter)="search()">
+    <p form-card-subtitle>Utilize os campos para refinar a lista.</p>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Nome</label>
+        <input type="text" class="form-control" [(ngModel)]="filter.nome" placeholder="Digite o nome...">
+      </div>
+    </div>
+    <div form-card-footer>
+      <button type="button" class="btn-cancel" (click)="clearFilters()">
+        Limpar <i class="fa-solid fa-eraser"></i>
+      </button>
+      <button type="button" class="btn-save" (click)="search()">
+        Pesquisar <i class="fa-solid fa-search"></i>
+      </button>
+    </div>
+  </gems-form-card>
+
+  <div class="content-card">
+    @if (isLoading()) {
+      <div class="loading-state">
+        <i class="fa-solid fa-circle-notch fa-spin"></i> Carregando {entidades}...
+      </div>
+    } @else {
+      <gems-table
+        [columns]="columns"
+        [data]="entidades()"
+        [actions]="actions"
+        [totalRecords]="totalRecords()"
+        [page]="pageable.page ?? 0"
+        [size]="pageable.size ?? 10"
+        [sortField]="currentSortField"
+        [sortDirection]="currentSortDirection"
+        emptyMessage="Nenhum(a) {entidade} encontrado(a)."
+        (actionClick)="handleAction($event)"
+        (pageChange)="onPageChange($event)">
+      </gems-table>
+    }
+  </div>
+
+</div>
+
+
+<!-- ======================================================================= -->
+<!-- 2. FORMULÁRIO SIMPLES ({entidade}-form.component.html)                  -->
+<!-- ======================================================================= -->
+<div class="form-container">
+
+  <div class="header">
+    <button class="btn-back" routerLink="/{modulo}/list">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <div class="header-titles">
+      <h2>{{ pageTitle() }}</h2>
+      <p class="subtitle">{{ pageSubtitle() }}</p>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <i class="fa-solid fa-circle-notch fa-spin"></i> Carregando dados...
+    </div>
+  } @else {
+    <form [{entidade}Form]="{entidade}Form" (ngSubmit)="save()">
+      <gems-form-card title="Dados Gerais">
+        <p form-card-subtitle>Informações básicas de identificação.</p>
+
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="nome" class="required fw-bold">Nome</label>
+            <input type="text" id="nome" class="form-control"
+                   formControlName="nome" placeholder="Digite o nome...">
+          </div>
+          <!-- TODO: adicionar campos específicos -->
+        </div>
+
+        <div form-card-footer>
+          <button type="button" class="btn-cancel" routerLink="/{modulo}/list">
+            Cancelar <i class="fa-solid fa-xmark"></i>
+          </button>
+          <button type="submit" class="btn-save" [{entidade}Form.invalid]="true">
+            @if (isEdit()) { Atualizar } @else { Salvar }
+            <i class="fa-solid fa-floppy-disk"></i>
+          </button>
+        </div>
+      </gems-form-card>
+    </form>
+  }
+
+</div>
+
+
+<!-- ======================================================================= -->
+<!-- 3. ORQUESTRADOR STEPPER ({modulo}-form.component.html)                  -->
+<!-- ======================================================================= -->
+<div class="form-container animate__animated animate__fadeIn">
+
+  <div class="header">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <button class="btn-back" (click)="goBack()">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+      <div class="header-titles">
+        <h2>{Título do Módulo}</h2>
+        <p class="subtitle">Siga os passos para preencher os dados.</p>
+      </div>
+    </div>
+    @if (!isReadOnly()) {
+      <button class="btn btn-danger" (click)="cancelar()">
+        <i class="fa-solid fa-xmark"></i> Cancelar
+      </button>
+    }
+  </div>
+
+  @if (!isReadOnly()) {
+    <div class="stepper-container mb-4">
+      <div class="stepper-wrapper">
+        <div class="stepper-progress-bar-bg"></div>
+        <div class="stepper-progress-bar-fill" [style.width.%]="progressPercentage()"></div>
+
+        @for (step of steps; track step.id) {
+          <div class="stepper-item"
+               [class.active]="currentStep() === step.id"
+               [class.completed]="currentStep() > step.id">
+            <div class="step-circle">
+              @if (currentStep() > step.id) {
+                <i class="fa-solid fa-check"></i>
+              } @else {
+                <span>{{ step.id }}</span>
+              }
+            </div>
+            <div class="step-label">{{ step.label }}</div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <i class="fa-solid fa-circle-notch fa-spin"></i> Carregando...
+    </div>
+  } @else {
+    <div class="step-content">
+      @if (currentStep() === 1) { <app-step-dados /> }
+      @if (currentStep() === 2) { <app-step-detalhes /> }
+      @if (currentStep() === 3) { <app-step-resumo /> }
+    </div>
+  }
+
+</div>
+
+
+<!-- ======================================================================= -->
+<!-- 4. STEP DE RESUMO / VIEW (step-resumo.component.html)                  -->
+<!-- ======================================================================= -->
+<div class="animate__animated animate__fadeIn">
+  <gems-form-card [title]="isReadOnly() ? 'Detalhes do Cadastro' : 'Resumo do Cadastro'">
+    @if (!isReadOnly()) {
+      <p form-card-subtitle>Verifique as informações antes de confirmar.</p>
+    }
+
+    <div class="resumo-sections">
+      <gems-summary-card title="Dados Gerais" icon="fa-solid fa-user" [expanded]="true">
+        <div summary class="summary-preview">
+          <span>{{ state().nome || 'Não preenchido' }}</span>
+        </div>
+        <div details class="resumo-details-grid">
+          <div class="detail-item">
+            <span class="detail-label">NOME:</span>
+            <span class="detail-value">{{ state().nome || '-' }}</span>
+          </div>
+        </div>
+      </gems-summary-card>
+    </div>
+
+    <div form-card-footer class="footer-step">
+      <button type="button" class="btn-cancel" (click)="goBack()">
+        <i class="fa-solid" [class.fa-arrow-left]="!isReadOnly()" [class.fa-list]="isReadOnly()"></i>
+        {{ isReadOnly() ? 'Voltar para Listagem' : 'Voltar' }}
+      </button>
+      @if (!isReadOnly()) {
+        <button type="button" class="btn-save" (click)="save()" [disabled]="isLoading()">
+          @if (isLoading()) {
+            <i class="fa-solid fa-circle-notch fa-spin"></i> Processando...
+          } @else {
+            Confirmar <i class="fa-solid fa-check"></i>
+          }
+        </button>
+      }
+    </div>
+  </gems-form-card>
+</div>

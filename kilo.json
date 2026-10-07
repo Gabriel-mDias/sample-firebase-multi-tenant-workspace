@@ -1,0 +1,122 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+  "small_model": "openrouter/deepseek/deepseek-v4-flash-0731",
+  "default_agent": "ask",
+  "enabled_providers": ["openrouter"],
+  "provider": {
+    "openrouter": {
+      "whitelist": ["deepseek/deepseek-v4-flash-0731"]
+    }
+  },
+  "agent": {
+    "ask": {
+      "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+      "mode": "primary",
+      "steps": 12
+    },
+    "plan": {
+      "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+      "mode": "primary",
+      "steps": 12
+    },
+    "code": {
+      "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+      "mode": "primary",
+      "steps": 15
+    },
+    "debug": {
+      "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+      "mode": "primary",
+      "steps": 15
+    },
+    "orchestrator": {
+      "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+      "steps": 12,
+      "disable": true
+    },
+    "explore": {
+      "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+      "steps": 12,
+      "disable": true
+    },
+    "general": {
+      "model": "openrouter/deepseek/deepseek-v4-flash-0731",
+      "steps": 12,
+      "disable": true
+    }
+  },
+  "subagent_depth": 0,
+  "skills": {
+    "paths": [],
+    "urls": []
+  },
+  "mcp": {},
+  "tools": {
+    "task": false,
+    "semantic_search": false,
+    "memory_recall": false,
+    "memory_save": false
+  },
+  "indexing": {
+    "enabled": false
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "tail_turns": 4,
+    "preserve_recent_tokens": 6000,
+    "reserved": 8000
+  },
+  "tool_output": {
+    "max_lines": 200,
+    "max_bytes": 12000
+  },
+  "watcher": {
+    "ignore": [
+      ".kilo/**",
+      ".kilocode/**",
+      "**/node_modules/**",
+      "**/target/**",
+      "**/dist/**",
+      "**/.angular/**",
+      "**/*-lock.json",
+      "**/*.lock",
+      "business/**/*.png"
+    ]
+  },
+  "permission": {
+    "*": "ask",
+    "read": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "list": "allow",
+    "edit": "ask",
+    "bash": {
+      "*": "ask",
+      "git commit*": "deny",
+      "git push*": "deny",
+      "docker compose down -v*": "deny"
+    },
+    "task": "deny",
+    "doom_loop": "deny",
+    "skill": "deny",
+    "webfetch": "ask",
+    "websearch": "deny",
+    "external_directory": "deny"
+  },
+  "experimental": {
+    "batch_tool": true,
+    "openTelemetry": false,
+    "continue_loop_on_deny": false
+  },
+  "formatter": false,
+  "lsp": false,
+  "web_search": false,
+  "snapshot": false,
+  "share": "disabled",
+  "remote_control": false,
+  "privacy_mode": true,
+  "hide_prompt_training_models": true,
+  "autoupdate": "notify"
+}

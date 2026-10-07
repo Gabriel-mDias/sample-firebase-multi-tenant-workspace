@@ -1,0 +1,1394 @@
+[
+  {
+    "caminho": "frontend/src/app/features/acesso-negado/acesso-negado.component.css",
+    "linha": 12,
+    "regra": "visual-standards.md#2",
+    "chave": "rgba(...)",
+    "violacao": "cor cravada rgba(...) em box-shadow",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/app/features/acesso-negado/acesso-negado.component.css",
+    "linha": 12,
+    "regra": "visual-standards.md#2",
+    "chave": "rgba(...)",
+    "violacao": "cor cravada rgba(...) em box-shadow",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/app/core/footer/app-footer.component.css",
+    "linha": 21,
+    "regra": "visual-standards.md#2",
+    "chave": "#fff",
+    "violacao": "cor cravada #fff",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 271,
+    "regra": "visual-standards.md#2",
+    "chave": "#333333",
+    "violacao": "cor cravada #333333",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 284,
+    "regra": "visual-standards.md#2",
+    "chave": "#d1d5db",
+    "violacao": "cor cravada #d1d5db",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 290,
+    "regra": "visual-standards.md#2",
+    "chave": "#1e293b",
+    "violacao": "cor cravada #1e293b",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 303,
+    "regra": "visual-standards.md#2",
+    "chave": "#9ca3af",
+    "violacao": "cor cravada #9ca3af",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 311,
+    "regra": "visual-standards.md#2",
+    "chave": "#6366f1",
+    "violacao": "cor cravada #6366f1",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 322,
+    "regra": "visual-standards.md#2",
+    "chave": "#f1f5f9",
+    "violacao": "cor cravada #f1f5f9",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 323,
+    "regra": "visual-standards.md#2",
+    "chave": "#94a3b8",
+    "violacao": "cor cravada #94a3b8",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 372,
+    "regra": "visual-standards.md#2",
+    "chave": "#1d4ed8",
+    "violacao": "cor cravada #1d4ed8",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 373,
+    "regra": "visual-standards.md#2",
+    "chave": "#1d4ed8",
+    "violacao": "cor cravada #1d4ed8",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 374,
+    "regra": "visual-standards.md#2",
+    "chave": "#fff",
+    "violacao": "cor cravada #fff",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 379,
+    "regra": "visual-standards.md#2",
+    "chave": "#1e40af",
+    "violacao": "cor cravada #1e40af",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 380,
+    "regra": "visual-standards.md#2",
+    "chave": "#1e40af",
+    "violacao": "cor cravada #1e40af",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 385,
+    "regra": "visual-standards.md#2",
+    "chave": "#3b82f6",
+    "violacao": "cor cravada #3b82f6",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 386,
+    "regra": "visual-standards.md#2",
+    "chave": "#3b82f6",
+    "violacao": "cor cravada #3b82f6",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 387,
+    "regra": "visual-standards.md#2",
+    "chave": "#fff",
+    "violacao": "cor cravada #fff",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 391,
+    "regra": "visual-standards.md#2",
+    "chave": "#2563eb",
+    "violacao": "cor cravada #2563eb",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 392,
+    "regra": "visual-standards.md#2",
+    "chave": "#2563eb",
+    "violacao": "cor cravada #2563eb",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 397,
+    "regra": "visual-standards.md#2",
+    "chave": "#ffffff",
+    "violacao": "cor cravada #ffffff",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 398,
+    "regra": "visual-standards.md#2",
+    "chave": "#d1d5db",
+    "violacao": "cor cravada #d1d5db",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 399,
+    "regra": "visual-standards.md#2",
+    "chave": "#374151",
+    "violacao": "cor cravada #374151",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 403,
+    "regra": "visual-standards.md#2",
+    "chave": "#eff6ff",
+    "violacao": "cor cravada #eff6ff",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 404,
+    "regra": "visual-standards.md#2",
+    "chave": "#93c5fd",
+    "violacao": "cor cravada #93c5fd",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 405,
+    "regra": "visual-standards.md#2",
+    "chave": "#1d4ed8",
+    "violacao": "cor cravada #1d4ed8",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 410,
+    "regra": "visual-standards.md#2",
+    "chave": "#ffffff",
+    "violacao": "cor cravada #ffffff",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 411,
+    "regra": "visual-standards.md#2",
+    "chave": "#d1d5db",
+    "violacao": "cor cravada #d1d5db",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 412,
+    "regra": "visual-standards.md#2",
+    "chave": "#4b5563",
+    "violacao": "cor cravada #4b5563",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 416,
+    "regra": "visual-standards.md#2",
+    "chave": "#dc2626",
+    "violacao": "cor cravada #dc2626",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 417,
+    "regra": "visual-standards.md#2",
+    "chave": "#dc2626",
+    "violacao": "cor cravada #dc2626",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 418,
+    "regra": "visual-standards.md#2",
+    "chave": "#ffffff",
+    "violacao": "cor cravada #ffffff",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 423,
+    "regra": "visual-standards.md#2",
+    "chave": "#dc2626",
+    "violacao": "cor cravada #dc2626",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 424,
+    "regra": "visual-standards.md#2",
+    "chave": "#dc2626",
+    "violacao": "cor cravada #dc2626",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 425,
+    "regra": "visual-standards.md#2",
+    "chave": "#fff",
+    "violacao": "cor cravada #fff",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 429,
+    "regra": "visual-standards.md#2",
+    "chave": "#b91c1c",
+    "violacao": "cor cravada #b91c1c",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 430,
+    "regra": "visual-standards.md#2",
+    "chave": "#b91c1c",
+    "violacao": "cor cravada #b91c1c",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 435,
+    "regra": "visual-standards.md#2",
+    "chave": "#22c55e",
+    "violacao": "cor cravada #22c55e",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 436,
+    "regra": "visual-standards.md#2",
+    "chave": "#22c55e",
+    "violacao": "cor cravada #22c55e",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 437,
+    "regra": "visual-standards.md#2",
+    "chave": "#fff",
+    "violacao": "cor cravada #fff",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 441,
+    "regra": "visual-standards.md#2",
+    "chave": "#16a34a",
+    "violacao": "cor cravada #16a34a",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 442,
+    "regra": "visual-standards.md#2",
+    "chave": "#16a34a",
+    "violacao": "cor cravada #16a34a",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 447,
+    "regra": "visual-standards.md#2",
+    "chave": "#3b82f6",
+    "violacao": "cor cravada #3b82f6",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 448,
+    "regra": "visual-standards.md#2",
+    "chave": "#3b82f6",
+    "violacao": "cor cravada #3b82f6",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 449,
+    "regra": "visual-standards.md#2",
+    "chave": "#fff",
+    "violacao": "cor cravada #fff",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 453,
+    "regra": "visual-standards.md#2",
+    "chave": "#2563eb",
+    "violacao": "cor cravada #2563eb",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 454,
+    "regra": "visual-standards.md#2",
+    "chave": "#2563eb",
+    "violacao": "cor cravada #2563eb",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 459,
+    "regra": "visual-standards.md#2",
+    "chave": "#f59e0b",
+    "violacao": "cor cravada #f59e0b",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 460,
+    "regra": "visual-standards.md#2",
+    "chave": "#f59e0b",
+    "violacao": "cor cravada #f59e0b",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 461,
+    "regra": "visual-standards.md#2",
+    "chave": "#fff",
+    "violacao": "cor cravada #fff",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 465,
+    "regra": "visual-standards.md#2",
+    "chave": "#d97706",
+    "violacao": "cor cravada #d97706",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 466,
+    "regra": "visual-standards.md#2",
+    "chave": "#d97706",
+    "violacao": "cor cravada #d97706",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 560,
+    "regra": "visual-standards.md#2",
+    "chave": "#6b7280",
+    "violacao": "cor cravada #6b7280",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 570,
+    "regra": "visual-standards.md#2",
+    "chave": "#e5e7eb",
+    "violacao": "cor cravada #e5e7eb",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 594,
+    "regra": "visual-standards.md#2",
+    "chave": "#374151",
+    "violacao": "cor cravada #374151",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 626,
+    "regra": "visual-standards.md#2",
+    "chave": "#e5e7eb",
+    "violacao": "cor cravada #e5e7eb",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 663,
+    "regra": "visual-standards.md#2",
+    "chave": "#1e293b",
+    "violacao": "cor cravada #1e293b",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 669,
+    "regra": "visual-standards.md#2",
+    "chave": "#6b7280",
+    "violacao": "cor cravada #6b7280",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/styles.css",
+    "linha": 678,
+    "regra": "visual-standards.md#2",
+    "chave": "#9ca3af",
+    "violacao": "cor cravada #9ca3af",
+    "esperado": "var(--gems-*) da paleta de provideGemsTheme() quando cor e papel coincidem; senão token local var(--app-*), declarado UMA vez em frontend/src/styles.css (visual-standards.md#2.1)"
+  },
+  {
+    "caminho": "frontend/src/app/app.spec.ts",
+    "linha": 40,
+    "regra": "testing.md#7",
+    "chave": "cria o componente",
+    "violacao": "prova chamada 'cria o componente'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/app.spec.ts",
+    "linha": 45,
+    "regra": "testing.md#7",
+    "chave": "oculta a casca quando não autenticado",
+    "violacao": "prova chamada 'oculta a casca quando não autenticado'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/app.spec.ts",
+    "linha": 50,
+    "regra": "testing.md#7",
+    "chave": "mostra a casca quando autenticado (rota inicial)",
+    "violacao": "prova chamada 'mostra a casca quando autenticado (rota inicial)'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/app.spec.ts",
+    "linha": 55,
+    "regra": "testing.md#7",
+    "chave": "com as ações de consulta → menu com os recursos correspondentes",
+    "violacao": "prova chamada 'com as ações de consulta → menu com os recursos correspondentes'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/app.spec.ts",
+    "linha": 65,
+    "regra": "testing.md#7",
+    "chave": "sem ação de consulta nenhuma → menu vazio",
+    "violacao": "prova chamada 'sem ação de consulta nenhuma → menu vazio'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/data-br.spec.ts",
+    "linha": 5,
+    "regra": "testing.md#7",
+    "chave": "converte a data ISO simples para o formato brasileiro",
+    "violacao": "prova chamada 'converte a data ISO simples para o formato brasileiro'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/data-br.spec.ts",
+    "linha": 9,
+    "regra": "testing.md#7",
+    "chave": "aceita data-hora ISO, ignorando a parte de hora",
+    "violacao": "prova chamada 'aceita data-hora ISO, ignorando a parte de hora'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/data-br.spec.ts",
+    "linha": 18,
+    "regra": "testing.md#7",
+    "chave": "não desloca o dia por fuso horário",
+    "violacao": "prova chamada 'não desloca o dia por fuso horário'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/data-br.spec.ts",
+    "linha": 23,
+    "regra": "testing.md#7",
+    "chave": "devolve null para ausência, em vez de \"Invalid Date\"",
+    "violacao": "prova chamada 'devolve null para ausência, em vez de \"Invalid Date\"'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/data-br.spec.ts",
+    "linha": 29,
+    "regra": "testing.md#7",
+    "chave": "devolve null para entrada que não é data ISO",
+    "violacao": "prova chamada 'devolve null para entrada que não é data ISO'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/data-br.spec.ts",
+    "linha": 35,
+    "regra": "testing.md#7",
+    "chave": "usa o travessão como ausência por padrão — é o que a tabela do projeto exibe",
+    "violacao": "prova chamada 'usa o travessão como ausência por padrão — é o que a tabela do projeto exibe'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/data-br.spec.ts",
+    "linha": 39,
+    "regra": "testing.md#7",
+    "chave": "aceita um texto próprio de ausência",
+    "violacao": "prova chamada 'aceita um texto próprio de ausência'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/data-br.spec.ts",
+    "linha": 43,
+    "regra": "testing.md#7",
+    "chave": "formata normalmente quando há data",
+    "violacao": "prova chamada 'formata normalmente quando há data'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/moeda-br.spec.ts",
+    "linha": 10,
+    "regra": "testing.md#7",
+    "chave": "lê o formato brasileiro, com ponto de milhar e vírgula decimal",
+    "violacao": "prova chamada 'lê o formato brasileiro, com ponto de milhar e vírgula decimal'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/moeda-br.spec.ts",
+    "linha": 15,
+    "regra": "testing.md#7",
+    "chave": "lê também o formato com ponto decimal, que é como o teclado numérico produz",
+    "violacao": "prova chamada 'lê também o formato com ponto decimal, que é como o teclado numérico produz'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/moeda-br.spec.ts",
+    "linha": 20,
+    "regra": "testing.md#7",
+    "chave": "lê o formato en-US, com vírgula de milhar e ponto decimal",
+    "violacao": "prova chamada 'lê o formato en-US, com vírgula de milhar e ponto decimal'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/moeda-br.spec.ts",
+    "linha": 24,
+    "regra": "testing.md#7",
+    "chave": "trata separador repetido como milhar, nos dois sentidos",
+    "violacao": "prova chamada 'trata separador repetido como milhar, nos dois sentidos'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/moeda-br.spec.ts",
+    "linha": 29,
+    "regra": "testing.md#7",
+    "chave": "lê inteiros nos dois formatos",
+    "violacao": "prova chamada 'lê inteiros nos dois formatos'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/moeda-br.spec.ts",
+    "linha": 34,
+    "regra": "testing.md#7",
+    "chave": "ignora espaços em volta e no meio",
+    "violacao": "prova chamada 'ignora espaços em volta e no meio'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/moeda-br.spec.ts",
+    "linha": 38,
+    "regra": "testing.md#7",
+    "chave": "devolve null para vazio — valor é opcional, e ausente não é zero",
+    "violacao": "prova chamada 'devolve null para vazio — valor é opcional, e ausente não é zero'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/moeda-br.spec.ts",
+    "linha": 45,
+    "regra": "testing.md#7",
+    "chave": "devolve null para texto que não vira número, em vez de NaN",
+    "violacao": "prova chamada 'devolve null para texto que não vira número, em vez de NaN'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/moeda-br.spec.ts",
+    "linha": 52,
+    "regra": "testing.md#7",
+    "chave": "formata com duas casas e separador brasileiro",
+    "violacao": "prova chamada 'formata com duas casas e separador brasileiro'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/moeda-br.spec.ts",
+    "linha": 57,
+    "regra": "testing.md#7",
+    "chave": "devolve string vazia quando não há valor",
+    "violacao": "prova chamada 'devolve string vazia quando não há valor'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/moeda-br.spec.ts",
+    "linha": 62,
+    "regra": "testing.md#7",
+    "chave": "é a volta do parse: o que sai da tela e volta para ela não muda",
+    "violacao": "prova chamada 'é a volta do parse: o que sai da tela e volta para ela não muda'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/password.validator.spec.ts",
+    "linha": 7,
+    "regra": "testing.md#7",
+    "chave": "permite valores nulos ou vazios (deixando obrigatoriedade para Validators.required)",
+    "violacao": "prova chamada 'permite valores nulos ou vazios (deixando obrigatoriedade para Validators.required)'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/password.validator.spec.ts",
+    "linha": 13,
+    "regra": "testing.md#7",
+    "chave": "valida com sucesso senhas que atendem a todos os critérios",
+    "violacao": "prova chamada 'valida com sucesso senhas que atendem a todos os critérios'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/password.validator.spec.ts",
+    "linha": 20,
+    "regra": "testing.md#7",
+    "chave": "rejeita senhas com menos de 12 caracteres",
+    "violacao": "prova chamada 'rejeita senhas com menos de 12 caracteres'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/password.validator.spec.ts",
+    "linha": 26,
+    "regra": "testing.md#7",
+    "chave": "rejeita senhas sem letras maiúsculas",
+    "violacao": "prova chamada 'rejeita senhas sem letras maiúsculas'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/password.validator.spec.ts",
+    "linha": 30,
+    "regra": "testing.md#7",
+    "chave": "rejeita senhas sem letras minúsculas",
+    "violacao": "prova chamada 'rejeita senhas sem letras minúsculas'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/password.validator.spec.ts",
+    "linha": 34,
+    "regra": "testing.md#7",
+    "chave": "rejeita senhas sem caracteres especiais",
+    "violacao": "prova chamada 'rejeita senhas sem caracteres especiais'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/password.validator.spec.ts",
+    "linha": 38,
+    "regra": "testing.md#7",
+    "chave": "rejeita senhas com espaços em branco",
+    "violacao": "prova chamada 'rejeita senhas com espaços em branco'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/password.validator.spec.ts",
+    "linha": 42,
+    "regra": "testing.md#7",
+    "chave": "funciona quando chamado como factory de ValidatorFn",
+    "violacao": "prova chamada 'funciona quando chamado como factory de ValidatorFn'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/password.validator.spec.ts",
+    "linha": 48,
+    "regra": "testing.md#7",
+    "chave": "exporta regex PASSWORD_PATTERN correspondente ao backend",
+    "violacao": "prova chamada 'exporta regex PASSWORD_PATTERN correspondente ao backend'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/table-sort.spec.ts",
+    "linha": 5,
+    "regra": "testing.md#7",
+    "chave": "lê campo e direção do formato do Spring Data",
+    "violacao": "prova chamada 'lê campo e direção do formato do Spring Data'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/table-sort.spec.ts",
+    "linha": 13,
+    "regra": "testing.md#7",
+    "chave": "devolve o padrão quando a tabela emite sem ordenação",
+    "violacao": "prova chamada 'devolve o padrão quando a tabela emite sem ordenação'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/table-sort.spec.ts",
+    "linha": 21,
+    "regra": "testing.md#7",
+    "chave": "trata qualquer direção que não seja \"desc\" como ascendente",
+    "violacao": "prova chamada 'trata qualquer direção que não seja \"desc\" como ascendente'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/commons/table-sort.spec.ts",
+    "linha": 27,
+    "regra": "testing.md#7",
+    "chave": "sem padrão explícito, devolve campo indefinido e direção ascendente",
+    "violacao": "prova chamada 'sem padrão explícito, devolve campo indefinido e direção ascendente'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/core/guards/role.guard.spec.ts",
+    "linha": 30,
+    "regra": "testing.md#7",
+    "chave": "não logado ⇒ dispara login e nega",
+    "violacao": "prova chamada 'não logado ⇒ dispara login e nega'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/core/guards/role.guard.spec.ts",
+    "linha": 40,
+    "regra": "testing.md#7",
+    "chave": "logado sem data.roles ⇒ negado (rota mal configurada falha fechada)",
+    "violacao": "prova chamada 'logado sem data.roles ⇒ negado (rota mal configurada falha fechada)'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/core/guards/role.guard.spec.ts",
+    "linha": 49,
+    "regra": "testing.md#7",
+    "chave": "logado com a ação exigida ⇒ libera",
+    "violacao": "prova chamada 'logado com a ação exigida ⇒ libera'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/core/guards/role.guard.spec.ts",
+    "linha": 60,
+    "regra": "testing.md#7",
+    "chave": "logado sem a ação exigida ⇒ redireciona para /acesso-negado",
+    "violacao": "prova chamada 'logado sem a ação exigida ⇒ redireciona para /acesso-negado'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/core/guards/routes-coverage.spec.ts",
+    "linha": 60,
+    "regra": "testing.md#7",
+    "chave": "a varredura alcança as rotas guardadas de todas as features",
+    "violacao": "prova chamada 'a varredura alcança as rotas guardadas de todas as features'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/core/localidade/localidade.store.spec.ts",
+    "linha": 25,
+    "regra": "testing.md#7",
+    "chave": "listarPaises faz GET em /api/localidades/paises",
+    "violacao": "prova chamada 'listarPaises faz GET em /api/localidades/paises'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/core/localidade/localidade.store.spec.ts",
+    "linha": 33,
+    "regra": "testing.md#7",
+    "chave": "listarEstados aninha o id do país na rota",
+    "violacao": "prova chamada 'listarEstados aninha o id do país na rota'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/core/menu/menu.builder.spec.ts",
+    "linha": 19,
+    "regra": "testing.md#7",
+    "chave": "sem ação nenhuma, o menu é vazio — falha FECHADO",
+    "violacao": "prova chamada 'sem ação nenhuma, o menu é vazio — falha FECHADO'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/core/menu/menu.builder.spec.ts",
+    "linha": 23,
+    "regra": "testing.md#7",
+    "chave": "cada ação de consulta acrescenta exatamente um item",
+    "violacao": "prova chamada 'cada ação de consulta acrescenta exatamente um item'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/core/menu/menu.builder.spec.ts",
+    "linha": 29,
+    "regra": "testing.md#7",
+    "chave": "o item de parceiros aponta para a rota de parceiros",
+    "violacao": "prova chamada 'o item de parceiros aponta para a rota de parceiros'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/core/menu/menu.builder.spec.ts",
+    "linha": 35,
+    "regra": "testing.md#7",
+    "chave": "ação de ESCRITA não abre item de menu sozinha",
+    "violacao": "prova chamada 'ação de ESCRITA não abre item de menu sozinha'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/core/menu/menu.builder.spec.ts",
+    "linha": 41,
+    "regra": "testing.md#7",
+    "chave": "quem tem tudo vê todos os itens, sem duplicata",
+    "violacao": "prova chamada 'quem tem tudo vê todos os itens, sem duplicata'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/core/menu/menu.builder.spec.ts",
+    "linha": 49,
+    "regra": "testing.md#7",
+    "chave": "a home não tem entrada de menu",
+    "violacao": "prova chamada 'a home não tem entrada de menu'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/features/parceiro/services/parceiro-form-state.service.spec.ts",
+    "linha": 18,
+    "regra": "testing.md#7",
+    "chave": "começa vazio, no passo 1 e em modo de criação",
+    "violacao": "prova chamada 'começa vazio, no passo 1 e em modo de criação'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/features/parceiro/services/parceiro-form-state.service.spec.ts",
+    "linha": 25,
+    "regra": "testing.md#7",
+    "chave": "cada passo escreve só a sua fatia, sem apagar as demais",
+    "violacao": "prova chamada 'cada passo escreve só a sua fatia, sem apagar as demais'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/features/parceiro/services/parceiro-form-state.service.spec.ts",
+    "linha": 33,
+    "regra": "testing.md#7",
+    "chave": "modo view é somente leitura",
+    "violacao": "prova chamada 'modo view é somente leitura'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/features/parceiro/services/parceiro-form-state.service.spec.ts",
+    "linha": 38,
+    "regra": "testing.md#7",
+    "chave": "clearState zera o estado e volta ao passo 1",
+    "violacao": "prova chamada 'clearState zera o estado e volta ao passo 1'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/features/parceiro/services/parceiro-form-state.service.spec.ts",
+    "linha": 49,
+    "regra": "testing.md#7",
+    "chave": "vai quando o usuário PODE vê-la",
+    "violacao": "prova chamada 'vai quando o usuário PODE vê-la'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/features/parceiro/services/parceiro-form-state.service.spec.ts",
+    "linha": 55,
+    "regra": "testing.md#7",
+    "chave": "NÃO vai quando o usuário não pode vê-la — o campo é omitido, não enviado como null",
+    "violacao": "prova chamada 'NÃO vai quando o usuário não pode vê-la — o campo é omitido, não enviado como null'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/features/parceiro/services/parceiro-form-state.service.spec.ts",
+    "linha": 63,
+    "regra": "testing.md#7",
+    "chave": "quem pode ver e limpou o campo envia null — apagar é uma edição legítima",
+    "violacao": "prova chamada 'quem pode ver e limpou o campo envia null — apagar é uma edição legítima'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/features/parceiro/services/parceiro-form-state.service.spec.ts",
+    "linha": 72,
+    "regra": "testing.md#7",
+    "chave": "o estado sem estado no endereço não envia estado vazio — país estrangeiro não tem UF",
+    "violacao": "prova chamada 'o estado sem estado no endereço não envia estado vazio — país estrangeiro não tem UF'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/auditoria/historico-registro/historico-registro.component.spec.ts",
+    "linha": 73,
+    "regra": "testing.md#7",
+    "chave": "renderiza as operações do histórico, com autor e data",
+    "violacao": "prova chamada 'renderiza as operações do histórico, com autor e data'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/auditoria/historico-registro/historico-registro.component.spec.ts",
+    "linha": 89,
+    "regra": "testing.md#7",
+    "chave": "campo sigiloso exibe \"valor não registrado\", e não vazio",
+    "violacao": "prova chamada 'campo sigiloso exibe \"valor não registrado\", e não vazio'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/auditoria/historico-registro/historico-registro.component.spec.ts",
+    "linha": 97,
+    "regra": "testing.md#7",
+    "chave": "campo não sigiloso mostra o valor anterior e o novo",
+    "violacao": "prova chamada 'campo não sigiloso mostra o valor anterior e o novo'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/auditoria/historico-registro/historico-registro.component.spec.ts",
+    "linha": 110,
+    "regra": "testing.md#7",
+    "chave": "registro vindo de um agregado mostra de qual parte do cadastro veio",
+    "violacao": "prova chamada 'registro vindo de um agregado mostra de qual parte do cadastro veio'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/auditoria/historico-registro/historico-registro.component.spec.ts",
+    "linha": 125,
+    "regra": "testing.md#7",
+    "chave": "registro da própria raiz não repete o nome da entidade como origem",
+    "violacao": "prova chamada 'registro da própria raiz não repete o nome da entidade como origem'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/auditoria/historico-registro/historico-registro.component.spec.ts",
+    "linha": 138,
+    "regra": "testing.md#7",
+    "chave": "registro sem alterações não quebra e mostra a mensagem de vazio",
+    "violacao": "prova chamada 'registro sem alterações não quebra e mostra a mensagem de vazio'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/auditoria/historico-registro/historico-registro.component.spec.ts",
+    "linha": 148,
+    "regra": "testing.md#7",
+    "chave": "não busca nada enquanto o modal está fechado",
+    "violacao": "prova chamada 'não busca nada enquanto o modal está fechado'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/auditoria/historico-registro/historico-registro.component.spec.ts",
+    "linha": 161,
+    "regra": "testing.md#7",
+    "chave": "emite o fechamento quando o modal é fechado",
+    "violacao": "prova chamada 'emite o fechamento quando o modal é fechado'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/components/field-tooltip/field-tooltip.component.spec.ts",
+    "linha": 10,
+    "regra": "testing.md#7",
+    "chave": "liga o botão ao tooltip e permite abri-lo por clique",
+    "violacao": "prova chamada 'liga o botão ao tooltip e permite abri-lo por clique'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/components/field-tooltip/field-tooltip.component.spec.ts",
+    "linha": 26,
+    "regra": "testing.md#7",
+    "chave": "posiciona o balão em coordenadas de janela para escapar do overflow do card",
+    "violacao": "prova chamada 'posiciona o balão em coordenadas de janela para escapar do overflow do card'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/contato/contato-fields.component.spec.ts",
+    "linha": 18,
+    "regra": "testing.md#7",
+    "chave": "renderiza e-mail e telefone com os ícones consolidados",
+    "violacao": "prova chamada 'renderiza e-mail e telefone com os ícones consolidados'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/contato/contato-form.spec.ts",
+    "linha": 6,
+    "regra": "testing.md#7",
+    "chave": "mantém e-mail e telefone obrigatórios na ordem canônica",
+    "violacao": "prova chamada 'mantém e-mail e telefone obrigatórios na ordem canônica'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/dados-pessoais/dados-pessoais-fields.component.spec.ts",
+    "linha": 20,
+    "regra": "testing.md#7",
+    "chave": "renderiza campos e ícones na ordem canônica",
+    "violacao": "prova chamada 'renderiza campos e ícones na ordem canônica'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/dados-pessoais/dados-pessoais-fields.component.spec.ts",
+    "linha": 39,
+    "regra": "testing.md#7",
+    "chave": "emite a intenção de busca pelo botão visível",
+    "violacao": "prova chamada 'emite a intenção de busca pelo botão visível'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/dados-pessoais/dados-pessoais-fields.component.spec.ts",
+    "linha": 51,
+    "regra": "testing.md#7",
+    "chave": "oculta a busca no modo somente leitura",
+    "violacao": "prova chamada 'oculta a busca no modo somente leitura'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/dados-pessoais/dados-pessoais-fields.component.spec.ts",
+    "linha": 58,
+    "regra": "testing.md#7",
+    "chave": "desabilita a busca e exibe o loading durante a consulta",
+    "violacao": "prova chamada 'desabilita a busca e exibe o loading durante a consulta'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/dados-pessoais/dados-pessoais-form.spec.ts",
+    "linha": 6,
+    "regra": "testing.md#7",
+    "chave": "mantém a ordem canônica dos dados pessoais",
+    "violacao": "prova chamada 'mantém a ordem canônica dos dados pessoais'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/dados-pessoais/dados-pessoais-form.spec.ts",
+    "linha": 19,
+    "regra": "testing.md#7",
+    "chave": "exige os campos obrigatórios e CPF com onze dígitos",
+    "violacao": "prova chamada 'exige os campos obrigatórios e CPF com onze dígitos'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/dados-pessoais/dados-pessoais-form.spec.ts",
+    "linha": 35,
+    "regra": "testing.md#7",
+    "chave": "exige o sexo e o inicializa em null para o placeholder aparecer",
+    "violacao": "prova chamada 'exige o sexo e o inicializa em null para o placeholder aparecer'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/dados-pessoais/dados-pessoais-form.spec.ts",
+    "linha": 47,
+    "regra": "testing.md#7",
+    "chave": "rotula as três opções de sexo e devolve travessão quando não há valor",
+    "violacao": "prova chamada 'rotula as três opções de sexo e devolve travessão quando não há valor'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/endereco/cep-lookup.service.spec.ts",
+    "linha": 61,
+    "regra": "testing.md#7",
+    "chave": "não consulta com CEP incompleto",
+    "violacao": "prova chamada 'não consulta com CEP incompleto'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/endereco/cep-lookup.service.spec.ts",
+    "linha": 69,
+    "regra": "testing.md#7",
+    "chave": "preenche cidade, bairro, logradouro e estado a partir da resposta",
+    "violacao": "prova chamada 'preenche cidade, bairro, logradouro e estado a partir da resposta'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/endereco/cep-lookup.service.spec.ts",
+    "linha": 83,
+    "regra": "testing.md#7",
+    "chave": "avisa quando o CEP existe mas o estado não está no cadastro",
+    "violacao": "prova chamada 'avisa quando o CEP existe mas o estado não está no cadastro'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/endereco/cep-lookup.service.spec.ts",
+    "linha": 93,
+    "regra": "testing.md#7",
+    "chave": "trata 400 como aviso, preservando o preenchimento manual",
+    "violacao": "prova chamada 'trata 400 como aviso, preservando o preenchimento manual'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/endereco/cep-lookup.service.spec.ts",
+    "linha": 103,
+    "regra": "testing.md#7",
+    "chave": "trata 502 como aviso: provedor fora do ar não bloqueia o cadastro",
+    "violacao": "prova chamada 'trata 502 como aviso: provedor fora do ar não bloqueia o cadastro'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/endereco/cep-lookup.service.spec.ts",
+    "linha": 113,
+    "regra": "testing.md#7",
+    "chave": "encaminha status inesperado para errorFromApi, sem virar aviso",
+    "violacao": "prova chamada 'encaminha status inesperado para errorFromApi, sem virar aviso'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/endereco/cep-lookup.service.spec.ts",
+    "linha": 123,
+    "regra": "testing.md#7",
+    "chave": "invalidar() descarta a resposta de uma consulta em voo",
+    "violacao": "prova chamada 'invalidar() descarta a resposta de uma consulta em voo'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/enter-busca/enter-busca.directive.spec.ts",
+    "linha": 46,
+    "regra": "testing.md#7",
+    "chave": "emite a busca no Enter de um campo de texto",
+    "violacao": "prova chamada 'emite a busca no Enter de um campo de texto'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/enter-busca/enter-busca.directive.spec.ts",
+    "linha": 54,
+    "regra": "testing.md#7",
+    "chave": "cancela o evento, para que um botão de submit acrescentado depois não recarregue a página",
+    "violacao": "prova chamada 'cancela o evento, para que um botão de submit acrescentado depois não recarregue a página'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/enter-busca/enter-busca.directive.spec.ts",
+    "linha": 62,
+    "regra": "testing.md#7",
+    "chave": "não busca no Enter dentro de textarea — ali a tecla é quebra de linha",
+    "violacao": "prova chamada 'não busca no Enter dentro de textarea — ali a tecla é quebra de linha'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/enter-busca/enter-busca.directive.spec.ts",
+    "linha": 71,
+    "regra": "testing.md#7",
+    "chave": "ignora o Enter que apenas confirma um candidato de IME",
+    "violacao": "prova chamada 'ignora o Enter que apenas confirma um candidato de IME'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/enter-busca/enter-busca.directive.spec.ts",
+    "linha": 88,
+    "regra": "testing.md#7",
+    "chave": "ignora outras teclas",
+    "violacao": "prova chamada 'ignora outras teclas'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/field-error/field-error.component.spec.ts",
+    "linha": 54,
+    "regra": "testing.md#7",
+    "chave": "não exibe nada enquanto o campo está intocado",
+    "violacao": "prova chamada 'não exibe nada enquanto o campo está intocado'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/field-error/field-error.component.spec.ts",
+    "linha": 59,
+    "regra": "testing.md#7",
+    "chave": "exibe a mensagem customizada depois de markAllAsTouched — o caso do botão salvar",
+    "violacao": "prova chamada 'exibe a mensagem customizada depois de markAllAsTouched — o caso do botão salvar'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/field-error/field-error.component.spec.ts",
+    "linha": 69,
+    "regra": "testing.md#7",
+    "chave": "some quando o campo passa a ser válido",
+    "violacao": "prova chamada 'some quando o campo passa a ser válido'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/field-error/field-error.component.spec.ts",
+    "linha": 81,
+    "regra": "testing.md#7",
+    "chave": "cai na mensagem padrão em pt-BR quando o validador não tem mensagem customizada",
+    "violacao": "prova chamada 'cai na mensagem padrão em pt-BR quando o validador não tem mensagem customizada'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/field-error/field-error.component.spec.ts",
+    "linha": 92,
+    "regra": "testing.md#7",
+    "chave": "acompanha a troca do control informado no input",
+    "violacao": "prova chamada 'acompanha a troca do control informado no input'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/field-error/field-error.component.spec.ts",
+    "linha": 103,
+    "regra": "testing.md#7",
+    "chave": "caracterização: o gems-field-error da SDK 1.1.0 continua sem exibir a mensagem",
+    "violacao": "prova chamada 'caracterização: o gems-field-error da SDK 1.1.0 continua sem exibir a mensagem'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/perfil-atuacao.spec.ts",
+    "linha": 13,
+    "regra": "testing.md#7",
+    "chave": "tem exatamente os perfis do enum do backend, na mesma ordem",
+    "violacao": "prova chamada 'tem exatamente os perfis do enum do backend, na mesma ordem'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/perfil-atuacao.spec.ts",
+    "linha": 17,
+    "regra": "testing.md#7",
+    "chave": "nenhum rótulo é vazio",
+    "violacao": "prova chamada 'nenhum rótulo é vazio'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/perfil-atuacao.spec.ts",
+    "linha": 21,
+    "regra": "testing.md#7",
+    "chave": "devolve o rótulo do perfil",
+    "violacao": "prova chamada 'devolve o rótulo do perfil'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/perfil-atuacao.spec.ts",
+    "linha": 25,
+    "regra": "testing.md#7",
+    "chave": "perfil ausente ou desconhecido devolve string vazia, nunca undefined",
+    "violacao": "prova chamada 'perfil ausente ou desconhecido devolve string vazia, nunca undefined'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/rg/rg-format.spec.ts",
+    "linha": 4,
+    "regra": "testing.md#7",
+    "chave": "formata o RG paulista com dígito verificador numérico",
+    "violacao": "prova chamada 'formata o RG paulista com dígito verificador numérico'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/rg/rg-format.spec.ts",
+    "linha": 8,
+    "regra": "testing.md#7",
+    "chave": "preserva o dígito verificador alfabético do RG paulista",
+    "violacao": "prova chamada 'preserva o dígito verificador alfabético do RG paulista'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/rg/rg-format.spec.ts",
+    "linha": 12,
+    "regra": "testing.md#7",
+    "chave": "reconhece a sigla da UF e não inventa dígito verificador",
+    "violacao": "prova chamada 'reconhece a sigla da UF e não inventa dígito verificador'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/rg/rg-format.spec.ts",
+    "linha": 16,
+    "regra": "testing.md#7",
+    "chave": "não separa dígito verificador em RG curto",
+    "violacao": "prova chamada 'não separa dígito verificador em RG curto'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/rg/rg-format.spec.ts",
+    "linha": 20,
+    "regra": "testing.md#7",
+    "chave": "acomoda emissores com mais de nove dígitos",
+    "violacao": "prova chamada 'acomoda emissores com mais de nove dígitos'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/rg/rg-format.spec.ts",
+    "linha": 24,
+    "regra": "testing.md#7",
+    "chave": "é idempotente sobre um valor já formatado",
+    "violacao": "prova chamada 'é idempotente sobre um valor já formatado'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/rg/rg-format.spec.ts",
+    "linha": 30,
+    "regra": "testing.md#7",
+    "chave": "não descarta caractere digitado dentro do limite",
+    "violacao": "prova chamada 'não descarta caractere digitado dentro do limite'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/rg/rg-format.spec.ts",
+    "linha": 35,
+    "regra": "testing.md#7",
+    "chave": "mantém o valor legível enquanto a sigla ainda está sendo digitada",
+    "violacao": "prova chamada 'mantém o valor legível enquanto a sigla ainda está sendo digitada'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/rg/rg-format.spec.ts",
+    "linha": 41,
+    "regra": "testing.md#7",
+    "chave": "nunca ultrapassa os 20 caracteres aceitos pelo cadastro",
+    "violacao": "prova chamada 'nunca ultrapassa os 20 caracteres aceitos pelo cadastro'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/shared/forms/rg/rg-format.spec.ts",
+    "linha": 46,
+    "regra": "testing.md#7",
+    "chave": "trata vazio, nulo e indefinido como string vazia",
+    "violacao": "prova chamada 'trata vazio, nulo e indefinido como string vazia'",
+    "esperado": "it('deve{Acao}_quando{Condicao}', ...) — a mesma convenção do backend"
+  },
+  {
+    "caminho": "frontend/src/app/core/footer/app-footer.component.ts",
+    "linha": 10,
+    "regra": "signals-standards.md#1",
+    "chave": "standalone",
+    "violacao": "standalone: true declarado",
+    "esperado": "omitir — é o padrão desde o Angular 19, e declará-lo é ruído que envelhece"
+  },
+  {
+    "caminho": "frontend/src/app/features/solicitacao/form/solicitacao-form.component.ts",
+    "linha": 17,
+    "regra": "organization.md#1",
+    "chave": "../../parceiro/services/parceiro.store",
+    "violacao": "features/solicitacao/ importa features/parceiro/ (../../parceiro/services/parceiro.store)",
+    "esperado": "uma feature não importa outra — o que é comum sobe para shared/ ou core/"
+  },
+  {
+    "caminho": "frontend/src/app/features/parceiro/services/parceiro-form-state.service.spec.ts",
+    "linha": 1,
+    "regra": "organization.md#6",
+    "chave": "parceiro-form-state.service.spec.ts",
+    "violacao": "parceiro-form-state.service.spec.ts em features/parceiro/services/",
+    "esperado": "{modulo}.store.{ts} (e o .spec.ts ao lado)"
+  },
+  {
+    "caminho": "frontend/src/app/features/parceiro/services/parceiro-form-state.service.ts",
+    "linha": 1,
+    "regra": "organization.md#6",
+    "chave": "parceiro-form-state.service.ts",
+    "violacao": "parceiro-form-state.service.ts em features/parceiro/services/",
+    "esperado": "{modulo}.store.{ts} (e o .spec.ts ao lado)"
+  },
+  {
+    "caminho": "frontend/src/app/features/parceiro/models/parceiro-response.model.ts",
+    "linha": 1,
+    "regra": "organization.md#6",
+    "chave": "parceiro-response.model.ts",
+    "violacao": "{modulo} \"parceiro-response\" numa feature cujos arquivos usam \"parceiro\"",
+    "esperado": "um único {modulo} por feature — parceiro"
+  }
+]

@@ -1,0 +1,13 @@
+.git/
+.kilo/
+**/node_modules/
+**/target/
+**/dist/
+**/.angular/
+**/coverage/
+business/**/*.png
+.env
+.env.*
+**/.env
+backend/.m2/settings.xml
+frontend/.npmrc

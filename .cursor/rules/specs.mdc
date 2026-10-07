@@ -1,0 +1,9 @@
+---
+description: Fluxo spec-driven
+globs: specs/**/*,.specify/**/*
+alwaysApply: false
+---
+
+Siga `specs/AGENTS.md` e carregue somente a feature ativa.
+
+A constituição 2.0.0 e specs/AGENTS.md definem autoridade: regras GEMS vencem código consolidado e a adoção de módulos SDK exige prova de equivalência.

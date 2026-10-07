@@ -1,0 +1,245 @@
+# Ambiente PUBLICADO (VPS).
+#
+# Diferenças essenciais em relação ao local, e o porquê de cada uma:
+#
+#  - APENAS o Caddy publica porta. Banco, Keycloak, backend e frontend conversam pela rede interna do
+#    Compose e não são alcançáveis de fora da máquina (Princípio IX). No ambiente local o Postgres
+#    publica 5432 porque o backend roda fora do Docker; aqui isso seria exposição direta.
+#  - Keycloak roda `start`, não `start-dev`: valida configuração que o modo de desenvolvimento
+#    tolera, e exige hostname fixo.
+#  - O cache de tema fica LIGADO. As três KC_SPI_THEME_* do compose local existem para permitir editar
+#    .ftl sem recriar contêiner e custariam performance em toda requisição aqui.
+#  - As imagens vêm prontas do registro. A VPS não compila nada.
+#
+# Roteiro de publicação: environments/vps/
+
+name: app
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: app-caddy
+    restart: unless-stopped
+    # O único serviço com porta publicada. A 80 não é opcional: o desafio HTTP-01 do Let's Encrypt
+    # precisa dela para emitir e renovar o certificado.
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:?defina no .env}
+      API_DOMAIN: ${API_DOMAIN:?defina no .env}
+      AUTH_DOMAIN: ${AUTH_DOMAIN:?defina no .env}
+      ACME_EMAIL: ${ACME_EMAIL:?defina no .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # Guarda os certificados emitidos. Perder este volume significa pedir tudo de novo ao
+      # Let's Encrypt — que impõe limite de emissões por semana.
+      - caddy_data:/data
+      - caddy_config:/config
+    mem_limit: 128m
+    depends_on:
+      - app-frontend
+      - app-backend
+      - app-keycloak
+    # Duas redes: este é o ÚNICO Caddy da máquina e ele serve os domínios de produção e os de
+    # staging. Alcançar os contêineres de staging exige participar da rede deles.
+    networks:
+      - app-network
+      - app-staging-network
+
+  app-postgres:
+    image: postgres:16
+    container_name: app-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_SUPERUSER:?defina no .env}
+      POSTGRES_PASSWORD: ${POSTGRES_SUPERUSER_PASSWORD:?defina no .env}
+      APP_DB_NAME: ${APP_DB_NAME:-app-db}
+      APP_DB_USER: ${APP_DB_USER:-app-access}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?defina no .env}
+      KEYCLOAK_DB_NAME: ${KEYCLOAK_DB_NAME:-keycloak-db}
+      KEYCLOAK_DB_USER: ${KEYCLOAK_DB_USER:-keycloak-access}
+      KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:?defina no .env}
+    volumes:
+      - ../shared/init-postgres.sh:/docker-entrypoint-initdb.d/init-postgres.sh:ro
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${APP_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+    mem_limit: 512m
+    networks:
+      - app-network
+
+  app-keycloak:
+    image: quay.io/keycloak/keycloak:26.0.8
+    container_name: app-keycloak
+    restart: unless-stopped
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://app-postgres:5432/${KEYCLOAK_DB_NAME:-keycloak-db}
+      KC_DB_USERNAME: ${KEYCLOAK_DB_USER:-keycloak-access}
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD:?defina no .env}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USER:?defina no .env}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?defina no .env}
+      # O hostname público entra no `iss` de todo token emitido. Se ele não bater com o
+      # KEYCLOAK_ISSUER_URI que o backend valida, toda requisição autenticada vira 401.
+      KC_HOSTNAME: https://${AUTH_DOMAIN}
+      # TLS termina no Caddy; entre os contêineres o tráfego é HTTP na rede interna.
+      KC_HTTP_ENABLED: "true"
+      KC_PROXY_HEADERS: xforwarded
+      KC_HEALTH_ENABLED: "true"
+      # Teto de heap EXPLÍCITO. Sem ele a JVM dimensiona o heap por um percentual da memória
+      # visível, e com quatro JVMs dividindo 8 GB na mesma máquina a soma estoura muito antes de
+      # qualquer uma sentir pressão. A imagem do Keycloak lê esta variável no seu próprio script de
+      # inicialização — ver o research da rodada que a decidiu.
+      JAVA_OPTS_KC_HEAP: -Xms256m -Xmx768m
+    command: start
+    depends_on:
+      app-postgres:
+        condition: service_healthy
+    volumes:
+      - ../keycloak-theme:/opt/keycloak/themes:ro
+    healthcheck:
+      # A imagem não tem curl nem wget — só bash. Responder na porta não é prontidão.
+      test:
+        - CMD-SHELL
+        - >
+          exec 3<>/dev/tcp/localhost/9000 &&
+          printf 'GET /health/ready HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&3 &&
+          grep -q '"status": "UP"' <&3
+      interval: 10s
+      timeout: 5s
+      retries: 40
+      start_period: 60s
+    mem_limit: 1024m
+    networks:
+      - app-network
+
+  app-keycloak-config:
+    image: adorsys/keycloak-config-cli:6.5.1-26.0.5
+    container_name: app-keycloak-config
+    restart: "no"
+    depends_on:
+      app-keycloak:
+        condition: service_healthy
+    environment:
+      KEYCLOAK_URL: http://app-keycloak:8080
+      KEYCLOAK_USER: ${KEYCLOAK_ADMIN_USER:?defina no .env}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?defina no .env}
+      IMPORT_FILES_LOCATIONS: /config/*.yaml
+      IMPORT_VARSUBSTITUTION_ENABLED: "true"
+      # Ver o comentário equivalente no compose local: sem isto, uma alteração feita no console
+      # administrativo sobreviveria a todos os deploys seguintes, em silêncio.
+      IMPORT_CACHE_ENABLED: "false"
+      IMPORT_MANAGED_GROUP: no-delete
+      IMPORT_MANAGED_CLIENT: no-delete
+      IMPORT_MANAGED_ROLE: no-delete
+      APP_ORIGIN: https://${APP_DOMAIN}
+      KEYCLOAK_SSL_REQUIRED: all
+      KEYCLOAK_BACKEND_CLIENT_SECRET: ${KEYCLOAK_BACKEND_CLIENT_SECRET:?defina no .env}
+      APP_ADMIN_EMAIL: ${APP_ADMIN_EMAIL:?defina no .env}
+      APP_ADMIN_PASSWORD: ${APP_ADMIN_PASSWORD:?defina no .env}
+    volumes:
+      - ../shared/keycloak:/config:ro
+    # Transitório: sobe, aplica o realm e morre. Não soma no regime, mas soma no PICO de uma
+    # publicação — que é o momento de maior pressão de memória da máquina.
+    mem_limit: 256m
+    networks:
+      - app-network
+
+  app-backend:
+    image: ghcr.io/${GHCR_OWNER:?defina no .env}/app-backend:${IMAGE_TAG:-latest}
+    container_name: app-backend
+    restart: unless-stopped
+    depends_on:
+      app-postgres:
+        condition: service_healthy
+      # Sem isto o backend poderia subir antes de o realm existir, e o bootstrap dos grupos falharia
+      # em silêncio — cada usuário criado depois entraria sem permissão nenhuma.
+      app-keycloak-config:
+        condition: service_completed_successfully
+    environment:
+      # JAVA_TOOL_OPTIONS e NÃO JAVA_OPTS: o ENTRYPOINT da imagem é a forma *exec*
+      # ["java","-jar","/app/app.jar"] (backend/Dockerfile:90), então não há shell para expandir
+      # JAVA_OPTS — defini-la seria configuração inerte, que falha em silêncio. JAVA_TOOL_OPTIONS é
+      # lida pela própria JVM. Combinada com o mem_limit abaixo, o percentual passa a incidir sobre
+      # o limite do contêiner (cgroup) e não sobre os 8 GB do host. Ver o research da rodada que a decidiu.
+      JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75
+      DB_URL: jdbc:postgresql://app-postgres:5432/${APP_DB_NAME:-app-db}
+      DB_USERNAME: ${APP_DB_USER:-app-access}
+      DB_PASSWORD: ${APP_DB_PASSWORD:?defina no .env}
+
+      # ARMADILHA: o emissor precisa ser o endereço PÚBLICO, porque é ele que vem no `iss` do token.
+      # Já o conjunto de chaves e a Admin API podem — e devem — usar o endereço interno, evitando que
+      # o backend saia e volte pelo Caddy para falar com um contêiner vizinho.
+      KEYCLOAK_ISSUER_URI: https://${AUTH_DOMAIN}/realms/app-realm
+      KEYCLOAK_JWK_SET_URI: http://app-keycloak:8080/realms/app-realm/protocol/openid-connect/certs
+      KEYCLOAK_SERVER_URL: http://app-keycloak:8080
+      KEYCLOAK_REALM: app-realm
+      KEYCLOAK_BACKEND_CLIENT_ID: app-backend
+      KEYCLOAK_BACKEND_CLIENT_SECRET: ${KEYCLOAK_BACKEND_CLIENT_SECRET:?defina no .env}
+
+      # A SPA chama a API cross-origin (não há proxy de front para back), então CORS é carga
+      # funcional: errar aqui derruba a aplicação inteira no navegador.
+      APP_CORS_ALLOWED_ORIGINS: https://${APP_DOMAIN}
+
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_ENDPOINT: ${AWS_ENDPOINT:-https://s3.us-east-1.amazonaws.com}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET:?defina no .env}
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY:?defina no .env}
+      AWS_SECRET_KEY: ${AWS_SECRET_KEY:?defina no .env}
+    mem_limit: 1024m
+    networks:
+      - app-network
+
+  app-frontend:
+    image: ghcr.io/${GHCR_OWNER:?defina no .env}/app-frontend:${IMAGE_TAG:-latest}
+    container_name: app-frontend
+    restart: unless-stopped
+    environment:
+      # Lidas pelo entrypoint da imagem, que gera o env.js antes de o nginx subir. É isto que permite
+      # repontar a MESMA imagem para outro ambiente sem reconstruí-la.
+      API_BASE_URL: https://${API_DOMAIN}
+      OIDC_ISSUER: https://${AUTH_DOMAIN}/realms/app-realm
+      OIDC_CLIENT_ID: app-frontend
+    # Era o único serviço sem sonda, na imagem ou aqui. Sem ela o `up --wait` e a verificação
+    # pós-deploy dariam o frontend por pronto sem nunca ter perguntado nada a ele.
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    mem_limit: 64m
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+    name: app_postgres_data
+  caddy_data:
+    name: app_caddy_data
+  caddy_config:
+    name: app_caddy_config
+
+networks:
+  app-network:
+    name: app_network
+    driver: bridge
+
+  # A rede de staging é EXTERNA para as duas stacks — nenhuma das duas a cria.
+  #
+  # Por que não deixar o compose de staging criá-la: um `docker compose down` em staging levaria a
+  # rede junto e o Caddy de produção perderia a rede na reinicialização seguinte, em silêncio. Fazer
+  # as duas stacks apenas consumirem uma rede de terceiro remove o acoplamento de ordem inteiro.
+  #
+  # Criar UMA vez, antes do primeiro `up` de qualquer ambiente:
+  #     docker network create app_staging_network
+  #
+  # Ver environments/vps/08-staging.md.
+  app-staging-network:
+    name: app_staging_network
+    external: true

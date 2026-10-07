@@ -1,0 +1,91 @@
+<gems-form-card
+  title="Resumo"
+  subtitle="Confira os dados antes de gravar."
+  icon="fa-solid fa-clipboard-check"
+>
+  <dl class="resumo-grid">
+    <div class="resumo-item">
+      <dt>Nome do parceiro</dt>
+      <dd>{{ dados().nome || '—' }}</dd>
+    </div>
+
+    @if (dados().podeVerComissao) {
+      <div class="resumo-item">
+        <dt>Comissão</dt>
+        <dd>
+          @if (dados().comissao !== null && dados().comissao !== undefined) {
+            {{ dados().comissao }}%
+          } @else {
+            —
+          }
+        </dd>
+      </div>
+    }
+
+    <div class="resumo-item full-width">
+      <dt>Descrição</dt>
+      <dd>{{ dados().descricao || '—' }}</dd>
+    </div>
+
+    <div class="resumo-item">
+      <dt>Pessoa</dt>
+      <dd>{{ dados().pessoa?.primeiroNome }} {{ dados().pessoa?.sobrenome }}</dd>
+    </div>
+
+    <div class="resumo-item">
+      <dt>CPF</dt>
+      <dd>{{ dados().pessoa?.cpf || '—' }}</dd>
+    </div>
+
+    <div class="resumo-item">
+      <dt>Sexo</dt>
+      <dd>{{ sexoDescricao() || '—' }}</dd>
+    </div>
+
+    <div class="resumo-item">
+      <dt>E-mail</dt>
+      <dd>{{ dados().contato?.email || '—' }}</dd>
+    </div>
+
+    <div class="resumo-item">
+      <dt>Telefone</dt>
+      <dd>{{ dados().contato?.telefone || '—' }}</dd>
+    </div>
+
+    <div class="resumo-item full-width">
+      <dt>Endereço</dt>
+      <dd>{{ enderecoLinha() || '—' }}</dd>
+    </div>
+
+    <div class="resumo-item">
+      <dt>País</dt>
+      <dd>{{ dados().endereco?.paisNome || '—' }}</dd>
+    </div>
+  </dl>
+
+  <div gems-form-card-footer class="step-actions">
+    @if (isReadOnly()) {
+      <button type="button" class="btn-back" (click)="voltar()">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar
+      </button>
+      <button type="button" class="btn-cancel" (click)="sair.emit()">
+        <i class="fa-solid fa-xmark"></i>
+        Fechar
+      </button>
+    } @else {
+      <button type="button" class="btn-back" [disabled]="isLoading()" (click)="voltar()">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar
+      </button>
+      <button type="button" class="btn-save" [disabled]="isLoading()" (click)="confirmar.emit()">
+        @if (isLoading()) {
+          <i class="fa-solid fa-circle-notch fa-spin"></i>
+        } @else {
+          <i class="fa-solid fa-check"></i>
+        }
+        Confirmar
+      </button>
+    }
+  </div>
+</gems-form-card>

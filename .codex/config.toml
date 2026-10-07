@@ -1,0 +1,2 @@
+# Guardrail: arquivos AGENTS.md devem permanecer menores que este teto.
+project_doc_max_bytes = 16384

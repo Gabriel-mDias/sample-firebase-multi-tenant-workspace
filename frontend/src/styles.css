@@ -1,0 +1,686 @@
+/* Estilos globais do projeto.
+ * Tokens de cor e tipografia vêm da GEMS SDK (gems-global.css) + provideGemsTheme (app.config.ts).
+ * NÃO usar hex hardcoded nem sobrescrever :root { --gems-* } aqui (ver visual-standards.md). */
+@import '@gabriel-mdias/angular-gems-sdk/styles.css';
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.no-bg {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ========================================================================= */
+/* LAYOUT E CABEÇALHOS GLOBAIS (HEADERS)                                     */
+/* ========================================================================= */
+
+/* A regra do próprio `.header` fica na seção "Estrutura Global de Telas", mais abaixo —
+   havia duas definições concorrentes e a de lá vencia por ordem de cascata.
+   O flex: 1 faz com que o container de títulos ocupe todo o espaço livre,
+   empurrando botões de ação para a extrema direita e ficando logo ao lado
+   de eventuais botões de 'Voltar' à sua esquerda. */
+.header-titles {
+  flex: 1;
+}
+
+/* ========================================================================= */
+/* HEADERS DE COMPONENTE — fonte única da verdade                            */
+/* ========================================================================= */
+/* Todo componente que tem cabeçalho próprio (form-card, tabela, summary-card)
+ * usa APENAS os tokens abaixo. Eles derivam do tema definido em
+ * provideGemsTheme() (app.config.ts), então trocar `primary` lá repinta todos
+ * os headers do sistema — nenhuma cor é repetida em CSS de tela.
+ *
+ * Para um componente novo da SDK ganhar o mesmo tratamento, basta acrescentar
+ * o seletor dele na seção "APLICAÇÃO" logo abaixo. Nunca escreva hex aqui.
+ *
+ * Nota: usamos prefixo próprio `--app-*` que CONSOME os tokens da SDK, em vez
+ * de sobrescrever `--gems-*` — o que é proibido por visual-standards.md. */
+/* ========================================================================= */
+/* EMPILHAMENTO — a modal precisa cobrir a barra lateral                      */
+/* ========================================================================= */
+
+/* O operador via a barra lateral POR CIMA da modal (anexos, confirmações, histórico).
+ *
+ * A causa não é o valor do z-index da modal, e mexer nele não resolve — foi medido: subir o
+ * `.gems-modal-container` para 100000 não muda nada. O que acontece é que a modal está PRESA num
+ * contexto de empilhamento criado pelo wrapper da tela: `.form-container`/`.list-container` levam
+ * `animate__animated animate__fadeIn` (exigido pelo padrão visual do projeto), e a animate.css usa
+ * `animation-fill-mode: both` — a animação continua "aplicada" depois de terminar, e um elemento
+ * com animação de `opacity` aplicada cria contexto de empilhamento permanente. Dentro dele, todo
+ * z-index é relativo ao wrapper, que fica abaixo do `z-index: 1000` da `.gems-side-menu-container`.
+ *
+ * A correção eleva o CONTÊINER de conteúdo acima da barra — e só enquanto existe uma modal aberta,
+ * que é o que o `:has()` detecta. Fora desse momento nada muda: a barra continua por cima do
+ * conteúdo, que é o comportamento correto no mobile, onde ela desliza sobre a página
+ * (`.mobile-overlay` usa 999, logo abaixo dos 1000 da barra).
+ *
+ * Alternativa descartada: tirar o `animate__animated` dos wrappers. Também resolve — foi medido —
+ * mas mudaria a identidade visual de TODAS as telas para consertar a modal, e o padrão de animação
+ * é regra do projeto, não acidente. */
+body:has(.gems-modal-backdrop) .app-content {
+  position: relative;
+  z-index: 1001;
+}
+
+:root {
+  /* Fundo do cabeçalho: a primária do tema, seja ela qual for. Trocar a paleta em
+   * app.config.ts basta — nada aqui embute o valor. */
+  --app-header-bg: var(--gems-primary-600);
+
+  /* Texto sobre a primária: off-white do tema (#F8FAFC).
+   * Não usamos --gems-primary-contrast porque ele resolve para #ffffff puro. */
+  --app-header-fg: var(--gems-bg);
+
+  /* Texto secundário (subtítulos, previews). A SDK aplica opacity nos subtítulos;
+   * como isso lava o texto sobre a primária, neutralizamos a opacity e usamos esta
+   * cor já esmaecida no lugar. */
+  --app-header-fg-muted: color-mix(in srgb, var(--gems-bg) 78%, transparent);
+
+  /* Realce de interação (hover em coluna ordenável). */
+  --app-header-hover: var(--gems-primary-700);
+
+  /* Divisa entre o cabeçalho e o corpo do componente. */
+  --app-header-border: color-mix(in srgb, var(--gems-bg) 22%, transparent);
+
+  /* Altura do rodapé fixo global (app-footer). A variante mobile é maior por
+   * legibilidade e conforto de toque em tela pequena. Ambas são consumidas
+   * tanto pelo componente quanto pelo respiro do `.app-content` (app.css). */
+  --app-footer-height: 28px;
+  --app-footer-height-mobile: 32px;
+
+  /* Largura do menu lateral. Espelha a largura própria do `gems-side-menu`
+   * da SDK (260px expandido) para que o rodapé fixo, que fica restrito à
+   * coluna de conteúdo, comece exatamente onde o menu termina. O App
+   * (app.css) sobrescreve este valor via classe quando o menu colapsa
+   * (80px) ou em telas ≤768px, onde o menu vira drawer (0px). */
+  --app-menu-width: 260px;
+}
+
+/* ---------------------- APLICAÇÃO ---------------------- */
+/* IMPORTANTE — por que os seletores aparecem duplicados (`.x.x`):
+ *
+ * Os componentes da SDK usam ViewEncapsulation.Emulated. O Angular reescreve as
+ * regras deles para `.gems-form-card-header[_ngcontent-ng-c123]`, que tem
+ * especificidade (0,2,0) — classe + atributo — e é injetada no <head> DEPOIS do
+ * styles.css. Um seletor simples `.gems-form-card-header` (0,1,0) portanto PERDE
+ * na cascata, tanto por especificidade quanto por ordem.
+ *
+ * Repetir a classe (`.gems-form-card-header.gems-form-card-header`) eleva a
+ * especificidade para (0,2,0) e, empatando, a ordem de origem decide — mas como
+ * empate não basta, usamos a repetição junto do escopo `html`, chegando a
+ * (0,2,1) e vencendo de forma determinística, sem recorrer a !important. */
+
+/* 1. gems-form-card */
+html .gems-form-card-header.gems-form-card-header {
+  background-color: var(--app-header-bg);
+  color: var(--app-header-fg);
+  border-bottom-color: var(--app-header-border);
+}
+
+html .gems-form-card-header .gems-form-card-title.gems-form-card-title,
+html .gems-form-card-header .gems-form-card-title i {
+  color: var(--app-header-fg);
+}
+
+html .gems-form-card-header .gems-form-card-subtitle.gems-form-card-subtitle {
+  color: var(--app-header-fg-muted);
+  /* A SDK aplica opacity:.8 aqui; sobre a primária isso lava demais o texto.
+     A cor acima já embute o esmaecimento. */
+  opacity: 1;
+}
+
+/* 2. gems-table (cabeçalho da tabela)
+ * A regra da SDK aqui é `.gems-table[_ng…] th[_ng…]` — especificidade (0,3,1).
+ * Por isso estas precisam de um nível a mais que as de card: encadeamos o
+ * container `.table-container` e repetimos `.gems-table`, chegando a (0,4,2). */
+html .table-container .gems-table.gems-table thead th {
+  background-color: var(--app-header-bg);
+  color: var(--app-header-fg);
+  border-bottom-color: var(--app-header-border);
+}
+
+/* A SDK usa um véu preto (#00000008) imperceptível sobre a primária. */
+html .table-container .gems-table.gems-table thead th.sortable:hover {
+  background-color: var(--app-header-hover);
+}
+
+/* Ícone de ordenação: ativo em off-white, inativo esmaecido.
+   Sem isto o `.text-muted` da SDK (#9ca3af) fica ilegível sobre a primária. */
+html .table-container .gems-table.gems-table thead th .sort-icon {
+  color: var(--app-header-fg);
+}
+
+html .table-container .gems-table.gems-table thead th .sort-icon.text-muted {
+  color: var(--app-header-fg-muted);
+}
+
+/* 3. gems-summary-card — família de tokens diferente das anteriores
+      (--gems-text-main/-muted), por isso precisa ser listada explicitamente. */
+html .gems-summary-card-header.gems-summary-card-header {
+  background-color: var(--app-header-bg);
+  color: var(--app-header-fg);
+}
+
+html .gems-summary-card-header.gems-summary-card-header:hover {
+  background-color: var(--app-header-hover);
+}
+
+html .gems-summary-card-header .gems-card-title.gems-card-title,
+html .gems-summary-card-header .gems-card-title i {
+  color: var(--app-header-fg);
+}
+
+html .gems-summary-card-header .gems-summary-preview.gems-summary-preview,
+html .gems-summary-card-header .gems-header-actions.gems-header-actions {
+  color: var(--app-header-fg-muted);
+}
+
+/* Chevron do card expandido — a SDK o pinta de --gems-primary-600 (a própria
+   cor do fundo), o que o tornaria invisível. */
+html
+  .gems-summary-card-container.gems-is-expanded
+  .gems-summary-card-header
+  .gems-header-actions.gems-header-actions {
+  color: var(--app-header-fg);
+}
+
+/* Ícone circular do summary-card: inverte para ler sobre a primária. */
+html .gems-summary-card-header .gems-icon-wrapper.gems-icon-wrapper {
+  background-color: color-mix(in srgb, var(--gems-bg) 18%, transparent);
+  color: var(--app-header-fg);
+}
+
+html .gems-summary-card-header.gems-summary-card-header:focus-visible {
+  outline-color: var(--app-header-fg);
+}
+
+/* Mobile (≤768px): a SDK esconde o <thead> e usa td:before[data-label] como
+ * rótulo, sobre o fundo BRANCO da linha. Esse rótulo não pode herdar o
+ * off-white, senão some. Mantemos o tom neutro da SDK. */
+@media screen and (max-width: 768px) {
+  .gems-table td:before {
+    color: var(--gems-text-muted);
+  }
+}
+
+/* ---------------------- MARCA (side-menu) ---------------------- */
+/* A SDK limita a logo colapsada a 32px de altura, o que deixa o emblema
+ * pequeno demais no header de 80px. Damos mais presença sem estourar o box. */
+html .gems-side-menu-container.collapsed .menu-header .logo-img-collapsed {
+  max-height: 44px;
+}
+
+html .gems-side-menu-container .menu-header .logo-img {
+  max-width: 80%;
+}
+
+/* Respiro lateral para a marca completa não encostar nas bordas. */
+html .menu-header {
+  padding: 0 0.875rem;
+}
+
+/* Barra superior mobile: a SDK só define `max-height` na logo. Como o SVG não
+ * tem width/height intrínsecos e `.mobile-brand` é um flex item sem base, a
+ * imagem colapsa para 0×0 e a barra fica vazia. Damos altura e base flexível. */
+html .mobile-top-bar .mobile-brand {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+}
+
+html .mobile-top-bar .logo-img-mobile {
+  height: 36px;
+  width: auto;
+  max-width: 100%;
+}
+
+/* Estrutura Global e Cores. Tokens locais sem equivalente funcional na SDK. */
+:root {
+  --meduc-page-bg: #f8f9fa;
+  --meduc-surface: #ffffff;
+  --meduc-text-body: #333333;
+  --meduc-text-strong: #111827;
+  --meduc-text-control: #1e293b;
+  --meduc-text-label: #374151;
+  --meduc-text-muted: #6b7280;
+  --meduc-text-disabled: #94a3b8;
+  --meduc-border: #d1d5db;
+  --meduc-border-subtle: #e5e7eb;
+  --meduc-border-hover: #9ca3af;
+  --meduc-focus: #6366f1;
+  --meduc-disabled-surface: #f1f5f9;
+  --meduc-shadow-control: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --meduc-shadow-focus: 0 0 0 4px rgba(99, 102, 241, 0.1), var(--meduc-shadow-control);
+  --meduc-shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --meduc-selection-hover-ring: 0 0 0 3px rgba(17, 24, 39, 0.06);
+  --meduc-selection-selected-bg: rgba(17, 24, 39, 0.03);
+}
+
+body {
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  background-color: var(--meduc-page-bg);
+  color: var(--meduc-text-body);
+}
+
+/* Global Select, Inputs */
+select,
+.form-select,
+.gems-select,
+.form-control,
+.gems-input {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-color: var(--meduc-surface);
+  border: 1px solid var(--meduc-border);
+  border-radius: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--meduc-text-control);
+  width: 100%;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--meduc-shadow-control);
+  box-sizing: border-box;
+}
+
+select:hover,
+.form-select:hover,
+.gems-select:hover,
+.form-control:hover,
+.gems-input:hover {
+  border-color: var(--meduc-border-hover);
+}
+
+select:focus,
+.form-select:focus,
+.gems-select:focus,
+.form-control:focus,
+.gems-input:focus {
+  border-color: var(--meduc-focus);
+  box-shadow: var(--meduc-shadow-focus);
+}
+
+select:disabled,
+.form-select:disabled,
+.gems-select:disabled,
+.form-control:disabled,
+.gems-input:disabled {
+  background-color: var(--meduc-disabled-surface);
+  color: var(--meduc-text-disabled);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Botoes Globais Padronizados */
+.btn-novo,
+.btn-save,
+.btn-cancel,
+.btn-danger,
+.btn-info,
+.btn-warning,
+.btn-success,
+.btn-primary,
+.btn-secondary,
+.btn-back {
+  border: 1px solid transparent;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition:
+    background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--meduc-shadow-control);
+}
+
+.btn-novo:disabled,
+.btn-save:disabled,
+.btn-cancel:disabled,
+.btn-danger:disabled,
+.btn-info:disabled,
+.btn-warning:disabled,
+.btn-success:disabled,
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(80%);
+}
+
+.btn-novo,
+.btn-save {
+  background-color: var(--gems-primary-600);
+  border-color: var(--gems-primary-600);
+  color: var(--gems-primary-contrast);
+}
+
+.btn-novo:hover:not(:disabled),
+.btn-save:hover:not(:disabled) {
+  background-color: var(--gems-primary-700);
+  border-color: var(--gems-primary-700);
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background-color: var(--gems-primary-500);
+  border-color: var(--gems-primary-500);
+  color: var(--gems-primary-contrast);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--gems-primary-600);
+  border-color: var(--gems-primary-600);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: var(--meduc-surface);
+  border-color: var(--gems-border-color);
+  color: var(--meduc-text-label);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--gems-primary-50);
+  border-color: var(--gems-primary-300);
+  color: var(--gems-primary-700);
+  transform: translateY(-1px);
+}
+
+.btn-cancel {
+  background-color: var(--meduc-surface);
+  border-color: var(--meduc-border);
+  color: var(--gems-text-muted);
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background-color: var(--gems-danger-500);
+  border-color: var(--gems-danger-500);
+  color: var(--gems-danger-contrast);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background-color: var(--gems-danger-500);
+  border-color: var(--gems-danger-500);
+  color: var(--gems-danger-contrast);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: var(--gems-danger-600);
+  border-color: var(--gems-danger-600);
+  transform: translateY(-1px);
+}
+
+.btn-success {
+  background-color: var(--gems-success-500);
+  border-color: var(--gems-success-500);
+  color: var(--gems-success-contrast);
+}
+
+.btn-success:hover:not(:disabled) {
+  background-color: var(--gems-success-600);
+  border-color: var(--gems-success-600);
+  transform: translateY(-1px);
+}
+
+.btn-info {
+  background-color: var(--gems-info-500);
+  border-color: var(--gems-info-500);
+  color: var(--gems-info-contrast);
+}
+
+.btn-info:hover:not(:disabled) {
+  background-color: var(--gems-info-600);
+  border-color: var(--gems-info-600);
+  transform: translateY(-1px);
+}
+
+.btn-warning {
+  background-color: var(--gems-warning-500);
+  border-color: var(--gems-warning-500);
+  color: var(--gems-warning-contrast);
+}
+
+.btn-warning:hover:not(:disabled) {
+  background-color: var(--gems-warning-600);
+  border-color: var(--gems-warning-600);
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-novo:hover:not(:disabled),
+  .btn-save:hover:not(:disabled),
+  .btn-primary:hover:not(:disabled),
+  .btn-secondary:hover:not(:disabled),
+  .btn-cancel:hover:not(:disabled),
+  .btn-danger:hover:not(:disabled),
+  .btn-success:hover:not(:disabled),
+  .btn-info:hover:not(:disabled),
+  .btn-warning:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* Botão icônico de retorno, usado no cabeçalho das telas de formulário.
+ * Era documentado como classe global em visual-standards.md e no CLAUDE.md, mas nunca teve
+ * regra CSS — os botões "Voltar" saíam sem estilização nenhuma. Herda a base compartilhada
+ * dos demais btn-* (declarada acima) e apenas ajusta a forma para quadrada, já que carrega
+ * só o ícone. */
+.btn-back {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  flex-shrink: 0;
+  background-color: var(--gems-bg);
+  border-color: var(--gems-bg-muted);
+  color: var(--gems-text-main);
+}
+
+.btn-back:hover:not(:disabled) {
+  background-color: var(--gems-bg-subtle);
+  border-color: var(--gems-bg-emphasis);
+  transform: translateY(-1px);
+}
+
+/* Asterisco de campo obrigatório. Também documentado como existente e também ausente até
+ * agora — nenhum label `class="required"` renderizava a marcação. */
+.required::after {
+  content: ' *';
+  color: var(--gems-danger-500);
+  font-weight: 700;
+}
+
+.fw-bold {
+  font-weight: 700;
+}
+
+/* Texto auxiliar sob um campo. Existe porque `gems-select` e `gems-input-document` não têm o
+ * input `hint` que o `gems-input-text` tem — passá-lo a eles vira atributo DOM inerte. */
+.field-hint {
+  margin: var(--gems-spacing-xs) 0 0;
+  font-size: var(--gems-font-size-xs);
+  color: var(--gems-text-muted);
+}
+
+/* Estrutura Global de Telas */
+.list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Cabeçalho de página: bloco de títulos à esquerda, ação principal empurrada para a direita
+   pelo space-between. O gap + flex-wrap servem ao header de formulário, onde o `.btn-back`
+   fica à esquerda dos títulos e o conjunto precisa quebrar bem em telas estreitas. */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.header-titles h2 {
+  margin: 0;
+  color: var(--meduc-text-strong);
+  font-size: 1.875rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.subtitle {
+  margin: 0.25rem 0 0 0;
+  color: var(--meduc-text-muted);
+  font-size: 0.875rem;
+}
+
+.content-card {
+  background-color: var(--meduc-surface);
+  border-radius: 0.75rem;
+  box-shadow: var(--meduc-shadow-card);
+  border: 1px solid var(--meduc-border-subtle);
+  overflow: hidden;
+  margin-top: 2rem;
+}
+
+/* Inputs e Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.75rem 2rem;
+  align-items: start;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+label,
+.gems-label,
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--meduc-text-label);
+}
+
+/* `.form-group` empilha rótulo e campo. Era redeclarado em 14 CSS de componente porque o
+   styles.css só definia `.form-group label`; a caixa foi trazida para cá, apagando as
+   cópias. */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estado de carregamento de tela inteira. Um nome só: o mesmo bloco já existiu como
+   `.form-loading` (4 telas), `.loading` (5) e `.carregando` (2). */
+.form-loading {
+  align-items: center;
+  color: var(--gems-text-muted);
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+/* Classes para os Steps do Wizard (Meduc Style) */
+.selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.selection-card {
+  position: relative;
+  border: 2px solid var(--meduc-border-subtle);
+  border-radius: 10px;
+  padding: 20px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--meduc-surface);
+  text-align: center;
+}
+
+.selection-card:hover:not(.readonly) {
+  border-color: var(--meduc-text-strong);
+  box-shadow: var(--meduc-selection-hover-ring);
+  transform: translateY(-2px);
+}
+
+.selection-card.selected {
+  border-color: var(--meduc-text-strong);
+  background: var(--meduc-selection-selected-bg);
+}
+
+.selection-card.readonly {
+  cursor: default;
+}
+
+.selection-icon {
+  font-size: 1.8rem;
+  color: var(--meduc-text-strong);
+  opacity: 0.7;
+}
+
+.selection-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--meduc-text-control);
+  line-height: 1.3;
+}
+
+.selection-sublabel {
+  font-size: 0.78rem;
+  color: var(--meduc-text-muted);
+}
+
+.step-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px;
+  color: var(--meduc-text-disabled);
+  text-align: center;
+}
+
+.step-empty i {
+  font-size: 2.5rem;
+}

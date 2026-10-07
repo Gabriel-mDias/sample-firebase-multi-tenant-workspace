@@ -1,0 +1,24 @@
+# Metadados e worktrees de ferramentas
+.git/
+.kilo/
+
+# Dependências e artefatos derivados
+**/node_modules/
+**/target/
+**/dist/
+**/.angular/
+**/coverage/
+**/surefire-reports/
+**/*.class
+**/*.jar
+**/*.log
+
+# Binários de documentação de negócio; Markdown continua pesquisável
+business/**/*.png
+
+# Segredos e credenciais locais
+.env
+.env.*
+**/.env
+backend/.m2/settings.xml
+frontend/.npmrc

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <!--
+        Schema `auditoria`: a trilha de alterações. Terceiro schema do projeto, ao lado de
+        `public` (domínio) e `security`.
+
+        Entra ANTES dos changelogs de negócio porque o mecanismo de auditoria precisa existir
+        quando as tabelas de negócio nascerem — inclusive as que um projeto derivado acrescentar.
+
+        REGISTRO_AUDITORIA e CAMPO_ALTERADO NÃO estendem EntidadeAuditavel e NÃO levam
+        @SQLDelete / @SQLRestriction: o MUST de soft delete do Princípio II é escopado a entidades
+        DE NEGÓCIO, e um registro de trilha não é uma. Auditar a auditoria seria recursão sem fim,
+        e a trilha não é editável nem excluível por caminho nenhum da aplicação.
+    -->
+
+    <changeSet id="create-schema-auditoria" author="app">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sqlCheck expectedResult="1">
+                    SELECT COUNT(*) FROM information_schema.schemata WHERE schema_name = 'auditoria'
+                </sqlCheck>
+            </not>
+        </preConditions>
+        <comment>Cria o schema dedicado à trilha de auditoria.</comment>
+        <sql>
+            CREATE SCHEMA IF NOT EXISTS auditoria;
+        </sql>
+    </changeSet>
+
+    <changeSet id="create-table-registro-auditoria" author="app">
+        <comment>
+            Uma linha por operação (INSERCAO/ALTERACAO/EXCLUSAO) sobre uma entidade de negócio.
+
+            ID_REGISTRO_AFETADO NÃO é FK: precisa sobreviver à exclusão do alvo e aponta para
+            tabelas diferentes, conforme NM_ENTIDADE.
+
+            ID_AUTOR NÃO é FK: a trilha precisa continuar legível se o usuário for removido — por
+            isso NM_AUTOR é desnormalizado (o login, ou "sistema"), com origem no método novo
+            loginDoUsuarioAutenticado(). ID_AUTOR nulo é a operação feita pelo próprio sistema.
+        </comment>
+        <createTable schemaName="auditoria" tableName="REGISTRO_AUDITORIA">
+            <column name="ID_REGISTRO_AUDITORIA" type="UUID" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="NM_ENTIDADE" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_REGISTRO_AFETADO" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CD_OPERACAO" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DT_OPERACAO" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_AUTOR" type="UUID"/>
+            <column name="NM_AUTOR" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CD_CORRELACAO" type="VARCHAR(64)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-index-registro-auditoria-entidade" author="app">
+        <comment>
+            É literalmente a consulta de GET /api/auditoria/{entidade}/{id} e o filtro
+            mais comum de POST /api/auditoria/search: sem este índice, a tela do histórico varre a
+            tabela inteira.
+
+            Índice via SQL nativo, e não &lt;createIndex&gt;: o atributo "descending" no &lt;column&gt;
+            de &lt;createIndex&gt; não é aceito pelo XSD 3.1 que este changelog declara
+            (cvc-complex-type.3.2.2), e DT_OPERACAO DESC é o que essa consulta precisa.
+        </comment>
+        <sql>
+            CREATE INDEX IDX_REGISTRO_AUDITORIA_ENTIDADE ON auditoria.REGISTRO_AUDITORIA
+                (NM_ENTIDADE, ID_REGISTRO_AFETADO, DT_OPERACAO DESC);
+        </sql>
+    </changeSet>
+
+    <changeSet id="create-table-campo-alterado" author="app">
+        <comment>
+            Uma linha por campo que mudou, apenas para CD_OPERACAO = ALTERACAO. FL_SIGILOSO
+            governa o campo marcado com @CampoSigiloso: quando verdadeiro, DS_VALOR_ANTERIOR e
+            DS_VALOR_NOVO são gravados NULOS — nem cifrados, porque chave existe, chave vaza.
+        </comment>
+        <createTable schemaName="auditoria" tableName="CAMPO_ALTERADO">
+            <column name="ID_CAMPO_ALTERADO" type="UUID" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ID_REGISTRO_AUDITORIA" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NM_CAMPO" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DS_VALOR_ANTERIOR" type="TEXT"/>
+            <column name="DS_VALOR_NOVO" type="TEXT"/>
+            <column name="FL_SIGILOSO" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="add-fk-campo-alterado-registro-auditoria" author="app">
+        <comment>
+            FK dentro do próprio schema `auditoria`, das duas tabelas novas entre si. Declarada com
+            addForeignKeyConstraint e os dois schemaName explícitos, e não pela forma inline dentro
+            de createTable: a forma inline (usada em changelog-parceiro.xml, onde as tabelas estão
+            no schema padrão) não é portável quando a tabela vive fora dele, e aqui NENHUMA das
+            duas tabelas está.
+        </comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="auditoria"
+                baseTableName="CAMPO_ALTERADO"
+                baseColumnNames="ID_REGISTRO_AUDITORIA"
+                constraintName="FK_CAMPO_ALTERADO_REGISTRO_AUDITORIA"
+                referencedTableSchemaName="auditoria"
+                referencedTableName="REGISTRO_AUDITORIA"
+                referencedColumnNames="ID_REGISTRO_AUDITORIA"/>
+    </changeSet>
+
+    <changeSet id="create-index-campo-alterado-registro" author="app">
+        <comment>
+            Índice de apoio para a FK acima: toda consulta do histórico navega
+            RegistroAuditoria → camposAlterados por este lado, via o @NamedEntityGraph que mora em
+            RegistroAuditoria.
+        </comment>
+        <createIndex schemaName="auditoria" indexName="IDX_CAMPO_ALTERADO_REGISTRO" tableName="CAMPO_ALTERADO">
+            <column name="ID_REGISTRO_AUDITORIA"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="migrate-auditoria-to-gems-sdk" author="app">
+        <comment>
+            Migra a trilha existente para o contrato do gems-auditing. O backfill de códigos e tipo
+            de ator acontece antes das constraints; nenhuma linha histórica é descartada.
+        </comment>
+        <sql splitStatements="false"><![CDATA[
+            ALTER TABLE auditoria.CAMPO_ALTERADO
+                DROP CONSTRAINT FK_CAMPO_ALTERADO_REGISTRO_AUDITORIA;
+
+            ALTER TABLE auditoria.REGISTRO_AUDITORIA RENAME TO AUDIT_OPERATION;
+            ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN ID_REGISTRO_AUDITORIA TO ID_AUDIT_OPERATION;
+            ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN NM_ENTIDADE TO NM_ENTITY;
+            ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN ID_REGISTRO_AFETADO TO DS_ENTITY_ID;
+            ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN CD_OPERACAO TO CD_OPERATION;
+            ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN DT_OPERACAO TO DT_OPERATION;
+            ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN ID_AUTOR TO ID_ACTOR;
+            ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN NM_AUTOR TO NM_ACTOR;
+            ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN CD_CORRELACAO TO CD_CORRELATION;
+            ALTER TABLE auditoria.AUDIT_OPERATION
+                ALTER COLUMN DS_ENTITY_ID TYPE VARCHAR(255) USING DS_ENTITY_ID::text;
+            ALTER TABLE auditoria.AUDIT_OPERATION
+                ALTER COLUMN ID_ACTOR TYPE VARCHAR(200) USING ID_ACTOR::text;
+            ALTER TABLE auditoria.AUDIT_OPERATION
+                ALTER COLUMN CD_CORRELATION TYPE VARCHAR(200);
+            UPDATE auditoria.AUDIT_OPERATION SET CD_OPERATION = CASE CD_OPERATION
+                WHEN 'INSERCAO' THEN 'INSERT'
+                WHEN 'ALTERACAO' THEN 'UPDATE'
+                WHEN 'EXCLUSAO' THEN 'DELETE'
+                ELSE CD_OPERATION END;
+            ALTER TABLE auditoria.AUDIT_OPERATION ADD COLUMN CD_ACTOR_TYPE VARCHAR(20);
+            UPDATE auditoria.AUDIT_OPERATION SET CD_ACTOR_TYPE = CASE
+                WHEN ID_ACTOR IS NULL THEN 'TECNICO' ELSE 'USUARIO' END;
+            ALTER TABLE auditoria.AUDIT_OPERATION ALTER COLUMN CD_ACTOR_TYPE SET NOT NULL;
+
+            ALTER TABLE auditoria.CAMPO_ALTERADO RENAME TO AUDIT_CHANGE;
+            ALTER TABLE auditoria.AUDIT_CHANGE RENAME COLUMN ID_CAMPO_ALTERADO TO ID_AUDIT_CHANGE;
+            ALTER TABLE auditoria.AUDIT_CHANGE RENAME COLUMN ID_REGISTRO_AUDITORIA TO ID_AUDIT_OPERATION;
+            ALTER TABLE auditoria.AUDIT_CHANGE RENAME COLUMN NM_CAMPO TO NM_FIELD;
+            ALTER TABLE auditoria.AUDIT_CHANGE RENAME COLUMN DS_VALOR_ANTERIOR TO DS_OLD_VALUE;
+            ALTER TABLE auditoria.AUDIT_CHANGE RENAME COLUMN DS_VALOR_NOVO TO DS_NEW_VALUE;
+            ALTER TABLE auditoria.AUDIT_CHANGE ADD CONSTRAINT FK_AUDIT_CHANGE_OPERATION
+                FOREIGN KEY (ID_AUDIT_OPERATION)
+                REFERENCES auditoria.AUDIT_OPERATION (ID_AUDIT_OPERATION);
+
+            ALTER INDEX auditoria.IDX_REGISTRO_AUDITORIA_ENTIDADE RENAME TO IDX_AUDIT_OPERATION_ENTITY;
+            ALTER INDEX auditoria.IDX_CAMPO_ALTERADO_REGISTRO RENAME TO IDX_AUDIT_CHANGE_OPERATION;
+        ]]></sql>
+        <rollback>
+            <sql splitStatements="false"><![CDATA[
+                ALTER TABLE auditoria.AUDIT_CHANGE DROP CONSTRAINT FK_AUDIT_CHANGE_OPERATION;
+                ALTER INDEX auditoria.IDX_AUDIT_OPERATION_ENTITY RENAME TO IDX_REGISTRO_AUDITORIA_ENTIDADE;
+                ALTER INDEX auditoria.IDX_AUDIT_CHANGE_OPERATION RENAME TO IDX_CAMPO_ALTERADO_REGISTRO;
+
+                ALTER TABLE auditoria.AUDIT_CHANGE RENAME COLUMN DS_NEW_VALUE TO DS_VALOR_NOVO;
+                ALTER TABLE auditoria.AUDIT_CHANGE RENAME COLUMN DS_OLD_VALUE TO DS_VALOR_ANTERIOR;
+                ALTER TABLE auditoria.AUDIT_CHANGE RENAME COLUMN NM_FIELD TO NM_CAMPO;
+                ALTER TABLE auditoria.AUDIT_CHANGE RENAME COLUMN ID_AUDIT_OPERATION TO ID_REGISTRO_AUDITORIA;
+                ALTER TABLE auditoria.AUDIT_CHANGE RENAME COLUMN ID_AUDIT_CHANGE TO ID_CAMPO_ALTERADO;
+                ALTER TABLE auditoria.AUDIT_CHANGE RENAME TO CAMPO_ALTERADO;
+
+                ALTER TABLE auditoria.AUDIT_OPERATION DROP COLUMN CD_ACTOR_TYPE;
+                UPDATE auditoria.AUDIT_OPERATION SET CD_OPERATION = CASE CD_OPERATION
+                    WHEN 'INSERT' THEN 'INSERCAO'
+                    WHEN 'UPDATE' THEN 'ALTERACAO'
+                    WHEN 'DELETE' THEN 'EXCLUSAO'
+                    ELSE CD_OPERATION END;
+                ALTER TABLE auditoria.AUDIT_OPERATION
+                    ALTER COLUMN ID_ACTOR TYPE UUID USING NULLIF(ID_ACTOR, '')::uuid;
+                ALTER TABLE auditoria.AUDIT_OPERATION
+                    ALTER COLUMN DS_ENTITY_ID TYPE UUID USING DS_ENTITY_ID::uuid;
+                ALTER TABLE auditoria.AUDIT_OPERATION
+                    ALTER COLUMN CD_CORRELATION TYPE VARCHAR(64);
+                ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN CD_CORRELATION TO CD_CORRELACAO;
+                ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN NM_ACTOR TO NM_AUTOR;
+                ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN ID_ACTOR TO ID_AUTOR;
+                ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN CD_OPERATION TO CD_OPERACAO;
+                ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN DT_OPERATION TO DT_OPERACAO;
+                ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN DS_ENTITY_ID TO ID_REGISTRO_AFETADO;
+                ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN NM_ENTITY TO NM_ENTIDADE;
+                ALTER TABLE auditoria.AUDIT_OPERATION RENAME COLUMN ID_AUDIT_OPERATION TO ID_REGISTRO_AUDITORIA;
+                ALTER TABLE auditoria.AUDIT_OPERATION RENAME TO REGISTRO_AUDITORIA;
+                ALTER TABLE auditoria.CAMPO_ALTERADO ADD CONSTRAINT FK_CAMPO_ALTERADO_REGISTRO_AUDITORIA
+                    FOREIGN KEY (ID_REGISTRO_AUDITORIA)
+                    REFERENCES auditoria.REGISTRO_AUDITORIA (ID_REGISTRO_AUDITORIA);
+            ]]></sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

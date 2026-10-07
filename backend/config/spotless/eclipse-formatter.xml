@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Perfil do formatador do Eclipse JDT usado pelo Spotless (rodada 008, R-01).
+
+  DE ONDE ESTE ARQUIVO VEIO, E DE ONDE ELE NÃO VEIO. Ele foi escrito a partir dos exemplos das
+  próprias regras — `.gems-ai/rules/backend-java/repositories.md` §8 e os blocos de código da §2 —
+  e NUNCA a partir do código atual do projeto. Gerar um perfil a partir do que está escrito hoje
+  congelaria o desvio como se fosse o padrão, que é precisamente a inversão de autoridade que esta
+  rodada existe para desfazer (R-01, armadilha 2).
+
+  AS DUAS CHAVES QUE NÃO PODEM SAIR DAQUI:
+
+  1. `join_wrapped_lines=false`. Ela preserva a quebra de linha que o autor escreveu dentro de uma
+     expressão — encadeamento de `append`, argumento longo, condição composta — em vez de recolher
+     tudo o que couber em 120 colunas. T004 mediu o efeito dela em 2026-09-11 e registrou uma
+     correção ao R-01 em `medicao-n01.md` §4: `append` consecutivos são STATEMENTS independentes e
+     nenhum formatador os funde, então a armadilha 1 do research não se reproduzia como escrita —
+     o que a chave protege de verdade é o encadeamento `.append( ... ).append( ... )` quebrado à mão.
+
+  2. Os pares `insert_space_after_opening_paren` / `insert_space_before_closing_paren` em
+     invocação, declaração e estruturas de controle. É o espaço interno de
+     `hql.append( " ... " )` e `if ( ObjectUtil.isNotNullAndNotEmpty( ... ) )`
+     (`repositories.md:196` e §2.4), e é a razão de o formatador ser o do Eclipse: nem o
+     google-java-format nem o palantir expõem estas chaves.
+
+  Parênteses vazios continuam colados (`build()`, não `build( )`): o espaço interno separa
+  argumentos das bordas, e sem argumento não há o que separar.
+-->
+<profiles version="23">
+	<profile kind="CodeFormatterProfile" name="GEMS" version="23">
+
+		<!-- Indentação e largura: 4 espaços, 120 colunas. -->
+		<setting id="org.eclipse.jdt.core.formatter.tabulation.char" value="space"/>
+		<setting id="org.eclipse.jdt.core.formatter.tabulation.size" value="4"/>
+		<setting id="org.eclipse.jdt.core.formatter.indentation.size" value="4"/>
+		<setting id="org.eclipse.jdt.core.formatter.continuation_indentation" value="2"/>
+		<setting id="org.eclipse.jdt.core.formatter.continuation_indentation_for_array_initializer" value="2"/>
+		<setting id="org.eclipse.jdt.core.formatter.lineSplit" value="120"/>
+		<setting id="org.eclipse.jdt.core.formatter.comment.line_length" value="120"/>
+		<setting id="org.eclipse.jdt.core.formatter.use_tabs_only_for_leading_indentations" value="false"/>
+
+		<!-- (1) A chave que preserva a quebra escrita à mão. -->
+		<setting id="org.eclipse.jdt.core.formatter.join_wrapped_lines" value="false"/>
+		<setting id="org.eclipse.jdt.core.formatter.join_lines_in_comments" value="false"/>
+		<setting id="org.eclipse.jdt.core.formatter.never_indent_line_comments_on_first_column" value="true"/>
+		<setting id="org.eclipse.jdt.core.formatter.never_indent_block_comments_on_first_column" value="true"/>
+
+		<!-- (2) Espaço interno em parênteses — invocação de método e alocação. -->
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_method_invocation" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_method_invocation" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_between_empty_parens_in_method_invocation" value="do not insert"/>
+
+		<!-- Espaço interno em parênteses — declaração de método e de construtor. -->
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_method_declaration" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_method_declaration" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_between_empty_parens_in_method_declaration" value="do not insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_constructor_declaration" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_constructor_declaration" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_between_empty_parens_in_constructor_declaration" value="do not insert"/>
+
+		<!-- Espaço interno em parênteses — estruturas de controle. É o `if ( ObjectUtil... )` da §2.4. -->
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_if" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_if" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_for" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_for" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_while" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_while" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_switch" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_switch" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_catch" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_catch" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_try" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_try" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_synchronized" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_synchronized" value="insert"/>
+
+		<!-- Cast, expressão entre parênteses e ANOTAÇÃO ficam colados: `(UUID) id`, `(a + b) * c`,
+		     `@Column(name = "...")`. A prova SC-011 da rodada 008 mediu que os exemplos das regras escreviam
+		     `@Column( name = "..." )` e foram eles que mudaram (controllers.md §5), não estas chaves: o projeto
+		     inteiro já estava formatado assim desde o T063. -->
+
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_cast" value="do not insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_cast" value="do not insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_parenthesized_expression" value="do not insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_parenthesized_expression" value="do not insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_annotation" value="do not insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_annotation" value="do not insert"/>
+
+		<!-- Vírgulas, chaves e operadores: o resto do estilo, sem surpresa. -->
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_comma_in_method_invocation_arguments" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_comma_in_method_invocation_arguments" value="do not insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_after_comma_in_method_declaration_parameters" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_comma_in_method_declaration_parameters" value="do not insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.brace_position_for_type_declaration" value="end_of_line"/>
+		<setting id="org.eclipse.jdt.core.formatter.brace_position_for_method_declaration" value="end_of_line"/>
+		<setting id="org.eclipse.jdt.core.formatter.brace_position_for_constructor_declaration" value="end_of_line"/>
+		<setting id="org.eclipse.jdt.core.formatter.brace_position_for_block" value="end_of_line"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_type_declaration" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_method_declaration" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_method_invocation" value="do not insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_method_declaration" value="do not insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_if" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_for" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_while" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_switch" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_catch" value="insert"/>
+		<setting id="org.eclipse.jdt.core.formatter.keep_simple_if_on_one_line" value="false"/>
+		<setting id="org.eclipse.jdt.core.formatter.keep_then_statement_on_same_line" value="false"/>
+		<setting id="org.eclipse.jdt.core.formatter.blank_lines_before_package" value="0"/>
+		<setting id="org.eclipse.jdt.core.formatter.blank_lines_after_package" value="1"/>
+		<setting id="org.eclipse.jdt.core.formatter.number_of_empty_lines_to_preserve" value="1"/>
+		<setting id="org.eclipse.jdt.core.formatter.insert_new_line_at_end_of_file_if_missing" value="insert"/>
+
+		<!-- Marcadores de desligamento: é por eles que a exceção escrita de N-06 suspende o
+		     formatador num trecho, em vez de alguém desligar o Spotless inteiro. -->
+		<setting id="org.eclipse.jdt.core.formatter.use_on_off_tags" value="true"/>
+		<setting id="org.eclipse.jdt.core.formatter.disabling_tag" value="@formatter:off"/>
+		<setting id="org.eclipse.jdt.core.formatter.enabling_tag" value="@formatter:on"/>
+	</profile>
+</profiles>

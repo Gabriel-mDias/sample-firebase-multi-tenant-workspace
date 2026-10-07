@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <!--
+        Domínio normalizacao: CONTATO e ENDERECO são dados auditáveis com soft delete
+        (estendem EntidadeAuditavel), reutilizados por outros domínios como PARCEIRO.
+        ENDERECO depende de ESTADO (changelog-localidades.xml), por isso este arquivo é
+        incluído depois dele no changelog-master.xml.
+    -->
+
+    <changeSet id="create-table-contato" author="app">
+        <comment>
+            Dados de contato (e-mail/telefone) normalizados. Contato.java estende
+            EntidadeAuditavel: DT_CRIACAO obrigatória, DT_EXCLUSAO opcional (soft delete via
+            @SQLDelete/@SQLRestriction).
+        </comment>
+        <createTable tableName="CONTATO">
+            <column name="ID_CONTATO" type="UUID" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="CD_EMAIL" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NR_TELEFONE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DT_CRIACAO" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DT_EXCLUSAO" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-table-endereco" author="app">
+        <comment>
+            Endereço normalizado, vinculado a um ESTADO de referência. Endereco.java também
+            estende EntidadeAuditavel. O número do logradouro (renomeado para NR_NUMERO em
+            changelog-padronizacao.xml) e DS_COMPLEMENTO são opcionais, conforme
+            ausência de nullable=false no @Column.
+        </comment>
+        <createTable tableName="ENDERECO">
+            <column name="ID_ENDERECO" type="UUID" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ID_ESTADO" type="UUID">
+                <constraints nullable="false" foreignKeyName="FK_ENDERECO_ESTADO" references="ESTADO(ID_ESTADO)"/>
+            </column>
+            <column name="CD_CEP" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DS_CIDADE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DS_BAIRRO" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DS_LOGRADOURO" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NR_NUMERO" type="VARCHAR(255)"/>
+            <column name="DS_COMPLEMENTO" type="VARCHAR(255)"/>
+            <column name="DT_CRIACAO" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DT_EXCLUSAO" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-index-endereco-estado" author="app">
+        <comment>Índice de apoio para filtrar/juntar endereços por estado.</comment>
+        <createIndex indexName="IDX_ENDERECO_ESTADO" tableName="ENDERECO">
+            <column name="ID_ESTADO"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="create-table-pessoa" author="app">
+        <comment>
+            Identidade civil normalizada. Pessoa.java estende EntidadeAuditavel, como CONTATO e
+            ENDERECO. É reaproveitada por todo domínio que precise de identidade civil, e por isso
+            nasce aqui em vez de dentro de um domínio específico.
+
+            CD_CPF NÃO recebe constraint UNIQUE: a regra é "único entre os registros ativos", e
+            soft delete não compõe com UNIQUE de banco sem índice parcial. A checagem vive no
+            PessoaService — mesma decisão já tomada para NM_PARCEIRO.
+
+            DT_NASCIMENTO e CD_CPF são NULÁVEIS: nem todo domínio que grava uma Pessoa tem os dois
+            em mãos no momento do cadastro, e a obrigatoriedade real é decidida pelo service, que
+            sabe de qual cadastro veio a chamada. Uma constraint aqui obrigaria todos.
+        </comment>
+        <createTable tableName="PESSOA">
+            <column name="ID_PESSOA" type="UUID" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="NM_PRIMEIRO_NOME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NM_SOBRENOME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DT_NASCIMENTO" type="DATE"/>
+            <column name="CD_CPF" type="VARCHAR(11)"/>
+            <column name="CD_RG" type="VARCHAR(20)"/>
+            <column name="CD_SEXO" type="VARCHAR(20)"/>
+            <column name="DT_OBITO" type="DATE"/>
+            <!-- Marca que a data de nascimento é aproximada. NOT NULL com DEFAULT: a coluna nunca
+                 fica indefinida, e o `false` do builder da entidade bate com o do banco. -->
+            <column name="FL_DATA_APROXIMADA" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DT_CRIACAO" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DT_EXCLUSAO" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-index-pessoa-cpf" author="app">
+        <comment>
+            Índice de apoio para a busca por CPF da primeira etapa do cadastro.
+            Deliberadamente NÃO único — ver o comentário de create-table-pessoa.
+        </comment>
+        <createIndex indexName="IDX_PESSOA_CPF" tableName="PESSOA">
+            <column name="CD_CPF"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

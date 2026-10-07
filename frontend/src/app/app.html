@@ -1,0 +1,22 @@
+@if (showShell()) {
+  <div class="app-shell" [class.menu-collapsed]="menuCollapsed()">
+    <!-- Sem logo: o molde não carrega marca de terceiro. Ao adotar uma, use `logoFull` para o
+       menu expandido e `logoCollapsed` só para o emblema — uma marca ~3:1 fica ilegível nos
+       80px do menu colapsado. `appName` segue como fallback textual. -->
+    <gems-side-menu
+      [config]="menuConfig()"
+      [appName]="appName"
+      logoutLabel="Sair"
+      logoutTitle="Encerrar sessão"
+      [userName]="auth.username()"
+      [userEmail]="auth.email()"
+      [userInitials]="auth.initials()"
+      (logoutClick)="onLogout()"
+      (collapsedChange)="onMenuCollapsedChange($event)"
+    />
+    <main class="app-content"><router-outlet /></main>
+    <app-footer />
+  </div>
+} @else {
+  <router-outlet />
+}

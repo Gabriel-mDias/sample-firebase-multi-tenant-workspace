@@ -1,0 +1,29 @@
+<div [formGroup]="form()" class="form-grid">
+  <div class="form-group">
+    <label class="required fw-bold">E-mail</label>
+    <gems-input-text
+      formControlName="email"
+      type="email"
+      [placeholder]="placeholderEmail()"
+      icon="fa-solid fa-envelope"
+      [maxlength]="255"
+    ></gems-input-text>
+    <gems-field-error [control]="form().get('email')" [messages]="erroEmail"></gems-field-error>
+  </div>
+
+  <div class="form-group">
+    <label class="required fw-bold">Telefone</label>
+    <gems-input-text
+      formControlName="telefone"
+      type="tel"
+      [placeholder]="placeholderTelefone()"
+      icon="fa-solid fa-phone"
+      [hint]="hintTelefone()"
+      [maxlength]="255"
+    ></gems-input-text>
+    <gems-field-error
+      [control]="form().get('telefone')"
+      [messages]="erroTelefone"
+    ></gems-field-error>
+  </div>
+</div>

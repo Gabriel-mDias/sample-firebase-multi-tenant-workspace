@@ -1,0 +1,26 @@
+# Normalização de fim de linha.
+#
+# O ambiente de desenvolvimento roda com `core.autocrlf=true`, o que faria o Git
+# entregar CRLF no working tree. Isso quebra dois tipos de arquivo de forma
+# silenciosa e difícil de diagnosticar:
+#
+#  - `.properties` — o leitor de Properties do Java trata o `\r` final como parte
+#    do VALOR. `parent=base\r` faz o Keycloak procurar um tema chamado literalmente
+#    "base\r", não encontra o pai, e a tela de login renderiza sem estilo algum,
+#    sem nenhum erro que aponte para o fim de linha.
+#  - `.sh` — `#!/usr/bin/env bash\r` resulta em `bad interpreter: ...^M`.
+#
+# Forçar LF nesses arquivos elimina as duas classes de problema.
+
+* text=auto eol=lf
+
+*.ftl        text eol=lf
+*.properties text eol=lf
+*.css        text eol=lf
+*.svg        text eol=lf
+*.sh         text eol=lf
+
+*.woff2 binary
+*.ico   binary
+*.png   binary
+*.webp  binary

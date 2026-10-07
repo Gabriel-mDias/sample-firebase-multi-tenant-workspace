@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>br.com.gems</groupId>
+        <artifactId>app</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>app-deploy</artifactId>
+    <name>App :: Deploy</name>
+    <description>Artefato executável: AppApplication, application.yml, changelogs Liquibase e empacotamento do fat jar.</description>
+
+    <!-- gems-aws, gems-aws-web e gems-observability são só autoconfiguração (nenhum código as
+         importa) e por isso vivem aqui; quando uma feature do core usar o cliente S3, gems-aws
+         migra para o core. O S3Controller publicado pelo gems-aws-web é negado por regra de
+         caminho no SecurityConfig — a classe está num jar e não pode receber @PreAuthorize. -->
+    <dependencies>
+        <dependency>
+            <groupId>br.com.gems</groupId>
+            <artifactId>app-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-liquibase</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>br.com.gems</groupId>
+            <artifactId>gems-observability</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>br.com.gems</groupId>
+            <artifactId>gems-aws</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>br.com.gems</groupId>
+            <artifactId>gems-aws-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- @AutoConfigureMockMvc e @WebMvcTest MUDARAM DE MODULO no Spring Boot 4: não estão mais
+             no spring-boot-test-autoconfigure, que hoje só carrega as slices de jdbc e json. O
+             pacote passou a ser org.springframework.boot.webmvc.test.autoconfigure, entregue por
+             este starter. Sem ele o import não compila, e o sintoma engana (parece jar corrompido). -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Testcontainers. Versão gerenciada pelo spring-boot-dependencies: NÃO declare <version>
+             nem sobrescreva a propriedade testcontainers.version, sob risco de rebaixar a major
+             que o Boot 4.1 alinha.
+
+             Só o app-deploy os declara. Os testes unitários do app-core são Mockito puro e não
+             tocam banco; configuração de ambiente não desce para módulo de biblioteca. -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    <dependency><groupId>com.tngtech.archunit</groupId><artifactId>archunit-junit5</artifactId><version>1.5.0</version><scope>test</scope></dependency>
+<dependency><groupId>com.github.javaparser</groupId><artifactId>javaparser-core</artifactId><version>3.28.2</version><scope>test</scope></dependency>
+<dependency><groupId>org.mapstruct</groupId><artifactId>mapstruct</artifactId><version>1.6.3</version><scope>test</scope></dependency>
+</dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!-- id="repackage" casa com a execution já gerenciada em spring-boot-starter-parent;
+                     manter o mesmo id evita rodar o goal repackage duas vezes. -->
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

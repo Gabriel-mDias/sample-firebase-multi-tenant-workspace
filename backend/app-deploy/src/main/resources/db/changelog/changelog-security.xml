@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <!--
+        Schema `security`: entidades de segurança persistidas, separadas do domínio de negócio
+        conforme o Princípio II da constituição. Este é o primeiro uso dele no projeto.
+
+        ATENÇÃO a três pontos:
+
+        1. O schema é criado em minúsculas e SEM aspas. Identificadores não-quotados são dobrados
+           para minúsculas pelo Postgres nos dois lados, então `@Table(schema = "security")` resolve
+           para o mesmo objeto — a mesma simetria que `@Table(name = "PARCEIRO")` já tem com a
+           tabela física `PARCEIRO`.
+
+        2. NÃO configure `spring.liquibase.default-schema`. Isso moveria DATABASECHANGELOG para
+           `security` e invalidaria todo o histórico já aplicado.
+
+        3. O `hibernate.default_schema: public` do application.yml continua valendo para todas as
+           demais entidades: ele só se aplica a mapeamentos que não declaram schema explicitamente.
+
+        Este arquivo precisa vir ANTES dos changelogs de negócio no master, porque entidades com
+        autoria têm chave estrangeira para security.USUARIO.
+    -->
+
+    <changeSet id="create-schema-security" author="app">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sqlCheck expectedResult="1">
+                    SELECT COUNT(*) FROM information_schema.schemata WHERE schema_name = 'security'
+                </sqlCheck>
+            </not>
+        </preConditions>
+        <comment>Cria o schema dedicado a entidades de segurança.</comment>
+        <sql>
+            CREATE SCHEMA IF NOT EXISTS security;
+        </sql>
+    </changeSet>
+
+    <changeSet id="create-table-usuario" author="app">
+        <comment>
+            Credencial de acesso de um usuário. A SENHA NÃO É COLUNA DESTA
+            TABELA: ela trafega do formulário até o Keycloak e não é persistida aqui.
+
+            CD_KEYCLOAK_ID é NOT NULL porque o identificador do Keycloak é obtido ANTES de a linha
+            ser gravada — o serviço publica o evento, o listener cria a conta e devolve o `sub`, e só
+            então o INSERT acontece. Se a criação no Keycloak falhar, a transação inteira cai e
+            nenhuma linha órfã fica para trás.
+
+            FL_ATIVO — e não DT_EXCLUSAO — governa a semântica ativo/inativo: encerrar o acesso de
+            um usuário o DESATIVA, nunca o exclui.
+
+            NM_LOGIN não recebe UNIQUE pelo mesmo motivo de CD_CPF em PESSOA.
+        </comment>
+        <createTable schemaName="security" tableName="USUARIO">
+            <column name="ID_USUARIO" type="UUID" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="NM_LOGIN" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CD_KEYCLOAK_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FL_ATIVO" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DT_CRIACAO" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DT_EXCLUSAO" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-index-usuario-login" author="app">
+        <comment>Índice de apoio para a checagem de login único entre os usuários ativos.</comment>
+        <createIndex schemaName="security" indexName="IDX_USUARIO_LOGIN" tableName="USUARIO">
+            <column name="NM_LOGIN"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,4 @@
+﻿name: spec-driven
+display_name: "Spec-Driven"
+short_description: "Conduz features pelo ciclo spec-kit"
+default_prompt: "Use $spec-driven para conduzir esta funcionalidade pelo ciclo spec-driven do projeto."

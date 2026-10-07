@@ -1,0 +1,796 @@
+# Pacote de Execução — Rodada 002, lote S-plan
+Admissão: contrato sim; caminhos sim; escrita disjunta sim; gate documental sim; economia mecânica não.
+Decisão: sem delegação para Terra; Sol conduz planejamento por decisão 8 da 010.
+Retomar sessão T058 reduz onboarding. O volume de análise pertence ao condutor Sol; pacote/revisão são custo obrigatório da prova.
+Contrato: D:/repos/Meduc/meduc-workspace/.agents/skills/model-delegation/references/package-contract.md.
+Não comite. Crie estado-lote-S-plan.md antes de editar, usando o template.
+## 1. Fronteira fechada do lote
+Concluir somente fase 2 da 002; nenhuma implementação; nenhum portão assinado.
+### READ
+- `.agents/skills/rodada-sdd/agents/openai.yaml`
+- `.agents/skills/rodada-sdd/SKILL.md`
+- `.agents/skills/spec-driven/agents/openai.yaml`
+- `.agents/skills/spec-driven/SKILL.md`
+- `.claude/skills/rodada-sdd/references/checklist-de-fechamento.md`
+- `.claude/skills/rodada-sdd/references/fase-1-start.md`
+- `.claude/skills/rodada-sdd/references/fase-2-plan.md`
+- `.claude/skills/rodada-sdd/references/fase-3-sdd.md`
+- `.claude/skills/rodada-sdd/references/fase-4-homologacao.md`
+- `.claude/skills/rodada-sdd/references/fase-5-historico.md`
+- `.claude/skills/rodada-sdd/SKILL.md`
+- `.claude/skills/speckit-analyze/SKILL.md`
+- `.claude/skills/speckit-checklist/SKILL.md`
+- `.claude/skills/speckit-clarify/SKILL.md`
+- `.claude/skills/speckit-plan/SKILL.md`
+- `.claude/skills/speckit-specify/SKILL.md`
+- `.claude/skills/speckit-tasks/SKILL.md`
+- `.gems-ai/.version`
+- `.gems-ai/conformance-baseline.json`
+- `.gems-ai/conformance-exceptions.json`
+- `.gems-ai/MIGRACAO-2.4.0.md`
+- `.gems-ai/recipes/correlation-id-end-to-end.md`
+- `.gems-ai/recipes/crud-end-to-end.md`
+- `.gems-ai/recipes/custom-input-cva-end-to-end.md`
+- `.gems-ai/recipes/domain-event-end-to-end.md`
+- `.gems-ai/recipes/error-and-validation-end-to-end.md`
+- `.gems-ai/recipes/file-upload-s3-end-to-end.md`
+- `.gems-ai/recipes/search-paginated-end-to-end.md`
+- `.gems-ai/recipes/secured-resource-end-to-end.md`
+- `.gems-ai/recipes/setup-backend-sdk.md`
+- `.gems-ai/recipes/setup-frontend-sdk.md`
+- `.gems-ai/recipes/wizard-stepper-end-to-end.md`
+- `.gems-ai/rules/backend-java/architecture.md`
+- `.gems-ai/rules/backend-java/controllers.md`
+- `.gems-ai/rules/backend-java/events.md`
+- `.gems-ai/rules/backend-java/mapping.md`
+- `.gems-ai/rules/backend-java/multi-tenant.md`
+- `.gems-ai/rules/backend-java/observability.md`
+- `.gems-ai/rules/backend-java/openapi.md`
+- `.gems-ai/rules/backend-java/persistence-db.md`
+- `.gems-ai/rules/backend-java/repositories.md`
+- `.gems-ai/rules/backend-java/rest-common.md`
+- `.gems-ai/rules/backend-java/security.md`
+- `.gems-ai/rules/backend-java/services.md`
+- `.gems-ai/rules/backend-java/storage-s3.md`
+- `.gems-ai/rules/backend-java/testing.md`
+- `.gems-ai/rules/backend-java/utils.md`
+- `.gems-ai/rules/backend-java/validation.md`
+- `.gems-ai/rules/conformance-exceptions.md`
+- `.gems-ai/rules/frontend-angular/auth.md`
+- `.gems-ai/rules/frontend-angular/feedback-alerts.md`
+- `.gems-ai/rules/frontend-angular/forms.md`
+- `.gems-ai/rules/frontend-angular/gems-components.md`
+- `.gems-ai/rules/frontend-angular/http-interceptors.md`
+- `.gems-ai/rules/frontend-angular/lists.md`
+- `.gems-ai/rules/frontend-angular/organization.md`
+- `.gems-ai/rules/frontend-angular/signals-standards.md`
+- `.gems-ai/rules/frontend-angular/stepper.md`
+- `.gems-ai/rules/frontend-angular/stores.md`
+- `.gems-ai/rules/frontend-angular/testing.md`
+- `.gems-ai/rules/frontend-angular/visual-standards.md`
+- `.gems-ai/templates/backend/ControllerTemplate.java`
+- `.gems-ai/templates/backend/DtoTemplate.java`
+- `.gems-ai/templates/backend/EntityTemplate.java`
+- `.gems-ai/templates/backend/RepositoryTemplate.java`
+- `.gems-ai/templates/backend/ServiceTemplate.java`
+- `.gems-ai/templates/frontend/component-form-template.ts`
+- `.gems-ai/templates/frontend/component-html-template.html`
+- `.gems-ai/templates/frontend/component-list-template.ts`
+- `.gems-ai/templates/frontend/store-template.ts`
+- `.specify/feature.json`
+- `.specify/memory/constitution.md`
+- `.specify/scripts/powershell/check-prerequisites.ps1`
+- `.specify/scripts/powershell/common.ps1`
+- `.specify/scripts/powershell/create-new-feature.ps1`
+- `.specify/scripts/powershell/setup-plan.ps1`
+- `.specify/scripts/powershell/setup-tasks.ps1`
+- `.specify/scripts/powershell/verificar-lote.ps1`
+- `.specify/templates/change-template.md`
+- `.specify/templates/checklist-template.md`
+- `.specify/templates/constitution-template.md`
+- `.specify/templates/estado-lote-template.md`
+- `.specify/templates/pacote-de-execucao-template.md`
+- `.specify/templates/plan-template.md`
+- `.specify/templates/roteiro-template.md`
+- `.specify/templates/spec-template.md`
+- `.specify/templates/tasks-template.md`
+- `AGENTS.md`
+- `backend/.mvn/wrapper/maven-wrapper.properties`
+- `backend/AGENTS.md`
+- `backend/app-core/pom.xml`
+- `backend/app-core/src/main/java/br/com/gems/app/auditoria/controller/AuditoriaController.java`
+- `backend/app-core/src/main/java/br/com/gems/app/auditoria/interceptor/AuditoriaGravador.java`
+- `backend/app-core/src/main/java/br/com/gems/app/auditoria/interceptor/AuditoriaInterceptor.java`
+- `backend/app-core/src/main/java/br/com/gems/app/auditoria/interceptor/RegistroPendente.java`
+- `backend/app-core/src/main/java/br/com/gems/app/auditoria/repository/CampoAlteradoRepository.java`
+- `backend/app-core/src/main/java/br/com/gems/app/auditoria/repository/RegistroAuditoriaRepository.java`
+- `backend/app-core/src/main/java/br/com/gems/app/auditoria/service/AuditoriaService.java`
+- `backend/app-core/src/main/java/br/com/gems/app/autorizacao/AutorizacaoBootstrap.java`
+- `backend/app-core/src/main/java/br/com/gems/app/autorizacao/MapaPerfilAcoes.java`
+- `backend/app-core/src/main/java/br/com/gems/app/commons/exception/ProvedorExternoException.java`
+- `backend/app-core/src/main/java/br/com/gems/app/commons/exception/ProvedorExternoExceptionHandler.java`
+- `backend/app-core/src/main/java/br/com/gems/app/localidade/controller/LocalidadeController.java`
+- `backend/app-core/src/main/java/br/com/gems/app/localidade/repository/EstadoRepository.java`
+- `backend/app-core/src/main/java/br/com/gems/app/localidade/repository/PaisRepository.java`
+- `backend/app-core/src/main/java/br/com/gems/app/localidade/service/LocalidadeService.java`
+- `backend/app-core/src/main/java/br/com/gems/app/normalizacao/controller/CepController.java`
+- `backend/app-core/src/main/java/br/com/gems/app/normalizacao/dto/ViaCepResponse.java`
+- `backend/app-core/src/main/java/br/com/gems/app/normalizacao/repository/ContatoRepository.java`
+- `backend/app-core/src/main/java/br/com/gems/app/normalizacao/repository/EnderecoRepository.java`
+- `backend/app-core/src/main/java/br/com/gems/app/normalizacao/repository/PessoaRepository.java`
+- `backend/app-core/src/main/java/br/com/gems/app/normalizacao/service/CepService.java`
+- `backend/app-core/src/main/java/br/com/gems/app/normalizacao/service/ContatoService.java`
+- `backend/app-core/src/main/java/br/com/gems/app/normalizacao/service/EnderecoService.java`
+- `backend/app-core/src/main/java/br/com/gems/app/normalizacao/service/PessoaService.java`
+- `backend/app-core/src/main/java/br/com/gems/app/parceiro/controller/ParceiroController.java`
+- `backend/app-core/src/main/java/br/com/gems/app/parceiro/listener/SolicitacaoConcluidaListener.java`
+- `backend/app-core/src/main/java/br/com/gems/app/parceiro/repository/ParceiroRepository.java`
+- `backend/app-core/src/main/java/br/com/gems/app/parceiro/service/ParceiroService.java`
+- `backend/app-core/src/main/java/br/com/gems/app/solicitacao/controller/SolicitacaoController.java`
+- `backend/app-core/src/main/java/br/com/gems/app/solicitacao/repository/EtapaSolicitacaoRepository.java`
+- `backend/app-core/src/main/java/br/com/gems/app/solicitacao/repository/SolicitacaoRepository.java`
+- `backend/app-core/src/main/java/br/com/gems/app/solicitacao/service/SolicitacaoService.java`
+- `backend/app-core/src/main/java/br/com/gems/app/usuario/listener/UsuarioKeycloakListener.java`
+- `backend/app-core/src/main/java/br/com/gems/app/usuario/repository/UsuarioRepository.java`
+- `backend/app-core/src/main/java/br/com/gems/app/usuario/service/UsuarioService.java`
+- `backend/app-core/src/test/java/br/com/gems/app/auditoria/controller/AuditoriaControllerSemEscritaTest.java`
+- `backend/app-core/src/test/java/br/com/gems/app/auditoria/interceptor/AuditoriaInterceptorTest.java`
+- `backend/app-core/src/test/java/br/com/gems/app/auditoria/interceptor/AuditoriaIsolamentoTest.java`
+- `backend/app-core/src/test/java/br/com/gems/app/autorizacao/AutorizacaoBootstrapTest.java`
+- `backend/app-core/src/test/java/br/com/gems/app/autorizacao/MapaPerfilAcoesTest.java`
+- `backend/app-core/src/test/java/br/com/gems/app/normalizacao/service/CepServiceTest.java`
+- `backend/app-core/src/test/java/br/com/gems/app/normalizacao/service/ContatoServiceTest.java`
+- `backend/app-core/src/test/java/br/com/gems/app/normalizacao/service/EnderecoServiceTest.java`
+- `backend/app-core/src/test/java/br/com/gems/app/normalizacao/service/PessoaServiceTest.java`
+- `backend/app-core/src/test/java/br/com/gems/app/parceiro/service/ParceiroServiceTest.java`
+- `backend/app-core/src/test/java/br/com/gems/app/solicitacao/service/SolicitacaoServiceTest.java`
+- `backend/app-core/src/test/java/br/com/gems/app/usuario/listener/UsuarioKeycloakListenerTest.java`
+- `backend/app-core/src/test/java/br/com/gems/app/usuario/service/UsuarioServiceTest.java`
+- `backend/app-deploy/pom.xml`
+- `backend/app-deploy/src/main/java/br/com/gems/app/AppApplication.java`
+- `backend/app-deploy/src/main/resources/application.yml`
+- `backend/app-deploy/src/main/resources/db/changelog/changelog-auditoria.xml`
+- `backend/app-deploy/src/main/resources/db/changelog/changelog-endereco-internacional.xml`
+- `backend/app-deploy/src/main/resources/db/changelog/changelog-localidades.xml`
+- `backend/app-deploy/src/main/resources/db/changelog/changelog-master.xml`
+- `backend/app-deploy/src/main/resources/db/changelog/changelog-normalizacao.xml`
+- `backend/app-deploy/src/main/resources/db/changelog/changelog-parceiro.xml`
+- `backend/app-deploy/src/main/resources/db/changelog/changelog-security.xml`
+- `backend/app-deploy/src/main/resources/db/changelog/changelog-solicitacao.xml`
+- `backend/app-deploy/src/test/java/br/com/gems/app/AppApplicationTests.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/auditoria/AuditoriaInterceptorIntegrationTest.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/auditoria/AuditoriaSigiloIntegrationTest.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/auditoria/interceptor/AuditoriaCoberturaIntegrationTest.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/autorizacao/AutorizacaoPorAcaoIntegrationTest.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/autorizacao/CoberturaPreAuthorizeTest.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/convencoes/ConvencoesArquiteturaTest.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/convencoes/ConvencoesFonteTest.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/convencoes/ExcecoesEscritas.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/convencoes/ExcecoesEscritasTest.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/convencoes/FontesJava.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/convencoes/InventarioDeExcecoes.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/convencoes/LocalizadorDeFonte.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/convencoes/package-info.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/convencoes/RegrasDeFonte.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/convencoes/RelatorioDeConformidade.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/security/ActuatorSecurityIntegrationTest.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java`
+- `backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java`
+- `backend/app-deploy/src/test/resources/application.yml`
+- `backend/app-deploy/src/test/resources/archunit.properties`
+- `backend/app-deploy/src/test/resources/archunit-baseline.txt`
+- `backend/app-deploy/src/test/resources/checkstyle-baseline.txt`
+- `backend/app-events/pom.xml`
+- `backend/app-events/src/main/java/br/com/gems/app/normalizacao/event/PessoaExcluidaEvent.java`
+- `backend/app-events/src/main/java/br/com/gems/app/solicitacao/event/SolicitacaoConcluidaEvent.java`
+- `backend/app-events/src/main/java/br/com/gems/app/usuario/event/UsuarioAtualizadoEvent.java`
+- `backend/app-events/src/main/java/br/com/gems/app/usuario/event/UsuarioCriadoEvent.java`
+- `backend/app-events/src/main/java/br/com/gems/app/usuario/event/UsuarioDesativadoEvent.java`
+- `backend/app-events/src/main/java/br/com/gems/app/usuario/event/UsuarioReativadoEvent.java`
+- `backend/app-model/pom.xml`
+- `backend/app-model/src/main/java/br/com/gems/app/model/dto/CampoAlteradoDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/dto/ContatoDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/dto/EnderecoDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/dto/EstadoDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/dto/EtapaSolicitacaoDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/dto/OpcaoDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/dto/PaisDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/dto/ParceiroDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/dto/PessoaDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/dto/RegistroAuditoriaDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/dto/SolicitacaoDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/dto/UsuarioDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/entity/auditoria/CampoAlterado.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/entity/auditoria/RegistroAuditoria.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/entity/base/CampoSigiloso.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/entity/base/EntidadeAuditavel.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/entity/localidades/Estado.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/entity/localidades/Pais.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/entity/normalizacao/Contato.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/entity/normalizacao/Endereco.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/entity/normalizacao/Pessoa.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/entity/parceiro/Parceiro.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/entity/seguranca/Usuario.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/entity/solicitacao/EtapaSolicitacao.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/entity/solicitacao/Solicitacao.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/enums/OperacaoAuditoria.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/enums/PerfilAtuacao.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/enums/Sexo.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/enums/SituacaoSolicitacao.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/params/AuditoriaFilterParams.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/params/ParceiroFilterParams.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/params/SolicitacaoFilterParams.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/response/ParceiroResponseDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/response/PessoaExistenteDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/response/RegistroAuditoriaResponseDTO.java`
+- `backend/app-model/src/main/java/br/com/gems/app/model/response/SolicitacaoResponseDTO.java`
+- `backend/app-security/pom.xml`
+- `backend/app-security/src/main/java/br/com/gems/app/security/AcaoSistema.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/AccessDeniedExceptionHandler.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/annotation/PublicEndpoint.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/config/AppKeycloakProperties.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/config/KeycloakConfig.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/dto/CreateUserDTO.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/dto/PublicRoute.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/IdentityProviderExceptionHandler.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/PasswordUtil.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/RequisicaoInvalidaExceptionHandler.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/SecurityRoles.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakGroupService.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakRoleService.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java`
+- `backend/app-security/src/main/java/br/com/gems/app/security/service/UsuarioAutenticadoService.java`
+- `backend/app-security/src/test/java/br/com/gems/app/security/PasswordUtilTest.java`
+- `backend/app-security/src/test/java/br/com/gems/app/security/service/UsuarioAutenticadoServiceTest.java`
+- `backend/config/checkstyle/checkstyle.xml`
+- `backend/config/checkstyle/suppressions.xml`
+- `backend/config/spotless/eclipse-formatter.xml`
+- `backend/GEMINI.md`
+- `backend/mvnw`
+- `backend/mvnw.cmd`
+- `backend/pom.xml`
+- `CODEX.md`
+- `D:/repos/Meduc/meduc-workspace/.agents/skills/model-delegation/references/package-contract.md`
+- `D:/repos/Meduc/meduc-workspace/.agents/skills/opus-review/SKILL.md`
+- `D:/repos/Meduc/meduc-workspace/specs/010-habilitacao-de-agentes/contracts/sample-definicoes.md`
+- `environments/shared/init-postgres.sh`
+- `environments/shared/keycloak/app-realm.yaml`
+- `frontend/.dockerignore`
+- `frontend/.editorconfig`
+- `frontend/.gitignore`
+- `frontend/.prettierignore`
+- `frontend/.prettierrc`
+- `frontend/AGENTS.md`
+- `frontend/angular.json`
+- `frontend/docker-entrypoint.sh`
+- `frontend/Dockerfile`
+- `frontend/GEMINI.md`
+- `frontend/nginx.conf`
+- `frontend/package.json`
+- `frontend/public/silent-check-sso.html`
+- `frontend/public/silent-check-sso.js`
+- `frontend/scripts/verify-authorization-actions.mjs`
+- `frontend/scripts/verify-conventions.mjs`
+- `frontend/scripts/verify-silent-check-sso.mjs`
+- `frontend/src/app/app.config.ts`
+- `frontend/src/app/app.css`
+- `frontend/src/app/app.html`
+- `frontend/src/app/app.routes.ts`
+- `frontend/src/app/app.spec.ts`
+- `frontend/src/app/app.ts`
+- `frontend/src/app/commons/data-br.spec.ts`
+- `frontend/src/app/commons/data-br.ts`
+- `frontend/src/app/commons/gems-table-labels.ts`
+- `frontend/src/app/commons/moeda-br.spec.ts`
+- `frontend/src/app/commons/moeda-br.ts`
+- `frontend/src/app/commons/page-response.ts`
+- `frontend/src/app/commons/password.validator.spec.ts`
+- `frontend/src/app/commons/password.validator.ts`
+- `frontend/src/app/commons/table-sort.spec.ts`
+- `frontend/src/app/commons/table-sort.ts`
+- `frontend/src/app/core/auth/acoes.ts`
+- `frontend/src/app/core/auth/auth.service.ts`
+- `frontend/src/app/core/auth/keycloak.init.ts`
+- `frontend/src/app/core/footer/app-footer.component.css`
+- `frontend/src/app/core/footer/app-footer.component.html`
+- `frontend/src/app/core/footer/app-footer.component.ts`
+- `frontend/src/app/core/guards/auth.guard.ts`
+- `frontend/src/app/core/guards/role.guard.spec.ts`
+- `frontend/src/app/core/guards/role.guard.ts`
+- `frontend/src/app/core/guards/routes-coverage.spec.ts`
+- `frontend/src/app/core/localidade/cep.store.ts`
+- `frontend/src/app/core/localidade/localidade.store.spec.ts`
+- `frontend/src/app/core/localidade/localidade.store.ts`
+- `frontend/src/app/core/localidade/models/cep-endereco.model.ts`
+- `frontend/src/app/core/localidade/models/estado.model.ts`
+- `frontend/src/app/core/localidade/models/pais.model.ts`
+- `frontend/src/app/core/menu/menu.builder.spec.ts`
+- `frontend/src/app/core/menu/menu.builder.ts`
+- `frontend/src/app/features/acesso-negado/acesso-negado.component.css`
+- `frontend/src/app/features/acesso-negado/acesso-negado.component.html`
+- `frontend/src/app/features/acesso-negado/acesso-negado.component.ts`
+- `frontend/src/app/features/home/home.component.css`
+- `frontend/src/app/features/home/home.component.html`
+- `frontend/src/app/features/home/home.component.ts`
+- `frontend/src/app/features/home/home.routes.ts`
+- `frontend/src/app/features/parceiro/form/parceiro.config.ts`
+- `frontend/src/app/features/parceiro/form/parceiro-form.component.css`
+- `frontend/src/app/features/parceiro/form/parceiro-form.component.html`
+- `frontend/src/app/features/parceiro/form/parceiro-form.component.ts`
+- `frontend/src/app/features/parceiro/form/steps/step-contato/step-contato.component.css`
+- `frontend/src/app/features/parceiro/form/steps/step-contato/step-contato.component.html`
+- `frontend/src/app/features/parceiro/form/steps/step-contato/step-contato.component.ts`
+- `frontend/src/app/features/parceiro/form/steps/step-dados/step-dados.component.css`
+- `frontend/src/app/features/parceiro/form/steps/step-dados/step-dados.component.html`
+- `frontend/src/app/features/parceiro/form/steps/step-dados/step-dados.component.ts`
+- `frontend/src/app/features/parceiro/form/steps/step-endereco/step-endereco.component.css`
+- `frontend/src/app/features/parceiro/form/steps/step-endereco/step-endereco.component.html`
+- `frontend/src/app/features/parceiro/form/steps/step-endereco/step-endereco.component.ts`
+- `frontend/src/app/features/parceiro/form/steps/step-resumo/step-resumo.component.css`
+- `frontend/src/app/features/parceiro/form/steps/step-resumo/step-resumo.component.html`
+- `frontend/src/app/features/parceiro/form/steps/step-resumo/step-resumo.component.ts`
+- `frontend/src/app/features/parceiro/list/parceiro-list.component.css`
+- `frontend/src/app/features/parceiro/list/parceiro-list.component.html`
+- `frontend/src/app/features/parceiro/list/parceiro-list.component.ts`
+- `frontend/src/app/features/parceiro/models/parceiro.model.ts`
+- `frontend/src/app/features/parceiro/models/parceiro-filter.model.ts`
+- `frontend/src/app/features/parceiro/models/parceiro-response.model.ts`
+- `frontend/src/app/features/parceiro/parceiro.routes.ts`
+- `frontend/src/app/features/parceiro/services/parceiro.store.ts`
+- `frontend/src/app/features/parceiro/services/parceiro-form-state.service.spec.ts`
+- `frontend/src/app/features/parceiro/services/parceiro-form-state.service.ts`
+- `frontend/src/app/features/solicitacao/form/solicitacao-form.component.css`
+- `frontend/src/app/features/solicitacao/form/solicitacao-form.component.html`
+- `frontend/src/app/features/solicitacao/form/solicitacao-form.component.ts`
+- `frontend/src/app/features/solicitacao/list/solicitacao-list.component.css`
+- `frontend/src/app/features/solicitacao/list/solicitacao-list.component.html`
+- `frontend/src/app/features/solicitacao/list/solicitacao-list.component.ts`
+- `frontend/src/app/features/solicitacao/models/solicitacao.model.ts`
+- `frontend/src/app/features/solicitacao/services/solicitacao.store.ts`
+- `frontend/src/app/features/solicitacao/solicitacao.routes.ts`
+- `frontend/src/app/shared/auditoria/auditoria.model.ts`
+- `frontend/src/app/shared/auditoria/auditoria.store.ts`
+- `frontend/src/app/shared/auditoria/botao-historico/botao-historico.component.css`
+- `frontend/src/app/shared/auditoria/botao-historico/botao-historico.component.html`
+- `frontend/src/app/shared/auditoria/botao-historico/botao-historico.component.ts`
+- `frontend/src/app/shared/auditoria/historico-registro/historico-registro.component.css`
+- `frontend/src/app/shared/auditoria/historico-registro/historico-registro.component.html`
+- `frontend/src/app/shared/auditoria/historico-registro/historico-registro.component.spec.ts`
+- `frontend/src/app/shared/auditoria/historico-registro/historico-registro.component.ts`
+- `frontend/src/app/shared/components/field-tooltip/field-tooltip.component.css`
+- `frontend/src/app/shared/components/field-tooltip/field-tooltip.component.html`
+- `frontend/src/app/shared/components/field-tooltip/field-tooltip.component.spec.ts`
+- `frontend/src/app/shared/components/field-tooltip/field-tooltip.component.ts`
+- `frontend/src/app/shared/forms/contato/contato.model.ts`
+- `frontend/src/app/shared/forms/contato/contato-fields.component.html`
+- `frontend/src/app/shared/forms/contato/contato-fields.component.spec.ts`
+- `frontend/src/app/shared/forms/contato/contato-fields.component.ts`
+- `frontend/src/app/shared/forms/contato/contato-form.spec.ts`
+- `frontend/src/app/shared/forms/contato/contato-form.ts`
+- `frontend/src/app/shared/forms/dados-pessoais/dados-pessoais-fields.component.css`
+- `frontend/src/app/shared/forms/dados-pessoais/dados-pessoais-fields.component.html`
+- `frontend/src/app/shared/forms/dados-pessoais/dados-pessoais-fields.component.spec.ts`
+- `frontend/src/app/shared/forms/dados-pessoais/dados-pessoais-fields.component.ts`
+- `frontend/src/app/shared/forms/dados-pessoais/dados-pessoais-form.spec.ts`
+- `frontend/src/app/shared/forms/dados-pessoais/dados-pessoais-form.ts`
+- `frontend/src/app/shared/forms/endereco/cep-lookup.service.spec.ts`
+- `frontend/src/app/shared/forms/endereco/cep-lookup.service.ts`
+- `frontend/src/app/shared/forms/endereco/endereco.model.ts`
+- `frontend/src/app/shared/forms/endereco/endereco-form.ts`
+- `frontend/src/app/shared/forms/enter-busca/enter-busca.directive.spec.ts`
+- `frontend/src/app/shared/forms/enter-busca/enter-busca.directive.ts`
+- `frontend/src/app/shared/forms/field-error/field-error.component.css`
+- `frontend/src/app/shared/forms/field-error/field-error.component.html`
+- `frontend/src/app/shared/forms/field-error/field-error.component.spec.ts`
+- `frontend/src/app/shared/forms/field-error/field-error.component.ts`
+- `frontend/src/app/shared/forms/perfil-atuacao.spec.ts`
+- `frontend/src/app/shared/forms/perfil-atuacao.ts`
+- `frontend/src/app/shared/forms/rg/rg-format.spec.ts`
+- `frontend/src/app/shared/forms/rg/rg-format.ts`
+- `frontend/src/app/shared/forms/rg/rg-mask.directive.ts`
+- `frontend/src/environments/environment.model.ts`
+- `frontend/src/environments/environment.prod.ts`
+- `frontend/src/environments/environment.ts`
+- `frontend/src/index.html`
+- `frontend/src/main.ts`
+- `frontend/src/styles.css`
+- `frontend/tsconfig.app.json`
+- `frontend/tsconfig.json`
+- `frontend/tsconfig.spec.json`
+- `specs/002-conformidade-gems/estado-lote-S-start.md`
+- `specs/002-conformidade-gems/levantamento.md`
+- `specs/002-conformidade-gems/medicao-backend.json`
+- `specs/002-conformidade-gems/medicao-checkstyle.json`
+- `specs/002-conformidade-gems/medicao-frontend.json`
+- `specs/002-conformidade-gems/medicao-gates.md`
+- `specs/002-conformidade-gems/mutacoes-s-def.json`
+- `specs/002-conformidade-gems/mutacoes-s-def.md`
+- `specs/002-conformidade-gems/pacote-de-execucao-S-start.md`
+- `specs/002-conformidade-gems/roteiro.md`
+- `specs/AGENTS.md`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/AGENTS.md`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/CHANGELOG.md`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/package.json`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/AI-CONSUMER-GUIDE.md`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/auth/gems-has-role.directive.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/auth/gems-keycloak.provider.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/auth/gems-role.guard.spec.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/auth/gems-role.guard.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/auth/gems-role.util.spec.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/auth/gems-role.util.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/auth/ng-package.json`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/auth/public-api.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/ng-package.json`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/package.json`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/README.md`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/components/public-api.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/http/public-api.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/badge/gems-badge.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/badge/gems-badge.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/badge/gems-badge.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/badge/gems-badge.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/button/gems-button.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/button/gems-button.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/button/gems-button.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/button/gems-button.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/card-list-select/gems-card-list-select.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/card-list-select/gems-card-list-select.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/card-list-select/gems-card-list-select.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/card-list-select/gems-card-list-select.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/empty-state/gems-empty-state.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/empty-state/gems-empty-state.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/empty-state/gems-empty-state.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/field-error/gems-field-error.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/field-error/gems-field-error.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/field-error/gems-field-error.component.spec.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/field-error/gems-field-error.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/field-error/gems-field-error.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/file-upload/gems-file-upload.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/file-upload/gems-file-upload.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/file-upload/gems-file-upload.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/footer/gems-footer.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/footer/gems-footer.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/footer/gems-footer.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/footer/gems-footer.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/form-card/gems-form-card.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/form-card/gems-form-card.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/form-card/gems-form-card.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-checkbox/gems-input-checkbox.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-checkbox/gems-input-checkbox.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-checkbox/gems-input-checkbox.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-date/gems-input-date.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-date/gems-input-date.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-date/gems-input-date.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-date/gems-input-date.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-document/gems-input-document.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-document/gems-input-document.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-document/gems-input-document.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-mask/gems-input-mask.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-mask/gems-input-mask.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-mask/gems-input-mask.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-mask/gems-input-mask.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-password/gems-input-password.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-password/gems-input-password.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-password/gems-input-password.component.spec.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-password/gems-input-password.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-password/gems-input-password.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-range/gems-input-range.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-range/gems-input-range.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-range/gems-input-range.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-range/gems-input-range.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-text/gems-input-text.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-text/gems-input-text.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-text/gems-input-text.component.spec.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-text/gems-input-text.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/input-text/gems-input-text.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/loading/gems-loading.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/loading/gems-loading.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/loading/gems-loading.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/modal/gems-modal.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/modal/gems-modal.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/modal/gems-modal.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/modal/gems-modal.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/select/gems-select.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/select/gems-select.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/select/gems-select.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/select/gems-select.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/side-menu/gems-side-menu.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/side-menu/gems-side-menu.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/side-menu/gems-side-menu.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/side-menu/gems-side-menu.config.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/summary-card/gems-summary-card.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/summary-card/gems-summary-card.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/summary-card/gems-summary-card.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/table/gems-table.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/table/gems-table.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/table/gems-table.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/table/gems-table.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/tabs/gems-tabs.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/tabs/gems-tabs.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/tabs/gems-tabs.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/tabs/gems-tabs.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/textarea/gems-textarea.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/textarea/gems-textarea.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/textarea/gems-textarea.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/toast/gems-toast.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/toast/gems-toast-container.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/toast/gems-toast-container.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/toast/gems-toast-container.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/wizard/gems-base-step.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/wizard/gems-wizard.component.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/wizard/gems-wizard.component.html`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/wizard/gems-wizard.component.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/components/wizard/gems-wizard.model.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/core/theme/gems-palette.util.spec.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/core/theme/gems-palette.util.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/core/theme/gems-theme.config.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/core/theme/gems-theme.provider.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/core/theme/gems-theme.service.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/core/tokens/gems-animations.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/core/tokens/gems-design-tokens.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/core/tokens/gems-utilities.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/core/utils/gems-unique-id.util.spec.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/core/utils/gems-unique-id.util.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/http/gems-api-url.token.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/http/gems-base-store.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/http/gems-http.provider.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/http/gems-pageable.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/http/interceptors/gems-loading.interceptor.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/pipes/gems-document.pipe.spec.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/pipes/gems-document.pipe.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/services/alert/gems-alert.service.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/services/gems-loading.service.spec.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/services/gems-loading.service.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/services/gems-toast.service.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/services/navigation/gems-navigation.service.spec.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/services/navigation/gems-navigation.service.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/services/s3/gems-s3.models.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/services/s3/gems-s3.service.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/services/s3/gems-s3.store.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/services/session/gems-session.service.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/lib/styles/gems-global.css`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/public-api.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/src/services/public-api.ts`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/tsconfig.lib.json`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/tsconfig.lib.prod.json`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/projects/gems-sdk/tsconfig.spec.json`
+- `D:/repos/GEMS SDK/Angular-GEMS-SDK/README.md`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/Auditable.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/AuditActor.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/AuditActorProvider.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/AuditActorType.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/AuditChange.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/AuditHibernateIntegrator.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/AuditingAutoConfiguration.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/AuditOperation.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/AuditPolicy.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/AuditTrailDestination.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/AuditWriteException.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/FixedSchemaAuditTrailDestination.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/HibernateAuditListener.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/SensitiveField.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/SystemAuditActorProvider.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/main/java/br/com/gems/auditing/TransactionalAuditWriter.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/test/java/br/com/gems/auditing/AuditActorTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/test/java/br/com/gems/auditing/AuditPolicyTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/test/java/br/com/gems/auditing/AuditWithoutDomainCallTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/test/java/br/com/gems/auditing/SuperficiePublicaTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-auditing/src/test/java/br/com/gems/auditing/TransactionalAuditWriterTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-aws/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-aws/src/main/java/br/com/gems/aws/config/AwsS3Config.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-aws/src/main/java/br/com/gems/aws/config/GemsAwsAutoConfiguration.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-aws/src/main/java/br/com/gems/aws/dto/GenerateUploadUrlRequestDTO.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-aws/src/main/java/br/com/gems/aws/dto/PresignedUrlResponseDTO.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-aws/src/main/java/br/com/gems/aws/service/S3Service.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-aws/src/test/java/br/com/gems/aws/config/GemsAwsAutoConfigurationTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-aws/src/test/java/br/com/gems/aws/service/S3ServiceTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-aws-web/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-aws-web/src/main/java/br/com/gems/aws/web/GemsAwsWebAutoConfiguration.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-aws-web/src/main/java/br/com/gems/aws/web/S3Controller.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-bom/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/main/java/br/com/gems/exception/base/BaseController.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/main/java/br/com/gems/exception/config/GemsExceptionAutoConfiguration.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/main/java/br/com/gems/exception/exception/BusinessException.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/main/java/br/com/gems/exception/exception/config/ExceptionHandlerConfig.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/main/java/br/com/gems/exception/exception/ConflictException.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/main/java/br/com/gems/exception/exception/dto/ExceptionResponseDTO.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/main/java/br/com/gems/exception/exception/enums/ErrorTypeEnum.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/main/java/br/com/gems/exception/exception/ExternalServiceException.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/main/java/br/com/gems/exception/exception/handler/AuthorizationExceptionHandler.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/main/java/br/com/gems/exception/exception/handler/GlobalExceptionHandler.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/main/java/br/com/gems/exception/exception/handler/SecurityExceptionHandler.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/main/java/br/com/gems/exception/exception/SecurityException.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/test/java/br/com/gems/exception/BusinessExceptionTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/test/java/br/com/gems/exception/handler/AuthorizationDeniedRespondeForbiddenTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/test/java/br/com/gems/exception/handler/ConflictExceptionTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/test/java/br/com/gems/exception/handler/ErrorEnvelopeCompositionTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/test/java/br/com/gems/exception/handler/ErrorStatusCoverageTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/test/java/br/com/gems/exception/handler/GlobalExceptionHandlerTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/test/java/br/com/gems/exception/handler/HandlerPrecedenceTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-exception/src/test/java/br/com/gems/exception/handler/RequestErrorsTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-jpa/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-jpa/src/main/java/br/com/gems/jpa/config/JpaConfig.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-jpa/src/main/java/br/com/gems/jpa/repository/BaseCustomJpaRepository.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-jpa/src/main/java/br/com/gems/jpa/repository/impl/BaseCustomJpaRepositoryImpl.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-jpa/src/test/java/br/com/gems/jpa/repository/impl/BaseCustomJpaRepositoryImplTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-keycloak-admin/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-keycloak-admin/src/main/java/br/com/gems/keycloak/admin/KeycloakAdminException.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-keycloak-admin/src/main/java/br/com/gems/keycloak/admin/KeycloakAdminGateway.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-keycloak-admin/src/main/java/br/com/gems/keycloak/admin/KeycloakAdminProperties.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-keycloak-admin/src/main/java/br/com/gems/keycloak/admin/KeycloakAdminRestClient.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-keycloak-admin/src/test/java/br/com/gems/keycloak/admin/CredentialSourceTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-keycloak-admin/src/test/java/br/com/gems/keycloak/admin/KeycloakAdminRestClientTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-mapstruct/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-mapstruct/src/main/java/br/com/gems/mapstruct/GemsMappingConfig.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-mapstruct/src/test/java/br/com/gems/mapstruct/CompilacaoReprovaCampoNaoMapeadoTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-mapstruct/src/test/java/br/com/gems/mapstruct/contraste/ConfiguracaoRelaxadaDeContraste.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-mapstruct/src/test/java/br/com/gems/mapstruct/exemplo/Destino.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-mapstruct/src/test/java/br/com/gems/mapstruct/exemplo/Origem.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-mapstruct/src/test/java/br/com/gems/mapstruct/exemplo/OrigemMapper.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-mapstruct/src/test/java/br/com/gems/mapstruct/GemsMappingConfigTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-observability/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-observability/src/main/java/br/com/gems/observability/GemsObservabilityAutoConfiguration.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-openapi/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-openapi/src/main/java/br/com/gems/openapi/GemsOpenApiAutoConfiguration.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-openapi/src/main/java/br/com/gems/openapi/GemsOpenApiProperties.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-rest-common/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-rest-common/src/main/java/br/com/gems/rest/config/GemsRestCommonAutoConfiguration.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-rest-common/src/main/java/br/com/gems/rest/dto/ApiResponseDTO.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-rest-common/src/main/java/br/com/gems/rest/dto/PageResponseDTO.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-rest-common/src/main/java/br/com/gems/rest/filter/CorrelationIdFilter.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/main/java/br/com/gems/security/authorization/AuthorizationAction.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/main/java/br/com/gems/security/authorization/AuthorizationCatalog.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/main/java/br/com/gems/security/authorization/AuthorizationContextAware.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/main/java/br/com/gems/security/authorization/AuthorizationScope.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/main/java/br/com/gems/security/authorization/EndpointAuthorizationPolicy.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/main/java/br/com/gems/security/authorization/EndpointAuthorizationScan.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/main/java/br/com/gems/security/authorization/FrontendActionCatalogGenerator.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/main/java/br/com/gems/security/authorization/GeneratedCatalogOutOfDateException.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/main/java/br/com/gems/security/authorization/GlobalEndpoint.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/main/java/br/com/gems/security/authorization/JwtAuthorizationContext.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/main/java/br/com/gems/security/authorization/PublicEndpoint.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/main/java/br/com/gems/security/authorization/TenantAuthorizationInterceptor.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/main/java/br/com/gems/security/authorization/TenantEndpoint.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/main/java/br/com/gems/security/authorization/UnprotectedEndpointException.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/test/java/br/com/gems/security/authorization/AcaoDeTeste.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/test/java/br/com/gems/security/authorization/AuthorizationCatalogTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/test/java/br/com/gems/security/authorization/EndpointAuthorizationScanTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/test/java/br/com/gems/security/authorization/FrontendActionCatalogGeneratorTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-security-authorization/src/test/java/br/com/gems/security/authorization/TenantAuthorizationInterceptorTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-utils/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-utils/src/main/java/br/com/gems/utils/DateUtil.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-utils/src/main/java/br/com/gems/utils/DocumentoUtil.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-utils/src/main/java/br/com/gems/utils/EmailUtil.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-utils/src/main/java/br/com/gems/utils/enums/TipoNumeroDocumentoEnum.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-utils/src/main/java/br/com/gems/utils/enums/TipoSanguineoEnum.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-utils/src/main/java/br/com/gems/utils/ObjectUtil.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-utils/src/main/java/br/com/gems/utils/UUIDUtil.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-utils/src/test/java/br/com/gems/utils/DateUtilTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-utils/src/test/java/br/com/gems/utils/DocumentoUtilTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-utils/src/test/java/br/com/gems/utils/EmailUtilTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-utils/src/test/java/br/com/gems/utils/ObjectUtilTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-utils/src/test/java/br/com/gems/utils/UUIDUtilTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-validation/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-validation/src/main/java/br/com/gems/validation/CnpjValidator.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-validation/src/main/java/br/com/gems/validation/CpfValidator.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-validation/src/main/java/br/com/gems/validation/EmailFormatValidator.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-validation/src/main/java/br/com/gems/validation/ValidCnpj.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-validation/src/main/java/br/com/gems/validation/ValidCpf.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-validation/src/main/java/br/com/gems/validation/ValidEmail.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/gems-validation/src/test/java/br/com/gems/validation/ValidatorsTest.java`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/pom.xml`
+- `D:/repos/GEMS SDK/Java-GEMS-SDK/README.md`
+- `.github/copilot-instructions.md`
+- `.github/dependabot.yml`
+- `.github/instructions/backend.instructions.md`
+- `.github/instructions/environments.instructions.md`
+- `.github/instructions/frontend.instructions.md`
+- `.github/instructions/specs.instructions.md`
+- `.github/workflows/build-images.yml`
+- `.github/workflows/ci.yml`
+- `.github/workflows/deploy.yml`
+- `environments/AGENTS.md`
+- `environments/GEMINI.md`
+- `environments/keycloak-theme/app/login/error.ftl`
+- `environments/keycloak-theme/app/login/footer.ftl`
+- `environments/keycloak-theme/app/login/info.ftl`
+- `environments/keycloak-theme/app/login/login.ftl`
+- `environments/keycloak-theme/app/login/login-page-expired.ftl`
+- `environments/keycloak-theme/app/login/login-reset-password.ftl`
+- `environments/keycloak-theme/app/login/login-update-password.ftl`
+- `environments/keycloak-theme/app/login/messages/messages_pt_BR.properties`
+- `environments/keycloak-theme/app/login/resources/css/app-login.css`
+- `environments/keycloak-theme/app/login/resources/fonts/inter-latin-400-normal.woff2`
+- `environments/keycloak-theme/app/login/resources/fonts/inter-latin-500-normal.woff2`
+- `environments/keycloak-theme/app/login/resources/fonts/inter-latin-600-normal.woff2`
+- `environments/keycloak-theme/app/login/resources/fonts/inter-latin-700-normal.woff2`
+- `environments/keycloak-theme/app/login/resources/img/favicon.ico`
+- `environments/keycloak-theme/app/login/template.ftl`
+- `environments/keycloak-theme/app/login/theme.properties`
+- `environments/local/docker-compose.yml`
+- `environments/local/init-aws.sh`
+- `environments/production/Caddyfile`
+- `environments/production/docker-compose.yml`
+- `environments/shared/init-postgres.sh`
+- `environments/shared/keycloak/app-realm.yaml`
+- `environments/staging/docker-compose.yml`
+- `environments/vps/01-provisionamento.md`
+- `environments/vps/02-dns-e-dominio.md`
+- `environments/vps/03-segredos-e-aws.md`
+- `environments/vps/04-primeiro-deploy.md`
+- `environments/vps/05-backup-e-restore.md`
+- `environments/vps/06-operacao.md`
+- `environments/vps/07-homologacao.md`
+- `environments/vps/08-staging.md`
+- `environments/vps/README.md`
+- `README.md`
+- `specs/002-conformidade-gems/analysis.md`
+- `specs/002-conformidade-gems/checklists/requirements.md`
+- `specs/002-conformidade-gems/checklists/security.md`
+- `specs/002-conformidade-gems/checklists/technical.md`
+- `specs/002-conformidade-gems/contracts/backend.md`
+- `specs/002-conformidade-gems/contracts/frontend.md`
+- `specs/002-conformidade-gems/data-model.md`
+- `specs/002-conformidade-gems/estado-lote-S-plan.md`
+- `specs/002-conformidade-gems/estado-lote-S-start.md`
+- `specs/002-conformidade-gems/levantamento.md`
+- `specs/002-conformidade-gems/medicao-backend.json`
+- `specs/002-conformidade-gems/medicao-checkstyle.json`
+- `specs/002-conformidade-gems/medicao-frontend.json`
+- `specs/002-conformidade-gems/medicao-gates.md`
+- `specs/002-conformidade-gems/mutacoes-s-def.json`
+- `specs/002-conformidade-gems/mutacoes-s-def.md`
+- `specs/002-conformidade-gems/pacote-de-execucao-S-plan.md`
+- `specs/002-conformidade-gems/pacote-de-execucao-S-start.md`
+- `specs/002-conformidade-gems/plan.md`
+- `specs/002-conformidade-gems/quickstart.md`
+- `specs/002-conformidade-gems/research.md`
+- `specs/002-conformidade-gems/roteiro.md`
+- `specs/002-conformidade-gems/spec.md`
+- `specs/002-conformidade-gems/tasks.md`
+### EDIT / CREATE
+| # | Ação | Arquivo |
+| :-- | :--- | :--- |
+| S-plan | EDIT | `specs/002-conformidade-gems/roteiro.md` |
+| S-plan | CREATE | `specs/002-conformidade-gems/spec.md` |
+| S-plan | CREATE | `specs/002-conformidade-gems/plan.md` |
+| S-plan | CREATE | `specs/002-conformidade-gems/research.md` |
+| S-plan | CREATE | `specs/002-conformidade-gems/data-model.md` |
+| S-plan | CREATE | `specs/002-conformidade-gems/quickstart.md` |
+| S-plan | CREATE | `specs/002-conformidade-gems/tasks.md` |
+| S-plan | CREATE | `specs/002-conformidade-gems/analysis.md` |
+| S-plan | CREATE | `specs/002-conformidade-gems/checklists/requirements.md` |
+| S-plan | CREATE | `specs/002-conformidade-gems/checklists/technical.md` |
+| S-plan | CREATE | `specs/002-conformidade-gems/checklists/security.md` |
+| S-plan | CREATE | `specs/002-conformidade-gems/contracts/backend.md` |
+| S-plan | CREATE | `specs/002-conformidade-gems/contracts/frontend.md` |
+## 2. O que já existe e você consome
+Start aprovado como entrada; 17 decisões no roteiro. medicao-gates.md prevalece sobre histórico.
+Preservar comportamento funcional, consulta de auditoria, autoria, busca ampla, data inclusiva, perfis e upload.
+Fontes SDK locais são os commits de release publicados: Java 137f18f (3.1.0), Angular e452ba0 (2.1.0), ambos main limpos e iguais ao remoto, com publicação já provada pela 010. Somente leitura; não executar gates nem alterar as SDKs. Constituição/definições são imutáveis. SDK publicada não significa API presumida: apure fontes locais explicitadas; faltou fonte, pare e nomeie.
+## 3. Arquivos de referência
+Usar templates e skills spec-kit READ. Aplicar fase-2-plan e checklist-de-fechamento.
+Não executar setup que escreva fora de CREATE/EDIT; gerar artefatos equivalentes diretamente se necessário.
+## 4. Regras deste lote
+Executar specify/clarify/plan/tasks/checklists/analyze; atualizar §9 a cada etapa.
+Fase 2 não pode ficar só com roteiro: entregar ciclo completo e rastreabilidade.
+Apurar código/testes e garantias dos módulos antes do plano. Testes backend: .\mvnw.cmd test em backend. Frontend: npm test -- --watch=false em frontend.
+Se dados publicados SDK consumidos faltarem em READ, reportar caminho necessário em estado e parar; não explorar cache.
+Pode executar ferramentas de leitura somente em READ; não pesquisar diretórios excluídos.
+Avaliar opus-review, registrar elegibilidade; sem autorização específica para revisão externa, não chamar Opus.
+Achados HIGH/MEDIUM incorporados ou adjudicados; CRITICAL restante impede portão.
+Não alterar backend/frontend/definições/.specify/feature.json. Não escrever pacote de implementação antes do plano congelado.
+Não commit/push/PR/merge. Não chamar agentes adicionais.
+## 5. O portão
+Da raiz: git diff --check
+Exit 0; artefatos completos, rastreáveis, só caminhos autorizados; critérios sem aprovação humana; implementação pendente.
+Os baselines deste S-plan já foram medidos pelo executor: backend 204 exit 0; frontend 21/118 exit 0. Reusar estes resultados sem repetição enquanto código permanecer idêntico; reporte saídas reais e divergências.
+Verificador pelo orquestrador: .specify/scripts/powershell/verificar-lote.ps1 -Pacote specs/002-conformidade-gems/pacote-de-execucao-S-plan.md -Estado specs/002-conformidade-gems/estado-lote-S-plan.md -Ancora <arquivo externo> -Worktree D:/repos/sample-single-tenant-workspace.
+## 6. Relatório
+Artefatos; tarefas por bloco; contagens apuradas; análise; decisões materiais novas com recomendação; limites.
+Estado §5 porcelain literal menos próprio estado; pacote é preexistente na âncora, não listar estado em tabela.
+Parar no portão humano e recomendar compactação. Não tratar pedido para prosseguir como assinatura de plano ainda não apresentado.

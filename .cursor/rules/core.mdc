@@ -1,0 +1,13 @@
+﻿---
+description: Regras transversais mínimas
+alwaysApply: true
+---
+
+- `.specify/memory/constitution.md` é a autoridade máxima, mas não a carregue inteira sem necessidade.
+- Código/testes vencem templates e documentos preliminares.
+- Não indexe nem leia artefatos gerados ou imagens de `business/`.
+- Use contexto cirúrgico por arquivo; Full Folder Content fica desligado.
+- Delegação zero é válida; não crie agente para tarefa pequena ou serial.
+- Nunca execute `docker compose down -v`.
+- Gates finais: backend `mvnw.cmd clean install`; frontend `npm test` e `npm run build`.
+Regras GEMS vencem código consolidado (constituição 2.0.0); templates de referência não autorizam desvio.

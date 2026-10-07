@@ -1,0 +1,15 @@
+ M .specify/scripts/powershell/verificar-lote.ps1
+ M specs/002-conformidade-gems/plan.md
+ M specs/002-conformidade-gems/research.md
+ M specs/002-conformidade-gems/spec.md
+ M specs/002-conformidade-gems/tasks.md
+?? specs/002-conformidade-gems/baseline-codex-20260916.md
+?? specs/002-conformidade-gems/pacote-de-execucao-C07.md
+?? specs/002-conformidade-gems/pacote-de-execucao-C08.md
+?? specs/002-conformidade-gems/pacote-de-execucao-C09.md
+?? specs/002-conformidade-gems/pacote-de-execucao-C10-SDK.md
+?? specs/002-conformidade-gems/pacote-de-execucao-C11.md
+?? specs/002-conformidade-gems/pacote-de-execucao-C12.md
+?? specs/002-conformidade-gems/pacote-de-execucao-C13.md
+?? specs/002-conformidade-gems/pacote-de-execucao-C14.md
+?? specs/002-conformidade-gems/pacote-de-execucao-C15.md

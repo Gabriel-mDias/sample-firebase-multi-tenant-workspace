@@ -1,0 +1,4 @@
+name: rodada-sdd
+display_name: "Rodada SDD"
+short_description: "Detecta a fase da rodada e executa só ela, até o portão"
+default_prompt: "Use $rodada-sdd para descobrir em que fase a rodada ativa está e conduzir somente essa fase até o próximo portão humano."

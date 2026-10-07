@@ -1,0 +1,16 @@
+{
+  "id": "20260924T004115Z618404",
+  "changed": [
+    ".gems-ai\\rules\\angular.gems-components.md",
+    ".gems-ai\\rules\\angular.visual-standards.md",
+    ".gems-ai\\rules\\java.mapping.md",
+    ".gems-ai\\rules\\java.multi-tenant.md",
+    ".gems-ai\\rules\\java.persistence-db.md",
+    ".gems-ai\\rules\\java.security.md",
+    ".gems-ai\\rules\\sdd.round.md",
+    ".gems-ai\\rules\\stories.traceability.md",
+    ".gems-ai\\catalog.json",
+    ".gems-ai\\schemas\\gems-ai-lock.schema.json",
+    "gems-ai.lock.json"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gems.example/schemas/gems-ai-lock.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "version", "profile", "transaction", "rules", "assets", "adapters", "waivers"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "version": { "const": "2.0.0" },
+    "profile": { "enum": ["java", "angular", "workspace"] },
+    "transaction": { "type": "string", "minLength": 1 },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "path", "sha256"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string" },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "path", "sha256"],
+        "properties": {
+          "kind": { "enum": ["schema", "skill"] },
+          "path": { "type": "string" },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "adapters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "managedSha256"],
+        "properties": {
+          "path": { "enum": ["AGENTS.md", "CLAUDE.md", "GEMINI.md"] },
+          "managedSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "waivers": { "type": "array" }
+  }
+}

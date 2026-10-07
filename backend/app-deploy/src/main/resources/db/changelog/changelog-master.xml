@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        ÍNDICE. Este arquivo contém apenas infraestrutura compartilhada e a sequência de <include>
+        por domínio. Nenhum <createTable> novo nasce aqui — crie um changelog-<dominio>.xml e
+        inclua-o abaixo. A ordem dos includes respeita as dependências de chave estrangeira.
+    -->
+
+    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
+
+    <changeSet id="start-001" author="app">
+        <comment>Script para ativar a extensão de UUID no banco Postgres</comment>
+        <sql>
+            CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        </sql>
+    </changeSet>
+
+    <include file="db/changelog/changelog-localidades.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changelog-normalizacao.xml" relativeToChangelogFile="false"/>
+
+    <!-- Altera ENDERECO (país próprio, estado/CEP opcionais); depende de PAIS e de ENDERECO. -->
+    <include file="db/changelog/changelog-endereco-internacional.xml" relativeToChangelogFile="false"/>
+
+    <!-- security precede os domínios de negócio: entidades com autoria têm FK para security.USUARIO. -->
+    <include file="db/changelog/changelog-security.xml" relativeToChangelogFile="false"/>
+
+    <!-- Trilha de auditoria. Entra ANTES dos changelogs de negócio: o schema `auditoria` precisa
+         existir quando as tabelas de negócio nascerem, para que elas nasçam auditadas. -->
+    <include file="db/changelog/changelog-auditoria.xml" relativeToChangelogFile="false"/>
+
+    <!-- PARCEIRO depende de PESSOA, CONTATO e ENDERECO. -->
+    <include file="db/changelog/changelog-parceiro.xml" relativeToChangelogFile="false"/>
+
+    <!-- SOLICITACAO tem FK para PARCEIRO; ETAPA_SOLICITACAO tem FK para SOLICITACAO. -->
+    <include file="db/changelog/changelog-solicitacao.xml" relativeToChangelogFile="false"/>
+
+</databaseChangeLog>

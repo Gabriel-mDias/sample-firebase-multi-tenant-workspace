@@ -1,0 +1,33 @@
+# Segredos. O `.env.example` de cada ambiente é o contrato versionado; o `.env` real, nunca.
+# Esta é a primeira linha de defesa contra commitar a senha de produção por distração.
+.env
+.env.*
+!.env.example
+**/.env
+!**/.env.example
+
+# Credenciais de registro privado
+backend/.m2/settings.xml
+frontend/.npmrc
+
+# Relatórios de crash da JVM — a build do reator já os deixou no working tree mais de uma vez
+hs_err_pid*.log
+replay_pid*.log
+
+# Build
+target/
+dist/
+node_modules/
+.angular/
+
+# Sistema operacional e editores
+.DS_Store
+Thumbs.db
+*.swp
+
+# Preferências locais de agentes
+CLAUDE.local.md
+.claude/settings.local.json
+
+# Telemetria bruta de custo (pode conter identificadores de sessões)
+.agents/metrics/*.csv

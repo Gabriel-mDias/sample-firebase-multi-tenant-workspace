@@ -1,0 +1,15 @@
+{
+  "context": {
+    "discoveryMaxDirs": 40,
+    "fileFiltering": {
+      "respectGitIgnore": true,
+      "respectGeminiIgnore": true,
+      "enableRecursiveFileSearch": false
+    }
+  },
+  "model": {
+    "chatCompression": {
+      "contextPercentageThreshold": 0.55
+    }
+  }
+}

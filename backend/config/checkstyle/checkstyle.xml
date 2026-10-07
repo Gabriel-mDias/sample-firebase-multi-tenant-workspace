@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC
+	"-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+	"https://checkstyle.org/dtds/configuration_1_3.dtd">
+<!--
+  Checkstyle da rodada 008 (R-02). Três regras, e só três: cada uma existe porque um desvio foi
+  MEDIDO neste repositório em 2026-09-11, não porque a ferramenta a oferece.
+
+  UM ARQUIVO, DOIS ESCOPOS. R-02 pede duas execuções do mesmo plugin com regras diferentes —
+  `ParenPad` e `AvoidStarImport` sobre `src/main/java`, `MethodName` sobre `src/test/java`. O
+  escopo vem das propriedades abaixo, expandidas pelo `<propertyExpansion>` de cada execução no
+  `pom.xml`: a regra que não vale num escopo entra com severidade `ignore`. Aplicar o padrão de
+  nome de teste ao código de produção produziria ruído puro, e é o que a separação evita.
+
+  POR QUE `ParenPad` EXISTE SE O SPOTLESS JÁ FORMATA. Ele é a rede para quem desligar o Spotless
+  ou editar fora da IDE. Os `tokens` abaixo são deliberadamente MAIS ESTREITOS que o padrão da
+  regra: o padrão inclui `EXPR`, que exigiria `( a + b ) * c`, e o perfil do Eclipse mantém
+  expressão entre parênteses colada. Gate que reprova o que o formatador do projeto produz é gate
+  que alguém desliga — os dois precisam concordar, e aqui eles concordam por construção.
+
+  ⚠️ `RECORD_DEF` SAIU DOS TOKENS na fase 7 (T066), e o motivo é o mesmo princípio, medido: com ele
+  ligado o gate reprovava **19 linhas em 7 records** que o próprio Spotless acabara de formatar, e a
+  única declaração de `record` prescrita em `.gems-ai` — `domain-event-end-to-end.md:39`,
+  `public record {Entidade}CriadoEvent(String {entidade}Id) {}` — escreve-a **sem** espaço interno.
+  Duas evidências independentes apontando para o mesmo lado: a regra não prescreve espaço em
+  declaração de record, e era o gate que estava mais largo que ela.
+-->
+<module name="Checker">
+	<property name="severity" value="error"/>
+	<property name="fileExtensions" value="java"/>
+
+	<!-- O baseline do Checkstyle (R-07). Nasce vazio: quem o congela é T067, na fase 7, com a
+	     dívida medida na mão. `optional` para que a ausência do arquivo nunca derrube o build. -->
+	<module name="SuppressionFilter">
+		<property name="file" value="${suppressionsFile}" default="config/checkstyle/suppressions.xml"/>
+		<property name="optional" value="true"/>
+	</module>
+
+	<module name="TreeWalker">
+
+		<!-- O portador da exceção escrita de N-06 no Checkstyle (R-06). O comentário
+		     `GEMS-EXCEPTION(<regra>#<seção>): <motivo>; expira AAAA-MM-DD` na linha imediatamente
+		     acima suprime a violação — e quem verifica a validade dessa data é o
+		     `ExcecoesEscritasTest`, não este filtro: o Checkstyle sabe suprimir, não sabe expirar.
+
+		     Ele é filho de `TreeWalker`, e não de `Checker`: os filtros por comentário dependem da
+		     árvore sintática, e o Checkstyle recusa a configuração inteira se ele subir um nível. -->
+		<module name="SuppressWithNearbyCommentFilter">
+			<property name="commentFormat" value="GEMS-EXCEPTION\(([^)]+)\):\s*(.+);\s*expira\s+\d{4}-\d{2}-\d{2}"/>
+			<property name="checkFormat" value=".*"/>
+			<property name="influenceFormat" value="1"/>
+		</module>
+
+		<!-- Espaço interno em parênteses: `hql.append( " ... " )`, `if ( ObjectUtil... )`.
+		     `repositories.md` §8. Parêntese vazio é ignorado pelo próprio ParenPad. -->
+		<module name="ParenPad">
+			<property name="severity" value="${parenPadSeverity}" default="error"/>
+			<property name="option" value="space"/>
+			<property name="tokens" value="METHOD_CALL, METHOD_DEF, CTOR_DEF, CTOR_CALL, SUPER_CTOR_CALL,
+				LITERAL_NEW, LITERAL_IF, LITERAL_FOR, LITERAL_WHILE, LITERAL_DO, LITERAL_SWITCH,
+				LITERAL_CATCH, LITERAL_SYNCHRONIZED"/>
+		</module>
+
+		<!-- 14 ocorrências medidas em 6 arquivos em 2026-09-11 (SC-004). -->
+		<module name="AvoidStarImport">
+			<property name="severity" value="${starImportSeverity}" default="error"/>
+			<property name="allowClassImports" value="false"/>
+			<property name="allowStaticMemberImports" value="false"/>
+		</module>
+
+		<!-- `deveX_quandoY`, a convenção que a rodada 007 já conformou nos 101 métodos de teste
+		     (bloco F-03). Aqui ela deixa de depender de disciplina. Só vale em src/test/java. -->
+		<module name="MethodName">
+			<property name="severity" value="${methodNameSeverity}" default="ignore"/>
+			<property name="format" value="${methodNameFormat}" default="^[a-z][a-zA-Z0-9]*$"/>
+		</module>
+
+		<!-- Necessário para que o SuppressWithNearbyCommentFilter enxergue os comentários. -->
+		<module name="SuppressWarningsHolder"/>
+	</module>
+</module>

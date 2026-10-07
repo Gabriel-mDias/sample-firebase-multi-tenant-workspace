@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>4.1.1</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>br.com.gems</groupId>
+	<artifactId>app</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>App</name>
+	<description>POM agregador: gerencia versões e plugins comuns; não contém código.</description>
+	<!-- Preencha com a equipe do seu projeto. O molde não carrega autoria. -->
+	<developers>
+		<developer>
+			<name>Equipe do projeto</name>
+		</developer>
+	</developers>
+	<modules>
+		<module>app-security</module>
+		<module>app-model</module>
+		<module>app-core</module>
+		<module>app-deploy</module>
+		<module>app-events</module>
+	</modules>
+	<properties>
+		<java.version>21</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- 3.3.0 publica os contratos de autorização e ciclo Keycloak exigidos por C11. -->
+		<gems.version>3.3.0</gems.version>
+		<mapstruct.version>1.6.3</mapstruct.version>
+		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+
+        <gems.config.dir>${maven.multiModuleProjectDirectory}/config</gems.config.dir>
+        <spotless.check.phase>validate</spotless.check.phase>
+        <checkstyle.fail>true</checkstyle.fail>
+        <gems.convencoes.relatorio>false</gems.convencoes.relatorio>
+</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<!-- GEMS SDK -->
+			<dependency>
+				<groupId>br.com.gems</groupId>
+				<artifactId>gems-rest-common</artifactId>
+				<version>${gems.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.com.gems</groupId>
+				<artifactId>gems-validation</artifactId>
+				<version>${gems.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.com.gems</groupId>
+				<artifactId>gems-exception</artifactId>
+				<version>${gems.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.com.gems</groupId>
+				<artifactId>gems-observability</artifactId>
+				<version>${gems.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.com.gems</groupId>
+				<artifactId>gems-utils</artifactId>
+				<version>${gems.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.com.gems</groupId>
+				<artifactId>gems-jpa</artifactId>
+				<version>${gems.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.com.gems</groupId>
+				<artifactId>gems-aws</artifactId>
+				<version>${gems.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.com.gems</groupId>
+				<artifactId>gems-aws-web</artifactId>
+				<version>${gems.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.com.gems</groupId>
+				<artifactId>gems-openapi</artifactId>
+				<version>${gems.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.com.gems</groupId>
+				<artifactId>gems-mapstruct</artifactId>
+				<version>${gems.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.com.gems</groupId>
+				<artifactId>gems-security-authorization</artifactId>
+				<version>${gems.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.com.gems</groupId>
+				<artifactId>gems-keycloak-admin</artifactId>
+				<version>${gems.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.com.gems</groupId>
+				<artifactId>gems-auditing</artifactId>
+				<version>${gems.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<!-- Os artefatos br.com.gems:gems-* vivem no GitHub Packages do repositorio que os produz,
+	     como manda o padrao do GitHub Packages: um artefato, um repo. Sem esta declaracao o Maven
+	     nunca procura ali, e o build so funciona em maquina que ja tenha os jars no ~/.m2.
+
+	     O <id> E CONTRATO: o Maven casa este id com o <server> do settings.xml para aplicar a
+	     credencial. Se divergirem, a autenticacao simplesmente nao e aplicada e o download
+	     falha com 401 — que qualquer um confunde com token errado. Use `github` aqui, no
+	     ~/.m2/settings.xml do desenvolvedor e no settings.xml gerado pelo Dockerfile.
+
+	     Fica no POM agregador, nao nos filhos: eles ja nao declaram versao, tambem nao devem
+	     declarar repositorio. -->
+	<repositories>
+		<repository>
+			<id>github</id>
+			<name>GitHub Packages — GEMS SDK</name>
+			<url>https://maven.pkg.github.com/Gabriel-mDias/Java-GEMS-SDK</url>
+			<releases><enabled>true</enabled></releases>
+			<snapshots><enabled>false</enabled></snapshots>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>3.10.2</version>
+				<configuration>
+					<java>
+						<includes>
+							<include>src/main/java/**/*.java</include>
+							<include>src/test/java/**/*.java</include>
+						</includes>
+						<eclipse>
+							<file>${gems.config.dir}/spotless/eclipse-formatter.xml</file>
+						</eclipse>
+						<!-- O portador da exceção escrita (N-06) no formatador: um trecho marcado
+						     suspende o Spotless sem que ninguém precise desligá-lo no projeto todo. -->
+						<toggleOffOn/>
+					</java>
+				</configuration>
+				<executions>
+					<execution>
+						<id>spotless-check</id>
+						<!-- `none` sob `-Pconvencoes`, que volta ao modo medição. -->
+						<phase>${spotless.check.phase}</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.6.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>14.1.0</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<configLocation>${gems.config.dir}/checkstyle/checkstyle.xml</configLocation>
+					<failOnViolation>${checkstyle.fail}</failOnViolation>
+					<failsOnError>${checkstyle.fail}</failsOnError>
+					<violationSeverity>error</violationSeverity>
+					<consoleOutput>true</consoleOutput>
+				</configuration>
+				<executions>
+					<execution>
+						<id>checkstyle-main</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<includeTestSourceDirectory>false</includeTestSourceDirectory>
+							<propertyExpansion>
+								suppressionsFile=${gems.config.dir}/checkstyle/suppressions.xml
+								parenPadSeverity=error
+								starImportSeverity=error
+								methodNameSeverity=ignore
+								methodNameFormat=^[a-z][a-zA-Z0-9]*$
+							</propertyExpansion>
+						</configuration>
+					</execution>
+					<execution>
+						<id>checkstyle-test</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<sourceDirectories/>
+							<testSourceDirectories>
+								<testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
+							</testSourceDirectories>
+							<includeTestSourceDirectory>true</includeTestSourceDirectory>
+							<propertyExpansion>
+								suppressionsFile=${gems.config.dir}/checkstyle/suppressions.xml
+								parenPadSeverity=error
+								starImportSeverity=error
+								methodNameSeverity=ignore
+								methodNameFormat=^[a-z][a-zA-Z0-9]*$
+							</propertyExpansion>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<annotationProcessorPaths>
+								<path>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok</artifactId>
+								</path>
+								<path>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok-mapstruct-binding</artifactId>
+									<version>${lombok-mapstruct-binding.version}</version>
+								</path>
+								<path>
+									<groupId>org.mapstruct</groupId>
+									<artifactId>mapstruct-processor</artifactId>
+									<version>${mapstruct.version}</version>
+								</path>
+							</annotationProcessorPaths>
+						</configuration>
+					</execution>
+					<execution>
+						<id>default-testCompile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>testCompile</goal>
+						</goals>
+						<configuration>
+							<annotationProcessorPaths>
+								<path>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok</artifactId>
+								</path>
+								<path>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok-mapstruct-binding</artifactId>
+									<version>${lombok-mapstruct-binding.version}</version>
+								</path>
+								<path>
+									<groupId>org.mapstruct</groupId>
+									<artifactId>mapstruct-processor</artifactId>
+									<version>${mapstruct.version}</version>
+								</path>
+							</annotationProcessorPaths>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--
+				  Não ativar aqui: o goal `repackage` do spring-boot-maven-plugin, se ativo no pai,
+				  roda em TODOS os módulos e transforma jars de biblioteca (model, security, events,
+				  core) em fat jars com BOOT-INF/, inutilizando-os como dependência. Fica em
+				  pluginManagement para que só o app-deploy o ative explicitamente.
+				-->
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<configuration>
+						<excludes>
+							<exclude>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+							</exclude>
+						</excludes>
+					</configuration>
+				</plugin>
+				<!--
+				  A partir do JDK moderno, o Mockito não pode mais se auto-anexar como agente para o
+				  inline-mock-maker (self-attach removido). Resolvemos o jar do mockito-core e o passamos
+				  explicitamente como -javaagent ao Surefire, conforme recomendação oficial do Mockito.
+				  Sem isto, a JVM forkada dos testes pode crashar ("terminated without properly saying goodbye").
+				-->
+				<!-- Em pluginManagement: ${org.mockito:mockito-core:jar} só resolve em módulos que tenham
+				     Mockito no classpath de teste (app-core e app-deploy) — os demais nem devem ativar isto. -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>get-mockito-agent</id>
+							<goals>
+								<goal>properties</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+<systemPropertyVariables><gems.convencoes.relatorio>${gems.convencoes.relatorio}</gems.convencoes.relatorio></systemPropertyVariables>
+						<argLine>-javaagent:${org.mockito:mockito-core:jar} -Xshare:off</argLine>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>

@@ -1,0 +1,38 @@
+﻿# Estado local e worktrees do Kilo
+.kilo/
+.kilocode/
+
+# Dependencias, builds, caches e logs
+**/node_modules/
+**/target/
+**/dist/
+**/.angular/
+**/.cache/
+**/coverage/
+**/*.log
+
+# Arquivos volumosos ou sem valor semantico para o agente
+**/*-lock.json
+**/*.lock
+**/*.jar
+**/*.class
+**/*.map
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.gif
+**/*.webp
+**/*.pdf
+business/**/*.png
+
+# Segredos e credenciais locais
+.env
+.env.*
+**/.env
+**/.env.*
+!**/.env.example
+**/*secret*
+**/*credential*
+backend/.m2/settings.xml
+frontend/.npmrc
+

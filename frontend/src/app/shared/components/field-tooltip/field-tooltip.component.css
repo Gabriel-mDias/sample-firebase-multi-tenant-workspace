@@ -1,0 +1,68 @@
+:host {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.tooltip-host {
+  position: relative;
+  display: inline-flex;
+}
+
+button {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 0;
+  border-radius: var(--gems-radius-full);
+  background: transparent;
+  color: var(--gems-info-600);
+  cursor: help;
+}
+
+button:hover,
+button:focus-visible {
+  background: var(--gems-info-50);
+  outline: none;
+}
+
+button:focus-visible {
+  box-shadow: 0 0 0 3px var(--gems-primary-focus-ring);
+}
+
+/* `fixed`, e não `absolute`: o `gems-form-card` da SDK tem `overflow: hidden`, que recortaria
+ * o balão antes de qualquer z-index valer. As coordenadas vêm do componente. */
+.tooltip-content {
+  position: fixed;
+  z-index: var(--gems-z-tooltip);
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(280px, 75vw);
+  padding: var(--gems-spacing-sm);
+  border-radius: var(--gems-radius-md);
+  background: var(--gems-bg-inverse);
+  color: var(--gems-bg);
+  box-shadow: var(--gems-shadow-lg);
+  font-size: var(--gems-font-size-xs);
+  line-height: var(--gems-line-height-relaxed);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition:
+    opacity var(--gems-transition-fast),
+    transform var(--gems-transition-fast);
+}
+
+.tooltip-host:hover .tooltip-content,
+.tooltip-host:focus-within .tooltip-content,
+.tooltip-host.is-open .tooltip-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tooltip-content {
+    transition: none;
+  }
+}

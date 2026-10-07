@@ -1,0 +1,13 @@
+<div class="list-container animate__animated animate__fadeIn">
+  <h1 class="home-title">Bem-vindo ao App</h1>
+
+  @if (semAcesso()) {
+    <div class="sem-acesso">
+      <i class="fa-solid fa-circle-info"></i>
+      <p>
+        Seu perfil ainda não tem acesso a nenhuma funcionalidade do sistema. Procure o
+        administrador.
+      </p>
+    </div>
+  }
+</div>

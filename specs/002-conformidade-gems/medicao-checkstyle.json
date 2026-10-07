@@ -1,0 +1,1886 @@
+[
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/KeycloakConfig.java",
+    "linha": 21,
+    "coluna": 27,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/KeycloakConfig.java",
+    "linha": 21,
+    "coluna": 61,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/KeycloakConfig.java",
+    "linha": 22,
+    "coluna": 23,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/KeycloakConfig.java",
+    "linha": 22,
+    "coluna": 53,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/KeycloakConfig.java",
+    "linha": 23,
+    "coluna": 27,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/KeycloakConfig.java",
+    "linha": 23,
+    "coluna": 62,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/KeycloakConfig.java",
+    "linha": 24,
+    "coluna": 26,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/KeycloakConfig.java",
+    "linha": 24,
+    "coluna": 59,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/KeycloakConfig.java",
+    "linha": 25,
+    "coluna": 30,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/KeycloakConfig.java",
+    "linha": 25,
+    "coluna": 67,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 53,
+    "coluna": 43,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 53,
+    "coluna": 61,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 54,
+    "coluna": 18,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 54,
+    "coluna": 50,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 58,
+    "coluna": 18,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 58,
+    "coluna": 51,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 58,
+    "coluna": 77,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 58,
+    "coluna": 78,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 60,
+    "coluna": 35,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 62,
+    "coluna": 33,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 62,
+    "coluna": 59,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 80,
+    "coluna": 33,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 80,
+    "coluna": 75,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 96,
+    "coluna": 33,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 96,
+    "coluna": 50,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 98,
+    "coluna": 41,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 100,
+    "coluna": 41,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 100,
+    "coluna": 73,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 101,
+    "coluna": 29,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 101,
+    "coluna": 134,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 103,
+    "coluna": 41,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 103,
+    "coluna": 57,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 104,
+    "coluna": 29,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 104,
+    "coluna": 119,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 106,
+    "coluna": 14,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 109,
+    "coluna": 10,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 111,
+    "coluna": 31,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 111,
+    "coluna": 72,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 111,
+    "coluna": 145,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 111,
+    "coluna": 146,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 113,
+    "coluna": 31,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 114,
+    "coluna": 42,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 114,
+    "coluna": 115,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 114,
+    "coluna": 164,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 114,
+    "coluna": 165,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 117,
+    "coluna": 34,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 118,
+    "coluna": 21,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 118,
+    "coluna": 59,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 118,
+    "coluna": 88,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 118,
+    "coluna": 89,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 132,
+    "coluna": 33,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 132,
+    "coluna": 52,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 133,
+    "coluna": 33,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 133,
+    "coluna": 41,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 133,
+    "coluna": 92,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 133,
+    "coluna": 93,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 134,
+    "coluna": 33,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 134,
+    "coluna": 41,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 134,
+    "coluna": 93,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 134,
+    "coluna": 94,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 135,
+    "coluna": 33,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 135,
+    "coluna": 41,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 135,
+    "coluna": 60,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 135,
+    "coluna": 61,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 141,
+    "coluna": 25,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 141,
+    "coluna": 31,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 144,
+    "coluna": 41,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 144,
+    "coluna": 55,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 162,
+    "coluna": 18,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 162,
+    "coluna": 49,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 162,
+    "coluna": 65,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 162,
+    "coluna": 79,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 162,
+    "coluna": 80,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 162,
+    "coluna": 81,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 166,
+    "coluna": 47,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 166,
+    "coluna": 114,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 170,
+    "coluna": 17,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 170,
+    "coluna": 96,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 174,
+    "coluna": 81,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 174,
+    "coluna": 102,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 175,
+    "coluna": 83,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 175,
+    "coluna": 104,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 177,
+    "coluna": 20,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 179,
+    "coluna": 25,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 179,
+    "coluna": 73,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 180,
+    "coluna": 28,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 180,
+    "coluna": 46,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 181,
+    "coluna": 48,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 181,
+    "coluna": 64,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 181,
+    "coluna": 78,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 181,
+    "coluna": 79,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 183,
+    "coluna": 33,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 183,
+    "coluna": 71,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 184,
+    "coluna": 52,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 184,
+    "coluna": 68,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 184,
+    "coluna": 87,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 184,
+    "coluna": 108,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 184,
+    "coluna": 118,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 184,
+    "coluna": 119,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 190,
+    "coluna": 17,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 190,
+    "coluna": 29,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 199,
+    "coluna": 49,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 199,
+    "coluna": 53,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 200,
+    "coluna": 46,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 200,
+    "coluna": 63,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 205,
+    "coluna": 60,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 205,
+    "coluna": 68,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 209,
+    "coluna": 12,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 209,
+    "coluna": 25,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 209,
+    "coluna": 40,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 209,
+    "coluna": 41,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 210,
+    "coluna": 64,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 210,
+    "coluna": 79,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 211,
+    "coluna": 16,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 211,
+    "coluna": 63,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 211,
+    "coluna": 71,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 211,
+    "coluna": 72,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 212,
+    "coluna": 59,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 212,
+    "coluna": 67,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 213,
+    "coluna": 30,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 213,
+    "coluna": 54,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 213,
+    "coluna": 81,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 213,
+    "coluna": 110,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 213,
+    "coluna": 111,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 213,
+    "coluna": 112,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 218,
+    "coluna": 12,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 218,
+    "coluna": 25,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 218,
+    "coluna": 43,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 218,
+    "coluna": 44,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 219,
+    "coluna": 67,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 219,
+    "coluna": 85,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 221,
+    "coluna": 16,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 221,
+    "coluna": 69,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 221,
+    "coluna": 78,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 221,
+    "coluna": 79,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 222,
+    "coluna": 92,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 222,
+    "coluna": 101,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 223,
+    "coluna": 20,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 223,
+    "coluna": 69,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 223,
+    "coluna": 77,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 223,
+    "coluna": 78,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 224,
+    "coluna": 64,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 224,
+    "coluna": 72,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 225,
+    "coluna": 34,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 225,
+    "coluna": 58,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 225,
+    "coluna": 85,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 225,
+    "coluna": 114,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 225,
+    "coluna": 115,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/config/SecurityConfig.java",
+    "linha": 225,
+    "coluna": 116,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/PasswordUtil.java",
+    "linha": 43,
+    "coluna": 34,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/PasswordUtil.java",
+    "linha": 43,
+    "coluna": 50,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/PasswordUtil.java",
+    "linha": 44,
+    "coluna": 12,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/PasswordUtil.java",
+    "linha": 44,
+    "coluna": 37,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/PasswordUtil.java",
+    "linha": 44,
+    "coluna": 46,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/PasswordUtil.java",
+    "linha": 44,
+    "coluna": 47,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/PasswordUtil.java",
+    "linha": 48,
+    "coluna": 32,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/PasswordUtil.java",
+    "linha": 48,
+    "coluna": 49,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 36,
+    "coluna": 40,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 36,
+    "coluna": 106,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 39,
+    "coluna": 43,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 39,
+    "coluna": 47,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 40,
+    "coluna": 43,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 40,
+    "coluna": 73,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 43,
+    "coluna": 49,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 43,
+    "coluna": 54,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 45,
+    "coluna": 44,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 45,
+    "coluna": 139,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 48,
+    "coluna": 77,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 49,
+    "coluna": 44,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 49,
+    "coluna": 132,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 52,
+    "coluna": 54,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 52,
+    "coluna": 63,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 56,
+    "coluna": 29,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 56,
+    "coluna": 52,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 72,
+    "coluna": 32,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 72,
+    "coluna": 38,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 73,
+    "coluna": 27,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 73,
+    "coluna": 61,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 76,
+    "coluna": 23,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 76,
+    "coluna": 53,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 76,
+    "coluna": 66,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 76,
+    "coluna": 73,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 76,
+    "coluna": 88,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 76,
+    "coluna": 99,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 83,
+    "coluna": 28,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 83,
+    "coluna": 50,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 84,
+    "coluna": 23,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 84,
+    "coluna": 45,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 93,
+    "coluna": 31,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 93,
+    "coluna": 70,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 94,
+    "coluna": 43,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 94,
+    "coluna": 73,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 95,
+    "coluna": 37,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 95,
+    "coluna": 52,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 97,
+    "coluna": 24,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 97,
+    "coluna": 32,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 98,
+    "coluna": 26,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 98,
+    "coluna": 41,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 98,
+    "coluna": 49,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 98,
+    "coluna": 54,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 101,
+    "coluna": 27,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 101,
+    "coluna": 49,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 102,
+    "coluna": 43,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 102,
+    "coluna": 73,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 103,
+    "coluna": 26,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 103,
+    "coluna": 41,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 164,
+    "coluna": 55,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 166,
+    "coluna": 24,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 166,
+    "coluna": 29,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-security/src/main/java/br/com/gems/app/security/service/KeycloakUserService.java",
+    "linha": 170,
+    "coluna": 25,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/localidades/Estado.java",
+    "linha": 3,
+    "coluna": 27,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/localidades/Estado.java",
+    "linha": 4,
+    "coluna": 14,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/localidades/Pais.java",
+    "linha": 3,
+    "coluna": 27,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/localidades/Pais.java",
+    "linha": 4,
+    "coluna": 14,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/normalizacao/Contato.java",
+    "linha": 4,
+    "coluna": 27,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/normalizacao/Contato.java",
+    "linha": 5,
+    "coluna": 14,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/normalizacao/Endereco.java",
+    "linha": 6,
+    "coluna": 27,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/normalizacao/Endereco.java",
+    "linha": 7,
+    "coluna": 14,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/normalizacao/Pessoa.java",
+    "linha": 5,
+    "coluna": 27,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/normalizacao/Pessoa.java",
+    "linha": 6,
+    "coluna": 14,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/parceiro/Parceiro.java",
+    "linha": 8,
+    "coluna": 27,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/parceiro/Parceiro.java",
+    "linha": 9,
+    "coluna": 14,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/seguranca/Usuario.java",
+    "linha": 4,
+    "coluna": 27,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/seguranca/Usuario.java",
+    "linha": 5,
+    "coluna": 14,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/solicitacao/EtapaSolicitacao.java",
+    "linha": 4,
+    "coluna": 27,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/solicitacao/EtapaSolicitacao.java",
+    "linha": 5,
+    "coluna": 14,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/solicitacao/Solicitacao.java",
+    "linha": 6,
+    "coluna": 27,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-model/src/main/java/br/com/gems/app/model/entity/solicitacao/Solicitacao.java",
+    "linha": 7,
+    "coluna": 14,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-core/src/main/java/br/com/gems/app/autorizacao/MapaPerfilAcoes.java",
+    "linha": 12,
+    "coluna": 51,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-core/src/main/java/br/com/gems/app/parceiro/controller/ParceiroController.java",
+    "linha": 20,
+    "coluna": 47,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-core/src/main/java/br/com/gems/app/solicitacao/controller/SolicitacaoController.java",
+    "linha": 20,
+    "coluna": 47,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-core/src/test/java/br/com/gems/app/autorizacao/AutorizacaoBootstrapTest.java",
+    "linha": 21,
+    "coluna": 34,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-core/src/test/java/br/com/gems/app/parceiro/service/ParceiroServiceTest.java",
+    "linha": 28,
+    "coluna": 34,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-core/src/test/java/br/com/gems/app/solicitacao/service/SolicitacaoServiceTest.java",
+    "linha": 24,
+    "coluna": 34,
+    "regra": "AvoidStarImport"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/main/java/br/com/gems/app/AppApplication.java",
+    "linha": 20,
+    "coluna": 32,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/main/java/br/com/gems/app/AppApplication.java",
+    "linha": 20,
+    "coluna": 46,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/main/java/br/com/gems/app/AppApplication.java",
+    "linha": 21,
+    "coluna": 38,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/main/java/br/com/gems/app/AppApplication.java",
+    "linha": 21,
+    "coluna": 65,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 63,
+    "coluna": 19,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 63,
+    "coluna": 32,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 69,
+    "coluna": 24,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 69,
+    "coluna": 29,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 69,
+    "coluna": 63,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 70,
+    "coluna": 30,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 70,
+    "coluna": 48,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 70,
+    "coluna": 75,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 70,
+    "coluna": 87,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 70,
+    "coluna": 88,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 70,
+    "coluna": 89,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 71,
+    "coluna": 37,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 71,
+    "coluna": 64,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 72,
+    "coluna": 33,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 72,
+    "coluna": 38,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 72,
+    "coluna": 39,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 73,
+    "coluna": 27,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 73,
+    "coluna": 50,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 79,
+    "coluna": 24,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 79,
+    "coluna": 28,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 79,
+    "coluna": 64,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 80,
+    "coluna": 31,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 80,
+    "coluna": 63,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 81,
+    "coluna": 30,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 81,
+    "coluna": 48,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 81,
+    "coluna": 75,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 81,
+    "coluna": 87,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 81,
+    "coluna": 88,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 81,
+    "coluna": 89,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 81,
+    "coluna": 90,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 82,
+    "coluna": 27,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 82,
+    "coluna": 50,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 88,
+    "coluna": 24,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 88,
+    "coluna": 31,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 88,
+    "coluna": 57,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 89,
+    "coluna": 31,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 89,
+    "coluna": 63,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 90,
+    "coluna": 30,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 90,
+    "coluna": 48,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 90,
+    "coluna": 75,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 90,
+    "coluna": 87,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 90,
+    "coluna": 88,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 90,
+    "coluna": 89,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 90,
+    "coluna": 90,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 91,
+    "coluna": 27,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 91,
+    "coluna": 50,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 97,
+    "coluna": 24,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 97,
+    "coluna": 31,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 97,
+    "coluna": 57,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 98,
+    "coluna": 31,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 98,
+    "coluna": 63,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 99,
+    "coluna": 30,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 99,
+    "coluna": 48,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 99,
+    "coluna": 75,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 99,
+    "coluna": 88,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 99,
+    "coluna": 89,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 99,
+    "coluna": 90,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 99,
+    "coluna": 91,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 100,
+    "coluna": 27,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/security/S3EndpointsSecurityIntegrationTest.java",
+    "linha": 100,
+    "coluna": 50,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 44,
+    "coluna": 80,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 44,
+    "coluna": 94,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 45,
+    "coluna": 30,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 45,
+    "coluna": 44,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 46,
+    "coluna": 26,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 46,
+    "coluna": 37,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 47,
+    "coluna": 26,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 47,
+    "coluna": 37,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 59,
+    "coluna": 38,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 59,
+    "coluna": 71,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 60,
+    "coluna": 21,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 60,
+    "coluna": 67,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 61,
+    "coluna": 21,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 61,
+    "coluna": 73,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 62,
+    "coluna": 21,
+    "regra": "ParenPad"
+  },
+  {
+    "arquivo": "backend/app-deploy/src/test/java/br/com/gems/app/support/AbstractIntegrationTest.java",
+    "linha": 62,
+    "coluna": 73,
+    "regra": "ParenPad"
+  }
+]

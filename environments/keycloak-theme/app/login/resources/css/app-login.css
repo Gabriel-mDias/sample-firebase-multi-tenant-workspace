@@ -1,0 +1,1014 @@
+/* =============================================================================
+   App — tema de login do Keycloak
+   Conceito: um documento oficial aberto em duas páginas.
+
+   O cartão central É o documento: painel esquerdo (ilustrado) com imagem sob
+   overlay navy, guilhoché, selo carimbado e brasão em marca d'água; painel
+   direito (dados) off-white com o formulário e a faixa de código.
+
+   A IDENTIDADE VISUAL É DO MOLDE — imagem, paleta e logo são o primeiro item
+   que um projeto derivado troca. A estrutura abaixo não depende delas.
+
+   Regra que rege a paleta: VERDE E VERMELHO SÃO TINTA, NUNCA GRANDES ÁREAS.
+   Off-white e navy fazem todo o trabalho estrutural. É isso que mantém o
+   resultado institucional em vez de decorativo.
+
+   Escrito desktop-first: o artefato primário é o documento de duas colunas, e
+   o mobile é a sua redução graciosa.
+
+   Não há tokens --gems-* aqui: este CSS roda no Keycloak, fora do Angular, onde
+   o provideGemsTheme() não existe. Os hexadecimais abaixo são a MESMA paleta
+   declarada em frontend/src/app/app.config.ts e devem ser mantidos em sincronia.
+
+   Assets em resources/img/ devem ser CÓPIAS dos de frontend/public/ (logos, emblema,
+   favicon). Se a marca mudar lá, atualize aqui.
+
+   Foto de fundo: ponha um WebP em resources/img/hero.webp (sugestão: 700x1050, q55).
+   Photo by Nick Fewings on Unsplash — https://unsplash.com/photos/sKYsYzEG2Lg
+   Licença Unsplash: uso comercial irrevogável, sem atribuição obrigatória.
+============================================================================= */
+
+/* --- Fontes ------------------------------------------------------------------
+   Inter auto-hospedada (copiada de frontend/node_modules/@fontsource/inter).
+   Não usamos Google Fonts: seria uma dependência externa no caminho crítico de
+   autenticação, com implicação de privacidade/LGPD e round-trip bloqueante. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/inter-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/inter-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../fonts/inter-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/inter-latin-700-normal.woff2') format('woff2');
+}
+
+/* --- Tokens ---------------------------------------------------------------- */
+:root {
+  --app-green: #008c45; /* acento do molde — só como tinta, nunca em área grande */
+  --app-green-ink: #007038; /* verde escurecido: 5,3:1 com texto branco (AA) */
+  --app-red: #cd212a; /* acento do molde — só como tinta, nunca em área grande */
+  --app-red-ink: #b01b22; /* vermelho escurecido: 5,9:1 sobre off-white (AA) */
+  --app-navy: #1a2b3c; /* texto principal e painel do retrato */
+  --app-offwhite: #f8fafc; /* fundo dominante */
+  --app-muted: #5a6b7c; /* texto auxiliar — 5,1:1. NÃO clarear mais */
+  --app-border: #d1d5db; /* borda de input, herdada do padrão da SPA */
+
+  --app-radius: 0.5rem;
+  --app-card-radius: 14px;
+  --app-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --app-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  --app-mono: ui-monospace, 'Cascadia Mono', 'Segoe UI Mono', 'Roboto Mono', monospace;
+}
+
+/* --- Reset mínimo --------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.app-html {
+  /* 100dvh (e não 100vh) evita o salto causado pela barra de endereço no
+     Safari iOS, que é onde o bug aparece de forma mais visível. */
+  min-height: 100dvh;
+  -webkit-text-size-adjust: 100%;
+}
+
+.app-body {
+  margin: 0;
+  min-height: 100dvh;
+  /* Trava de segurança: nenhum descendente (notadamente a MRZ, que é
+     `white-space:nowrap`) pode gerar scroll horizontal na página. */
+  overflow-x: hidden;
+  font-family: var(--app-font);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--app-navy);
+  background: var(--app-offwhite);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* O `base` renderiza um #kc-header com o displayNameHtml do realm acima do
+   cartão. No nosso layout a marca está dentro do documento, então ele é
+   redundante — ocultamos em vez de remover do template, para preservar o
+   contrato da macro. */
+.app-skip-header {
+  display: none;
+}
+
+/* =============================================================================
+   CASCA E CARTÃO-DOCUMENTO
+============================================================================= */
+
+.app-shell {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  /* Idem: contém a largura intrínseca da MRZ dentro da casca. */
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* O cartão. A margem off-white ao redor é o que faz o conjunto ler como um
+   DOCUMENTO SOBRE A MESA, e não como um site — é ela que faz a maior parte do
+   trabalho estético. Por isso não usamos split full-bleed. */
+.app-doc {
+  position: relative;
+  width: 100%;
+  max-width: 1040px;
+  min-height: 620px;
+  display: grid;
+  /* Sem isto, o `white-space:nowrap` da MRZ impõe uma largura mínima à coluna e
+     estoura o grid horizontalmente em telas estreitas. */
+  min-width: 0;
+  /* Assimetria deliberada: espelha a abertura de um documento real, em que a
+     página ilustrada é mais estreita que a de dados. 50/50 leria genérico. */
+  grid-template-columns: 42% 58%;
+  background: var(--app-offwhite);
+  border-radius: var(--app-card-radius);
+  overflow: hidden;
+  box-shadow:
+    0 1px 2px rgba(26, 43, 60, 0.04),
+    0 24px 48px -12px rgba(26, 43, 60, 0.14);
+}
+
+/* Barra de marca no topo do cartão. Paradas DURAS — uma faixa multicolor com gradiente
+   suave entre as cores parece defeito de renderização.
+
+   A faixa central usa o NAVY do painel, não branco: contra o cartão off-white,
+   uma faixa branca simplesmente desaparece e a barra lê como dois blocos
+   desconexos. O navy dá a separação necessária, amarra a barra visualmente ao
+   painel do retrato e mantém a leitura de faixa única e contínua (a
+   cor do meio é o próprio corpo off-white do documento, logo abaixo). */
+.app-doc::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 5px;
+  z-index: 3;
+  background: linear-gradient(
+    90deg,
+    var(--app-green) 0 33.333%,
+    var(--app-navy) 33.333% 66.666%,
+    var(--app-red) 66.666% 100%
+  );
+}
+
+/* =============================================================================
+   PAINEL ESQUERDO — o "lado do retrato"
+============================================================================= */
+
+.app-doc__aside {
+  position: relative;
+  /* overflow:hidden é funcional, não cosmético: é ele que RECORTA o selo na
+     borda inferior, e é o recorte que faz o selo parecer carimbado. */
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 56px 40px;
+  background-color: var(--app-navy);
+}
+
+/* Camada da foto + overlay navy.
+   A foto vive numa camada separada para que o overlay a cubra sem afetar a logo
+   e o selo, que ficam acima. O overlay em 88–94% é o que preserva o contraste
+   13,6:1 da logo branca; clareá-lo comprometeria a legibilidade.
+
+   Se a foto faltar, a cor sólida do .app-doc__aside permanece como
+   fundo — o layout não quebra.
+
+   Crédito da foto: ver comentário adiante nesta regra. */
+.app-doc__aside-media {
+  position: absolute;
+  inset: 0;
+  /* O overlay começa mais leve no topo (0.76) e fecha embaixo (0.93): isso deixa
+     a arcada do Coliseu perceptível na metade superior — sem isso a foto fica
+     indistinguível de um navy sólido e não paga seu peso em bytes — e ainda
+     entrega fundo escuro o suficiente sob a logo branca (que fica no topo, mas
+     sobre a região de pedra, de tom médio). */
+  background-image:
+    linear-gradient(rgba(26, 43, 60, 0.76), rgba(26, 43, 60, 0.86) 55%, rgba(26, 43, 60, 0.93)),
+    url('../img/hero.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Guilhoché — a trama de linhas finas dos documentos de segurança.
+   Duas camadas em ângulos incomensuráveis (48°/-48°) mais um tint verde radial;
+   é o tint que impede a leitura de "hachura diagonal genérica". Opacidade total
+   mantida abaixo de ~6%: acima disso, briga com a logo. */
+.app-doc__aside::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(48deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(-48deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 7px),
+    repeating-radial-gradient(circle at 30% 25%, rgba(0, 140, 69, 0.1) 0 1px, transparent 1px 14px);
+}
+
+/* Brasão em marca d'água.
+   O SVG fixa verde/vermelho num <style> interno com classes .cls-N e NÃO usa
+   currentColor — CSS externo não alcança o conteúdo de um <img>. O filtro
+   brightness(0) invert(1) é o caminho confiável para forçá-lo a branco. */
+.app-doc__watermark {
+  position: absolute;
+  /* Deslocado do centro geométrico e reduzido a 46%: centralizado e a 64% ele
+     competia com a logo em vez de funcionar como marca d'água de fundo. */
+  top: 46%;
+  right: -8%;
+  width: 46%;
+  height: auto;
+  opacity: 0.05;
+  filter: brightness(0) invert(1);
+  pointer-events: none;
+}
+
+/* Logo branca. width + height:auto são OBRIGATÓRIOS: nenhum dos SVGs da marca
+   declara width/height (só viewBox), então num contexto flex a imagem colapsa
+   para 0x0 — bug já documentado em frontend/src/styles.css. */
+.app-doc__logo-light {
+  position: relative;
+  z-index: 2;
+  width: 210px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Selo carimbado — o elemento mais evocativo do conjunto, e por isso o mais
+   contido: SÓ CONTORNO, sem preenchimento, e a 22% de opacidade.
+   Posicionado sangrando pela borda inferior-esquerda: um selo inteiramente
+   contido parece logo; recortado parece carimbo. */
+.app-stamp {
+  position: absolute;
+  z-index: 2;
+  /* Sangra o suficiente para ler como carimbo, mas mantém ~75% do círculo
+     visível — antes (-34px/-30px de um círculo de 188px) só um arco aparecia e
+     o texto ficava fora do quadro. */
+  bottom: -18px;
+  left: -14px;
+  width: 196px;
+  height: 196px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 30px;
+  text-align: center;
+  /* Verde mais claro que --app-green: sobre o navy escuro do painel, o tom
+     original some. Com 0.38 de opacidade o carimbo fica legível sem virar
+     elemento principal. */
+  border: 2px solid #2fae72;
+  border-radius: 50%;
+  transform: rotate(-14deg);
+  opacity: 0.38;
+  color: #eaf5ee;
+  pointer-events: none;
+}
+
+/* Anel interno concêntrico — detalhe que caracteriza carimbo oficial. */
+.app-stamp::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid #2fae72;
+  border-radius: 50%;
+}
+
+.app-stamp__line1,
+.app-stamp__line2 {
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.app-stamp__line2 {
+  letter-spacing: 0.12em;
+  opacity: 0.85;
+}
+
+/* =============================================================================
+   PAINEL DIREITO — o "lado dos dados"
+============================================================================= */
+
+.app-doc__main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* min-width:0 + overflow:hidden contêm a MRZ (`white-space:nowrap`), que de
+     outro modo impõe sua largura intrínseca a esta coluna do grid e estoura o
+     cartão horizontalmente em telas estreitas. */
+  min-width: 0;
+  overflow: hidden;
+  /* Mesma cor do fundo da página: o cartão lê como UMA folha única com um painel
+     impresso à esquerda, e não como dois blocos colados. */
+  background: var(--app-offwhite);
+  /* Linha de destaque/picote entre os painéis. */
+  border-left: 2px dashed rgba(26, 43, 60, 0.14);
+}
+
+.app-doc__body {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 56px 32px;
+}
+
+/* Marcas de registro de impressão: cantoneiras em "L" nos quatro cantos.
+   Pista sutil de documento impresso, a custo quase zero.
+
+   Um único elemento não pode gerar quatro cantos com dois pseudo-elementos, então
+   usamos gradientes: quatro camadas de 10x10, uma ancorada em cada canto, cada
+   uma desenhando duas linhas de 1px em "L". */
+.app-doc__body::before {
+  content: '';
+  position: absolute;
+  inset: 26px;
+  pointer-events: none;
+  --l: rgba(26, 43, 60, 0.18);
+  background-image:
+    /* canto superior esquerdo */
+    linear-gradient(var(--l), var(--l)),
+    linear-gradient(var(--l), var(--l)),
+    /* canto superior direito */ linear-gradient(var(--l), var(--l)),
+    linear-gradient(var(--l), var(--l)),
+    /* canto inferior esquerdo */ linear-gradient(var(--l), var(--l)),
+    linear-gradient(var(--l), var(--l)),
+    /* canto inferior direito */ linear-gradient(var(--l), var(--l)),
+    linear-gradient(var(--l), var(--l));
+  background-size:
+    10px 1px, 1px 10px, 10px 1px, 1px 10px, 10px 1px, 1px 10px, 10px 1px, 1px 10px;
+  background-position:
+    top left, top left, top right, top right, bottom left, bottom left, bottom right,
+    bottom right;
+  background-repeat: no-repeat;
+}
+
+/* Logo colorida: existe apenas para o mobile, quando o painel navy é ocultado. */
+.app-doc__logo-color {
+  display: none;
+  width: 170px;
+  max-width: 70%;
+  height: auto;
+  margin-bottom: 28px;
+}
+
+/* --- Cabeçalho ------------------------------------------------------------ */
+.app-doc__header {
+  margin-bottom: 28px;
+}
+
+.app-eyebrow {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--app-muted);
+}
+
+#kc-page-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--app-navy);
+}
+
+/* Reinício de fluxo: exibe o usuário já informado numa tentativa anterior. */
+#kc-username {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--app-muted);
+}
+
+#kc-attempted-username {
+  font-weight: 600;
+  color: var(--app-navy);
+}
+
+#reset-login {
+  font-size: 12px;
+  color: var(--app-green-ink);
+}
+
+.kc-tooltip-text {
+  text-decoration: underline;
+}
+
+.app-doc__content .subtitle,
+.app-doc__title-col {
+  font-size: 12px;
+  color: var(--app-muted);
+}
+
+.app-doc__content .required {
+  color: var(--app-red-ink);
+}
+
+/* =============================================================================
+   FORMULÁRIO
+   Inputs e botões ecoam frontend/src/styles.css para que a transição
+   login -> aplicação seja visualmente contínua.
+============================================================================= */
+
+.app-field {
+  margin-bottom: 20px;
+}
+
+.app-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--app-navy);
+}
+
+.app-input {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--app-navy);
+  /* Branco puro SÓ aqui: é o que levanta os campos do fundo off-white. */
+  background: #fff;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s var(--app-ease);
+}
+
+.app-input::placeholder {
+  color: var(--app-muted);
+}
+
+/* Anel de foco verde da marca. Divergência DELIBERADA da SPA, cujo anel é
+   índigo (#6366f1) — um default da GEMS que o app nunca re-tematizou. A
+   geometria (4px) é a mesma, para a sensação continuar familiar. */
+.app-input:focus {
+  outline: none;
+  border-color: var(--app-green);
+  box-shadow: 0 0 0 4px rgba(0, 140, 69, 0.14);
+}
+
+.app-input[aria-invalid='true'] {
+  border-color: var(--app-red-ink);
+}
+
+.app-input[aria-invalid='true']:focus {
+  box-shadow: 0 0 0 4px rgba(205, 33, 42, 0.14);
+}
+
+/* Grupo do campo de senha: o botão de revelar fica sobreposto à direita. */
+.app-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.app-input-group .app-input {
+  padding-right: 48px;
+}
+
+.app-reveal {
+  position: absolute;
+  right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 44px: alvo mínimo de toque confortável. */
+  width: 40px;
+  min-height: 44px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: var(--app-muted);
+  border-radius: var(--app-radius);
+  touch-action: manipulation;
+}
+
+.app-reveal:hover {
+  color: var(--app-navy);
+}
+
+.app-reveal:focus-visible {
+  outline: 2px solid var(--app-green);
+  outline-offset: 1px;
+}
+
+.app-field__error {
+  display: block;
+  margin-top: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--app-red-ink);
+}
+
+/* --- Opções (lembrar-me / esqueci a senha) -------------------------------- */
+.app-form__settings {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.app-checkbox label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--app-muted);
+  cursor: pointer;
+}
+
+.app-checkbox input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--app-green);
+  cursor: pointer;
+}
+
+.app-form__options-wrap a,
+.app-backlink {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--app-green-ink);
+  text-decoration: none;
+}
+
+.app-form__options-wrap a:hover,
+.app-backlink:hover,
+.app-form__options-wrap a:focus-visible,
+.app-backlink:focus-visible {
+  text-decoration: underline;
+}
+
+/* O checkbox "encerrar outras sessões" (login-update-password) reaproveita o
+   #kc-form-options do base; damos a ele o mesmo tratamento do lembrar-me. */
+#kc-form-options .checkbox label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--app-muted);
+  cursor: pointer;
+}
+
+#kc-form-options .checkbox input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--app-green);
+}
+
+/* --- Botões --------------------------------------------------------------- */
+.app-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.625rem 1.25rem;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: var(--app-radius);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: all 0.2s var(--app-ease);
+}
+
+/* Fundo em --app-green-ink (#007038), não no verde base: com texto
+   branco a 15px, #008C45 dá apenas ~3,9:1 e reprovaria no WCAG AA. */
+.app-btn--primary {
+  color: #fff;
+  background: var(--app-green-ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.app-btn--primary:hover {
+  background: #005c2e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px -2px rgba(0, 112, 56, 0.35);
+}
+
+.app-btn--primary:active {
+  transform: translateY(0);
+}
+
+.app-btn--ghost {
+  color: var(--app-navy);
+  background: #fff;
+  border-color: var(--app-border);
+}
+
+.app-btn--ghost:hover {
+  background: #f1f5f9;
+}
+
+.app-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 140, 69, 0.24);
+}
+
+.app-btn--block {
+  width: 100%;
+}
+
+.app-form__buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.app-form__buttons .app-btn {
+  flex: 1;
+}
+
+/* =============================================================================
+   ALERTAS, INSTRUÇÕES E ÍCONES
+============================================================================= */
+
+.app-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  font-size: 13.5px;
+  border-radius: var(--app-radius);
+  border-left: 3px solid transparent;
+}
+
+.app-alert--error {
+  color: var(--app-red-ink);
+  background: rgba(205, 33, 42, 0.07);
+  border-left-color: var(--app-red-ink);
+}
+
+.app-alert--warning {
+  color: #8a5300;
+  background: rgba(217, 119, 6, 0.09);
+  border-left-color: #b26a04;
+}
+
+.app-alert--success {
+  color: #005c2e;
+  background: rgba(0, 140, 69, 0.08);
+  border-left-color: var(--app-green-ink);
+}
+
+.app-alert--info {
+  color: #0b5d8a;
+  background: rgba(2, 132, 199, 0.08);
+  border-left-color: #0b6ea3;
+}
+
+.app-alert__title {
+  flex: 1;
+}
+
+/* Ícones como mask-image SVG inline: sem icon-font, sem requisição extra.
+   O `base` emite <span class="..."> vazio, então tudo vem daqui. */
+.app-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.app-icon--error,
+.app-icon--warn {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 2 1 21h22L12 2Zm1 15h-2v-2h2v2Zm0-4h-2V8h2v5Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 2 1 21h22L12 2Zm1 15h-2v-2h2v2Zm0-4h-2V8h2v5Z'/%3E%3C/svg%3E");
+}
+
+.app-icon--ok {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z'/%3E%3C/svg%3E");
+}
+
+.app-icon--info,
+.app-icon--restart {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z'/%3E%3C/svg%3E");
+}
+
+.app-icon--eye {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 5C6.5 5 2.7 9.6 1.5 12c1.2 2.4 5 7 10.5 7s9.3-4.6 10.5-7C21.3 9.6 17.5 5 12 5Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-6a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 5C6.5 5 2.7 9.6 1.5 12c1.2 2.4 5 7 10.5 7s9.3-4.6 10.5-7C21.3 9.6 17.5 5 12 5Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-6a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z'/%3E%3C/svg%3E");
+}
+
+.app-icon--eye-off {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M2 4.3 3.3 3 21 20.7 19.7 22l-3.3-3.3A11 11 0 0 1 12 19c-5.5 0-9.3-4.6-10.5-7a15 15 0 0 1 4-4.7L2 4.3Zm10 3.7c2.2 0 4 1.8 4 4 0 .5-.1 1-.3 1.5l-5.2-5.2c.5-.2 1-.3 1.5-.3Zm-.6 8 .6.1c-.2 0-.4 0-.6-.1ZM12 5c5.5 0 9.3 4.6 10.5 7-.5 1-1.5 2.4-2.9 3.6L12 8h-.2L9.4 5.4C10.2 5.1 11.1 5 12 5Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M2 4.3 3.3 3 21 20.7 19.7 22l-3.3-3.3A11 11 0 0 1 12 19c-5.5 0-9.3-4.6-10.5-7a15 15 0 0 1 4-4.7L2 4.3Zm10 3.7c2.2 0 4 1.8 4 4 0 .5-.1 1-.3 1.5l-5.2-5.2c.5-.2 1-.3 1.5-.3Zm-.6 8 .6.1c-.2 0-.4 0-.6-.1ZM12 5c5.5 0 9.3 4.6 10.5 7-.5 1-1.5 2.4-2.9 3.6L12 8h-.2L9.4 5.4C10.2 5.1 11.1 5 12 5Z'/%3E%3C/svg%3E");
+}
+
+/* Instruções e área de info (usadas por error/info/page-expired/reset). */
+.app-instruction {
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: var(--app-muted);
+}
+
+.app-instruction a {
+  color: var(--app-green-ink);
+  font-weight: 500;
+}
+
+.app-info {
+  margin-top: 4px;
+  font-size: 13.5px;
+  color: var(--app-muted);
+}
+
+#kc-info-message,
+#kc-error-message {
+  margin-top: 4px;
+}
+
+#try-another-way {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--app-green-ink);
+}
+
+/* Provedores de identidade: nenhum configurado hoje, estilo mínimo por garantia. */
+.app-social {
+  margin-top: 20px;
+}
+
+.app-social__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.app-social__btn {
+  display: block;
+  padding: 10px 14px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--app-navy);
+  background: #fff;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+}
+
+/* =============================================================================
+   MRZ E CRÉDITOS
+============================================================================= */
+
+/* Zona de leitura mecânica — o detalhe que "vende" o conceito de documento.
+   Decorativa: o template marca aria-hidden, e user-select:none evita que seja
+   copiada por acidente junto com o conteúdo real. */
+.app-mrz {
+  padding: 12px 56px 6px;
+  font-family: var(--app-mono);
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.14em;
+  color: rgba(26, 43, 60, 0.3);
+  border-top: 1px dashed rgba(26, 43, 60, 0.14);
+  white-space: nowrap;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* `width:0; min-width:100%` é o truque que impede a MRZ de propagar sua largura
+   intrínseca (ela é `nowrap` e mais larga que a tela no mobile) para o grid pai:
+   o `width:0` zera a contribuição no cálculo de largura mínima do container,
+   enquanto o `min-width:100%` a faz preencher o espaço realmente disponível. */
+.app-mrz span {
+  display: block;
+  width: 0;
+  min-width: 100%;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.app-credits {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  padding: 6px 56px 20px;
+  text-align: right;
+  color: rgba(26, 43, 60, 0.42);
+}
+
+.app-credits__owner {
+  font-size: 10px;
+}
+
+.app-credits__vendor {
+  font-size: 11px;
+}
+
+.app-credits__vendor strong {
+  font-weight: 600;
+}
+
+/* =============================================================================
+   RESPONSIVO
+============================================================================= */
+
+/* --- Tablet: o painel do retrato vira banner horizontal ------------------- */
+@media (max-width: 1023px) {
+  .app-shell {
+    padding: 32px 20px;
+  }
+
+  .app-doc {
+    max-width: 560px;
+    min-height: 0;
+    grid-template-columns: 1fr;
+  }
+
+  .app-doc__aside {
+    min-height: 150px;
+    align-items: center;
+    padding: 32px 24px;
+  }
+
+  /* Selo e brasão precisam de altura vertical para respirar; num banner de
+     150px ficariam apertados e ilegíveis. */
+  .app-stamp,
+  .app-doc__watermark {
+    display: none;
+  }
+
+  .app-doc__logo-light {
+    width: 180px;
+  }
+
+  /* A divisória tracejada migra de lateral para inferior. */
+  .app-doc__main {
+    border-left: 0;
+    border-top: 2px dashed rgba(26, 43, 60, 0.14);
+  }
+
+  .app-doc__body {
+    padding: 36px 40px 28px;
+  }
+
+  .app-mrz {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .app-credits {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+/* --- Mobile: sem painel navy, cartão full-bleed --------------------------- */
+@media (max-width: 767px) {
+  .app-shell {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  /* Full-bleed: o cartão passa a se comportar como uma tela nativa. */
+  .app-doc {
+    max-width: none;
+    min-height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .app-doc::before {
+    border-radius: 0;
+  }
+
+  /* O painel do retrato sai de cena e a logo colorida assume o topo do
+     formulário. A barra de marca permanece: é o sinal de identidade mais barato. */
+  .app-doc__aside {
+    display: none;
+  }
+
+  .app-doc__main {
+    border-top: 0;
+  }
+
+  .app-doc__logo-color {
+    display: block;
+  }
+
+  .app-doc__body {
+    justify-content: flex-start;
+    padding: 32px 24px 24px;
+  }
+
+  /* Marcas de registro: no full-bleed mobile não há moldura de documento para
+     elas referenciarem, então saem de cena. */
+  .app-doc__body::before {
+    display: none;
+  }
+
+  #kc-page-title {
+    font-size: 24px;
+  }
+
+  /* 16px é o MÍNIMO: abaixo disso o Safari iOS aplica auto-zoom ao focar o
+     campo, deslocando todo o layout. É o bug de login mobile mais esquecido. */
+  .app-input {
+    font-size: 16px;
+  }
+
+  .app-mrz {
+    padding: 10px 24px 4px;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .app-credits {
+    align-items: center;
+    padding: 8px 24px 20px;
+    text-align: center;
+  }
+}
+
+/* --- Telas muito estreitas ------------------------------------------------ */
+@media (max-width: 379px) {
+  .app-doc__body {
+    padding: 24px 16px 20px;
+  }
+
+  /* A MRZ trunca de forma feia abaixo deste ponto; melhor omitir. */
+  .app-mrz {
+    display: none;
+  }
+
+  .app-credits {
+    padding: 12px 16px 18px;
+  }
+
+  .app-form__settings {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* --- Acessibilidade ------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .app-btn--primary:hover {
+    transform: none;
+  }
+}

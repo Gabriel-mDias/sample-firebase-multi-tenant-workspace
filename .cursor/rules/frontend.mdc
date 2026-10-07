@@ -1,0 +1,10 @@
+---
+description: Convenções frontend Angular
+globs: frontend/**/*
+alwaysApply: false
+---
+
+Siga `frontend/AGENTS.md` (inclui o mapa de features). Use contexto por arquivo/símbolo e não Full
+Folder Content.
+
+A constituição 2.0.0 e frontend/AGENTS.md definem autoridade: regras GEMS vencem código consolidado e a adoção de módulos SDK exige prova de equivalência.

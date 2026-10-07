@@ -1,0 +1,103 @@
+<div [formGroup]="form()" class="form-grid">
+  <div class="form-group">
+    <label class="required fw-bold">Primeiro nome</label>
+    <gems-input-text
+      formControlName="primeiroNome"
+      placeholder="Mario"
+      icon="fa-solid fa-user"
+      [maxlength]="255"
+    ></gems-input-text>
+    <gems-field-error
+      [control]="form().get('primeiroNome')"
+      [messages]="erroPrimeiroNome"
+    ></gems-field-error>
+  </div>
+
+  <div class="form-group">
+    <label class="required fw-bold">Sobrenome</label>
+    <gems-input-text
+      formControlName="sobrenome"
+      placeholder="Rossi"
+      icon="fa-solid fa-user"
+      [maxlength]="255"
+    ></gems-input-text>
+    <gems-field-error
+      [control]="form().get('sobrenome')"
+      [messages]="erroSobrenome"
+    ></gems-field-error>
+  </div>
+
+  <div class="form-group">
+    <div class="cpf-row">
+      <div class="cpf-input-wrapper" appEnterBusca (buscar)="buscarPorEnter()">
+        <gems-input-document
+          label="CPF"
+          [required]="cpfObrigatorio()"
+          formControlName="cpf"
+          documentType="cpf"
+          placeholder="000.000.000-00"
+        ></gems-input-document>
+      </div>
+
+      @if (!isReadOnly()) {
+        <div class="cpf-btn-wrapper">
+          <button
+            type="button"
+            class="btn-secondary btn-buscar-cpf"
+            data-testid="buscar-cpf"
+            [disabled]="isSearching()"
+            (click)="buscarCpf.emit()"
+          >
+            @if (isSearching()) {
+              <i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i>
+            } @else {
+              <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            }
+            Buscar
+          </button>
+        </div>
+      }
+    </div>
+    <gems-field-error [control]="form().get('cpf')" [messages]="cpfErrors()"></gems-field-error>
+    @if (cpfHint()) {
+      <p class="field-hint">{{ cpfHint() }}</p>
+    }
+  </div>
+
+  <div class="form-group">
+    <label class="fw-bold">RG</label>
+    <gems-input-text
+      appRgMask
+      formControlName="rg"
+      placeholder="MG-12.345.678"
+      icon="fa-solid fa-address-card"
+      [maxlength]="20"
+    ></gems-input-text>
+  </div>
+
+  <div class="form-group">
+    <label class="required fw-bold">Sexo</label>
+    <gems-select
+      formControlName="sexo"
+      placeholder="Selecione o sexo"
+      [required]="true"
+      [options]="sexoOptions"
+    ></gems-select>
+    <gems-field-error [control]="form().get('sexo')" [messages]="erroSexo"></gems-field-error>
+  </div>
+
+  @if (comDataNascimento()) {
+    <div class="form-group">
+      <gems-input-date
+        label="Data de nascimento"
+        [required]="true"
+        formControlName="dataNascimento"
+        format="dayMonthYear"
+      ></gems-input-date>
+      <gems-field-error
+        [control]="form().get('dataNascimento')"
+        [messages]="erroDataNascimento"
+      ></gems-field-error>
+    </div>
+  }
+</div>

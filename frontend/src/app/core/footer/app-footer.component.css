@@ -1,0 +1,63 @@
+/* Rodapé fixo, restrito à coluna de conteúdo (nunca sobrepõe o menu lateral).
+ * `left` acompanha a largura do menu via `--app-menu-width` (definida em
+ * styles.css e atualizada pelo App conforme o menu expande/colapsa), então o
+ * empilhamento (`z-index`) nunca precisa disputar com o `.gems-side-menu-container`
+ * (que usa 1000 literal) — geometricamente eles não se sobrepõem. */
+:host {
+  position: fixed;
+  bottom: 0;
+  left: var(--app-menu-width, 260px);
+  right: 0;
+  height: var(--app-footer-height, 28px);
+  z-index: var(--gems-z-fixed);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* A secundária do tema, um passo mais escura que o token base para
+     contraste suficiente com o texto. */
+  background: var(--gems-secondary-600);
+  color: var(--gems-secondary-contrast);
+
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  user-select: none;
+  white-space: nowrap;
+
+  /* Espelha a transição de largura do próprio menu lateral da SDK. */
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host {
+    transition: none;
+  }
+}
+
+/* ≤768px: o menu vira drawer fora do fluxo, então o rodapé ocupa a largura
+   toda. Fonte maior facilita a leitura em tela touch. */
+@media screen and (max-width: 768px) {
+  :host {
+    left: 0;
+    height: var(--app-footer-height-mobile);
+    font-size: 11px;
+  }
+}
+
+/* Por padrão mostramos a frase completa e escondemos a variante curta. */
+.short-text {
+  display: none;
+}
+
+/* ≤380px: a frase completa quebraria em duas linhas. Troca por uma versão
+   mais curta que cabe em uma linha só, sem alterar o layout do rodapé. */
+@media screen and (max-width: 380px) {
+  .full-text {
+    display: none;
+  }
+
+  .short-text {
+    display: inline;
+  }
+}

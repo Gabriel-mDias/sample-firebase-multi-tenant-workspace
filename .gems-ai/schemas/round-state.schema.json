@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gems.example/schemas/round-state.schema.json",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schemaVersion", "slug", "phase", "outcome", "checkpoint"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "phase": { "enum": ["discovery", "specification", "plan", "tasks", "execution", "validation", "closed"] },
+    "outcome": { "type": ["null", "string"], "enum": [null, "completed", "blocked"] },
+    "checkpoint": { "type": ["null", "string"] },
+    "blocker": { "type": "string", "minLength": 1 }
+  }
+}
