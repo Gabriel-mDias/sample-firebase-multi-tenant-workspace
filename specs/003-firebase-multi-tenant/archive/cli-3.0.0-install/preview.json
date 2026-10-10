@@ -1,0 +1,971 @@
+{
+  "changed": false,
+  "dryRun": true,
+  "files": [
+    {
+      "kind": "rule",
+      "rule": "base.precedence",
+      "selected": true,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\base\\precedence.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\base.precedence.md",
+      "sha256": "af0d2337273a7629145223d7616f3a0df3fe9f6a79dc86eab25eeae47f2b7c08",
+      "sourceSha256": "af0d2337273a7629145223d7616f3a0df3fe9f6a79dc86eab25eeae47f2b7c08",
+      "targetSha256": "1521216de0822a3027ba9165d4bb10db2c2148f1b6ced7a687e1d48565380b2a",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "base.safe-change",
+      "selected": true,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\base\\safe-change.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\base.safe-change.md",
+      "sha256": "1eb1984966b0818fe60a354a5d962196875ebcd237e2f1028096d716d842e53a",
+      "sourceSha256": "1eb1984966b0818fe60a354a5d962196875ebcd237e2f1028096d716d842e53a",
+      "targetSha256": "34fda9c1b35e31f1a5ee246e4b2d379322c62712aa3b66e1126c574d4c083c9a",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "base.waivers",
+      "selected": true,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\base\\waivers.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\base.waivers.md",
+      "sha256": "fb10ba739abd4ad58063bfcc55c9d02b8f344f0b06a47691468582209152eea9",
+      "sourceSha256": "fb10ba739abd4ad58063bfcc55c9d02b8f344f0b06a47691468582209152eea9",
+      "targetSha256": "43493d856a712a24cdd9553e710450f68fb532d5e1883be5cc31f14d69dbb3d1",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "profile.angular",
+      "selected": true,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\angular\\core.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\profile.angular.md",
+      "sha256": "0a7533805865b46ba15f7cc51c1662fc4f32a544f0b10bbdce649ca86261b6cb",
+      "sourceSha256": "0a7533805865b46ba15f7cc51c1662fc4f32a544f0b10bbdce649ca86261b6cb",
+      "targetSha256": "f7ccebfb19e5cb43faa248657fe40794ef7031b5cfe5dc55caef533acfa9221e",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "profile.java",
+      "selected": true,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\core.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\profile.java.md",
+      "sha256": "cdf6c8a123ae06863e53f5e38db72b006fef603721a9baef8232090d64edaa5a",
+      "sourceSha256": "cdf6c8a123ae06863e53f5e38db72b006fef603721a9baef8232090d64edaa5a",
+      "targetSha256": "6ee8b8f49a3f659eda7b1dae885a4aa01698e415a5b9635eda70823063ad0706",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.architecture",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\architecture.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.architecture.md",
+      "sha256": "40d893ebfe7da06b6b9eb2ce54c0dcd3f6fb6ad221cbfc4c86afc6c93a389e79",
+      "sourceSha256": "40d893ebfe7da06b6b9eb2ce54c0dcd3f6fb6ad221cbfc4c86afc6c93a389e79",
+      "targetSha256": "f04f8467f9ee9f6a583a5146192908738aad532beb76e20a68156c1e069ba404",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "angular.auth",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\angular\\auth.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.auth.md",
+      "sha256": "37d688d2f0af41584e91fd7ebd3632048a1a8e27e1e4601d44241f46eaa82d82",
+      "sourceSha256": "37d688d2f0af41584e91fd7ebd3632048a1a8e27e1e4601d44241f46eaa82d82",
+      "targetSha256": "54d5ce96542a2dd7bc49c1c545d3e43cd44ea8e1fc796833f959d63658f56b0e",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "angular.feedback-alerts",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\angular\\feedback-alerts.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.feedback-alerts.md",
+      "sha256": "d99b5423b49d998dea8305f156b1bc2902415b65f5a273488eb934e0f8106c7b",
+      "sourceSha256": "d99b5423b49d998dea8305f156b1bc2902415b65f5a273488eb934e0f8106c7b",
+      "targetSha256": "acf602aaf96df89b854fcd361a853acaa2a335767b40dc319dc19436d7074f04",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "angular.forms",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\angular\\forms.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.forms.md",
+      "sha256": "b160e5eff81f244affe51794e72fe15defd5c73d18996caf9b21462478e34423",
+      "sourceSha256": "b160e5eff81f244affe51794e72fe15defd5c73d18996caf9b21462478e34423",
+      "targetSha256": "071fa1d8ba9f3a6edc678d49b09afd1d8f3b6f00f86af347d5d3875d65a12281",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "angular.gems-components",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\angular\\gems-components.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.gems-components.md",
+      "sha256": "8030105a10e0671b6edfa34b5f4fc808fbf0740569b49b362872bff671a13eb6",
+      "sourceSha256": "8030105a10e0671b6edfa34b5f4fc808fbf0740569b49b362872bff671a13eb6",
+      "targetSha256": "8fb3b33c8cab0fc42461407f2605587309d5c0ae34a563f672e9e0dc97ba1d7a",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "angular.http-interceptors",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\angular\\http-interceptors.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.http-interceptors.md",
+      "sha256": "2ea75f99bf1fe38c43098e0882ad197ef2ebb732867c4a45a29a212b331b4137",
+      "sourceSha256": "2ea75f99bf1fe38c43098e0882ad197ef2ebb732867c4a45a29a212b331b4137",
+      "targetSha256": "49ceee9ba7e60a4bc73ce0aba34c3fdaf75e6e8662bc78e5437b398634f93ecd",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "angular.lists",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\angular\\lists.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.lists.md",
+      "sha256": "1259f7258bd26fbc3e7fad08ed4c93b4cf94a6b343cdd0848e35bee2230e803d",
+      "sourceSha256": "1259f7258bd26fbc3e7fad08ed4c93b4cf94a6b343cdd0848e35bee2230e803d",
+      "targetSha256": "0eb85463b4e628872987b56abf5ae797fb43ecace42b38fed50709d8344f4f99",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "angular.organization",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\angular\\organization.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.organization.md",
+      "sha256": "a97e09c528936b15417ca0bac44607df134a9d09d4f69299df7fdd4aba002e67",
+      "sourceSha256": "a97e09c528936b15417ca0bac44607df134a9d09d4f69299df7fdd4aba002e67",
+      "targetSha256": "df34ccf61777c2f028a6db683b23ea6c217f901cef74330164264ed35fb15121",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "angular.signals-standards",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\angular\\signals-standards.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.signals-standards.md",
+      "sha256": "c50755c1cf2ad88f5ba55b1d9eb4e365e22c4a7483605d9db8523e2816ca4d01",
+      "sourceSha256": "c50755c1cf2ad88f5ba55b1d9eb4e365e22c4a7483605d9db8523e2816ca4d01",
+      "targetSha256": "de0423a57651dacc8fd234d1808dcd93db3d4ee7cbde598937bcdad3a17b588b",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "angular.stepper",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\angular\\stepper.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.stepper.md",
+      "sha256": "7f4b814faec67779c3fa922d8cdcd7981655ce2b4fb6288d18879aa1f5162586",
+      "sourceSha256": "7f4b814faec67779c3fa922d8cdcd7981655ce2b4fb6288d18879aa1f5162586",
+      "targetSha256": "8ab03421cdbbd9cbd1471c7f383fb272e899e2e1efef401139add4372989122b",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "angular.stores",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\angular\\stores.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.stores.md",
+      "sha256": "6fe408bd368f3ad993ff40b2fa277b3a3b81917084a444e02bdfadf48dd56827",
+      "sourceSha256": "6fe408bd368f3ad993ff40b2fa277b3a3b81917084a444e02bdfadf48dd56827",
+      "targetSha256": "9a8d2a47b6cf4fc237fd208a73b63f14d7a81e142108ab1d1eca7df5fdc083e3",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "angular.testing",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\angular\\testing.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.testing.md",
+      "sha256": "54ef25fc7ea5b1ea3dcfc0b2628b8427cdf2d0004b86e942aabe5a553bfa0245",
+      "sourceSha256": "54ef25fc7ea5b1ea3dcfc0b2628b8427cdf2d0004b86e942aabe5a553bfa0245",
+      "targetSha256": "d090f1870c25e78359d1b690593f142d518f8b6c2b1f9dbdae792ca58170cdd2",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "angular.visual-standards",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\angular\\visual-standards.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.visual-standards.md",
+      "sha256": "2845d4ec177d33d9da1bbe3f0689239c7d0bfe7fa42cfa50b48c38f020cd9cc4",
+      "sourceSha256": "2845d4ec177d33d9da1bbe3f0689239c7d0bfe7fa42cfa50b48c38f020cd9cc4",
+      "targetSha256": "c7de2a3ba8e80afd58ba8dfc50861f3ed47e03807be38e26c3690f1a49178c3b",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.controllers",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\controllers.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.controllers.md",
+      "sha256": "2f75092424955987dd3a364347d3e9c0f4cb817fca18f4613adc3d3fa5e1261a",
+      "sourceSha256": "2f75092424955987dd3a364347d3e9c0f4cb817fca18f4613adc3d3fa5e1261a",
+      "targetSha256": "ac51badf48b0dc9375ec6c20b672cc50fce1d435054281a1dbac033799b1b9f5",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.events",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\events.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.events.md",
+      "sha256": "f586ade56ededc63313a8cbfa7c21e103a5a8b25db50516caca0e905f5e9e288",
+      "sourceSha256": "f586ade56ededc63313a8cbfa7c21e103a5a8b25db50516caca0e905f5e9e288",
+      "targetSha256": "0d72ea4cb4d6ea31d3446e28401fc719810b5e1110351ea76d74897b632c5eb3",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.mapping",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\mapping.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.mapping.md",
+      "sha256": "97de6239877ecf7745c3d8a6386582f8fd418c79490017d801af38d15ede54c9",
+      "sourceSha256": "97de6239877ecf7745c3d8a6386582f8fd418c79490017d801af38d15ede54c9",
+      "targetSha256": "e1dea85cbc6f1e4b8add97e8039fac0ba030b09a0fa11b666ebe089f385b8b82",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.multi-tenant",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\multi-tenant.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.multi-tenant.md",
+      "sha256": "fa929e9a5eed2b7838054c862c3e2f757ef7810df4ae670d5e860992ac871b6b",
+      "sourceSha256": "fa929e9a5eed2b7838054c862c3e2f757ef7810df4ae670d5e860992ac871b6b",
+      "targetSha256": "e5a58396a0ec8030914c94930514099e6fc11f95e65adeaaf38ffcfd2c69c543",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.observability",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\observability.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.observability.md",
+      "sha256": "021a77432c6c8059abcb4215eb558b8bb80a31664abe740bf314148374b5e700",
+      "sourceSha256": "021a77432c6c8059abcb4215eb558b8bb80a31664abe740bf314148374b5e700",
+      "targetSha256": "b72261492a1e28d55e38264d807b63e3c602366dc58ee897cc0eaee3e4a31cb1",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.openapi",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\openapi.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.openapi.md",
+      "sha256": "61bd78e7fd214cae29a567c7033f33d572feddb04d032e7702e21b410dbc5273",
+      "sourceSha256": "61bd78e7fd214cae29a567c7033f33d572feddb04d032e7702e21b410dbc5273",
+      "targetSha256": "4f966a5c85babb7372d539c263b6fdf6f4f3317d4fb05177980cef42925e6de1",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.persistence-db",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\persistence-db.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.persistence-db.md",
+      "sha256": "17a694e01f8a55e6578aaef55749f208b023f0434bd3ce7db1362b202d4ca753",
+      "sourceSha256": "17a694e01f8a55e6578aaef55749f208b023f0434bd3ce7db1362b202d4ca753",
+      "targetSha256": "3d6eaae31f3c37f807fb693d3f4296e3f71a2fbcad05df71b438f73ac157b5cc",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.repositories",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\repositories.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.repositories.md",
+      "sha256": "24f3f489b91b6b33d2ef4446a7c384ad1c73d1be29fb5e6147938d4ed3a93880",
+      "sourceSha256": "24f3f489b91b6b33d2ef4446a7c384ad1c73d1be29fb5e6147938d4ed3a93880",
+      "targetSha256": "4dafae59a99a3282af1db9e012636bdc229278a183916ac9e0b766187eda75f4",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.rest-common",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\rest-common.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.rest-common.md",
+      "sha256": "1e8c5e1fdd91aead7722a15460676236ff53873e207ba923a97b5334b1a6d866",
+      "sourceSha256": "1e8c5e1fdd91aead7722a15460676236ff53873e207ba923a97b5334b1a6d866",
+      "targetSha256": "a626f327b876004f7772c15ac533fd4fa92ddcbd37802d0e0eba82db16e9b855",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.security",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\security.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.security.md",
+      "sha256": "7667920217a9346944eae5ea17c093e7b7557f3a902018123ac99bd64f3b644d",
+      "sourceSha256": "7667920217a9346944eae5ea17c093e7b7557f3a902018123ac99bd64f3b644d",
+      "targetSha256": "fa0708655f07e7c49cd97978d693797c9aae28fba4dbf0f16eccf4ed33ff3ce7",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.services",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\services.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.services.md",
+      "sha256": "2ed579617c9029ebf9c039321fe7adc4fef6de9be90f9442c4cf996358573bff",
+      "sourceSha256": "2ed579617c9029ebf9c039321fe7adc4fef6de9be90f9442c4cf996358573bff",
+      "targetSha256": "3f4ca96af16a138dd91d704c1dc9e40656258d48b4b765002a4c4d304e0657be",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.storage-s3",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\storage-s3.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.storage-s3.md",
+      "sha256": "d44698ba9fbefb40889ab07c94afa9e1dcfdd8e889303b4263a83af2fc0d0b9c",
+      "sourceSha256": "d44698ba9fbefb40889ab07c94afa9e1dcfdd8e889303b4263a83af2fc0d0b9c",
+      "targetSha256": "ba5be047d4a6bec3416f47f3d7ffd6c9a22da1d99147b343e17a7775ff5ba484",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.testing",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\testing.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.testing.md",
+      "sha256": "3f1ddd6ccee5b80e906ce0f39574f7ec0c0ee552a60493a05503571e686d45ab",
+      "sourceSha256": "3f1ddd6ccee5b80e906ce0f39574f7ec0c0ee552a60493a05503571e686d45ab",
+      "targetSha256": "8f16b886c9ec8d5bb64cfe71a7c831d21d68fdc2062e576060b53207ffacb26e",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.utils",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\utils.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.utils.md",
+      "sha256": "3dc6aaf07a1fdfba6ffa0ddf4f8ae9da4dd56591fc04c31e9f01217cfceb5983",
+      "sourceSha256": "3dc6aaf07a1fdfba6ffa0ddf4f8ae9da4dd56591fc04c31e9f01217cfceb5983",
+      "targetSha256": "9cfec5ec3879e37176e8c6bd9bba3d57d2d801ecad9fe1070f669834df66f9d2",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "java.validation",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\java\\validation.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.validation.md",
+      "sha256": "3847afadcb15fff50106a33835815ad6d5d55546c371a9fcdc2c9ace85f27018",
+      "sourceSha256": "3847afadcb15fff50106a33835815ad6d5d55546c371a9fcdc2c9ace85f27018",
+      "targetSha256": "9b26b389c32154e5f53e144cf240397d4af922594c08efc3bca3caaaa86956d2",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "profile.workspace",
+      "selected": true,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\profiles\\workspace\\integration.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\profile.workspace.md",
+      "sha256": "280f32cadc00eb46689e182bc7b4265a557c861ffc648712b0d20b2f6a5f8b9c",
+      "sourceSha256": "280f32cadc00eb46689e182bc7b4265a557c861ffc648712b0d20b2f6a5f8b9c",
+      "targetSha256": "0976a25fc1cf9416a0a661019dd05f361673e3e13297fd302a80765caab8db71",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "sdd.round",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\sdd\\round.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\sdd.round.md",
+      "sha256": "ff87ac554da8bcde2033074347774016ca44383e5b3c02735c79cfda5a3d424b",
+      "sourceSha256": "ff87ac554da8bcde2033074347774016ca44383e5b3c02735c79cfda5a3d424b",
+      "targetSha256": "3bf5c2c98c5d418f648aa3786cee19b06cd51e2068b35262e59811277ced8899",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "stories.traceability",
+      "selected": false,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\stories\\traceability.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\stories.traceability.md",
+      "sha256": "1d5d84bf0ff2592d64676d921fc2e33762cfdeb920b9140fca4c86a370f0bbb3",
+      "sourceSha256": "1d5d84bf0ff2592d64676d921fc2e33762cfdeb920b9140fca4c86a370f0bbb3",
+      "targetSha256": "70e6ba5e2ba4ba8eec83ebf37e96db4040773ff2eb860875caad11d86b707f85",
+      "action": "update"
+    },
+    {
+      "kind": "rule",
+      "rule": "signature.invariants",
+      "selected": true,
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\signature\\invariants.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\signature.invariants.md",
+      "sha256": "d0b4b6da38e3238bca73251487ded6409adbe1f7c8fbed64ee47b3adab8e393f",
+      "sourceSha256": "d0b4b6da38e3238bca73251487ded6409adbe1f7c8fbed64ee47b3adab8e393f",
+      "targetSha256": "4a00676ec4b964847ff97bc52d03bf0a78008aff3dbc86bdcd22da79e10683da",
+      "action": "update"
+    },
+    {
+      "kind": "catalog",
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\catalog.json",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\catalog.json",
+      "sha256": "c3f239b7c26a5b78a2def7b447cb2a2ed30574683c4e893639f4873f33bf8781",
+      "sourceSha256": "c3f239b7c26a5b78a2def7b447cb2a2ed30574683c4e893639f4873f33bf8781",
+      "targetSha256": "c93de733b0bac8073ec0fcb392699cd2eac9124c583f32997bcdd4bc27523423",
+      "action": "update"
+    },
+    {
+      "kind": "version",
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\contract\\VERSION",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\.version",
+      "sha256": "b97c7f28087977393a99695de8e3a57be7f2c904d9f4132f04c5666a0be39be7",
+      "sourceSha256": "b97c7f28087977393a99695de8e3a57be7f2c904d9f4132f04c5666a0be39be7",
+      "targetSha256": "c28fcca53637bc88e124af1725df13cb98c69dedefd62fb3cdbe1cdb6b760624",
+      "action": "update"
+    },
+    {
+      "kind": "schema",
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\schemas\\gems-ai-lock.schema.json",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\schemas\\gems-ai-lock.schema.json",
+      "sha256": "90d27548099d7a87d8e9c8671c96da94148c76a0ef75a4b22dfd0aa4eea2e8fd",
+      "sourceSha256": "90d27548099d7a87d8e9c8671c96da94148c76a0ef75a4b22dfd0aa4eea2e8fd",
+      "targetSha256": "1647fe7694ff1da47c1fa0325e83e179a6c7689a586b9631c92827258664abbb",
+      "action": "update"
+    },
+    {
+      "kind": "schema",
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\schemas\\gems-ai.schema.json",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\schemas\\gems-ai.schema.json",
+      "sha256": "67fc66a9f035cc05a7f4b90a74dfdc15db9aeabaac0a2d19dc4ac97101444d7a",
+      "sourceSha256": "67fc66a9f035cc05a7f4b90a74dfdc15db9aeabaac0a2d19dc4ac97101444d7a",
+      "targetSha256": "a4f2de4bce0a18104917713193c8c2438986b663a23047831b4567d4aebe10e6",
+      "action": "update"
+    },
+    {
+      "kind": "schema",
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\schemas\\round-state.schema.json",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\schemas\\round-state.schema.json",
+      "sha256": "a69536e9249ba59dc13f7e440cd1e44b1eac00e8786d6400bc645e69dc1820b3",
+      "sourceSha256": "a69536e9249ba59dc13f7e440cd1e44b1eac00e8786d6400bc645e69dc1820b3",
+      "targetSha256": "8b089a0d76d4ac1224e92a1309d61c1eb51636596bdfaad44bc976881e3e072d",
+      "action": "update"
+    },
+    {
+      "kind": "schema",
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\schemas\\rule.schema.json",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\schemas\\rule.schema.json",
+      "sha256": "ee64b1f481c4430d45f79e428636631f3ee4b9d3b860782b4c1a570f5b591268",
+      "sourceSha256": "ee64b1f481c4430d45f79e428636631f3ee4b9d3b860782b4c1a570f5b591268",
+      "targetSha256": "1102a3e2437e09ebc59514d2248b990080295a983c67f5f6e28953269a709bb8",
+      "action": "update"
+    },
+    {
+      "kind": "skill",
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\skills\\gems-ai-sdk\\agents\\openai.yaml",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.agents\\skills\\gems-ai-sdk\\agents\\openai.yaml",
+      "sha256": "2adde4e8d9a81636aa7db2a4adcea9d842f087f37edcfba55bed79a69873eafc",
+      "sourceSha256": "2adde4e8d9a81636aa7db2a4adcea9d842f087f37edcfba55bed79a69873eafc",
+      "targetSha256": "2a390ecaca0fe67f5135c5b7c47ffd969d97b9b8a9f624de62ad7d5fe75afb96",
+      "action": "update"
+    },
+    {
+      "kind": "skill",
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\skills\\gems-ai-sdk\\SKILL.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.agents\\skills\\gems-ai-sdk\\SKILL.md",
+      "sha256": "711be92252869d0deb0e4e4b7632033d12ebb1cadb93fe45411df41763a212e7",
+      "sourceSha256": "711be92252869d0deb0e4e4b7632033d12ebb1cadb93fe45411df41763a212e7",
+      "targetSha256": "62bd0519e35461d40d7f16c2457da8cc8574c2acdfa0d61924541904b514a1ad",
+      "action": "update"
+    },
+    {
+      "kind": "skill",
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\skills\\rodada-sdd\\agents\\openai.yaml",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.agents\\skills\\rodada-sdd\\agents\\openai.yaml",
+      "sha256": "e14de1d138fd16a6afe9e693d68307d996370f95e23d843483270fcf6bd78b67",
+      "sourceSha256": "e14de1d138fd16a6afe9e693d68307d996370f95e23d843483270fcf6bd78b67",
+      "targetSha256": "498292cccc21e6f9824a347c52e13d21f49ba28cf08e522546a7a8184a505599",
+      "action": "update"
+    },
+    {
+      "kind": "skill",
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\skills\\rodada-sdd\\references\\phases.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.agents\\skills\\rodada-sdd\\references\\phases.md",
+      "sha256": "5ef43b4b609e2fc5aec0958ab097dcd69b556931da5fc14e0dfc06e292e48365",
+      "sourceSha256": "5ef43b4b609e2fc5aec0958ab097dcd69b556931da5fc14e0dfc06e292e48365",
+      "targetSha256": "ec612c908d53b96135edce116eda476ffaf77d33b478819f1a6089269e40c4d3",
+      "action": "update"
+    },
+    {
+      "kind": "skill",
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\skills\\rodada-sdd\\SKILL.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.agents\\skills\\rodada-sdd\\SKILL.md",
+      "sha256": "163649f1886a1af72ad4ddc310e3508d568f808abaf5989ca0d8fd6fb521f62d",
+      "sourceSha256": "163649f1886a1af72ad4ddc310e3508d568f808abaf5989ca0d8fd6fb521f62d",
+      "targetSha256": "a6b2527f5fdc9196ee70c138666e9e9b4d35352f85bfda2a234d2d017113ce37",
+      "action": "update"
+    },
+    {
+      "kind": "adapter",
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\adapters\\managed-block.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\AGENTS.md",
+      "sourceSha256": "b8447dee4c3fcd5986dd63e7207de37c7f439beca9d8789b6460342272071efc",
+      "targetSha256": "89c60880739e5cb2ae0c13b919cf338b0cdfa5ec0d2f3d8962c54251a1bd9470",
+      "renderedSha256": "9cd395dd0d005a543b18df37aba82a7073501cf228a1bfbda0cfee001ee58824",
+      "action": "update"
+    },
+    {
+      "kind": "adapter",
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\adapters\\managed-block.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\CLAUDE.md",
+      "sourceSha256": "b8447dee4c3fcd5986dd63e7207de37c7f439beca9d8789b6460342272071efc",
+      "targetSha256": "b3358db736ce24136e3d53f3269bf681f39ce58cdd1c08205b4f6ed5ab6f23e2",
+      "renderedSha256": "eb5f59f8e6887561fd4d662f53f1868ad6196e3ddd84e42494b47eb0ac0156c8",
+      "action": "update"
+    },
+    {
+      "kind": "adapter",
+      "source": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk\\adapters\\managed-block.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\GEMINI.md",
+      "sourceSha256": "b8447dee4c3fcd5986dd63e7207de37c7f439beca9d8789b6460342272071efc",
+      "targetSha256": "1ee98e5216b82317327a2daed2bc3103fe145503448343ebee2e6169ca36b9fd",
+      "renderedSha256": "3027970c61591eb565cdb9ea2f7f250bb5c71c08491ab17445a23cd4caa17965",
+      "action": "update"
+    },
+    {
+      "kind": "lock",
+      "source": null,
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\gems-ai.lock.json",
+      "sourceSha256": null,
+      "targetSha256": "ecc21ceadd0df7eb60638d78fef2ed61ab051113b9faf0dbbd8ccb2d9aa6502f",
+      "action": "update"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\base.precedence.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\base.precedence.md",
+      "sourceSha256": "1521216de0822a3027ba9165d4bb10db2c2148f1b6ced7a687e1d48565380b2a",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\base.safe-change.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\base.safe-change.md",
+      "sourceSha256": "34fda9c1b35e31f1a5ee246e4b2d379322c62712aa3b66e1126c574d4c083c9a",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\base.waivers.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\base.waivers.md",
+      "sourceSha256": "43493d856a712a24cdd9553e710450f68fb532d5e1883be5cc31f14d69dbb3d1",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\profile.angular.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\profile.angular.md",
+      "sourceSha256": "f7ccebfb19e5cb43faa248657fe40794ef7031b5cfe5dc55caef533acfa9221e",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\profile.java.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\profile.java.md",
+      "sourceSha256": "6ee8b8f49a3f659eda7b1dae885a4aa01698e415a5b9635eda70823063ad0706",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.architecture.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.architecture.md",
+      "sourceSha256": "f04f8467f9ee9f6a583a5146192908738aad532beb76e20a68156c1e069ba404",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.auth.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\angular.auth.md",
+      "sourceSha256": "54d5ce96542a2dd7bc49c1c545d3e43cd44ea8e1fc796833f959d63658f56b0e",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.feedback-alerts.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\angular.feedback-alerts.md",
+      "sourceSha256": "acf602aaf96df89b854fcd361a853acaa2a335767b40dc319dc19436d7074f04",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.forms.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\angular.forms.md",
+      "sourceSha256": "071fa1d8ba9f3a6edc678d49b09afd1d8f3b6f00f86af347d5d3875d65a12281",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.gems-components.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\angular.gems-components.md",
+      "sourceSha256": "8fb3b33c8cab0fc42461407f2605587309d5c0ae34a563f672e9e0dc97ba1d7a",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.http-interceptors.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\angular.http-interceptors.md",
+      "sourceSha256": "49ceee9ba7e60a4bc73ce0aba34c3fdaf75e6e8662bc78e5437b398634f93ecd",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.lists.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\angular.lists.md",
+      "sourceSha256": "0eb85463b4e628872987b56abf5ae797fb43ecace42b38fed50709d8344f4f99",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.organization.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\angular.organization.md",
+      "sourceSha256": "df34ccf61777c2f028a6db683b23ea6c217f901cef74330164264ed35fb15121",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.signals-standards.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\angular.signals-standards.md",
+      "sourceSha256": "de0423a57651dacc8fd234d1808dcd93db3d4ee7cbde598937bcdad3a17b588b",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.stepper.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\angular.stepper.md",
+      "sourceSha256": "8ab03421cdbbd9cbd1471c7f383fb272e899e2e1efef401139add4372989122b",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.stores.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\angular.stores.md",
+      "sourceSha256": "9a8d2a47b6cf4fc237fd208a73b63f14d7a81e142108ab1d1eca7df5fdc083e3",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.testing.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\angular.testing.md",
+      "sourceSha256": "d090f1870c25e78359d1b690593f142d518f8b6c2b1f9dbdae792ca58170cdd2",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\angular.visual-standards.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\angular.visual-standards.md",
+      "sourceSha256": "c7de2a3ba8e80afd58ba8dfc50861f3ed47e03807be38e26c3690f1a49178c3b",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.controllers.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.controllers.md",
+      "sourceSha256": "ac51badf48b0dc9375ec6c20b672cc50fce1d435054281a1dbac033799b1b9f5",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.events.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.events.md",
+      "sourceSha256": "0d72ea4cb4d6ea31d3446e28401fc719810b5e1110351ea76d74897b632c5eb3",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.mapping.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.mapping.md",
+      "sourceSha256": "e1dea85cbc6f1e4b8add97e8039fac0ba030b09a0fa11b666ebe089f385b8b82",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.multi-tenant.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.multi-tenant.md",
+      "sourceSha256": "e5a58396a0ec8030914c94930514099e6fc11f95e65adeaaf38ffcfd2c69c543",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.observability.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.observability.md",
+      "sourceSha256": "b72261492a1e28d55e38264d807b63e3c602366dc58ee897cc0eaee3e4a31cb1",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.openapi.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.openapi.md",
+      "sourceSha256": "4f966a5c85babb7372d539c263b6fdf6f4f3317d4fb05177980cef42925e6de1",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.persistence-db.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.persistence-db.md",
+      "sourceSha256": "3d6eaae31f3c37f807fb693d3f4296e3f71a2fbcad05df71b438f73ac157b5cc",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.repositories.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.repositories.md",
+      "sourceSha256": "4dafae59a99a3282af1db9e012636bdc229278a183916ac9e0b766187eda75f4",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.rest-common.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.rest-common.md",
+      "sourceSha256": "a626f327b876004f7772c15ac533fd4fa92ddcbd37802d0e0eba82db16e9b855",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.security.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.security.md",
+      "sourceSha256": "fa0708655f07e7c49cd97978d693797c9aae28fba4dbf0f16eccf4ed33ff3ce7",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.services.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.services.md",
+      "sourceSha256": "3f4ca96af16a138dd91d704c1dc9e40656258d48b4b765002a4c4d304e0657be",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.storage-s3.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.storage-s3.md",
+      "sourceSha256": "ba5be047d4a6bec3416f47f3d7ffd6c9a22da1d99147b343e17a7775ff5ba484",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.testing.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.testing.md",
+      "sourceSha256": "8f16b886c9ec8d5bb64cfe71a7c831d21d68fdc2062e576060b53207ffacb26e",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.utils.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.utils.md",
+      "sourceSha256": "9cfec5ec3879e37176e8c6bd9bba3d57d2d801ecad9fe1070f669834df66f9d2",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\java.validation.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\java.validation.md",
+      "sourceSha256": "9b26b389c32154e5f53e144cf240397d4af922594c08efc3bca3caaaa86956d2",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\profile.workspace.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\profile.workspace.md",
+      "sourceSha256": "0976a25fc1cf9416a0a661019dd05f361673e3e13297fd302a80765caab8db71",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\sdd.round.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\sdd.round.md",
+      "sourceSha256": "3bf5c2c98c5d418f648aa3786cee19b06cd51e2068b35262e59811277ced8899",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\stories.traceability.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\stories.traceability.md",
+      "sourceSha256": "70e6ba5e2ba4ba8eec83ebf37e96db4040773ff2eb860875caad11d86b707f85",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\rules\\signature.invariants.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\rules\\signature.invariants.md",
+      "sourceSha256": "4a00676ec4b964847ff97bc52d03bf0a78008aff3dbc86bdcd22da79e10683da",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\catalog.json",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\catalog.json",
+      "sourceSha256": "c93de733b0bac8073ec0fcb392699cd2eac9124c583f32997bcdd4bc27523423",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\.version",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\.version",
+      "sourceSha256": "c28fcca53637bc88e124af1725df13cb98c69dedefd62fb3cdbe1cdb6b760624",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\schemas\\gems-ai-lock.schema.json",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\schemas\\gems-ai-lock.schema.json",
+      "sourceSha256": "1647fe7694ff1da47c1fa0325e83e179a6c7689a586b9631c92827258664abbb",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\schemas\\gems-ai.schema.json",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\schemas\\gems-ai.schema.json",
+      "sourceSha256": "a4f2de4bce0a18104917713193c8c2438986b663a23047831b4567d4aebe10e6",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\schemas\\round-state.schema.json",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\schemas\\round-state.schema.json",
+      "sourceSha256": "8b089a0d76d4ac1224e92a1309d61c1eb51636596bdfaad44bc976881e3e072d",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\schemas\\rule.schema.json",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.gems-ai\\schemas\\rule.schema.json",
+      "sourceSha256": "1102a3e2437e09ebc59514d2248b990080295a983c67f5f6e28953269a709bb8",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.agents\\skills\\gems-ai-sdk\\agents\\openai.yaml",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.agents\\skills\\gems-ai-sdk\\agents\\openai.yaml",
+      "sourceSha256": "2a390ecaca0fe67f5135c5b7c47ffd969d97b9b8a9f624de62ad7d5fe75afb96",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.agents\\skills\\gems-ai-sdk\\SKILL.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.agents\\skills\\gems-ai-sdk\\SKILL.md",
+      "sourceSha256": "62bd0519e35461d40d7f16c2457da8cc8574c2acdfa0d61924541904b514a1ad",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.agents\\skills\\rodada-sdd\\agents\\openai.yaml",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.agents\\skills\\rodada-sdd\\agents\\openai.yaml",
+      "sourceSha256": "498292cccc21e6f9824a347c52e13d21f49ba28cf08e522546a7a8184a505599",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.agents\\skills\\rodada-sdd\\references\\phases.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.agents\\skills\\rodada-sdd\\references\\phases.md",
+      "sourceSha256": "ec612c908d53b96135edce116eda476ffaf77d33b478819f1a6089269e40c4d3",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.agents\\skills\\rodada-sdd\\SKILL.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\.agents\\skills\\rodada-sdd\\SKILL.md",
+      "sourceSha256": "a6b2527f5fdc9196ee70c138666e9e9b4d35352f85bfda2a234d2d017113ce37",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\AGENTS.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\AGENTS.md",
+      "sourceSha256": "89c60880739e5cb2ae0c13b919cf338b0cdfa5ec0d2f3d8962c54251a1bd9470",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\CLAUDE.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\CLAUDE.md",
+      "sourceSha256": "b3358db736ce24136e3d53f3269bf681f39ce58cdd1c08205b4f6ed5ab6f23e2",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\GEMINI.md",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\GEMINI.md",
+      "sourceSha256": "1ee98e5216b82317327a2daed2bc3103fe145503448343ebee2e6169ca36b9fd",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "backup",
+      "source": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\gems-ai.lock.json",
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\backup\\gems-ai.lock.json",
+      "sourceSha256": "ecc21ceadd0df7eb60638d78fef2ed61ab051113b9faf0dbbd8ccb2d9aa6502f",
+      "targetSha256": null,
+      "action": "create"
+    },
+    {
+      "kind": "transaction",
+      "source": null,
+      "target": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace\\.gems-ai\\transactions\\<transaction-id>\\transaction.json",
+      "sourceSha256": null,
+      "targetSha256": null,
+      "action": "create"
+    }
+  ]
+}

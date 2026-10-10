@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rodada SDD"
+  short_description: "Run and resume governed SDD rounds"
+  default_prompt: "Use $rodada-sdd to resume the active round from its current checkpoint."

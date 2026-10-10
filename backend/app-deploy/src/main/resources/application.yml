@@ -1,151 +1,64 @@
 spring:
   application:
-    name: ${APP_NAME:app}
-
+    name: gems-firebase-multi-tenant
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/app-db}
-    username: ${DB_USERNAME:app-access}
-    password: ${DB_PASSWORD:app@LocalDev2026!}
-
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
-    hibernate:
-      ddl-auto: ${JPA_DDL_AUTO:validate}
     open-in-view: false
-    show-sql: ${JPA_SHOW_SQL:false}
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        default_schema: ${DB_DEFAULT_SCHEMA:public}
-
+    hibernate:
+      ddl-auto: validate
   liquibase:
-    change-log: ${LIQUIBASE_CHANGELOG:classpath:/db/changelog/changelog-master.xml}
-
-  # Limites de upload.
-  #
-  # ATENÇÃO: quando houver um teto de negócio para tamanho de arquivo, estes dois precisam ficar
-  # ACIMA dele, e não iguais. O padrão do Spring é 1 MB por arquivo — com o padrão, um envio maior
-  # seria recusado pela PLATAFORMA, com 413 e mensagem genérica, ANTES de a regra do service rodar.
-  # O operador veria um erro que não explica nada, em vez da mensagem de negócio. A folga também
-  # cobre o overhead de multipart: o corpo da requisição é maior que a soma dos arquivos.
-  servlet:
-    multipart:
-      max-file-size: ${UPLOAD_MAX_FILE_SIZE:12MB}
-      max-request-size: ${UPLOAD_MAX_REQUEST_SIZE:15MB}
-
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8443/realms/app-realm}
-          jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:8443/realms/app-realm/protocol/openid-connect/certs}
-
-server:
-  port: 8080
-  # TLS termina no proxy reverso e o tráfego interno é HTTP puro. Sem isto, o Spring não lê
-  # X-Forwarded-Proto/Host: ele acha que a requisição é http, não emite HSTS e monta URL absoluta
-  # com o endereço interno. O Caddy já envia os cabeçalhos (KC_PROXY_HEADERS=xforwarded no compose
-  # cobre o Keycloak; esta linha cobre o backend).
-  forward-headers-strategy: ${FORWARD_HEADERS_STRATEGY:framework}
-
+    change-log: classpath:/db/changelog/changelog-firebase-platform.xml
 management:
   endpoints:
     web:
       exposure:
-        # `health` apenas. O default do Boot inclui `info` e `metrics`, e
-        # /actuator/metrics/http.server.requests enumera todos os URIs da API com contagem e
-        # latência — anonimamente. Esta é a SEGUNDA camada: o SecurityConfig já exige autenticação
-        # em /actuator/** exceto o health.
-        include: ${ACTUATOR_EXPOSURE:health}
+        include: health
   endpoint:
     health:
-      probes:
-        enabled: true
-
-# ---------------------------------------------------------------------------
-# Configuração da aplicação
-# ---------------------------------------------------------------------------
-app:
-  security:
-    keycloak:
-      server-url: ${KEYCLOAK_SERVER_URL:http://localhost:8443}
-      realm: ${KEYCLOAK_REALM:app-realm}
-      # Client confidencial usado nas operações administrativas (Admin API)
-      client-id: ${KEYCLOAK_BACKEND_CLIENT_ID:app-backend}
-      client-secret: ${KEYCLOAK_BACKEND_CLIENT_SECRET:app-backend-local-secret}
-      connect-timeout: ${KEYCLOAK_CONNECT_TIMEOUT:5s}
-      read-timeout: ${KEYCLOAK_READ_TIMEOUT:10s}
-
-    # Origens liberadas para CORS (SPA Angular). Lista separada por vírgula.
-    # Em produção, aponte para o domínio do frontend; nunca use "*" com credenciais.
-    cors:
-      allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:4200}
-
-  # Consulta de endereço por CEP. Primeira dependência externa fora do Keycloak.
-  # Sem credencial: o ViaCEP é aberto. Timeout curto e SEM retry — a consulta é conveniência, e o
-  # preenchimento manual nunca é bloqueado por ela estar fora do ar.
-  cep:
-    viacep:
-      url: ${APP_CEP_VIACEP_URL:https://viacep.com.br/ws}
-      timeout: ${APP_CEP_VIACEP_TIMEOUT:3s}
-
-# ---------------------------------------------------------------------------
-# OpenAPI / Swagger.
-#
-# Ligados em desenvolvimento, DESLIGADOS em produção pelo .env. O /v3/api-docs publica o contrato
-# inteiro da API — todos os endpoints, DTOs e enums, e as descrições @Operation que explicam as
-# regras de negócio. As rotas continuam na lista pública do SecurityConfig; com o springdoc
-# desligado elas simplesmente não existem, e a resposta é 404 — sem caso especial na configuração
-# de segurança.
-# ---------------------------------------------------------------------------
+      show-details: never
 springdoc:
   api-docs:
-    enabled: ${SPRINGDOC_ENABLED:true}
+    enabled: false
   swagger-ui:
-    enabled: ${SPRINGDOC_ENABLED:true}
-
+    enabled: false
 gems:
-  auditing:
-    enabled: ${GEMS_AUDITING_ENABLED:true}
-    schema: ${GEMS_AUDITING_SCHEMA:auditoria}
-    context-columns-enabled: ${GEMS_AUDITING_CONTEXT_COLUMNS_ENABLED:true}
-  rest:
-    correlation-id:
-      header-name: ${CORRELATION_ID_HEADER:X-Correlation-Id}
-      include-in-response: true
-
-  exception:
-    security:
-      enabled: ${GEMS_EXCEPTION_SECURITY_ENABLED:true}
-
+  firebase:
+    auth:
+      enabled: true
+      jdbc-enabled: true
+      project-id: ${FIREBASE_PROJECT_ID}
+      check-revoked: true
+      tenant-header: X-Tenant-Alias
+      minimum-applied-migration: 1
+      emulator:
+        enabled: ${FIREBASE_EMULATOR_ENABLED:false}
   jpa:
-    # Ativa o JpaConfig do gems-sdk: @EnableJpaRepositories com repositoryBaseClass=BaseCustomJpaRepositoryImpl
-    # e base-packages br.com.gems. Sem isto, os repositories do projeto não são detectados.
-    enabled: ${GEMS_JPA_ENABLED:true}
-    base-packages: ${GEMS_JPA_BASE_PACKAGES:br.com.gems}
-
+    enabled: true
+    base-packages: br.com.gems.app
+  tenant:
+    enabled: true
+    strict-alias: true
+    schema-prefix: tenant_
+    global-schema: administracao
+    validation-schema: modelo
+    liquibase:
+      changelog: classpath:/db/changelog/changelog-firebase-tenant.xml
+      startup-enabled: false
+  auditing:
+    enabled: true
+    context-columns-enabled: true
   aws:
-    region: ${AWS_REGION:us-east-1}
-    endpoint: ${AWS_ENDPOINT:http://localhost:4566}
-    s3:
-      bucket-name: ${AWS_S3_BUCKET:app-bucket}
-
-  openapi:
-    title: ${OPENAPI_TITLE:App API}
-    version: ${OPENAPI_VERSION:1.0.0}
-    description: ${OPENAPI_DESCRIPTION:API da aplicação}
-
-# ---------------------------------------------------------------------------
-# AWS S3 (gems-aws lê do namespace raiz `aws.s3.*`). Aponta para o LocalStack local.
-# access-key/secret-key aceitam credenciais fake no LocalStack.
-# ---------------------------------------------------------------------------
-aws:
-  s3:
-    enabled: ${AWS_S3_ENABLED:true}
-    region: ${AWS_REGION:us-east-1}
-    endpoint-url: ${AWS_ENDPOINT:http://localhost:4566}
-    bucket-name: ${AWS_S3_BUCKET:app-bucket}
-    access-key: ${AWS_ACCESS_KEY:test}
-    secret-key: ${AWS_SECRET_KEY:test}
-    # Tempo de vida da URL assinada gerada pelo S3Service da SDK. Explícito aqui, e não escondido
-    # num @Value da biblioteca — como todo o resto da configuração deste projeto.
-    presigned-url-expiration-minutes: ${AWS_S3_PRESIGNED_EXPIRATION:15}
+    enabled: false
+---
+spring:
+  config:
+    activate:
+      on-profile: local | test | ci | demo
+gems:
+  firebase:
+    auth:
+      emulator:
+        host: ${FIREBASE_AUTH_EMULATOR_HOST}

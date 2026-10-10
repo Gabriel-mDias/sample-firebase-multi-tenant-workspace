@@ -50,7 +50,6 @@ import { {Entidade}Model } from '../../../models/{entidade}.model';
 
 @Component({
   selector: 'app-{entidade}-form',
-  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule, GemsFormCardComponent, GemsInputMaskComponent],
   templateUrl: './{entidade}-form.component.html'
 })
@@ -257,8 +256,10 @@ componente da SDK, que já traz rótulo, ícone, estado de erro e `ControlValueA
 <gems-select formControlName="status" placeholder="Todos" [options]="statusOptions">
 </gems-select>
 
-<!-- Senha: gems-input-password da SDK (>= 2.0.0); a confirmação leva [matchControl] -->
+<!-- Senha: SDK >= 2.3.4. A política da SDK aceita letras Unicode; regra ASCII local
+     (como no ADACI) exige validação própria. A confirmação usa [matchControl]. -->
 <gems-input-password formControlName="senha" [required]="true"></gems-input-password>
+<gems-input-password formControlName="confirmacao" [matchControl]="form.get('senha')"></gems-input-password>
 <gems-field-error [control]="form.get('senha')" [messages]="passwordMessages"></gems-field-error>
 ```
 
@@ -311,7 +312,17 @@ E, para campos formatados:
 | `<input type="text" class="form-control">` para texto simples | `<gems-input-text>` — nenhum input nativo em formulário de feature |
 | `<input type="text" placeholder="000.000.000-00">` para CPF | `<gems-input-documento>` |
 | `<input type="text" placeholder="(00) 00000-0000">` para telefone | `<gems-input-mask maskType="telefone">` |
-| `<input type="password">` ou cópia local de senha | `<gems-input-password>` da SDK ≥ 2.0.0 — política, critérios e `matchControl` vêm dele |
+| `<input type="password">` ou cópia local de senha | `<gems-input-password>` da SDK ≥ 2.3.4 — política Unicode e `matchControl` vêm dele; exigência ASCII do ADACI é validação local adicional |
 | `maskType="rg"` | `<gems-input-text>` + `appRgMask` — o `maskType` de RG é proibido |
 | `<div form-card-footer>` | `<div gems-form-card-footer>` |
 | `<p form-card-subtitle>…</p>` | `subtitle="…"` como input do `gems-form-card` |
+
+### Política de senha e feedback (SDK 2.3.4)
+
+`gems-input-password` aplica a política da SDK: mínimo de 12 caracteres, letras Unicode,
+caractere especial em `[@#$%^&+=!]`, sem espaços e senha diferente de username/email.
+Essa política não equivale à regra ASCII local do ADACI. Se o consumidor exige ASCII,
+implemente e teste essa restrição no formulário/validador local; não atribua essa regra à SDK.
+Na confirmação, conecte `matchControl` ao controle da senha. Use `gems-field-error` ligado
+ao controle e mensagens customizadas para apresentar erros; não duplique o mesmo feedback
+com mensagens manuais paralelas.

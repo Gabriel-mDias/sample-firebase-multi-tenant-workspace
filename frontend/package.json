@@ -4,9 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "node scripts/verify-silent-check-sso.mjs && node scripts/verify-authorization-actions.mjs && node scripts/verify-conventions.mjs && ng build",
+    "build": "node scripts/verify-sdk-adoption.mjs && node scripts/verify-authorization-actions.mjs && node scripts/verify-conventions.mjs && ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "node scripts/verify-silent-check-sso.mjs && node scripts/verify-authorization-actions.mjs && node scripts/verify-conventions.mjs && ng test"
+    "test": "node scripts/verify-sdk-adoption.mjs && node scripts/verify-authorization-actions.mjs && node scripts/verify-conventions.mjs && ng test"
   },
   "private": true,
   "packageManager": "npm@11.17.0",
@@ -18,12 +18,13 @@
     "@angular/forms": "^22.1.7",
     "@angular/platform-browser": "^22.1.7",
     "@angular/router": "^22.1.7",
+    "@fontsource/cormorant-garamond": "^5.2.8",
     "@fontsource/inter": "^5.2.8",
+    "@fontsource/plus-jakarta-sans": "^5.2.8",
     "@fortawesome/fontawesome-free": "^7.3.0",
-    "@gabriel-mdias/angular-gems-sdk": "^2.3.0",
+    "@gabriel-mdias/angular-gems-sdk": "3.0.0",
     "animate.css": "^4.1.1",
-    "keycloak-angular": "^22.0.0",
-    "keycloak-js": "^26.2.4",
+    "firebase": "12.19.0",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.26.25",
     "tslib": "^2.3.0"
@@ -32,6 +33,7 @@
     "@angular/build": "^22.1.8",
     "@angular/cli": "^22.1.8",
     "@angular/compiler-cli": "^22.1.7",
+    "@playwright/test": "1.64.0",
     "jsdom": "^30.1.0",
     "prettier": "^3.9.8",
     "typescript": "~6.0.2",

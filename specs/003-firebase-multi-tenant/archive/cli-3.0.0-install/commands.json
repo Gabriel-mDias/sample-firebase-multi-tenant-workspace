@@ -1,0 +1,102 @@
+[
+  {
+    "command": [
+      "powershell.exe",
+      "-NoProfile",
+      "-File",
+      ".tooling/run-gems-ai.ps1",
+      "update",
+      "--project",
+      "sample-firebase-multi-tenant-workspace",
+      "--to",
+      "3.0.0",
+      "--dry-run"
+    ],
+    "cwd": "D:\\repos\\build a new sample multi tenant",
+    "exit": 0,
+    "stdout_sha256": "d2d1fd323511150942140b45d0a770c9ef49fa65335cd83a2bacbaf7428c4f2d",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "command": [
+      "powershell.exe",
+      "-NoProfile",
+      "-File",
+      ".tooling/run-gems-ai.ps1",
+      "update",
+      "--project",
+      "sample-firebase-multi-tenant-workspace",
+      "--to",
+      "3.0.0"
+    ],
+    "cwd": "D:\\repos\\build a new sample multi tenant",
+    "exit": 0,
+    "stdout_sha256": "a71fa8fecdccc5fd3fe299ff926d4970d5dd47ea7a6809ed673fd9d5306e9851",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "strict",
+    "command": [
+      "powershell.exe",
+      "-NoProfile",
+      "-File",
+      ".tooling/run-gems-ai.ps1",
+      "check",
+      "--project",
+      "sample-firebase-multi-tenant-workspace",
+      "--strict"
+    ],
+    "cwd": "D:\\repos\\build a new sample multi tenant",
+    "exit": 0,
+    "stdout_sha256": "ffa7303b82135aa4cfce0a550e6214c30fe9019076e48fefbbd2db0302768fd7",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "sample-diff",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace",
+    "exit": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "255512a401d03694910a351564cbd0f87602cd27591efa9f22f1a7b5380c84da"
+  },
+  {
+    "name": "sdk-diff",
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "D:\\repos\\build a new sample multi tenant\\Java-GEMS-SDK",
+    "exit": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "tool-head",
+    "command": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "cwd": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk",
+    "exit": 0,
+    "stdout_sha256": "566619d0d1dd570357796e77cf103d645a99de52e1c88f0533e97344fc26f781",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "tool-status",
+    "command": [
+      "git",
+      "status",
+      "--short"
+    ],
+    "cwd": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk",
+    "exit": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

@@ -11,7 +11,33 @@
       "Read(./backend/**/target/**)",
       "Read(./business/**/*.png)",
       "Read(./backend/.m2/settings.xml)",
-      "Read(./frontend/.npmrc)"
+      "Read(./frontend/.npmrc)",
+      "Edit(./.gems-ai/**)",
+      "Write(./.gems-ai/**)",
+      "Edit(./gems-ai.lock.json)",
+      "Write(./gems-ai.lock.json)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/hooks/gems-ai-session.ps1"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/hooks/gems-ai-stop.ps1"
+          }
+        ]
+      }
     ]
   }
 }

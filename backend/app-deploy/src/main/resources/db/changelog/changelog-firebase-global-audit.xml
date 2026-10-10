@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+ <changeSet id="firebase-create-global-audit" author="app">
+  <sql>CREATE TABLE auditoria.AUDIT_OPERATION (ID_AUDIT_OPERATION UUID PRIMARY KEY, CD_OPERATION VARCHAR(20) NOT NULL,
+   NM_ENTITY VARCHAR(255) NOT NULL, DS_ENTITY_ID VARCHAR(255) NOT NULL, NM_ACTOR VARCHAR(150) NOT NULL,
+   CD_ACTOR_TYPE VARCHAR(30) NOT NULL, ID_ACTOR VARCHAR(255), CD_CORRELATION VARCHAR(64), DT_OPERATION TIMESTAMPTZ NOT NULL);
+   CREATE TABLE auditoria.AUDIT_CHANGE (ID_AUDIT_CHANGE UUID PRIMARY KEY,
+   ID_AUDIT_OPERATION UUID NOT NULL REFERENCES auditoria.AUDIT_OPERATION(ID_AUDIT_OPERATION), NM_FIELD VARCHAR(255) NOT NULL,
+   DS_OLD_VALUE TEXT, DS_NEW_VALUE TEXT, FL_SIGILOSO BOOLEAN NOT NULL);
+   CREATE INDEX IDX_GLOBAL_AUDIT_ENTITY ON auditoria.AUDIT_OPERATION(NM_ENTITY,DS_ENTITY_ID,DT_OPERATION);
+  </sql>
+  <rollback><sql>DROP TABLE auditoria.AUDIT_CHANGE; DROP TABLE auditoria.AUDIT_OPERATION;</sql></rollback>
+ </changeSet>
+</databaseChangeLog>

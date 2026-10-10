@@ -1,105 +1,43 @@
-# ---------------------------------------------------------------------------
-# Configuração dos testes de integração (@SpringBootTest) do app-deploy.
-#
-# POR QUE ESTE ARQUIVO EXISTE
-# ---------------------------
-# Sem ele, os @SpringBootTest subiriam
-# contra o MESMO Postgres que a homologação manual preenche, e um cadastro feito pela tela
-# quebraria um teste que não regrediu. Aqui o banco é um container efêmero — ver
-# AbstractIntegrationTest, que é quem sobrescreve `spring.datasource.*` em tempo de execução.
-#
-# ELE SÓ VALE PARA O app-deploy. Criar src/test/resources nos módulos de biblioteca
-# reintroduziria configuração em módulo que não deve tê-la — é o que mantém viva a possibilidade de um
-# segundo executável sobre o mesmo app-core.
-# ---------------------------------------------------------------------------
 spring:
-  application:
-    name: app-test
-
-  # A URL/usuário/senha NÃO ficam aqui: vêm do container, por @DynamicPropertySource.
-  # Ver AbstractIntegrationTest.
-
   jpa:
-    hibernate:
-      # NUNCA create-drop. O contextLoads existe justamente para provar a paridade entre
-      # as entidades JPA e os changesets Liquibase; deixar o Hibernate criar o schema destruiria
-      # exatamente o que o teste verifica.
-      ddl-auto: validate
     open-in-view: false
-    show-sql: false
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        default_schema: public
-
+    hibernate:
+      ddl-auto: validate
   liquibase:
-    # O banco de teste nasce dos MESMOS changesets da produção — é o que garante que os dois não
-    # divirjam, e o que preserva o valor do gate de paridade acima.
-    change-log: classpath:/db/changelog/changelog-master.xml
-
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          # Valores inertes. Com jwk-set-uri declarado, o Boot monta o decoder de forma preguiçosa e
-          # NÃO busca metadados no boot — nenhum teste depende de Keycloak no ar.
-          issuer-uri: http://localhost:8443/realms/app-realm
-          jwk-set-uri: http://localhost:8443/realms/app-realm/protocol/openid-connect/certs
-
-server:
-  port: 0
-
-app:
-  security:
-    keycloak:
-      server-url: http://localhost:8443
-      realm: app-realm
-      client-id: app-backend
-      client-secret: test
-      connect-timeout: 1s
-      read-timeout: 1s
-      # DESLIGADO nos testes. O bootstrap roda em ApplicationReadyEvent e conversa com o Keycloak
-      # real; num teste isso é rede desnecessária, lenta e capaz de sujar o realm de desenvolvimento.
-      bootstrap-grupos:
-        enabled: false
-
-    cors:
-      allowed-origins: http://localhost:4200
-
-  cep:
-    viacep:
-      url: http://localhost:1/ws
-      timeout: 1s
-
+    change-log: classpath:/db/changelog/changelog-firebase-platform.xml
+  main:
+    banner-mode: off
 gems:
+  firebase:
+    auth:
+      enabled: true
+      jdbc-enabled: true
+      project-id: sample-isolated-test
+      check-revoked: true
+      tenant-header: X-Tenant-Alias
+      minimum-applied-migration: 1
+  jpa:
+    enabled: true
+    base-packages: br.com.gems.app
+  tenant:
+    enabled: true
+    strict-alias: true
+    schema-prefix: tenant_
+    global-schema: administracao
+    validation-schema: modelo
+    liquibase:
+      changelog: classpath:/db/changelog/changelog-firebase-tenant.xml
+      startup-enabled: false
   auditing:
     enabled: true
-    schema: auditoria
     context-columns-enabled: true
-  rest:
-    correlation-id:
-      header-name: X-Correlation-Id
-      include-in-response: true
-  exception:
-    security:
-      enabled: true
-  jpa:
-    enabled: true
-    base-packages: br.com.gems
-  openapi:
-    title: App API (test)
-    version: 1.0.0
-    description: API da aplicação (test)
-
-# Mantido LIGADO de propósito: o teste de bloqueio dos endpoints S3 precisa que o
-# S3Controller do gems-aws-web esteja de fato publicado para provar que o 403 vem da regra de
-# segurança, e não da ausência do controller. A construção do S3Client não abre conexão.
-aws:
-  s3:
-    enabled: true
-    region: us-east-1
-    endpoint-url: http://localhost:4566
-    bucket-name: app-bucket
-    access-key: test
-    secret-key: test
-    presigned-url-expiration-minutes: 15
+  aws:
+    enabled: false
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+logging:
+  level:
+    root: WARN

@@ -51,6 +51,48 @@ jobs:
         shell: pwsh
         run: ./scripts/verificar-contexto-agentes.ps1
 
+  # Gate das rules GEMS AI 3.0.0. A CLI vem do repositório do SDK, no commit pinado em gems-ai.json
+  # (o mesmo que scripts/gems-ai.ps1 confere localmente). Se o repositório do SDK for privado, o
+  # secret GEMS_AI_SDK_TOKEN precisa dar leitura a ele; sem o secret cai no token automático.
+  #
+  # Roda em windows-latest: o lock gerado pela CLI grava caminhos com `\` e o SDK pinado não os
+  # normaliza (project.py:364), então o check falha em Ubuntu. Voltar para ubuntu-latest depende
+  # de normalização na própria CLI.
+  gems-ai:
+    name: GEMS AI — gate das rules
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Ler commit do SDK pinado
+        id: pin
+        shell: pwsh
+        run: |
+          $commit = (Get-Content -Raw gems-ai.json | ConvertFrom-Json).commit
+          "commit=$commit" >> $env:GITHUB_OUTPUT
+
+      - name: Checkout do gems-ai-sdk
+        uses: actions/checkout@v7
+        with:
+          repository: Gabriel-mDias/gems-ai-sdk
+          ref: ${{ steps.pin.outputs.commit }}
+          path: gems-ai-sdk
+          token: ${{ secrets.GEMS_AI_SDK_TOKEN || github.token }}
+
+      - name: Python 3.11
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Gate GEMS AI
+        shell: pwsh
+        run: ./scripts/gems-ai-gate.ps1
+        env:
+          GEMS_AI_SDK_SRC: ${{ github.workspace }}/gems-ai-sdk/src
+
   backend:
     name: Backend — reator Maven com testes
     runs-on: ubuntu-latest
@@ -128,7 +170,7 @@ jobs:
         env:
           GEMS_REGISTRY_TOKEN: ${{ secrets.GEMS_REGISTRY_TOKEN || secrets.GITHUB_TOKEN }}
 
-      # Angular 22 usa angular-gems-sdk 2.1.0 e overrides de peers do keycloak-angular.
+      # Angular 22 usa angular-gems-sdk 3.0.0 e overrides de peers do keycloak-angular.
       # npm ci instala as versões registradas no lockfile.
       - name: Instalar dependências
         run: npm ci

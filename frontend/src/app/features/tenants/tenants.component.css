@@ -1,0 +1,8 @@
+.tenant-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.tenant-option {
+  min-height: 5rem;
+}

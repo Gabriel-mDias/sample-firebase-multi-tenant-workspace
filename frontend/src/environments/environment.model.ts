@@ -1,31 +1,15 @@
 export interface RuntimeEnvironment {
   production: boolean;
   apiBaseUrl: string;
-  oidc: {
-    issuer: string;
-    clientId: string;
-    redirectUri: string;
-    postLogoutRedirectUri: string;
-    scope: string;
-  };
+  firebase: { apiKey: string; authDomain: string; projectId: string; appId: string };
+  authEmulatorUrl?: string;
 }
-
-export type RuntimeEnvironmentOverrides = Partial<
-  Omit<RuntimeEnvironment, 'oidc'> & {
-    oidc: Partial<RuntimeEnvironment['oidc']>;
-  }
->;
-
+export type RuntimeEnvironmentOverrides = Partial<Omit<RuntimeEnvironment, 'firebase'>> & {
+  firebase?: Partial<RuntimeEnvironment['firebase']>;
+};
 export function buildEnvironment(
   defaults: RuntimeEnvironment,
-  runtimeOverrides: RuntimeEnvironmentOverrides = {},
+  overrides: RuntimeEnvironmentOverrides = {},
 ): RuntimeEnvironment {
-  return {
-    ...defaults,
-    ...runtimeOverrides,
-    oidc: {
-      ...defaults.oidc,
-      ...runtimeOverrides.oidc,
-    },
-  };
+  return { ...defaults, ...overrides, firebase: { ...defaults.firebase, ...overrides.firebase } };
 }

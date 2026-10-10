@@ -1,0 +1,147 @@
+[
+  {
+    "name": "version",
+    "command": [
+      "python",
+      "-m",
+      "gems_ai",
+      "--version"
+    ],
+    "cwd": "D:\\repos\\build a new sample multi tenant",
+    "exit_code": 0,
+    "stdout_sha256": "2985be8b28d3ade858e8d8fb4bc22f565b1bf6020dff982dce141f7721b9999c",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr": ""
+  },
+  {
+    "name": "inspect",
+    "command": [
+      "python",
+      "-m",
+      "gems_ai",
+      "inspect",
+      "--project",
+      "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace"
+    ],
+    "cwd": "D:\\repos\\build a new sample multi tenant",
+    "exit_code": 0,
+    "stdout_sha256": "b4799dbc81d4dcc1a7d0f7062351347af99a13a95b94f542d9f49960987932dc",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr": ""
+  },
+  {
+    "name": "bundle-multi-tenant-java",
+    "command": [
+      "python",
+      "-m",
+      "gems_ai",
+      "rules",
+      "bundle",
+      "--project",
+      "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace",
+      "--task",
+      "multi-tenant",
+      "--profile",
+      "java",
+      "--format",
+      "json"
+    ],
+    "cwd": "D:\\repos\\build a new sample multi tenant",
+    "exit_code": 0,
+    "stdout_sha256": "de6f8a6b6793fcabbdfbe4955b4f764ba0483cbb40c456aff5b5403ee9fbf67f",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr": ""
+  },
+  {
+    "name": "bundle-persistence-java",
+    "command": [
+      "python",
+      "-m",
+      "gems_ai",
+      "rules",
+      "bundle",
+      "--project",
+      "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace",
+      "--task",
+      "persistence",
+      "--profile",
+      "java",
+      "--format",
+      "json"
+    ],
+    "cwd": "D:\\repos\\build a new sample multi tenant",
+    "exit_code": 0,
+    "stdout_sha256": "adc82ed66be6e4f80174adf14ba32d8b11a61fe94ac6467b93afaa4e04985417",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr": ""
+  },
+  {
+    "name": "bundle-security-workspace",
+    "command": [
+      "python",
+      "-m",
+      "gems_ai",
+      "rules",
+      "bundle",
+      "--project",
+      "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace",
+      "--task",
+      "security",
+      "--profile",
+      "workspace",
+      "--format",
+      "json"
+    ],
+    "cwd": "D:\\repos\\build a new sample multi tenant",
+    "exit_code": 0,
+    "stdout_sha256": "c31ff05adae66e0ddcd3a31894e702b3916e17e1fe56addcac43191f45b85401",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr": ""
+  },
+  {
+    "name": "bundle-angular-auth-angular",
+    "command": [
+      "python",
+      "-m",
+      "gems_ai",
+      "rules",
+      "bundle",
+      "--project",
+      "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace",
+      "--task",
+      "angular-auth",
+      "--profile",
+      "angular",
+      "--format",
+      "json"
+    ],
+    "cwd": "D:\\repos\\build a new sample multi tenant",
+    "exit_code": 0,
+    "stdout_sha256": "48873c03532fe7c64db9a4a761ac42698d9911747b7e11e404f3974c07766cce",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr": ""
+  },
+  {
+    "name": "bundle-angular-crud-angular",
+    "command": [
+      "python",
+      "-m",
+      "gems_ai",
+      "rules",
+      "bundle",
+      "--project",
+      "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace",
+      "--task",
+      "angular-crud",
+      "--profile",
+      "angular",
+      "--format",
+      "json"
+    ],
+    "cwd": "D:\\repos\\build a new sample multi tenant",
+    "exit_code": 0,
+    "stdout_sha256": "5a43d7cd5fd1cc7fa07c8e80ecf4aaee7d4bcd307df2759d15cf6b64b5cf938f",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr": ""
+  }
+]

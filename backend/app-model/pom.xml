@@ -15,6 +15,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
             <groupId>br.com.gems</groupId>
             <artifactId>gems-auditing</artifactId>
         </dependency>

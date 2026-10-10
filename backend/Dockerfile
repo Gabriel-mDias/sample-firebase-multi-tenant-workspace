@@ -1,26 +1,14 @@
 # syntax=docker/dockerfile:1
-FROM maven:3.9-eclipse-temurin-21 AS build
-
-ARG GEMS_REGISTRY_USER
-WORKDIR /workspace
-COPY . .
-
-RUN --mount=type=secret,id=gems_registry_token,required=true \
-    set -eu; \
-    printf '%s\n' \
-      '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0">' \
-      '  <servers><server><id>github</id>' \
-      "    <username>${GEMS_REGISTRY_USER}</username>" \
-      "    <password>$(cat /run/secrets/gems_registry_token)</password>" \
-      '  </server></servers>' \
-      '</settings>' > /tmp/gems-settings.xml; \
-    mvn -B -s /tmp/gems-settings.xml -DskipTests clean package; \
-    rm /tmp/gems-settings.xml
-
+# Build the reactor with JDK 21 and external Maven registry configuration first.
+# Only the executable artifact enters the Docker context; no settings or credentials.
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build /workspace/app-deploy/target/app-deploy-*.jar /app/app.jar
+COPY app-deploy/target/app-deploy-*.jar /app/app.jar
 RUN addgroup -S app && adduser -S app -G app
 USER app
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+HEALTHCHECK --interval=10s --timeout=5s --start-period=60s --retries=12 \
+    CMD wget -q -O /dev/null http://127.0.0.1:8080/actuator/health || exit 1
+# The local demo mounts a generated external database secret, never a build argument.
+# Real-provider use can supply DB_PASSWORD externally without this optional mount.
+ENTRYPOINT ["sh", "-c", "if [ -f /run/secrets/gems_demo_password ]; then export DB_PASSWORD=\"$(cat /run/secrets/gems_demo_password)\"; fi; exec java -jar /app/app.jar"]

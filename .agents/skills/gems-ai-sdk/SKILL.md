@@ -8,8 +8,8 @@ description: Inspect, plan, install, update, verify, or roll back the GEMS AI SD
 Preserve the repository's existing work and authorization boundaries.
 
 1. Inspect applicable repository instructions and Git state, then run `gems-ai inspect --project <path>`.
-2. Run `gems-ai plan --project <path> --task <type>` and report the selected profile, files, conflicts, and expected gates.
-3. Before `apply` or `update`, obtain explicit human approval for the displayed mutation. Inspection, planning, rule lookup, bundling, and checking are read-only.
+2. Run `gems-ai plan --project <path> --task <type>` and report the selected profile, source/current hashes, actions, rules, adapters, lock, transaction backups, removals, conflicts, and expected gates. Compare `apply --dry-run` with the same plan.
+3. Before `apply` or `update`, obtain explicit human approval for that complete displayed mutation. Inspection, planning, rule lookup, bundling, and checking are read-only.
 4. Apply only the approved plan. Do not create waivers, overwrite malformed managed blocks, merge, tag, release, or publish.
 5. Run `gems-ai check --project <path> --strict` plus every gate named by the selected rules.
 6. Report the transaction ID and exact rollback command: `gems-ai rollback --project <path> --transaction <id>`.

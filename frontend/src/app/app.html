@@ -1,20 +1,35 @@
 @if (showShell()) {
   <div class="app-shell" [class.menu-collapsed]="menuCollapsed()">
-    <!-- Sem logo: o molde não carrega marca de terceiro. Ao adotar uma, use `logoFull` para o
-       menu expandido e `logoCollapsed` só para o emblema — uma marca ~3:1 fica ilegível nos
-       80px do menu colapsado. `appName` segue como fallback textual. -->
     <gems-side-menu
       [config]="menuConfig()"
-      [appName]="appName"
+      appName="G&Ms"
+      logoFull="brand/gems-wordmark.svg"
       logoutLabel="Sair"
       logoutTitle="Encerrar sessão"
       [userName]="auth.username()"
       [userEmail]="auth.email()"
       [userInitials]="auth.initials()"
       (logoutClick)="onLogout()"
-      (collapsedChange)="onMenuCollapsedChange($event)"
+      (collapsedChange)="menuCollapsed.set($event)"
     />
-    <main class="app-content"><router-outlet /></main>
+    <main class="app-content">
+      <div class="tenant-bar">
+        <span>{{ auth.currentTenant()?.name || 'Nenhuma empresa selecionada' }}</span
+        ><button
+          type="button"
+          class="btn-secondary"
+          [disabled]="auth.loading()"
+          (click)="changeTenant()"
+        >
+          <i class="fa-solid fa-building" aria-hidden="true"></i> Trocar empresa
+        </button>
+      </div>
+      @if (auth.loading()) {
+        <p class="form-loading" role="status">Validando acesso…</p>
+      } @else {
+        <router-outlet />
+      }
+    </main>
     <app-footer />
   </div>
 } @else {

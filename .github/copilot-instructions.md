@@ -1,18 +1,19 @@
-# Instruções universais
+# Instruções universais Firebase multi-tenant
 
-- Use o `AGENTS.md` mais próximo do arquivo trabalhado.
-- `.specify/memory/constitution.md` é a autoridade máxima; leia-a inteira somente em mudança de
-  governança, arquitetura, infraestrutura ou feature spec-driven.
-- Não carregue o repositório inteiro. Use arquivos e símbolos específicos.
-- Ignore `node_modules/`, `target/`, `dist/`, `.angular/` e `business/**/*.png`.
-- Código e testes consolidados vencem templates e documentos preliminares.
-- Nunca execute `docker compose down -v`.
-- Delegação zero é válida; modelo caro exige risco material e justificativa.
+A constituição 3.1.0 é autoridade. A spec aprovada define comportamento; código/testes
+mostram o estado atual. Regras GEMS prevalecem sob constituição, segurança e APIs publicadas.
+Adoção de SDK exige publicação, alcance medido, garantia nomeada, equivalência/mutação no
+consumidor e remoção da classe duplicada. Agente não cria waiver/exceção para passar gate.
+Leia o AGENTS mais próximo e a feature ativa .specify/feature.json; somente contexto necessário.
+Plano Firebase multi-tenant aprovado: "Implement the plan." após PLAN_REV3_20261007 PASS;
+registrar autorização existente sem assinatura humana fabricada ou confirmação repetida.
+GEMS AI 3.0.0 pin 51b94e3a5479da74e06444f4133e07db85ece3cc; snapshot/blocos só CLI oficial.
+Antes de alterar código rode `scripts/gems-ai.ps1 rules bundle --project . --task <tipo>`; antes de concluir
+rode `scripts/gems-ai-gate.ps1` (Stop hook do Claude e job CI `gems-ai` executam o gate).
+Builds, publicação, consumers, conformance do código, E2E e homologação permanecem NOT_RUN.
+Preserve alterações existentes. Não leia segredos nem gerados node_modules/target/dist/.angular
+ou imagens business. Nunca docker compose down -v, commit ou push delegado.
+PostgreSQL/Keycloak Docker: procure enviroments primeiro (aqui environments); identifique
+containers/portas/bancos/URLs/realms nos arquivos antes de MCP, sem credenciais em config.toml.
 
-As regras de `.gems-ai/rules/` vencem o código consolidado (constituição 2.0.0).
-Código que diverge deve ser corrigido. Desvio autorizado exige
-`GEMS-EXCEPTION(<regra>#<seção>): <motivo>; expira AAAA-MM-DD`, conforme
-`.gems-ai/rules/conformance-exceptions.md`; agente não escreve exceção para desbloquear gate.
-Código vence documentação de negócio e specs; parceiro/solicitacao são referências de forma.
-Adoção de módulo SDK exige publicação, alcance medido, garantia nomeada, equivalência
-provada por teste/mutação neste repositório e remoção da classe local na mesma alteração.
+Angular22/TypeScript6/Vitest/Prettier, standalone/signals e core GEMS publicado. Fachada Firebase e guard locais com contratos/testes; não inventar exports SDK. Bearer só API/path autorizado, geração/UID/alias/sessão antes do await e rechecados antes do envio. Troca/logout cancela pendências e limpa stores/forms/UI; falha sem ações tenant, respostas antigas descartadas. Siga frontend/AGENTS.md e specs/003-firebase-multi-tenant/contracts/frontend.md.

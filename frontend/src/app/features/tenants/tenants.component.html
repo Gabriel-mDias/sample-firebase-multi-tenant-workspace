@@ -1,0 +1,23 @@
+<section class="list-container">
+  <div class="header">
+    <div class="header-titles">
+      <h2>Escolha sua empresa</h2>
+      <p class="subtitle">Cada empresa tem seu próprio espaço de trabalho.</p>
+    </div>
+  </div>
+  <p role="status" aria-live="polite">{{ auth.loading() ? 'Validando acesso à empresa…' : '' }}</p>
+  <p role="alert">{{ auth.error() }}</p>
+  <div class="tenant-options">
+    @for (tenant of auth.tenants(); track tenant.alias) {
+      <button
+        class="btn-secondary tenant-option"
+        [disabled]="auth.loading()"
+        (click)="select(tenant.alias)"
+      >
+        <i class="fa-solid fa-building" aria-hidden="true"></i> {{ tenant.name }}
+      </button>
+    } @empty {
+      <p>Nenhuma empresa disponível para sua conta. Entre em contato com sua organização.</p>
+    }
+  </div>
+</section>

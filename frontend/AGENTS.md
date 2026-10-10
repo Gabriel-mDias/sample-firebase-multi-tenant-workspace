@@ -1,32 +1,28 @@
-# Frontend
+# Frontend — Firebase multi-tenant
 
-- Angular 22 standalone; arquivos `.ts`, `.html` e `.css` separados.
-- Feature autocontida em `features/<dominio>` e registrada na raiz somente por `loadChildren`.
-- `shared/` não importa `features/`; uma feature não importa outra feature.
-- Estado usa signals e stores `GemsBaseStore`; componente não usa `HttpClient` diretamente.
-- Autorização espelha a ação concreta do backend em rota, menu e botões.
-- Testes usam Vitest; não Jasmine, Karma ou Jest.
+A constituição 3.1.0 é autoridade. A spec aprovada é contrato de comportamento; código/testes
+mostram o estado real. Regras GEMS vencem código consolidado sob constituição, segurança e API
+publicada. Nenhum waiver/exceção ou baseline é criado pelo agente para passar gate. Referências
+anteriores servem à forma de código. Adoção SDK exige publicação, alcance medido, garantia nomeada,
+equivalência/mutação no consumidor e remoção da classe duplicada na mesma alteração.
 
-Features em `src/app/features/`: `parceiro`, `solicitacao`, `home`, `acesso-negado`.
+Angular 22/TypeScript 6 standalone/Vitest/Prettier. TS/HTML/CSS separados; inject/input/output/signals/
+computed/@if/@for; feature autocontida features/<dominio> via loadChildren; shared/core não importam
+features e uma feature não importa outra. StoreGemsBaseStore, component nunca HttpClient.
+ThemeprovideGemsTheme/var(--gems-*), FontAwesome6Solid/classesglobaisbotão, feedbackSDK emerrors.
+Gems-field-error e input-password com políticaSDK; forms/wizard/sinais preservam APIs publicadas.
 
-Armadilhas obrigatórias — cada uma já produziu defeito silencioso na `angular-gems-sdk` 1.1.0:
+FachadaFirebase e guard de produto LOCAL, sem inventar export SDK. data.roles tipado/roleMode/
+authorizationScope global|tenant; roles vazias negam. UI espelha ações do catálogo oficial Java; backend repete.
+Bearer somente origemAPI+boundary de path/getIdToken oficial. Generation/UID/alias/sessão capturados ANTES
+await/revalidada antes do envio/headers de snapshot. Troca/logout/outroUIDcancelpending+limpastores/forms/menus/actions.
+Loadingbloqueia atécontexto destino válido; falhadeixa sem tenant actions/sem Alpha implícito;
+responses antigas não alteram UI/navegação, payload Alpha nunca Beta. Testtoken deferred/response/mesma PK/falha no switch obrigatório.
 
-- `gems-select`: `placeholder` e valor inicial `null`.
-- `gems-select`/`gems-input-document` não têm `hint`.
-- RG usa `gems-input-text` + `appRgMask`; `maskType="rg"` é proibido.
-- Dentro de `gems-form-card`, popover usa `position: fixed`.
-- Erro de campo usa `gems-field-error`; a cópia local da SDK 1.1.0 foi removida na rodada 002.
-- Fora da tabela use `btn-secondary`, não `btn-default`.
+CoreGEMS3.0.0 e adapter separado1.0.0 têm que ser publicados + consumer isolado antes do consumo; manter
+UI/forms/core semmetadata/transitivasdo adapter. Clonelegado 2.1.0 não é base de migração.
+PinJSFirebase12.19.0. DemoRegistro mínimo removível; auth/tenant/securityfundamentos preservados.
 
-Leia apenas as regras GEMS da tela afetada e use `features/parceiro` como referência. Gates:
-
-```powershell
-npm test
-npm run build
-```
-
-Transição aprovada na constituição 2.0.0: a rodada 002 usa SDK 2.1.0,
-`gems-field-error`, somente `shared/`, `isAuthorized` e rotas `list`/`form`/`form/:id`/`view/:id`.
-`gems-input-password` permanece no checkpoint frontend seguinte.
-
-Regras GEMS vencem código consolidado; referência não autoriza desvio. Consulte a constituição 2.0.0 e a seção Adoção de Módulo da SDK GEMS.
+ArmadilhasAPI: gems-select placeholder/null; select/document semhint; RG usa text+appRgMask;
+popoverformcard positionfixed; fora tabela btn-secondary. Conferir API do core publicado antes uso.
+Gatesnpm ci/test/build/prettier check e strict snapshot são distintos de conformancecódigo inteirobaseline zero.

@@ -12,15 +12,14 @@ Follow the phase contract in [references/phases.md](references/phases.md). Read 
 phase and explicitly named artifacts. Keep state as a reproducible projection of canonical Markdown,
 not as a competing source of truth.
 
-When a repository maintains `estado-rodada.json`, treat it as a versioned, regenerable projection;
-Markdown continues as the source of truth. Before resuming, validate the index with the repository's
-`gerar-estado-rodada.ps1`. If it is absent or divergent, reconstruct it from `roteiro.md` and
-`tasks.md`. After each transition or checkpoint, regenerate the index before proceeding.
+For toolkit CLI rounds, keep `.gems-ai/round/round.md` canonical. Write the current phase artifact,
+obtain human approval evidence, then run `gems-ai round advance --approved-by ...
+--approval-evidence ...`. Run `gems-ai round validate` before resuming. If only the JSON projection
+diverges, use `gems-ai round sync`; changed artifact hashes require investigation.
 
-Contrato de compatibilidade: `estado-rodada.json` é uma projeção versionada e regenerável;
-Markdown continua fonte primária. Antes da retomada, valide o índice. Regenere-o após cada transição
-ou checkpoint e, quando ausente ou divergente, reconstrua-o de `roteiro.md` e `tasks.md` com
-`gerar-estado-rodada.ps1`.
+Contrato de compatibilidade: índices de rodadas dos consumidores gerados de `roteiro.md` e
+`tasks.md` permanecem sob seus scripts `gerar-estado-rodada.ps1`. Valide e regenere esses índices
+com o script do respectivo repositório; a CLI do toolkit não os migra nem sobrescreve.
 
 Before implementation, require testable criteria, an approved plan/roteiro, and closed task packages
 with READ, EDIT, CREATE, and TEST boundaries. Use focused gates during execution and one complete
