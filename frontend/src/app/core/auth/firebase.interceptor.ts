@@ -20,6 +20,7 @@ function parseApiBase(apiBaseUrl: string): ApiBase {
   const invalid = () =>
     new Error('API_BASE_URL inválida: use <origem>[/prefixo]/api, sem consulta ou fragmento.');
   const trimmed = apiBaseUrl.replace(/\/+$/, '');
+  if (!/^https?:\/\//i.test(trimmed) && !/^\/(?!\/)/.test(trimmed)) throw invalid();
   if (!trimmed.endsWith('/api') || /[?#\\\s]/.test(trimmed)) throw invalid();
   let url: URL;
   try {
@@ -27,7 +28,8 @@ function parseApiBase(apiBaseUrl: string): ApiBase {
   } catch {
     throw invalid();
   }
-  if (!url.pathname.endsWith('/api')) throw invalid();
+  if (!['http:', 'https:'].includes(url.protocol) || !url.pathname.endsWith('/api'))
+    throw invalid();
   return { origin: url.origin, path: url.pathname, root: trimmed.slice(0, -'/api'.length) };
 }
 

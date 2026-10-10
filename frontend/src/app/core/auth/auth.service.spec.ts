@@ -1327,8 +1327,15 @@ describe('base da API / normalização única', () => {
     'https://api.example.test/api?x=1',
     'https://api.example.test/api#h',
     '//api',
+    'gateway/api',
+    'api',
+    './api',
+    '../api',
+    '//evil.example/api',
   ])('deveRejeitarBase_quandoFormatoNaoTerminaEmApi%s', (base) => {
     expect(() => gemsApiRoot(base)).toThrow('API_BASE_URL inválida');
+    expect(isApiDestination('/api/auth/me', base)).toBe(false);
+    expect(isApiDestination(base + '/auth/me', base)).toBe(false);
   });
   it('deveReconhecerSomenteOrigemExataEBoundary_quandoOrigemParecida', () => {
     const base = 'https://api.example.test/prefixo/api/';
