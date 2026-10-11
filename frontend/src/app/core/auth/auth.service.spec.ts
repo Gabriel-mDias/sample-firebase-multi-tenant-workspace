@@ -95,6 +95,22 @@ describe('AuthService / isolamento determinístico', () => {
       TestBed.resetTestingModule();
     }
   });
+  it.each(['success', 'rejection'])(
+    'G12 deveEncaminharResetNativoSemEnumerarConta_quandoResultado_%s',
+    async (outcome) => {
+      const reset = vi.fn(async () => {
+        if (outcome === 'rejection') throw new Error('auth/user-not-found: conta privada');
+      });
+      adapter.resetPassword = reset;
+      await expect(auth.resetPassword('pessoa@example.test')).resolves.toBeUndefined();
+      expect(reset).toHaveBeenCalledExactlyOnceWith('pessoa@example.test');
+      expect(auth.error()).toBe('');
+      expect(auth.me()).toBeNull();
+      expect(auth.loading()).toBe(false);
+      http.expectNone(environment.apiBaseUrl + '/auth/me');
+      http.expectNone(environment.apiBaseUrl + '/auth/context');
+    },
+  );
   for (const method of ['password', 'google']) {
     for (const oldSettlement of ['reject', 'resolve-B', 'resolve-A', 'resolve-C']) {
       it.each(['old/B/C', 'B/old/C', 'C/old/B'])(

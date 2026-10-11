@@ -183,6 +183,188 @@ describe('LoginComponent / fachada real e ordem nativa do observer', () => {
       TestBed.resetTestingModule();
     }
   });
+  it.each([
+    ['password', 'auth/invalid-credential'],
+    ['google', 'auth/popup-closed-by-user'],
+    ['password', 'auth/network-request-failed'],
+    ['google', 'auth/network-request-failed'],
+    ['password', 'me-403'],
+    ['google', 'me-403'],
+  ])('G12 deveNegarGenericamente_quandoFalha_%s_%s', async (method, failure) => {
+    const remote = 'conta-remota@example.test; vínculo Alpha; UID privado';
+    const result = async () => {
+      if (failure === 'me-403') return oldUser;
+      throw new Error(`${failure}: ${remote}`);
+    };
+    adapter.signInWithEmailAndPassword = result;
+    adapter.signInWithGoogle = result;
+    const fixture = TestBed.createComponent(LoginComponent);
+    fixture.detectChanges();
+    fixture.componentInstance.form.setValue({ email: 'pessoa@example.test', password: 'existing' });
+    const signing =
+      method === 'password'
+        ? fixture.componentInstance.submit()
+        : fixture.componentInstance.google();
+    await tick();
+    if (failure === 'me-403') {
+      http
+        .expectOne(environment.apiBaseUrl + '/auth/me')
+        .flush({ message: remote }, { status: 403, statusText: 'Forbidden' });
+    }
+    await signing;
+    fixture.detectChanges();
+    const element: HTMLElement = fixture.nativeElement;
+    expect(element.querySelector('[role="alert"]')?.textContent?.trim()).toBe(
+      'Não foi possível entrar. Confira seu acesso ou tente novamente.',
+    );
+    expect(element.textContent).not.toContain(remote);
+    for (const detail of ['conta-remota@example.test', 'vínculo Alpha', 'UID privado'])
+      expect(element.textContent).not.toContain(detail);
+    expect(element.textContent).not.toContain(failure);
+    expect(element.querySelector('[role="status"]')?.textContent?.trim()).toBe('');
+    expect((element.querySelector('button[type="submit"]') as HTMLButtonElement).disabled).toBe(
+      false,
+    );
+    expect(fixture.componentInstance.form.enabled).toBe(true);
+    expect(auth.loading()).toBe(false);
+    expect(auth.me()).toBeNull();
+    expect(auth.currentTenant()).toBeNull();
+    expect(auth.tenants()).toEqual([]);
+    expect(auth.effectiveActions()).toEqual([]);
+    expect(auth.sessionReady()).toBe(false);
+    expect(navigation.navigate).not.toHaveBeenCalled();
+    http.expectNone(environment.apiBaseUrl + '/auth/context');
+    fixture.destroy();
+  });
+  it.each(['password', 'google', 'reset'])(
+    'G12 deveBloquearTodasAsOperacoes_quandoPendente_%s',
+    async (method) => {
+      let complete!: () => void;
+      const pending = new Promise<void>((resolve) => (complete = resolve));
+      const password = vi.fn(async () => {
+        await pending;
+        throw new Error('auth/invalid-credential');
+      });
+      const google = vi.fn(async () => {
+        await pending;
+        throw new Error('auth/popup-closed-by-user');
+      });
+      const reset = vi.fn(() => pending);
+      adapter.signInWithEmailAndPassword = password;
+      adapter.signInWithGoogle = google;
+      adapter.resetPassword = reset;
+      const fixture = TestBed.createComponent(LoginComponent);
+      fixture.detectChanges();
+      const component = fixture.componentInstance;
+      component.form.setValue({ email: 'pessoa@example.test', password: 'existing' });
+      const running =
+        method === 'password'
+          ? component.submit()
+          : method === 'google'
+            ? component.google()
+            : component.resetPassword();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      const element: HTMLElement = fixture.nativeElement;
+      expect(component.form.disabled).toBe(true);
+      expect(element.querySelector('form')?.getAttribute('aria-busy')).toBe('true');
+      expect(element.querySelector('[role="status"]')?.textContent?.trim()).toBe(
+        'Aguarde, estamos validando seu acesso…',
+      );
+      for (const input of element.querySelectorAll<HTMLInputElement>('input'))
+        expect(input.disabled).toBe(true);
+      for (const button of element.querySelectorAll<HTMLButtonElement>('button'))
+        expect(button.disabled).toBe(true);
+      expect(element.querySelector('gems-input-password button')?.getAttribute('tabindex')).toBe(
+        '-1',
+      );
+      await component.submit();
+      await component.google();
+      await component.resetPassword();
+      expect(password).toHaveBeenCalledTimes(method === 'password' ? 1 : 0);
+      expect(google).toHaveBeenCalledTimes(method === 'google' ? 1 : 0);
+      expect(reset).toHaveBeenCalledTimes(method === 'reset' ? 1 : 0);
+      complete();
+      await running;
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component.form.enabled).toBe(true);
+      expect(element.querySelector('form')?.getAttribute('aria-busy')).toBe('false');
+      expect(
+        (element.querySelector('gems-input-password button') as HTMLButtonElement).disabled,
+      ).toBe(false);
+      expect(navigation.navigate).not.toHaveBeenCalled();
+      fixture.destroy();
+    },
+  );
+  it.each(['success', 'rejection'])(
+    'G12 deveEnviarEmailEConfirmarResetGenericamente_quandoResultado_%s',
+    async (outcome) => {
+      const reset = vi.fn(async () => {
+        if (outcome === 'rejection') throw new Error('conta inexistente; vínculo privado');
+      });
+      adapter.resetPassword = reset;
+      const fixture = TestBed.createComponent(LoginComponent);
+      fixture.detectChanges();
+      fixture.componentInstance.form.controls.email.setValue('pessoa@example.test');
+      await fixture.componentInstance.resetPassword();
+      fixture.detectChanges();
+      expect(reset).toHaveBeenCalledExactlyOnceWith('pessoa@example.test');
+      expect(fixture.nativeElement.querySelector('[role="status"]').textContent.trim()).toBe(
+        'Se a conta estiver habilitada, você receberá um e-mail com as instruções para definir sua senha.',
+      );
+      expect(fixture.nativeElement.querySelector('[role="alert"]').textContent.trim()).toBe('');
+      expect(fixture.nativeElement.textContent).not.toContain('vínculo privado');
+      expect(fixture.componentInstance.form.enabled).toBe(true);
+      expect(navigation.navigate).not.toHaveBeenCalled();
+      http.expectNone(environment.apiBaseUrl + '/auth/me');
+      fixture.destroy();
+    },
+  );
+  for (const method of ['password', 'google', 'reset']) {
+    it.each(['resolve', 'reject'])(
+      `G12 deveIgnorarResultadoAntigo_quandoLogoutDurante_${method}_%s`,
+      async (settlement) => {
+        let resolve!: () => void;
+        let reject!: (reason: Error) => void;
+        const pending = new Promise<void>((yes, no) => {
+          resolve = yes;
+          reject = no;
+        });
+        adapter.signInWithEmailAndPassword = async () => {
+          await pending;
+          return oldUser;
+        };
+        adapter.signInWithGoogle = async () => {
+          await pending;
+          return oldUser;
+        };
+        adapter.resetPassword = () => pending;
+        const fixture = TestBed.createComponent(LoginComponent);
+        fixture.detectChanges();
+        const component = fixture.componentInstance;
+        component.form.setValue({ email: 'pessoa@example.test', password: 'existing' });
+        const running =
+          method === 'password'
+            ? component.submit()
+            : method === 'google'
+              ? component.google()
+              : component.resetPassword();
+        await auth.signOut();
+        if (settlement === 'resolve') resolve();
+        else reject(new Error('resposta antiga privada'));
+        await running;
+        fixture.detectChanges();
+        expect(component.form.getRawValue()).toEqual({ email: '', password: '' });
+        expect(component.form.enabled).toBe(true);
+        expect(fixture.nativeElement.querySelector('[role="alert"]').textContent.trim()).toBe('');
+        expect(fixture.nativeElement.querySelector('[role="status"]').textContent.trim()).toBe('');
+        expect(navigation.navigate).not.toHaveBeenCalled();
+        http.expectNone(environment.apiBaseUrl + '/auth/me');
+        fixture.destroy();
+      },
+    );
+  }
   for (const method of ['password', 'google']) {
     it.each(['C', 'B/C'])(
       `FRI04 naoDeveNavegarB_quandoRejeicaoAntigaPrecedeResultadoAtual_${method}_%s`,
