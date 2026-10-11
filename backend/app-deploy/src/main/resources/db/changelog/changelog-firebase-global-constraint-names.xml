@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="firebase-name-global-audit-constraints" author="app" dbms="postgresql">
+        <comment>Nomeia PKs e FK da auditoria global sem recriar constraints nem alterar o histórico publicado.</comment>
+        <sql splitStatements="false"><![CDATA[
+            DO $rename$
+            DECLARE
+                constraint_name RECORD;
+                actual_constraint RECORD;
+            BEGIN
+                FOR constraint_name IN
+                    SELECT * FROM (VALUES
+                        ('audit_operation', 'audit_operation_pkey', 'pk_audit_operation',
+                            'p', 'id_audit_operation', NULL, NULL),
+                        ('audit_change', 'audit_change_pkey', 'pk_audit_change',
+                            'p', 'id_audit_change', NULL, NULL),
+                        ('audit_change', 'audit_change_id_audit_operation_fkey', 'fk_audit_change_operation',
+                            'f', 'id_audit_operation', 'audit_operation', 'id_audit_operation')
+                    ) AS names(table_name, old_name, new_name, expected_type, column_name,
+                        referenced_table, referenced_column)
+                LOOP
+                    -- Validate either name before accepting an already renamed constraint.
+                    FOR actual_constraint IN
+                        SELECT c.*
+                        FROM pg_catalog.pg_constraint c
+                        JOIN pg_catalog.pg_class t ON t.oid = c.conrelid
+                        JOIN pg_catalog.pg_namespace n ON n.oid = t.relnamespace
+                        WHERE n.nspname = 'auditoria'
+                            AND t.relname = constraint_name.table_name
+                            AND c.conname IN (constraint_name.old_name, constraint_name.new_name)
+                    LOOP
+                        IF actual_constraint.contype::text IS DISTINCT FROM constraint_name.expected_type
+                            OR actual_constraint.conkey IS DISTINCT FROM ARRAY(
+                                SELECT a.attnum FROM pg_catalog.pg_attribute a
+                                WHERE a.attrelid = actual_constraint.conrelid
+                                    AND a.attname = constraint_name.column_name
+                                    AND NOT a.attisdropped
+                            )
+                            OR (constraint_name.expected_type = 'f' AND (
+                                actual_constraint.confrelid IS DISTINCT FROM
+                                    to_regclass(format('%I.%I', 'auditoria', constraint_name.referenced_table))::oid
+                                OR actual_constraint.confkey IS DISTINCT FROM ARRAY(
+                                    SELECT a.attnum FROM pg_catalog.pg_attribute a
+                                    WHERE a.attrelid = to_regclass(
+                                            format('%I.%I', 'auditoria', constraint_name.referenced_table))
+                                        AND a.attname = constraint_name.referenced_column
+                                        AND NOT a.attisdropped
+                                )
+                            )) THEN
+                            RAISE EXCEPTION 'Invalid constraint definition for % on %.%: expected type %, column %, reference %.%(%)',
+                                actual_constraint.conname, 'auditoria', constraint_name.table_name,
+                                constraint_name.expected_type, constraint_name.column_name,
+                                'auditoria', constraint_name.referenced_table, constraint_name.referenced_column;
+                        END IF;
+                    END LOOP;
+                    IF EXISTS (
+                        SELECT 1
+                        FROM pg_catalog.pg_constraint c
+                        JOIN pg_catalog.pg_class t ON t.oid = c.conrelid
+                        JOIN pg_catalog.pg_namespace n ON n.oid = t.relnamespace
+                        WHERE n.nspname = 'auditoria'
+                            AND t.relname = constraint_name.table_name
+                            AND c.conname = constraint_name.old_name
+                    ) THEN
+                        EXECUTE format('ALTER TABLE %I.%I RENAME CONSTRAINT %I TO %I',
+                            'auditoria', constraint_name.table_name,
+                            constraint_name.old_name, constraint_name.new_name);
+                    ELSIF NOT EXISTS (
+                        SELECT 1
+                        FROM pg_catalog.pg_constraint c
+                        JOIN pg_catalog.pg_class t ON t.oid = c.conrelid
+                        JOIN pg_catalog.pg_namespace n ON n.oid = t.relnamespace
+                        WHERE n.nspname = 'auditoria'
+                            AND t.relname = constraint_name.table_name
+                            AND c.conname = constraint_name.new_name
+                    ) THEN
+                        RAISE EXCEPTION 'Expected constraint % or % on %.%',
+                            constraint_name.old_name, constraint_name.new_name,
+                            'auditoria', constraint_name.table_name;
+                    END IF;
+                END LOOP;
+            END;
+            $rename$;
+        ]]></sql>
+        <rollback>
+            <sql splitStatements="false"><![CDATA[
+                DO $rename$
+                DECLARE
+                    constraint_name RECORD;
+                    actual_constraint RECORD;
+                BEGIN
+                    FOR constraint_name IN
+                        SELECT * FROM (VALUES
+                            ('audit_operation', 'audit_operation_pkey', 'pk_audit_operation',
+                                'p', 'id_audit_operation', NULL, NULL),
+                            ('audit_change', 'audit_change_pkey', 'pk_audit_change',
+                                'p', 'id_audit_change', NULL, NULL),
+                            ('audit_change', 'audit_change_id_audit_operation_fkey', 'fk_audit_change_operation',
+                                'f', 'id_audit_operation', 'audit_operation', 'id_audit_operation')
+                        ) AS names(table_name, old_name, new_name, expected_type, column_name,
+                            referenced_table, referenced_column)
+                    LOOP
+                        -- Validate either name before accepting an already renamed constraint.
+                        FOR actual_constraint IN
+                            SELECT c.*
+                            FROM pg_catalog.pg_constraint c
+                            JOIN pg_catalog.pg_class t ON t.oid = c.conrelid
+                            JOIN pg_catalog.pg_namespace n ON n.oid = t.relnamespace
+                            WHERE n.nspname = 'auditoria'
+                                AND t.relname = constraint_name.table_name
+                                AND c.conname IN (constraint_name.old_name, constraint_name.new_name)
+                        LOOP
+                            IF actual_constraint.contype::text IS DISTINCT FROM constraint_name.expected_type
+                                OR actual_constraint.conkey IS DISTINCT FROM ARRAY(
+                                    SELECT a.attnum FROM pg_catalog.pg_attribute a
+                                    WHERE a.attrelid = actual_constraint.conrelid
+                                        AND a.attname = constraint_name.column_name
+                                        AND NOT a.attisdropped
+                                )
+                                OR (constraint_name.expected_type = 'f' AND (
+                                    actual_constraint.confrelid IS DISTINCT FROM
+                                        to_regclass(format('%I.%I', 'auditoria', constraint_name.referenced_table))::oid
+                                    OR actual_constraint.confkey IS DISTINCT FROM ARRAY(
+                                        SELECT a.attnum FROM pg_catalog.pg_attribute a
+                                        WHERE a.attrelid = to_regclass(
+                                                format('%I.%I', 'auditoria', constraint_name.referenced_table))
+                                            AND a.attname = constraint_name.referenced_column
+                                            AND NOT a.attisdropped
+                                    )
+                                )) THEN
+                                RAISE EXCEPTION 'Invalid constraint definition for % on %.%: expected type %, column %, reference %.%(%)',
+                                    actual_constraint.conname, 'auditoria', constraint_name.table_name,
+                                    constraint_name.expected_type, constraint_name.column_name,
+                                    'auditoria', constraint_name.referenced_table, constraint_name.referenced_column;
+                            END IF;
+                        END LOOP;
+                        IF EXISTS (
+                            SELECT 1
+                            FROM pg_catalog.pg_constraint c
+                            JOIN pg_catalog.pg_class t ON t.oid = c.conrelid
+                            JOIN pg_catalog.pg_namespace n ON n.oid = t.relnamespace
+                            WHERE n.nspname = 'auditoria'
+                                AND t.relname = constraint_name.table_name
+                                AND c.conname = constraint_name.new_name
+                        ) THEN
+                            EXECUTE format('ALTER TABLE %I.%I RENAME CONSTRAINT %I TO %I',
+                                'auditoria', constraint_name.table_name,
+                                constraint_name.new_name, constraint_name.old_name);
+                        ELSIF NOT EXISTS (
+                            SELECT 1
+                            FROM pg_catalog.pg_constraint c
+                            JOIN pg_catalog.pg_class t ON t.oid = c.conrelid
+                            JOIN pg_catalog.pg_namespace n ON n.oid = t.relnamespace
+                            WHERE n.nspname = 'auditoria'
+                                AND t.relname = constraint_name.table_name
+                                AND c.conname = constraint_name.old_name
+                        ) THEN
+                            RAISE EXCEPTION 'Expected constraint % or % on %.%',
+                                constraint_name.new_name, constraint_name.old_name,
+                                'auditoria', constraint_name.table_name;
+                        END IF;
+                    END LOOP;
+                END;
+                $rename$;
+            ]]></sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

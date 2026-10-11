@@ -8,4 +8,5 @@
  </changeSet>
  <include file="db/changelog/gems-firebase-auth/master.xml"/>
  <include file="changelog-firebase-global-audit.xml" relativeToChangelogFile="true"/>
+ <include file="changelog-firebase-global-constraint-names.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

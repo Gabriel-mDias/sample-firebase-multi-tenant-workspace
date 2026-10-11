@@ -8,4 +8,5 @@
   <sql>CREATE TABLE REVISAO_MODELO (NR_REVISAO BIGINT PRIMARY KEY); INSERT INTO REVISAO_MODELO(NR_REVISAO) VALUES(1);</sql>
   <rollback><sql>DROP TABLE REVISAO_MODELO;</sql></rollback>
  </changeSet>
+ <include file="changelog-firebase-tenant-constraint-names.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
