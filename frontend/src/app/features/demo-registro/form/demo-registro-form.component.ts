@@ -79,9 +79,8 @@ export class DemoRegistroFormComponent {
                   this.restricted() && item.valorRestrito != null ? item.valorRestrito : '',
               });
           },
-          error: () => {
-            if (this.auth.isCurrent(snapshot))
-              void this.alert.error('Não foi possível abrir o registro.');
+          error: (error) => {
+            if (this.auth.isCurrent(snapshot)) void this.alert.errorFromApi(error);
           },
         });
     }
@@ -122,14 +121,16 @@ export class DemoRegistroFormComponent {
       )
       .subscribe({
         next: () => {
-          if (this.auth.isCurrent(snapshot)) this.back();
-        },
-        error: () => {
-          if (this.auth.isCurrent(snapshot))
-            void this.alert.error(
-              'Não foi possível salvar o registro.',
-              'Confira os dados e tente novamente.',
+          if (this.auth.isCurrent(snapshot)) {
+            void this.alert.success(
+              'Sucesso',
+              this.id ? 'Registro atualizado com sucesso.' : 'Registro criado com sucesso.',
             );
+            this.back();
+          }
+        },
+        error: (error) => {
+          if (this.auth.isCurrent(snapshot)) void this.alert.errorFromApi(error);
         },
       });
   }

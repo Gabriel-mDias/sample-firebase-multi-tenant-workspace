@@ -46,7 +46,9 @@ export class DemoRegistroListComponent {
     { field: 'acoes', header: 'Ações', type: 'actions' },
   ]);
   protected readonly actions = computed<GemsTableAction[]>(() => [
-    { icon: 'fa-solid fa-eye', tooltip: 'Visualizar', actionName: 'view' },
+    ...(this.auth.isAuthorized([Acoes.CONSULTAR_DEMO], 'tenant')
+      ? [{ icon: 'fa-solid fa-eye', tooltip: 'Visualizar', actionName: 'view' }]
+      : []),
     ...(this.auth.isAuthorized([Acoes.ALTERAR_DEMO], 'tenant')
       ? [{ icon: 'fa-solid fa-pen', tooltip: 'Editar', actionName: 'edit' }]
       : []),
@@ -60,6 +62,8 @@ export class DemoRegistroListComponent {
       this.rows.set([]);
       this.filter.reset();
       this.total.set(0);
+      this.page.set(0);
+      this.loading.set(false);
     });
     this.search();
   }
@@ -84,9 +88,8 @@ export class DemoRegistroListComponent {
             this.page.set(result.number);
           }
         },
-        error: () => {
-          if (this.auth.isCurrent(snapshot))
-            void this.alert.error('Não foi possível carregar os registros.', 'Tente novamente.');
+        error: (error) => {
+          if (this.auth.isCurrent(snapshot)) void this.alert.errorFromApi(error);
         },
       });
   }
@@ -117,11 +120,13 @@ export class DemoRegistroListComponent {
       .pipe(takeUntilDestroyed(this.destroy))
       .subscribe({
         next: () => {
-          if (this.auth.isCurrent(snapshot)) this.search(this.page());
+          if (this.auth.isCurrent(snapshot)) {
+            void this.alert.success('Sucesso', 'Registro excluído com sucesso.');
+            this.search(this.page());
+          }
         },
-        error: () => {
-          if (this.auth.isCurrent(snapshot))
-            void this.alert.error('Não foi possível excluir o registro.');
+        error: (error) => {
+          if (this.auth.isCurrent(snapshot)) void this.alert.errorFromApi(error);
         },
       });
   }
