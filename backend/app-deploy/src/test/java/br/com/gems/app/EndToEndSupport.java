@@ -27,6 +27,7 @@ import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.AuthErrorCode;
 import com.google.firebase.auth.FirebaseAuth;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -42,6 +43,8 @@ import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.time.Clock;
 import java.time.Duration;
+import java.time.Instant;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -394,13 +397,32 @@ public final class EndToEndSupport {
         bind( id );
         var uid = plannedUid( id );
         String token = login( "refusal" );
+        long tokenReceivedNs = System.nanoTime();
         expect( "GET", "/api/auth/me", token, null, null, 200 );
-        // Token validity and revocation have one-second resolution: separate the boundaries.
-        Thread.sleep( 1500 );
+        var claims = unverifiedRevocationClaims( token );
+        assertThat( uid.equals( claims.get( "sub" ) ) )
+                .as( "REVOKE_SUB: o sub deve corresponder ao UID que será revogado." ).isTrue();
+        assertThat( claims.get( "iat" ) instanceof Number && claims.get( "auth_time" ) instanceof Number )
+                .as( "REVOKE_CLAIMS: iat e auth_time devem ser numéricos." ).isTrue();
+        long iat = ((Number) claims.get( "iat" )).longValue();
+        long authTime = ((Number) claims.get( "auth_time" )).longValue();
+        // O validSince do Admin SDK usa o relógio local; o desvio do host não pode decidir o teste por acaso.
+        // Instant.now() usa o sistema, independentemente do Clock do Spring.
+        awaitRevocationClock( iat, authTime );
         admin.revokeRefreshTokens( uid );
         Thread.sleep( 1500 );
-        expectSettled( "after-revoke", "GET", "/api/auth/me", token, 401 );
+        long validAfterMs = expectRevokedToken( token, uid, iat, authTime );
+        awaitRenewalClock( iat, authTime, tokenReceivedNs, validAfterMs );
         String renewed = login( "refusal" );
+        var renewedClaims = unverifiedRevocationClaims( renewed );
+        assertThat( renewedClaims.get( "iat" ) instanceof Number )
+                .as( "REVOKE_CLAIMS: iat do token renovado deve ser numérico." ).isTrue();
+        long renewedIat = ((Number) renewedClaims.get( "iat" )).longValue();
+        assertThat( Math.multiplyExact( renewedIat, 1000L ) >= validAfterMs )
+                .as( "CLOCK_SKEW: o token renovado deve alcançar o corte remoto; iat=" + renewedIat
+                        + " auth_time=" + authTime + " validAfterMs=" + validAfterMs + " epochLocal="
+                        + Instant.now().getEpochSecond() + "." )
+                .isTrue();
         expect( "GET", "/api/auth/me", renewed, null, null, 200 );
         admin.setDisabled( uid, true );
         expectSettled( "after-disable", "GET", "/api/auth/me", renewed, 401 );
@@ -409,6 +431,107 @@ public final class EndToEndSupport {
         assertThat( directory.delete( uid ) ).as( "real Admin delete" ).isTrue();
         expectSettled( "after-delete", "GET", "/api/auth/me", renewed, 401 );
         passed();
+    }
+
+    private void awaitRevocationClock( long iat, long authTime ) throws InterruptedException {
+        long startedNs = System.nanoTime();
+        long localEpoch = Instant.now().getEpochSecond();
+        while ( localEpoch <= Math.max( iat, authTime ) + 1 ) {
+            if ( System.nanoTime() - startedNs >= TimeUnit.SECONDS.toNanos( 30 ) ) {
+                throw new AssertionError( "CLOCK_SKEW: o relógio local não superou a emissão em até 30 s; iat="
+                        + iat + " auth_time=" + authTime + " epochLocal=" + localEpoch + "." );
+            }
+            Thread.sleep( 200 );
+            localEpoch = Instant.now().getEpochSecond();
+        }
+    }
+
+    private void awaitRenewalClock( long iat, long authTime, long tokenReceivedNs, long validAfterMs )
+            throws InterruptedException {
+        // Se o host estiver adiantado, o tempo monotônico desde a recepção dá um piso para o relógio remoto.
+        long startedNs = System.nanoTime();
+        long validSince = Instant.ofEpochMilli( validAfterMs ).getEpochSecond();
+        while ( iat + TimeUnit.NANOSECONDS.toSeconds( System.nanoTime() - tokenReceivedNs ) <= validSince ) {
+            if ( System.nanoTime() - startedNs >= TimeUnit.SECONDS.toNanos( 30 ) ) {
+                throw new AssertionError( "CLOCK_SKEW: o relógio remoto não alcançou o corte em até 30 s; iat="
+                        + iat + " auth_time=" + authTime + " validAfterMs=" + validAfterMs + " epochLocal="
+                        + Instant.now().getEpochSecond() + "." );
+            }
+            Thread.sleep( 200 );
+        }
+    }
+
+    /** Apenas leitura diagnóstica do payload; não substitui a verificação do token. */
+    private Map<?, ?> unverifiedRevocationClaims( String token ) {
+        try {
+            var segments = token.split( "\\.", -1 );
+            assertThat( segments.length ).as( "REVOKE_CLAIMS: o JWT deve ter três segmentos." ).isEqualTo( 3 );
+            var payload = new String( Base64.getUrlDecoder().decode( segments[1] ), StandardCharsets.UTF_8 );
+            return JSON.fromString( payload, Map.class );
+        } catch ( IOException | IllegalArgumentException failure ) {
+            // Não propagar payload, token ou a causa do parser para o reporter.
+            throw new AssertionError( "REVOKE_CLAIMS: não foi possível ler o payload do JWT." );
+        }
+    }
+
+    private long expectRevokedToken( String token, String uid, long iat, long authTime ) throws Exception {
+        var healthyAdmin = FirebaseAuth.getInstance( application.getBean( FirebaseApp.class ) );
+        long validAfterMs;
+        try {
+            validAfterMs = healthyAdmin.getUser( uid ).getTokensValidAfterTimestamp();
+        } catch ( com.google.firebase.auth.FirebaseAuthException failure ) {
+            throw FirebaseRealTestProject.translate( "getUser", failure );
+        }
+        long iatMs = Math.multiplyExact( iat, 1000L );
+        long authTimeMs = Math.multiplyExact( authTime, 1000L );
+        String direct = "ACCEPTED";
+        try {
+            healthyAdmin.verifyIdToken( token, true );
+        } catch ( com.google.firebase.auth.FirebaseAuthException failure ) {
+            if ( failure.getErrorCode() == com.google.firebase.ErrorCode.RESOURCE_EXHAUSTED ) {
+                throw FirebaseRealTestProject.translate( "verifyIdToken", failure );
+            }
+            var code = failure.getAuthErrorCode();
+            direct = code == null ? "NO_AUTH_ERROR_CODE" : code.name();
+        }
+        String port = "ACCEPTED";
+        try {
+            application.getBean( IdTokenVerifier.class ).verify( token );
+        } catch ( FirebaseAuthException failure ) {
+            port = failure.reason().name();
+        }
+        int http = -1;
+        try {
+            // Mesmo limite de expectSettled; 503 interrompe a espera sem nova tentativa.
+            for ( int attempt = 0; attempt < 30 && http != 401 && http != 503; attempt++ ) {
+                if ( attempt > 0 ) {
+                    Thread.sleep( 500 );
+                }
+                http = send( api, "GET", "/api/auth/me", token, null, null ).statusCode();
+            }
+        } finally {
+            System.out.println( "T029 REVOKE_DIAG iat=" + iat + " auth_time=" + authTime + " validAfterMs="
+                    + validAfterMs + " direct=" + direct + " port=" + port + " http=" + http );
+        }
+
+        assertThat( validAfterMs > authTimeMs && validAfterMs > iatMs )
+                .as( "REVOKE_PRECONDITION: o corte remoto deve superar auth_time e iat; iat=" + iat
+                        + " auth_time=" + authTime + " validAfterMs=" + validAfterMs + " iatMs=" + iatMs
+                        + " authTimeMs=" + authTimeMs + "." )
+                .isTrue();
+        assertThat( direct ).as( "PROVIDER_ACCEPTS_REVOKED: o Admin direto deve rejeitar o token revogado." )
+                .isNotEqualTo( "ACCEPTED" );
+        assertThat( port ).as( "SDK_PORT_ACCEPTS_REVOKED: a porta do SDK deve rejeitar o token revogado." )
+                .isNotEqualTo( "ACCEPTED" );
+        assertThat( http ).as( "REVOKE_HTTP_STATUS: o provedor deve estar disponível." ).isNotEqualTo( 503 );
+        assertThat( http ).as( http == 200
+                ? "HTTP_PATH_ACCEPTS_REVOKED: GET /api/auth/me aceitou o token rejeitado pelo Admin e pela porta."
+                : "REVOKE_HTTP_STATUS: GET /api/auth/me deve retornar 401 após a revogação." ).isEqualTo( 401 );
+        assertThat( direct ).as( "REVOKE_DIRECT_RESULT: o Admin deve informar REVOKED_ID_TOKEN." )
+                .isEqualTo( AuthErrorCode.REVOKED_ID_TOKEN.name() );
+        assertThat( port ).as( "REVOKE_PORT_RESULT: a porta deve informar INVALID_TOKEN." )
+                .isEqualTo( FirebaseAuthException.Reason.INVALID_TOKEN.name() );
+        return validAfterMs;
     }
 
     private void remoteAckRace() throws Exception {
@@ -716,7 +839,9 @@ public final class EndToEndSupport {
             expect( "GET", "/api/auth/me", token, null, null, 403 );
         }
         // Recovery: the provider path works again, the durable commands complete and the remote state converges.
-        jdbc.sql( "UPDATE security.comando_identidade SET dt_proxima_tentativa=now() WHERE id_usuario=:id" )
+        // O recuo torna o comando elegível mesmo com o relógio do host atrás do relógio do banco.
+        jdbc.sql( "UPDATE security.comando_identidade SET dt_proxima_tentativa=now()-interval '1 minute'"
+                + " WHERE id_usuario=:id" )
                 .param( "id", id ).update();
         drain();
         assertThat( jdbc.sql(

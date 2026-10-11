@@ -88,15 +88,17 @@ async function firebaseOutcome(
   response: PlaywrightResponse,
 ): Promise<{ status: number; code: string }> {
   let code = '';
+  let providerStatus = '';
   try {
     const body = await response.json();
     code = String(body?.error?.message ?? '').split(/[ :]/)[0];
+    providerStatus = String(body?.error?.status ?? '');
   } catch {
     code = '';
   }
   if (
     response.status() === 429 ||
-    /RESOURCE_EXHAUSTED|QUOTA_EXCEEDED|TOO_MANY_ATTEMPTS/.test(code)
+    /RESOURCE_EXHAUSTED|QUOTA_EXCEEDED|TOO_MANY_ATTEMPTS/.test(`${providerStatus} ${code}`)
   ) {
     throw new Error(`QUOTA_EXHAUSTED signInWithPassword (HTTP ${response.status()}); sem retry`);
   }
@@ -173,7 +175,7 @@ test('invalid credentials announce a generic error with native Firebase request'
   await page.goto('/login');
   // The address belongs to this run's namespace but is never created.
   await page.getByLabel('E-mail', { exact: true }).fill(unknownEmail);
-  await page.getByLabel('Senha', { exact: true }).fill('invalid-test-credential');
+  await setSecret(page.getByLabel('Senha', { exact: true }), 'invalid-test-credential');
   const response = signInResponse(page);
   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
   const answer = await response;

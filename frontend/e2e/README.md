@@ -27,6 +27,12 @@ Keep port 4301 free; Playwright starts the real Angular app there. The test invo
 `node node_modules/@playwright/test/cli.js test`, so it needs no shell wrapper and works on Windows
 and Linux.
 
+O E2E real exige o relógio do host sincronizado por NTP / serviço de Horário do Windows. Antes do
+revoke, o teste espera o relógio local avançar além da emissão do token e falha com `CLOCK_SKEW` se o
+desvio exceder a espera limitada de 30 segundos; antes do novo login, também aguarda o relógio remoto
+alcançar o corte se o host estiver adiantado. Em produção, a revogação pelo Admin SDK depende do
+relógio do servidor que a executa, portanto o host do backend precisa de NTP.
+
 The public Web app configuration (`apiKey`, `authDomain`, `appId`) is read at runtime from the Firebase
 management API with ADC and handed only to the browser run; nothing is versioned. If the ADC cannot
 list Web apps, set `T029_FIREBASE_API_KEY`, `T029_FIREBASE_AUTH_DOMAIN` and `T029_FIREBASE_APP_ID`
@@ -53,9 +59,9 @@ list Web apps, set `T029_FIREBASE_API_KEY`, `T029_FIREBASE_AUTH_DOMAIN` and `T02
 ## Quotas and serialization
 
 The suite is serialized (`workers: 1`, sequential Java steps) and never retries with backoff. A 429 or
-`RESOURCE_EXHAUSTED` fails the run explicitly (`Quota do Firebase excedida`); wait and rerun. The only
-bounded wait is a read-after-write poll of 5 seconds after a remote revoke, disable or delete, and it
-never retries a 503. Run the full suite sparingly: each run creates and deletes about 12 accounts.
+`RESOURCE_EXHAUSTED` fails the run explicitly (`Quota do Firebase excedida`); wait and rerun. Provider
+convergence also uses bounded read-after-write polling after a remote revoke, disable or delete, and
+it never retries a 503. Run the full suite sparingly: each run creates and deletes about 12 accounts.
 
 ## Pull requests from forks
 
