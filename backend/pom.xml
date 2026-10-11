@@ -31,7 +31,7 @@
 		<java.version>21</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- SDK publicada e comprovada por consumidor Maven remoto. -->
-		<gems.version>3.4.0</gems.version>
+		<gems.version>3.4.1</gems.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 

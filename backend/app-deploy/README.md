@@ -1,7 +1,7 @@
 # Backend Firebase
 
 Use Java 21 e execute `.\mvnw.cmd clean install` na raiz do backend. As dependências
-GEMS 3.4.0 vêm do registro Maven publicado; configure o acesso externamente.
+GEMS 3.4.1 vêm do registro Maven publicado; configure o acesso externamente.
 
 O servidor exige `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` e `FIREBASE_PROJECT_ID`
 no ambiente. Configure ADC pelo mecanismo oficial, sem credenciais na linha
