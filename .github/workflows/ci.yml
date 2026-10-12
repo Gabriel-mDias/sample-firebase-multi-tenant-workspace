@@ -52,9 +52,11 @@ jobs:
         shell: pwsh
         run: ./scripts/verificar-contexto-agentes.ps1
 
-  # Gate das rules GEMS AI 3.0.0. A CLI vem do repositório do SDK, no commit pinado em gems-ai.json
-  # (o mesmo que scripts/gems-ai.ps1 confere localmente). Se o repositório do SDK for privado, o
-  # secret GEMS_AI_SDK_TOKEN precisa dar leitura a ele; sem o secret cai no token automático.
+  # Gate das rules GEMS AI. A CLI vem da action privada `Gabriel-mDias/gems-ai-sdk`, compartilhada
+  # com os repositórios do mesmo dono (Actions access = user): sem token e sem checkout cross-repo.
+  # O ref `main` segue a versão mais recente do SDK; a action falha se ela divergir do campo
+  # `version` de gems-ai.json, e o wrapper scripts/gems-ai.ps1 usa a CLI do PATH. A conferência
+  # do commit do pin continua local (scripts/gems-ai.ps1 com a fonte em git).
   #
   # Roda em windows-latest: o lock gerado pela CLI grava caminhos com `\` e o SDK pinado não os
   # normaliza (project.py:364), então o check falha em Ubuntu. Voltar para ubuntu-latest depende
@@ -68,31 +70,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Ler commit do SDK pinado
-        id: pin
-        shell: pwsh
-        run: |
-          $commit = (Get-Content -Raw gems-ai.json | ConvertFrom-Json).commit
-          "commit=$commit" >> $env:GITHUB_OUTPUT
-
-      - name: Checkout do gems-ai-sdk
-        uses: actions/checkout@v7
-        with:
-          repository: Gabriel-mDias/gems-ai-sdk
-          ref: ${{ steps.pin.outputs.commit }}
-          path: gems-ai-sdk
-          token: ${{ secrets.GEMS_AI_SDK_TOKEN || github.token }}
-
-      - name: Python 3.11
-        uses: actions/setup-python@v7
-        with:
-          python-version: "3.11"
+      - name: CLI GEMS AI
+        uses: Gabriel-mDias/gems-ai-sdk@main
 
       - name: Gate GEMS AI
         shell: pwsh
         run: ./scripts/gems-ai-gate.ps1
-        env:
-          GEMS_AI_SDK_SRC: ${{ github.workspace }}/gems-ai-sdk/src
 
   backend:
     name: Backend — reator Maven com testes

@@ -6,7 +6,7 @@
   inexistente, falha sem cair para outra fonte); (2) comando `gems-ai` no PATH; (3) ../.tooling/gems-ai-sdk/src
   relativo a raiz do sample. Quando a fonte e um src dentro de repo git, `git rev-parse HEAD` do SDK deve ser
   igual ao campo commit de gems-ai.json; src fora de repo git falha (fail-closed). A CLI do PATH so tem a
-  versao conferida (`gems-ai --version` deve conter o campo version de gems-ai.json), nao o commit.
+  versao conferida (`gems-ai --version` deve ser igual ao campo version de gems-ai.json), nao o commit.
 #>
 $ErrorActionPreference = 'Stop'
 $raiz = Split-Path -Parent $PSScriptRoot
@@ -38,7 +38,7 @@ if ($null -ne $env:GEMS_AI_SDK_SRC -and $env:GEMS_AI_SDK_SRC -ne '') {
 } elseif (Get-Command gems-ai -ErrorAction SilentlyContinue) {
     $versaoEsperada = (Get-Content -Raw -LiteralPath (Join-Path $raiz 'gems-ai.json') | ConvertFrom-Json).version
     $versaoPath = (& gems-ai --version 2>&1 | Out-String)
-    if ($LASTEXITCODE -ne 0 -or -not $versaoPath.Contains($versaoEsperada)) {
+    if ($LASTEXITCODE -ne 0 -or -not $versaoEsperada -or $versaoPath.Trim() -ne ([string]$versaoEsperada).Trim()) {
         Falhar "gems-ai do PATH nao reporta a versao $versaoEsperada de gems-ai.json (saiu: $($versaoPath.Trim()))."
     }
     & gems-ai @args
