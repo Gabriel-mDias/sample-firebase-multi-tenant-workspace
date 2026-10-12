@@ -299,12 +299,18 @@ apertar, mas aí volta a ser uma observação aberta.
 
 ### Para aprovar esta rodada (antes do código)
 
-- [ ] O escopo da §1 é o que se espera da próxima entrega
-- [ ] As decisões da §2 refletem o que foi combinado
-- [ ] O impacto da §7 é aceitável
-- [ ] A cobertura de testes da §6 é suficiente para o risco assumido
-- [ ] A decisão de delegação (inclusive `sem delegação`) da §8 está adequada
-- [ ] Os itens fora de escopo (§11) podem mesmo esperar
+- [x] O escopo da §1 é o que se espera da próxima entrega
+- [x] As decisões da §2 refletem o que foi combinado
+- [x] O impacto da §7 é aceitável
+- [x] A cobertura de testes da §6 é suficiente para o risco assumido
+- [x] A decisão de delegação (inclusive `sem delegação`) da §8 está adequada
+- [x] Os itens fora de escopo (§11) podem mesmo esperar
+
+> ✅ **PORTÃO APROVADO pelo product owner em 2026-10-12.** Fala literal: "eu dei o ok para o
+> desenvolvimento. Minha espectativa é que você está seguindo com as demais rodadas que levantamos".
+> Aceitos o escopo e as decisões da §2 como registrados. A implementação no Java-GEMS-SDK só começa
+> depois do merge do PR do SDK da 006 (decisão de ordem já registrada). Push, PR, merge e a publicação
+> da `v3.5.0` continuam exigindo ok próprio. **O `/speckit-implement` está liberado.**
 
 ### Para considerar a rodada concluída (depois do código)
 
