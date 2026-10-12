@@ -237,13 +237,21 @@ O sample pode correr depois de T012, sem esperar o merge do SDK. T016 e T017 sã
 
 ### Para aprovar esta rodada (antes do código)
 
-- [ ] O escopo da §1 é o que se espera da próxima entrega
-- [ ] As decisões da §2 refletem o que foi combinado, incluindo as propostas 6 e 7
-- [ ] Os planos de mudança da §4 (o que a CLI vai escrever) estão aprovados como o "plano completo" do README 3.1.0
-- [ ] O impacto da §7 é aceitável, inclusive o que fica frouxo
-- [ ] A cobertura de provas da §6 é suficiente para o risco assumido
-- [ ] A decisão de delegação da §8 está adequada
-- [ ] Os itens fora de escopo (§11) podem mesmo esperar
+- [x] O escopo da §1 é o que se espera da próxima entrega
+- [x] As decisões da §2 refletem o que foi combinado, incluindo as propostas 6 e 7
+- [x] Os planos de mudança da §4 (o que a CLI vai escrever) estão aprovados como o "plano completo" do README 3.1.0
+- [x] O impacto da §7 é aceitável, inclusive o que fica frouxo
+- [x] A cobertura de provas da §6 é suficiente para o risco assumido
+- [x] A decisão de delegação da §8 está adequada
+- [x] Os itens fora de escopo (§11) podem mesmo esperar
+
+> ✅ **PORTÃO APROVADO pelo product owner em 2026-10-12.** Falas literais: "Ok para o merge e a
+> sequência sugerida das tarefas" e, depois da entrega da fase 2, "eu dei o ok para o
+> desenvolvimento. Minha espectativa é que você está seguindo com as demais rodadas que levantamos".
+> Aceitos como propostos: D6 (o Spotless e o Checkstyle do Java-GEMS-SDK ficam como higiene), D7
+> (`commit` do `gems-ai.json` em `909c69aa…`) e os planos de escrita da CLI da §4 como o "plano
+> completo". Se o `--dry-run` da execução divergir desses planos, a execução para e volta ao product
+> owner. Push, PR e merge continuam exigindo ok próprio. **O `/speckit-implement` está liberado.**
 
 ### Para considerar a rodada concluída (depois do código)
 
