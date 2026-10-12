@@ -20,6 +20,17 @@
 *.svg        text eol=lf
 *.sh         text eol=lf
 
+# Snapshot gerenciado pela CLI GEMS AI 3.0.0: o gems-ai.lock.json guarda o sha256 dos bytes
+# aplicados em CRLF e o `check --strict` compara bytes crus. Com `eol=lf` o checkout limpo (CI)
+# entrega LF e acusa drift em todos os arquivos. CRLF no working tree mantém os hashes do lock;
+# o índice continua em LF. Remover quando a CLI normalizar fim de linha no hash.
+.gems-ai/rules/*.md                          text eol=crlf
+.gems-ai/schemas/*.json                      text eol=crlf
+.gems-ai/catalog.json                        text eol=crlf
+.gems-ai/.version                            text eol=crlf
+.agents/skills/gems-ai-sdk/**                text eol=crlf
+.agents/skills/rodada-sdd/**                 text eol=crlf
+
 *.woff2 binary
 *.ico   binary
 *.png   binary

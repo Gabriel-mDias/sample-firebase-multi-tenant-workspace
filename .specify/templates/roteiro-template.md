@@ -13,7 +13,7 @@
   COMO PREENCHER
   ==============
   Este é o último artefato do ciclo spec-kit, escrito DEPOIS do /speckit-analyze e ANTES do
-  /speckit-implement (Princípio VIII). Ele é portão de aprovação humana: sem o "sim" registrado
+  /speckit-implement (Princípio VIII). Ele é portão de aprovação humana: uma autorização prévia explícita da conversa para o MESMO plano pode ser registrada literalmente, sem assinatura por proxy nem confirmação repetida. Sem autorização registrada
   aqui, nenhuma linha de código da feature é escrita.
 
   Regra de ouro: CONSOLIDA a decisão e APONTA para o detalhe. Não duplique o conteúdo de spec.md,

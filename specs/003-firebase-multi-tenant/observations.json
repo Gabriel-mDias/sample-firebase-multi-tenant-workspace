@@ -1,0 +1,367 @@
+{
+  "proofs": {
+    "nonempty_artifacts": {
+      "pass": true,
+      "count": 15
+    },
+    "tasks_not_falsely_complete": {
+      "pass": true,
+      "open": 31,
+      "completed": [
+        "T002"
+      ],
+      "pending": [
+        "T001 review",
+        "T003+ implementation/release/runtime"
+      ]
+    },
+    "constitution3_nine_principles": {
+      "pass": true,
+      "principles": 9
+    },
+    "literal_existing_approval": {
+      "pass": true,
+      "review": "PLAN_REV3_20261007 PASS received from root, independent review of materialization still pending"
+    },
+    "active_local_governance_old_operational_facts_zero": {
+      "pass": true,
+      "violating_paths": [],
+      "scope": "manual local active instructions only; does not scan production source"
+    },
+    "no_production_dependency_changes": {
+      "pass": true,
+      "tracked_sample_paths": [
+        ".agents/skills/spec-driven/SKILL.md",
+        ".specify/feature.json",
+        ".specify/memory/constitution.md",
+        ".specify/templates/roteiro-template.md",
+        ".specify/templates/tasks-template.md",
+        "AGENTS.md",
+        "CLAUDE.md",
+        "CODEX.md",
+        "GEMINI.md",
+        "README.md",
+        "backend/AGENTS.md",
+        "environments/AGENTS.md",
+        "frontend/AGENTS.md",
+        "specs/AGENTS.md"
+      ],
+      "java_tracked_diff": []
+    },
+    "tool_pin": {
+      "pass": true,
+      "sha": "51b94e3a5479da74e06444f4133e07db85ece3cc",
+      "version": "3.0.0",
+      "git_status": ""
+    },
+    "cli_readonly_commands": {
+      "pass": true,
+      "count": 7,
+      "union_ids": 20
+    },
+    "implementation_release_and_runtime": {
+      "status": "NOT_RUN",
+      "reason": "documental-only ownership; SDK builds/publication/consumers/sample code/runtime/Homolog not executed"
+    },
+    "official_snapshot_install": {
+      "pass": true,
+      "version": "3.0.0",
+      "commit": "51b94e3a5479da74e06444f4133e07db85ece3cc",
+      "transaction": "20261007T210108Z479329",
+      "preview_files": 105,
+      "scope": "snapshot_integrity; no code conformance",
+      "strict": {
+        "status": "conformant",
+        "scope": "snapshot_integrity",
+        "rules": 37,
+        "strict": true
+      },
+      "archive": "archive/cli-3.0.0-install",
+      "managed_files_writer": "official gems_ai CLI update only",
+      "waivers": []
+    },
+    "bundle_union": {
+      "pass": true,
+      "rules": [
+        "angular.auth",
+        "angular.feedback-alerts",
+        "angular.forms",
+        "angular.gems-components",
+        "angular.http-interceptors",
+        "angular.lists",
+        "angular.organization",
+        "angular.signals-standards",
+        "angular.stores",
+        "angular.testing",
+        "angular.visual-standards",
+        "base.precedence",
+        "base.safe-change",
+        "base.waivers",
+        "java.multi-tenant",
+        "java.persistence-db",
+        "java.repositories",
+        "java.security",
+        "profile.angular",
+        "profile.java"
+      ],
+      "count": 20,
+      "bundles": [
+        "security/workspace",
+        "persistence/java",
+        "multi-tenant/java",
+        "angular-auth/angular",
+        "angular-crud/angular"
+      ],
+      "merge": "unique rule id",
+      "archive": "archive/cli-3.0.0-readonly"
+    },
+    "local_adapters": {
+      "pass": true,
+      "paths": [
+        ".cursor/rules",
+        ".github/instructions",
+        ".github/copilot-instructions.md",
+        ".kilocode/rules/firebase-multi-tenant.md"
+      ],
+      "kilo_json": "unchanged; existing security/privacy/model settings preserved",
+      "authority": "constitution 3.0.0 and published SDK APIs; local Firebase facade/guard with contracts/tests"
+    },
+    "exploratory_checks": {
+      "pass": true,
+      "commands": [
+        {
+          "command": [
+            "powershell.exe",
+            "-NoProfile",
+            "-File",
+            ".tooling/run-gems-ai.ps1",
+            "update",
+            "--project",
+            "sample-firebase-multi-tenant-workspace",
+            "--to",
+            "3.0.0",
+            "--dry-run"
+          ],
+          "cwd": "D:\\repos\\build a new sample multi tenant",
+          "exit": 0,
+          "stdout_sha256": "d2d1fd323511150942140b45d0a770c9ef49fa65335cd83a2bacbaf7428c4f2d",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "command": [
+            "powershell.exe",
+            "-NoProfile",
+            "-File",
+            ".tooling/run-gems-ai.ps1",
+            "update",
+            "--project",
+            "sample-firebase-multi-tenant-workspace",
+            "--to",
+            "3.0.0"
+          ],
+          "cwd": "D:\\repos\\build a new sample multi tenant",
+          "exit": 0,
+          "stdout_sha256": "a71fa8fecdccc5fd3fe299ff926d4970d5dd47ea7a6809ed673fd9d5306e9851",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "strict",
+          "command": [
+            "powershell.exe",
+            "-NoProfile",
+            "-File",
+            ".tooling/run-gems-ai.ps1",
+            "check",
+            "--project",
+            "sample-firebase-multi-tenant-workspace",
+            "--strict"
+          ],
+          "cwd": "D:\\repos\\build a new sample multi tenant",
+          "exit": 0,
+          "stdout_sha256": "ffa7303b82135aa4cfce0a550e6214c30fe9019076e48fefbbd2db0302768fd7",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "sample-diff",
+          "command": [
+            "git",
+            "diff",
+            "--check"
+          ],
+          "cwd": "D:\\repos\\build a new sample multi tenant\\sample-firebase-multi-tenant-workspace",
+          "exit": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "255512a401d03694910a351564cbd0f87602cd27591efa9f22f1a7b5380c84da"
+        },
+        {
+          "name": "sdk-diff",
+          "command": [
+            "git",
+            "diff",
+            "--check"
+          ],
+          "cwd": "D:\\repos\\build a new sample multi tenant\\Java-GEMS-SDK",
+          "exit": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "tool-head",
+          "command": [
+            "git",
+            "rev-parse",
+            "HEAD"
+          ],
+          "cwd": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk",
+          "exit": 0,
+          "stdout_sha256": "566619d0d1dd570357796e77cf103d645a99de52e1c88f0533e97344fc26f781",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "tool-status",
+          "command": [
+            "git",
+            "status",
+            "--short"
+          ],
+          "cwd": "D:\\repos\\build a new sample multi tenant\\.tooling\\gems-ai-sdk",
+          "exit": 0,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "transient_failures": [
+        "rg listed nonexistent optional .kilocode directory before creation; adapters read successfully under corrected contract",
+        "Inline adapter script stopped on BOM-prefixed front matter after one local backend adapter; persisted UTF-8 script used utf-8-sig and completed, correcting console encoding replacement characters",
+        "Manual snapshot read first omitted state.json.data sidecar and returned FileNotFound; corrected to real controller sidecar.",
+        "Manual snapshot JSON read omitted explicit UTF-8 encoding and falsely reported accented utils paths as outside ownership. Coordinator direct API confirmed outside=[] and git status -- utils empty. Explicit UTF-8 comparison reproduced outside=[]; no rename or rollback."
+      ],
+      "git_warnings": "CRLF to LF informational warnings from CLI managed files; diff checks exit0"
+    },
+    "review_current": {
+      "status": "NOT_RUN",
+      "reason": "Independent review of materialized bytes remains required; PLAN_REV3 is plan review only"
+    },
+    "ownership": {
+      "pass": true,
+      "outside_paths": [],
+      "comparison": "start snapshot JSON read with explicit UTF-8 vs full current monitored snapshot; no production/runtime/dependency changes by successor"
+    }
+  },
+  "artifact_sha256": {
+    "sample-firebase-multi-tenant-workspace/.specify/memory/constitution.md": "19af25a9f49c8bece777662ca1508636a1587fb0a0a853503982bb22f90366bd",
+    "sample-firebase-multi-tenant-workspace/specs/003-firebase-multi-tenant/plan.md": "8a11b67d7e8f6e04fa079894146d4976c52814a201217af2afe88e582ea2a2f0",
+    "sample-firebase-multi-tenant-workspace/specs/003-firebase-multi-tenant/data-model.md": "0717f3020dfd00b0bd575c9c6d89d790b36977828f38e9f16daa541c720f9244",
+    "sample-firebase-multi-tenant-workspace/specs/003-firebase-multi-tenant/roteiro.md": "4e6cce7c9212957943870cbb34628192e88d7f39b6401e8a20328bcd95b5b365",
+    "sample-firebase-multi-tenant-workspace/specs/003-firebase-multi-tenant/tasks.md": "5549edd92e3b171bf761455b6da6d46a77bdf3509d57bbc07aa1b53155b11156",
+    "prompts/PLANO_CODEX_GEMS_FIREBASE_MULTI_TENANT.md": "16b71bc015cf3bf04880e7882c6986ff99e837b80abab5400cca5d3758d359c2",
+    "sample-firebase-multi-tenant-workspace/gems-ai.json": "4898c95059fa67ae05955202f4b757b0b1a0a959dc5965e98dacfbc25261186d",
+    "sample-firebase-multi-tenant-workspace/gems-ai.lock.json": "c0594f520eda09723eb107633ec34bf2e6e77d8717d77d8a2c42f1339b4d2a56",
+    "sample-firebase-multi-tenant-workspace/specs/003-firebase-multi-tenant/archive/cli-3.0.0-install/preview.json": "d2d1fd323511150942140b45d0a770c9ef49fa65335cd83a2bacbaf7428c4f2d",
+    "sample-firebase-multi-tenant-workspace/specs/003-firebase-multi-tenant/archive/cli-3.0.0-install/apply.json": "a71fa8fecdccc5fd3fe299ff926d4970d5dd47ea7a6809ed673fd9d5306e9851",
+    ".tooling/run-gems-ai.ps1": "631d216d580049b87b5e2bede2bd0791fea07054132581a35f79f7c8934a2d6f"
+  },
+  "predecessor_attempt1": {
+    "proofs": {
+      "nonempty_artifacts": {
+        "pass": true,
+        "count": 15
+      },
+      "tasks_not_falsely_complete": {
+        "pass": true,
+        "count": 32
+      },
+      "constitution3_nine_principles": {
+        "pass": true,
+        "principles": 9
+      },
+      "literal_existing_approval": {
+        "pass": true,
+        "review": "PLAN_REV3_20261007 PASS received from root, independent review of materialization still pending"
+      },
+      "managed_blocks_unchanged": {
+        "AGENTS.md": {
+          "pass": true,
+          "baseline_sha256": "1655c627b0b4dd0d492a25e47e3c361eddc907d83862423f20e208a46f9213b6",
+          "current_sha256": "1655c627b0b4dd0d492a25e47e3c361eddc907d83862423f20e208a46f9213b6"
+        },
+        "CLAUDE.md": {
+          "pass": true,
+          "baseline_sha256": "1655c627b0b4dd0d492a25e47e3c361eddc907d83862423f20e208a46f9213b6",
+          "current_sha256": "1655c627b0b4dd0d492a25e47e3c361eddc907d83862423f20e208a46f9213b6"
+        },
+        "GEMINI.md": {
+          "pass": true,
+          "baseline_sha256": "1655c627b0b4dd0d492a25e47e3c361eddc907d83862423f20e208a46f9213b6",
+          "current_sha256": "1655c627b0b4dd0d492a25e47e3c361eddc907d83862423f20e208a46f9213b6"
+        }
+      },
+      "snapshot_lock_unmodified": {
+        "pass": true,
+        "sha256": "ecc21ceadd0df7eb60638d78fef2ed61ab051113b9faf0dbbd8ccb2d9aa6502f",
+        "version": "2.0.0"
+      },
+      "active_local_governance_old_operational_facts_zero": {
+        "pass": true,
+        "violating_paths": [],
+        "scope": "manual local active instructions only; does not scan production source"
+      },
+      "no_production_dependency_changes": {
+        "pass": true,
+        "tracked_sample_paths": [
+          ".agents/skills/spec-driven/SKILL.md",
+          ".specify/feature.json",
+          ".specify/memory/constitution.md",
+          ".specify/templates/roteiro-template.md",
+          ".specify/templates/tasks-template.md",
+          "AGENTS.md",
+          "CLAUDE.md",
+          "CODEX.md",
+          "GEMINI.md",
+          "README.md",
+          "backend/AGENTS.md",
+          "environments/AGENTS.md",
+          "frontend/AGENTS.md",
+          "specs/AGENTS.md"
+        ],
+        "java_tracked_diff": []
+      },
+      "tool_pin": {
+        "pass": true,
+        "sha": "51b94e3a5479da74e06444f4133e07db85ece3cc",
+        "version": "3.0.0",
+        "git_status": ""
+      },
+      "cli_readonly_commands": {
+        "pass": true,
+        "count": 7,
+        "union_ids": 20
+      },
+      "implementation_release_and_runtime": {
+        "status": "NOT_RUN",
+        "reason": "documental-only ownership; SDK builds/publication/consumers/sample code/runtime/Homolog not executed"
+      },
+      "cli_install_integrity_preview": {
+        "status": "NOT_RUN",
+        "reason": "contract authorizes missing gems-ai.config.json; real gems-ai.json remains outside READ/EDIT; root requires partial result and corrected successor"
+      },
+      "other_agent_adapters_propagation": {
+        "status": "NOT_RUN",
+        "reason": ".cursor/.github/kilo writes listed, but existing files not in READ contract; must inspect/sync under corrected successor"
+      }
+    },
+    "artifact_sha256": {
+      "sample-firebase-multi-tenant-workspace/.specify/memory/constitution.md": "19af25a9f49c8bece777662ca1508636a1587fb0a0a853503982bb22f90366bd",
+      "sample-firebase-multi-tenant-workspace/specs/003-firebase-multi-tenant/plan.md": "8a11b67d7e8f6e04fa079894146d4976c52814a201217af2afe88e582ea2a2f0",
+      "sample-firebase-multi-tenant-workspace/specs/003-firebase-multi-tenant/data-model.md": "0717f3020dfd00b0bd575c9c6d89d790b36977828f38e9f16daa541c720f9244",
+      "sample-firebase-multi-tenant-workspace/specs/003-firebase-multi-tenant/roteiro.md": "4e6cce7c9212957943870cbb34628192e88d7f39b6401e8a20328bcd95b5b365",
+      "sample-firebase-multi-tenant-workspace/specs/003-firebase-multi-tenant/tasks.md": "5549edd92e3b171bf761455b6da6d46a77bdf3509d57bbc07aa1b53155b11156",
+      "prompts/PLANO_CODEX_GEMS_FIREBASE_MULTI_TENANT.md": "16b71bc015cf3bf04880e7882c6986ff99e837b80abab5400cca5d3758d359c2",
+      "sample-firebase-multi-tenant-workspace/gems-ai.json": "4898c95059fa67ae05955202f4b757b0b1a0a959dc5965e98dacfbc25261186d",
+      "sample-firebase-multi-tenant-workspace/gems-ai.lock.json": "c0594f520eda09723eb107633ec34bf2e6e77d8717d77d8a2c42f1339b4d2a56",
+      "sample-firebase-multi-tenant-workspace/specs/003-firebase-multi-tenant/archive/cli-3.0.0-install/preview.json": "d2d1fd323511150942140b45d0a770c9ef49fa65335cd83a2bacbaf7428c4f2d",
+      "sample-firebase-multi-tenant-workspace/specs/003-firebase-multi-tenant/archive/cli-3.0.0-install/apply.json": "a71fa8fecdccc5fd3fe299ff926d4970d5dd47ea7a6809ed673fd9d5306e9851",
+      ".tooling/run-gems-ai.ps1": "631d216d580049b87b5e2bede2bd0791fea07054132581a35f79f7c8934a2d6f"
+    }
+  }
+}

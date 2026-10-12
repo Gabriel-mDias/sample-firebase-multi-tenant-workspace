@@ -221,6 +221,7 @@ Alternativa em inglês: `should_{action}_when_{condition}()`.
 - Mocks apenas para dependências externas (Repository, outras Services) — nunca mock da classe sendo testada.
 - Use `assertThrows` para verificar exceções — nunca `try/catch` manual.
 - Para `BusinessException` com lista de erros: `exception.getDetalhes()` para verificar mensagens específicas — é o acessor que a `br.com.gems.exception.exception.BusinessException` (gems-exception 3.0.0) expõe; `getErrors()` não existe.
+- No consumidor, cubra respostas 403, 404, 400, 409 e 502 e prove que o handler local prevalece quando aplicável. Para `ExternalServiceException`, o texto devolvido é `ex.getMessage()`; produza mensagem segura na origem e teste que o cenário 502 não exponha detalhes sensíveis. A SDK não promete sanitização automática.
 
 ---
 

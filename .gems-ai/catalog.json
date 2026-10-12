@@ -1,10 +1,10 @@
 {
-  "version": "2.0.0",
+  "version": "3.0.0",
   "rules": [
     {
       "id": "base.precedence",
       "title": "Authority and precedence",
-      "version": "2.0.0",
+      "version": "3.0.0",
       "status": "candidate",
       "path": "contract/base/precedence.md",
       "mandatory": true,
@@ -14,12 +14,7 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
-        "feature",
-        "bug",
-        "infrastructure",
-        "sdd"
+        "all"
       ],
       "risk": "critical",
       "precedence": 0,
@@ -28,7 +23,8 @@
       ],
       "required_gates": [
         "gems-ai-check"
-      ]
+      ],
+      "required_rules": []
     },
     {
       "id": "base.safe-change",
@@ -43,12 +39,7 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
-        "feature",
-        "bug",
-        "infrastructure",
-        "sdd"
+        "all"
       ],
       "risk": "critical",
       "precedence": 1,
@@ -58,7 +49,8 @@
       "required_gates": [
         "diff-check",
         "gems-ai-check"
-      ]
+      ],
+      "required_rules": []
     },
     {
       "id": "base.waivers",
@@ -73,12 +65,7 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
-        "feature",
-        "bug",
-        "infrastructure",
-        "sdd"
+        "all"
       ],
       "risk": "critical",
       "precedence": 2,
@@ -88,7 +75,8 @@
       ],
       "required_gates": [
         "gems-ai-check"
-      ]
+      ],
+      "required_rules": []
     },
     {
       "id": "profile.angular",
@@ -102,10 +90,16 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "bug",
+        "infrastructure",
+        "governance",
+        "angular-crud",
+        "security",
+        "angular-wizard",
+        "angular-auth",
+        "angular-error",
+        "angular-ui"
       ],
       "risk": "high",
       "precedence": 20,
@@ -116,7 +110,8 @@
       "required_gates": [
         "frontend-test",
         "frontend-build"
-      ]
+      ],
+      "required_rules": []
     },
     {
       "id": "profile.java",
@@ -130,10 +125,17 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "bug",
+        "infrastructure",
+        "governance",
+        "java-crud",
+        "java-event",
+        "java-api",
+        "storage",
+        "security",
+        "persistence",
+        "multi-tenant"
       ],
       "risk": "high",
       "precedence": 20,
@@ -143,7 +145,8 @@
       ],
       "required_gates": [
         "maven-reactor"
-      ]
+      ],
+      "required_rules": []
     },
     {
       "id": "java.architecture",
@@ -157,10 +160,11 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "bug",
+        "infrastructure",
+        "java-crud",
+        "workspace-crud"
       ],
       "risk": "high",
       "precedence": 21,
@@ -170,12 +174,15 @@
       "required_gates": [
         "maven-reactor",
         "architecture-test"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
       "id": "angular.auth",
       "title": "Angular auth",
-      "version": "2.0.0",
+      "version": "3.0.0",
       "status": "candidate",
       "path": "contract/profiles/angular/auth.md",
       "mandatory": false,
@@ -184,10 +191,9 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
-        "feature",
-        "bug"
+        "infrastructure",
+        "security",
+        "angular-auth"
       ],
       "risk": "high",
       "precedence": 25,
@@ -196,6 +202,9 @@
       ],
       "required_gates": [
         "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
       ]
     },
     {
@@ -210,10 +219,9 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
-        "feature",
-        "bug"
+        "angular-crud",
+        "workspace-crud",
+        "angular-error"
       ],
       "risk": "high",
       "precedence": 25,
@@ -222,6 +230,9 @@
       ],
       "required_gates": [
         "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
       ]
     },
     {
@@ -236,10 +247,11 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "angular-crud",
+        "workspace-crud",
+        "angular-wizard",
+        "angular-error"
       ],
       "risk": "high",
       "precedence": 25,
@@ -248,6 +260,9 @@
       ],
       "required_gates": [
         "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
       ]
     },
     {
@@ -263,7 +278,10 @@
       ],
       "tasks": [
         "feature",
-        "bug"
+        "angular-crud",
+        "workspace-crud",
+        "angular-wizard",
+        "angular-ui"
       ],
       "risk": "high",
       "precedence": 25,
@@ -273,6 +291,9 @@
       "required_gates": [
         "frontend-test",
         "frontend-build"
+      ],
+      "required_rules": [
+        "profile.angular"
       ]
     },
     {
@@ -287,10 +308,9 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
-        "feature",
-        "bug"
+        "infrastructure",
+        "security",
+        "angular-auth"
       ],
       "risk": "high",
       "precedence": 25,
@@ -299,6 +319,9 @@
       ],
       "required_gates": [
         "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
       ]
     },
     {
@@ -313,10 +336,9 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "angular-crud",
+        "workspace-crud"
       ],
       "risk": "high",
       "precedence": 25,
@@ -325,6 +347,9 @@
       ],
       "required_gates": [
         "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
       ]
     },
     {
@@ -339,10 +364,11 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "bug",
+        "angular-crud",
+        "workspace-crud",
+        "angular-ui"
       ],
       "risk": "high",
       "precedence": 25,
@@ -351,6 +377,9 @@
       ],
       "required_gates": [
         "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
       ]
     },
     {
@@ -365,10 +394,11 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "bug",
+        "angular-crud",
+        "workspace-crud",
+        "angular-ui"
       ],
       "risk": "high",
       "precedence": 25,
@@ -377,6 +407,9 @@
       ],
       "required_gates": [
         "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
       ]
     },
     {
@@ -391,10 +424,7 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
-        "feature",
-        "bug"
+        "angular-wizard"
       ],
       "risk": "high",
       "precedence": 25,
@@ -403,6 +433,9 @@
       ],
       "required_gates": [
         "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
       ]
     },
     {
@@ -417,10 +450,13 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "bug",
+        "angular-crud",
+        "workspace-crud",
+        "angular-wizard",
+        "angular-auth",
+        "angular-error"
       ],
       "risk": "high",
       "precedence": 25,
@@ -429,6 +465,9 @@
       ],
       "required_gates": [
         "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
       ]
     },
     {
@@ -443,10 +482,11 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "bug",
+        "angular-crud",
+        "workspace-crud",
+        "angular-wizard"
       ],
       "risk": "high",
       "precedence": 25,
@@ -456,6 +496,9 @@
       "required_gates": [
         "frontend-test",
         "frontend-build"
+      ],
+      "required_rules": [
+        "profile.angular"
       ]
     },
     {
@@ -470,8 +513,9 @@
         "workspace"
       ],
       "tasks": [
-        "feature",
-        "bug"
+        "angular-crud",
+        "workspace-crud",
+        "angular-ui"
       ],
       "risk": "high",
       "precedence": 25,
@@ -481,6 +525,9 @@
       "required_gates": [
         "frontend-conformance",
         "accessibility-test"
+      ],
+      "required_rules": [
+        "profile.angular"
       ]
     },
     {
@@ -495,10 +542,11 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "bug",
+        "java-crud",
+        "workspace-crud",
+        "java-api"
       ],
       "risk": "high",
       "precedence": 25,
@@ -507,6 +555,9 @@
       ],
       "required_gates": [
         "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
@@ -521,10 +572,7 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
-        "feature",
-        "bug"
+        "java-event"
       ],
       "risk": "high",
       "precedence": 25,
@@ -533,6 +581,9 @@
       ],
       "required_gates": [
         "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
@@ -547,8 +598,8 @@
         "workspace"
       ],
       "tasks": [
-        "feature",
-        "bug"
+        "java-crud",
+        "workspace-crud"
       ],
       "risk": "high",
       "precedence": 25,
@@ -558,6 +609,9 @@
       "required_gates": [
         "java-conformance",
         "mapping-test"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
@@ -583,6 +637,10 @@
       ],
       "required_gates": [
         "tenant-isolation-test"
+      ],
+      "required_rules": [
+        "java.security",
+        "java.persistence-db"
       ]
     },
     {
@@ -597,10 +655,7 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
-        "feature",
-        "bug"
+        "infrastructure"
       ],
       "risk": "high",
       "precedence": 25,
@@ -609,6 +664,9 @@
       ],
       "required_gates": [
         "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
@@ -623,10 +681,7 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
-        "feature",
-        "bug"
+        "java-api"
       ],
       "risk": "high",
       "precedence": 25,
@@ -635,6 +690,9 @@
       ],
       "required_gates": [
         "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
@@ -649,8 +707,10 @@
         "workspace"
       ],
       "tasks": [
+        "java-crud",
+        "workspace-crud",
         "persistence",
-        "feature"
+        "multi-tenant"
       ],
       "risk": "critical",
       "precedence": 25,
@@ -660,6 +720,9 @@
       "required_gates": [
         "migration-test",
         "schema-validate"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
@@ -674,10 +737,12 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "bug",
+        "java-crud",
+        "workspace-crud",
+        "persistence",
+        "multi-tenant"
       ],
       "risk": "high",
       "precedence": 25,
@@ -686,6 +751,9 @@
       ],
       "required_gates": [
         "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
@@ -700,10 +768,10 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "java-crud",
+        "workspace-crud",
+        "java-api"
       ],
       "risk": "high",
       "precedence": 25,
@@ -712,6 +780,9 @@
       ],
       "required_gates": [
         "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
@@ -726,8 +797,10 @@
         "workspace"
       ],
       "tasks": [
+        "feature",
+        "storage",
         "security",
-        "feature"
+        "multi-tenant"
       ],
       "risk": "critical",
       "precedence": 25,
@@ -737,6 +810,9 @@
       "required_gates": [
         "authorization-test",
         "security-mutation"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
@@ -751,10 +827,12 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "bug",
+        "java-crud",
+        "workspace-crud",
+        "java-event",
+        "storage"
       ],
       "risk": "high",
       "precedence": 25,
@@ -763,6 +841,9 @@
       ],
       "required_gates": [
         "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
@@ -777,10 +858,7 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
-        "feature",
-        "bug"
+        "storage"
       ],
       "risk": "high",
       "precedence": 25,
@@ -789,6 +867,9 @@
       ],
       "required_gates": [
         "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
@@ -803,10 +884,11 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "bug",
+        "java-crud",
+        "workspace-crud",
+        "java-event"
       ],
       "risk": "high",
       "precedence": 25,
@@ -815,6 +897,9 @@
       ],
       "required_gates": [
         "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
@@ -829,10 +914,7 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
-        "feature",
-        "bug"
+        "java-crud"
       ],
       "risk": "high",
       "precedence": 25,
@@ -841,6 +923,9 @@
       ],
       "required_gates": [
         "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
@@ -855,10 +940,11 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "bug"
+        "bug",
+        "java-crud",
+        "workspace-crud",
+        "java-api"
       ],
       "risk": "high",
       "precedence": 25,
@@ -867,6 +953,9 @@
       ],
       "required_gates": [
         "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
       ]
     },
     {
@@ -880,10 +969,10 @@
         "workspace"
       ],
       "tasks": [
-        "all",
-        "governance",
         "feature",
-        "infrastructure"
+        "infrastructure",
+        "governance",
+        "workspace-crud"
       ],
       "risk": "high",
       "precedence": 30,
@@ -893,6 +982,10 @@
       ],
       "required_gates": [
         "cross-layer-contract"
+      ],
+      "required_rules": [
+        "profile.java",
+        "profile.angular"
       ]
     },
     {
@@ -908,8 +1001,8 @@
         "workspace"
       ],
       "tasks": [
-        "sdd",
-        "feature"
+        "feature",
+        "sdd"
       ],
       "risk": "high",
       "precedence": 40,
@@ -918,6 +1011,9 @@
       ],
       "required_gates": [
         "round-validate"
+      ],
+      "required_rules": [
+        "stories.traceability"
       ]
     },
     {
@@ -933,8 +1029,8 @@
         "workspace"
       ],
       "tasks": [
-        "sdd",
-        "feature"
+        "feature",
+        "sdd"
       ],
       "risk": "medium",
       "precedence": 50,
@@ -943,12 +1039,13 @@
       ],
       "required_gates": [
         "requirements-trace"
-      ]
+      ],
+      "required_rules": []
     },
     {
       "id": "signature.invariants",
       "title": "GEMS signature invariants",
-      "version": "2.0.0",
+      "version": "3.0.0",
       "status": "candidate",
       "path": "contract/signature/invariants.md",
       "mandatory": false,
@@ -958,8 +1055,8 @@
         "workspace"
       ],
       "tasks": [
-        "governance",
-        "feature"
+        "feature",
+        "governance"
       ],
       "risk": "critical",
       "precedence": 60,
@@ -969,7 +1066,8 @@
       ],
       "required_gates": [
         "signature-score"
-      ]
+      ],
+      "required_rules": []
     }
   ]
 }

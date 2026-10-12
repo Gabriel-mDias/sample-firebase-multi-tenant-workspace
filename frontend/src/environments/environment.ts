@@ -1,23 +1,17 @@
 import { buildEnvironment, RuntimeEnvironmentOverrides } from './environment.model';
-
-const runtimeEnv =
-  (
-    globalThis as typeof globalThis & {
-      __env?: RuntimeEnvironmentOverrides;
-    }
-  ).__env ?? {};
-
+const runtime =
+  (globalThis as typeof globalThis & { __env?: RuntimeEnvironmentOverrides }).__env ?? {};
 export const environment = buildEnvironment(
   {
     production: false,
-    apiBaseUrl: 'http://localhost:8080',
-    oidc: {
-      issuer: 'http://localhost:8443/realms/app-realm',
-      clientId: 'app-frontend',
-      redirectUri: `${window.location.origin}/callback`,
-      postLogoutRedirectUri: window.location.origin,
-      scope: 'openid profile email',
+    apiBaseUrl: 'http://localhost:8080/api',
+    firebase: {
+      apiKey: 'demo-key',
+      authDomain: 'localhost',
+      projectId: 'demo-gems',
+      appId: 'demo-gems-web',
     },
+    authEmulatorUrl: 'http://localhost:9099',
   },
-  runtimeEnv,
+  runtime,
 );

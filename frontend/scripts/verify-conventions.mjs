@@ -57,7 +57,7 @@ const srcRoot = resolve(frontendRoot, 'src');
 const baselinePath = resolve(repoRoot, '.gems-ai', 'conformance-baseline.json');
 
 /** Total medido e congelado em S-def, T057 (2026-09-14). Só encolhe em S-codex. */
-const CONGELADO_EM = 174;
+const CONGELADO_EM = 0;
 
 const REGRAS = '.gems-ai/rules/frontend-angular/';
 const MARCA = 'GEMS-EXCEPTION(';

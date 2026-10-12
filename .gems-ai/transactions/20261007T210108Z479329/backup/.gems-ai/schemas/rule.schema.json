@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gems.example/schemas/rule.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "title", "version", "status", "path", "mandatory", "profiles", "tasks", "risk", "precedence", "related_rules", "required_gates"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9.-]+$" },
+    "title": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "status": { "enum": ["draft", "candidate", "stable", "deprecated"] },
+    "path": { "type": "string", "pattern": "^contract/.+\\.md$" },
+    "mandatory": { "type": "boolean" },
+    "profiles": { "type": "array", "items": { "enum": ["java", "angular", "workspace"] }, "minItems": 1, "uniqueItems": true },
+    "tasks": { "type": "array", "items": { "type": "string" }, "minItems": 1, "uniqueItems": true },
+    "risk": { "enum": ["low", "medium", "high", "critical"] },
+    "precedence": { "type": "integer", "minimum": 0 },
+    "related_rules": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "required_gates": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+  }
+}

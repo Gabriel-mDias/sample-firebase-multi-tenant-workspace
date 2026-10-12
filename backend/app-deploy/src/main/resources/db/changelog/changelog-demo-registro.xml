@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+ <changeSet id="firebase-create-demo-registro" author="app">
+  <sql>CREATE TABLE DEMO_REGISTRO (ID_DEMO_REGISTRO UUID PRIMARY KEY, NM_REGISTRO VARCHAR(150) NOT NULL,
+   DS_REGISTRO VARCHAR(1000), VL_RESTRITO NUMERIC(19,2), DT_CRIACAO TIMESTAMPTZ NOT NULL, DT_EXCLUSAO TIMESTAMPTZ);</sql>
+  <rollback><sql>DROP TABLE DEMO_REGISTRO;</sql></rollback>
+ </changeSet>
+</databaseChangeLog>

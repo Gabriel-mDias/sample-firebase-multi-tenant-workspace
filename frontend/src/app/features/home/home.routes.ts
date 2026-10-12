@@ -5,10 +5,10 @@ import { authGuard } from '../../core/guards/auth.guard';
  * Rotas da feature home. Só exige sessão válida (`authGuard`) — a home é a tela
  * de boas-vindas exibida a qualquer usuário autenticado, sem checagem de role.
  */
-export const HOME_ROUTES: Routes = [
+export default [
   {
     path: '',
     canActivate: [authGuard],
     loadComponent: () => import('./home.component').then((c) => c.HomeComponent),
   },
-];
+] satisfies Routes;

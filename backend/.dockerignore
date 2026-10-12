@@ -1,7 +1,6 @@
-**/target/
-.git/
-.gitignore
-.env*
-Dockerfile*
-.dockerignore
-*.log*
+**
+!app-deploy/
+!app-deploy/target/
+!app-deploy/target/app-deploy-*.jar
+!Dockerfile
+!.dockerignore

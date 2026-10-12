@@ -46,7 +46,9 @@ estado real durante o planejamento.
 
 - Encontrar ambiguidades de escopo, autorização, dados, UX, concorrência, integração e falhas.
 - Resolver primeiro decisões com alto impacto e sem default seguro.
-- Registrar cada resposta no `spec.md`, eliminando todos os marcadores
+- Registrar cada resposta no `spec.md`. A rodada003 usa plano já aprovado e autorização literal
+  "Implement the plan."; registrar no roteiro sem assinatura por proxy e sem pedir confirmação
+  repetida para o MESMO escopo. Eliminar todos os marcadores
   `[NEEDS CLARIFICATION]` antes do plano.
 - Não inventar decisão de produto quando alternativas alterarem materialmente o resultado.
 
@@ -61,9 +63,9 @@ estado real durante o planejamento.
   - `contracts/`: REST e módulo frontend, quando aplicáveis.
   - `quickstart.md`: cenários executáveis de validação ponta a ponta.
 - Distribuir arquivos entre os cinco módulos Maven conforme a constituição.
-- Manter configuração, migrations, resources e empacotamento somente em `meduc-deploy`.
+- Manter configuração, migrations, resources e empacotamento somente em `app-deploy`.
 - Consultar regras e recipes GEMS apenas para as camadas presentes no plano; aplicar os overrides do
-  `CODEX.md` e preferir o domínio de referência quando houver divergência consolidada.
+  `CODEX.md` e tratar domínio de referência como forma; constituição, segurança e API publicada prevalecem.
 
 ### 4. Tasks
 
@@ -113,7 +115,7 @@ estado real durante o planejamento.
   - `backend/.\mvnw.cmd clean install`.
   - `frontend/npm test`.
   - `frontend/npm run build`.
-  - `frontend/npx prettier --write .`.
+  - `frontend/npx prettier --check .`.
   - aplicação subindo com `ddl-auto: validate` quando houver impacto de contexto ou banco.
 - Executar os cenários relevantes de `quickstart.md` e registrar evidências.
 - Depois dos gates completos e antes da homologação, repetir a avaliação de elegibilidade da skill
@@ -130,7 +132,7 @@ estado real durante o planejamento.
   silenciosamente.
 - Fazer o código consolidado vencer apenas as especificações preliminares de `utils/`, registrando a
   diferença na spec convertida.
-- Fazer as regras de `.gems-ai/rules/` vencerem o código consolidado (constituição 2.4.0): numa
+- Fazer as regras de `.gems-ai/rules/` vencerem o código consolidado (constituição 3.0.0): numa
   divergência de escrita, é o código que se corrige, e não a regra que cede. O domínio de referência
   serve de forma, não de autoridade. Desvio que fica de pé leva
   `GEMS-EXCEPTION(<regra>#<seção>): <motivo>; expira AAAA-MM-DD` na linha de cima.

@@ -30,10 +30,11 @@ on:
   push:
     branches: [main]
 
-# Um PR que recebe vários pushes seguidos não precisa manter as execuções antigas vivas.
+# Não cancelar o workflow em andamento: isso interromperia o E2E real antes da limpeza de usuários.
+# A trava dedicada no backend serializa o acesso ao projeto Firebase entre refs diferentes.
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   agent-context:
@@ -51,9 +52,40 @@ jobs:
         shell: pwsh
         run: ./scripts/verificar-contexto-agentes.ps1
 
+  # Gate das rules GEMS AI. A CLI vem da action privada `Gabriel-mDias/gems-ai-sdk`, compartilhada
+  # com os repositórios do mesmo dono (Actions access = user): sem token e sem checkout cross-repo.
+  # O ref `main` segue a versão mais recente do SDK; a action falha se ela divergir do campo
+  # `version` de gems-ai.json, e o wrapper scripts/gems-ai.ps1 usa a CLI do PATH. A conferência
+  # do commit do pin continua local (scripts/gems-ai.ps1 com a fonte em git).
+  #
+  # Roda em windows-latest: o lock gerado pela CLI grava caminhos com `\` e o SDK pinado não os
+  # normaliza (project.py:364), então o check falha em Ubuntu. Voltar para ubuntu-latest depende
+  # de normalização na própria CLI.
+  gems-ai:
+    name: GEMS AI — gate das rules
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: CLI GEMS AI
+        uses: Gabriel-mDias/gems-ai-sdk@main
+
+      - name: Gate GEMS AI
+        shell: pwsh
+        run: ./scripts/gems-ai-gate.ps1
+
   backend:
     name: Backend — reator Maven com testes
     runs-on: ubuntu-latest
+    # O projeto real é compartilhado: serializar execuções protege as quotas do Firebase.
+    # T029 usa namespace por GITHUB_RUN_ID/GITHUB_RUN_ATTEMPT, limpa usuários em finally e varre
+    # órfãos de automação. Não cancelar uma execução enquanto ela ainda possui usuários reais.
+    concurrency:
+      group: t029-firebase-real-sample-firebase-multi-tenant
+      cancel-in-progress: false
     permissions:
       contents: read
       packages: read
@@ -62,6 +94,12 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0 # Spotless ratchetFrom=411156d requires history
+
+      # Forks não recebem o secret: o Maven mantém os demais testes e ignora somente o E2E real.
+      - name: Avisar E2E real pulado em PR de fork
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          printf '%s\n' '::warning::T029 AVISO: E2E Firebase real pulado em PR de fork sem acesso ao secret; este skip não comprova o gate E2E.'
 
       - name: JDK 21
         uses: actions/setup-java@v6
@@ -75,6 +113,47 @@ jobs:
           server-id: github
           server-username: GEMS_REGISTRY_USER
           server-password: GEMS_REGISTRY_TOKEN
+
+      # O teste Java sobe o Angular e chama o CLI Playwright em frontend; precisa de Node e Chromium.
+      - name: Node 22
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Credencial do registro privado
+        run: |
+          printf '@gabriel-mdias:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=%s\n' \
+            "$GEMS_REGISTRY_TOKEN" > .npmrc
+        working-directory: frontend
+        env:
+          GEMS_REGISTRY_TOKEN: ${{ secrets.GEMS_REGISTRY_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Instalar dependências do E2E
+        run: npm ci
+        working-directory: frontend
+
+      - name: Instalar Chromium e dependências do sistema
+        run: npx playwright install --with-deps chromium
+        working-directory: frontend
+
+      # ADC existe somente no runtime em RUNNER_TEMP (runner.temp), fora do checkout e dos artifacts.
+      # Sem secret fora de fork, falhar antes do Maven; o preflight Java confere o project_id real.
+      - name: Materializar credencial Firebase de testes
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        shell: bash
+        env:
+          FIREBASE_TEST_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_TEST_SERVICE_ACCOUNT_JSON }}
+          FIREBASE_TEST_CREDENTIAL_FILE: ${{ runner.temp }}/t029-firebase-service-account.json
+        run: |
+          if [[ -z "$FIREBASE_TEST_SERVICE_ACCOUNT_JSON" ]]; then
+            printf '%s\n' '::error::FIREBASE_TEST_SERVICE_ACCOUNT_JSON ausente; o E2E Firebase real exige ADC e não pode ser pulado fora de PR de fork.'
+            exit 1
+          fi
+          umask 077
+          printf '%s' "$FIREBASE_TEST_SERVICE_ACCOUNT_JSON" > "$FIREBASE_TEST_CREDENTIAL_FILE"
+          chmod 600 "$FIREBASE_TEST_CREDENTIAL_FILE"
 
       # Os testes de integração do app-deploy sobem um Postgres efêmero por Testcontainers.
       # O runner do GitHub já tem Docker, então não é preciso serviço declarado aqui: o Testcontainers
@@ -93,6 +172,17 @@ jobs:
         env:
           GEMS_REGISTRY_USER: ${{ secrets.GEMS_REGISTRY_USER || github.actor }}
           GEMS_REGISTRY_TOKEN: ${{ secrets.GEMS_REGISTRY_TOKEN || secrets.GITHUB_TOKEN }}
+          FIREBASE_PROJECT_ID: sample-firebase-multi-tenant
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && format('{0}/t029-firebase-service-account.json', runner.temp) || '' }}
+          T029_FIREBASE_REAL: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository && 'skip' || 'run' }}
+
+      # Remover o arquivo ADC também após falha; o caminho só é transmitido por env.
+      - name: Apagar credencial Firebase de testes
+        if: always()
+        shell: bash
+        env:
+          FIREBASE_TEST_CREDENTIAL_FILE: ${{ runner.temp }}/t029-firebase-service-account.json
+        run: rm -f -- "$FIREBASE_TEST_CREDENTIAL_FILE"
 
       # Sobe o relatório mesmo com a suíte vermelha — é justamente aí que ele serve.
       - name: Relatórios de teste
@@ -128,7 +218,7 @@ jobs:
         env:
           GEMS_REGISTRY_TOKEN: ${{ secrets.GEMS_REGISTRY_TOKEN || secrets.GITHUB_TOKEN }}
 
-      # Angular 22 usa angular-gems-sdk 2.1.0 e overrides de peers do keycloak-angular.
+      # Angular 22 usa angular-gems-sdk 3.0.0 e overrides de peers do keycloak-angular.
       # npm ci instala as versões registradas no lockfile.
       - name: Instalar dependências
         run: npm ci

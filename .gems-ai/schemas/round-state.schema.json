@@ -2,14 +2,54 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://gems.example/schemas/round-state.schema.json",
   "type": "object",
-  "additionalProperties": true,
-  "required": ["schemaVersion", "slug", "phase", "outcome", "checkpoint"],
+  "additionalProperties": false,
+  "required": ["schemaVersion", "slug", "phase", "outcome", "checkpoint", "steps"],
   "properties": {
-    "schemaVersion": { "const": 1 },
+    "schemaVersion": { "const": 2 },
     "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
-    "phase": { "enum": ["discovery", "specification", "plan", "tasks", "execution", "validation", "closed"] },
-    "outcome": { "type": ["null", "string"], "enum": [null, "completed", "blocked"] },
-    "checkpoint": { "type": ["null", "string"] },
-    "blocker": { "type": "string", "minLength": 1 }
-  }
+    "phase": { "enum": ["discovery", "specification", "plan", "tasks", "execution", "validation", "closure", "closed"] },
+    "outcome": { "enum": [null, "completed", "blocked"] },
+    "checkpoint": { "enum": [null, "human_approval"] },
+    "steps": {
+      "type": "array", "maxItems": 6,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["phase", "artifact", "approvedBy", "approvalEvidence"],
+        "properties": {
+          "phase": { "enum": ["discovery", "specification", "plan", "tasks", "execution", "validation"] },
+          "artifact": { "$ref": "#/$defs/record" },
+          "approvedBy": { "type": "string", "minLength": 1 },
+          "approvalEvidence": { "$ref": "#/$defs/record" }
+        }
+      }
+    },
+    "blocker": {
+      "type": "object", "additionalProperties": false,
+      "required": ["causeType", "cause", "owner", "evidence", "resumeWhen"],
+      "properties": {
+        "causeType": { "const": "external" },
+        "cause": { "type": "string", "minLength": 1 },
+        "owner": { "type": "string", "minLength": 1 },
+        "evidence": { "$ref": "#/$defs/record" },
+        "resumeWhen": { "type": "string", "minLength": 1 }
+      }
+    }
+  },
+  "$defs": {
+    "record": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    }
+  },
+  "allOf": [
+    { "if": { "properties": { "outcome": { "const": "blocked" } }, "required": ["outcome"] }, "then": { "required": ["blocker"] } },
+    { "if": { "properties": { "outcome": { "enum": [null, "completed"] } }, "required": ["outcome"] }, "then": { "not": { "required": ["blocker"] } } },
+    { "if": { "properties": { "outcome": { "const": "completed" } }, "required": ["outcome"] }, "then": { "properties": { "steps": { "minItems": 6, "maxItems": 6 } } } },
+    { "if": { "properties": { "outcome": { "const": null } }, "required": ["outcome"] }, "then": { "properties": { "checkpoint": { "const": "human_approval" } } } },
+    { "if": { "properties": { "phase": { "const": "closed" } }, "required": ["phase"] }, "then": { "properties": { "checkpoint": { "const": null }, "outcome": { "enum": ["completed", "blocked"] } } } }
+  ]
 }

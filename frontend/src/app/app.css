@@ -1,10 +1,10 @@
-/* Casca autenticada. O `gems-side-menu` usa `:host{display:contents}`, então seus dois filhos
- * — a barra superior mobile (`.mobile-top-bar`, só ≤768px) e o container do menu
- * (`.gems-side-menu-container`) — tornam-se filhos diretos deste `.app-shell`.
+/* Casca autenticada. O `gems-side-menu` usa `:host{display:contents}`, entÃ£o seus dois filhos
+ * â€” a barra superior mobile (`.mobile-top-bar`, sÃ³ â‰¤768px) e o container do menu
+ * (`.gems-side-menu-container`) â€” tornam-se filhos diretos deste `.app-shell`.
  *
- * Desktop (>768px): layout em LINHA — menu (sticky, 260px) à esquerda, conteúdo à direita.
- * Mobile (≤768px): o menu vira drawer `position:fixed` (fora do fluxo) e a SDK renderiza a
- *   barra superior com hambúrguer; portanto empilhamos em COLUNA para a barra ficar no topo. */
+ * Desktop (>768px): layout em LINHA â€” menu (sticky, 260px) Ã  esquerda, conteÃºdo Ã  direita.
+ * Mobile (â‰¤768px): o menu vira drawer `position:fixed` (fora do fluxo) e a SDK renderiza a
+ *   barra superior com hambÃºrguer; portanto empilhamos em COLUNA para a barra ficar no topo. */
 .app-shell {
   display: flex;
   flex-direction: row;
@@ -12,15 +12,15 @@
   background: var(--gems-bg);
 }
 
-/* O `<main>` é a área de conteúdo ao lado da moldura (menu). Os containers da SDK
- * (`list-container`/`form-container`) já aplicam max-width e padding internos; aqui mantemos
+/* O `<main>` Ã© a Ã¡rea de conteÃºdo ao lado da moldura (menu). Os containers da SDK
+ * (`list-container`/`form-container`) jÃ¡ aplicam max-width e padding internos; aqui mantemos
  * apenas um respiro externo e o scroll independente do menu. `min-width:0` evita overflow
- * horizontal quando o conteúdo (tabelas) é largo.
+ * horizontal quando o conteÃºdo (tabelas) Ã© largo.
  *
- * O padding-bottom extra reserva o espaço do rodapé fixo (`app-footer`): como é o
- * `.app-content` — e não o `body` — que tem `overflow:auto`, o rodapé flutua por
- * cima do seu conteúdo; sem esse respiro as últimas linhas de tabelas longas
- * ficariam escondidas atrás dele. */
+ * O padding-bottom extra reserva o espaÃ§o do rodapÃ© fixo (`app-footer`): como Ã© o
+ * `.app-content` â€” e nÃ£o o `body` â€” que tem `overflow:auto`, o rodapÃ© flutua por
+ * cima do seu conteÃºdo; sem esse respiro as Ãºltimas linhas de tabelas longas
+ * ficariam escondidas atrÃ¡s dele. */
 .app-content {
   flex: 1;
   min-width: 0;
@@ -29,9 +29,9 @@
   overflow: auto;
 }
 
-/* Menu colapsado (80px): o `gems-side-menu` já anima sua própria largura;
- * aqui só replicamos o número via `collapsedChange` (app.ts) para o rodapé
- * fixo, que não é filho do menu e por isso não herda a largura dele. */
+/* Menu colapsado (80px): o `gems-side-menu` jÃ¡ anima sua prÃ³pria largura;
+ * aqui sÃ³ replicamos o nÃºmero via `collapsedChange` (app.ts) para o rodapÃ©
+ * fixo, que nÃ£o Ã© filho do menu e por isso nÃ£o herda a largura dele. */
 .app-shell.menu-collapsed {
   --app-menu-width: 80px;
 }
@@ -40,15 +40,25 @@
   .app-shell {
     flex-direction: column;
 
-    /* O menu vira drawer fora do fluxo (position:fixed, translado), então
-       deixa de ocupar espaço na coluna — o rodapé passa a ocupar a largura
+    /* O menu vira drawer fora do fluxo (position:fixed, translado), entÃ£o
+       deixa de ocupar espaÃ§o na coluna â€” o rodapÃ© passa a ocupar a largura
        toda da tela (ver --app-menu-width em app-footer.component.css). */
     --app-menu-width: 0px;
   }
 
-  /* Nesta faixa o rodapé cresce para 32px (ver app-footer.component.css);
-     o respiro do conteúdo precisa acompanhar para não ser coberto. */
+  /* Nesta faixa o rodapÃ© cresce para 32px (ver app-footer.component.css);
+     o respiro do conteÃºdo precisa acompanhar para nÃ£o ser coberto. */
   .app-content {
     padding-bottom: calc(1rem + var(--app-footer-height-mobile));
   }
+}
+
+.tenant-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--gems-border-color);
 }

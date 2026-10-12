@@ -241,31 +241,36 @@ html .mobile-top-bar .logo-img-mobile {
   max-width: 100%;
 }
 
-/* Estrutura Global e Cores. Tokens locais sem equivalente funcional na SDK. */
 :root {
-  --meduc-page-bg: #f8f9fa;
-  --meduc-surface: #ffffff;
-  --meduc-text-body: #333333;
-  --meduc-text-strong: #111827;
-  --meduc-text-control: #1e293b;
-  --meduc-text-label: #374151;
-  --meduc-text-muted: #6b7280;
-  --meduc-text-disabled: #94a3b8;
-  --meduc-border: #d1d5db;
-  --meduc-border-subtle: #e5e7eb;
-  --meduc-border-hover: #9ca3af;
-  --meduc-focus: #6366f1;
-  --meduc-disabled-surface: #f1f5f9;
-  --meduc-shadow-control: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --meduc-shadow-focus: 0 0 0 4px rgba(99, 102, 241, 0.1), var(--meduc-shadow-control);
-  --meduc-shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --meduc-selection-hover-ring: 0 0 0 3px rgba(17, 24, 39, 0.06);
-  --meduc-selection-selected-bg: rgba(17, 24, 39, 0.03);
+  --app-brand-dark: #0a0a0a;
+  --app-brand-accent: #c6a15b;
+  --app-surface: #fffefa;
+  --app-ink: #24231f;
+  --app-control-border: color-mix(in srgb, var(--app-ink) 60%, var(--app-surface));
+  --app-heading-font: 'Cormorant Garamond', Georgia, serif;
+  --meduc-page-bg: var(--gems-bg);
+  --meduc-surface: var(--app-surface);
+  --meduc-text-body: var(--app-ink);
+  --meduc-text-strong: var(--app-ink);
+  --meduc-text-control: var(--app-ink);
+  --meduc-text-label: var(--app-ink);
+  --meduc-text-muted: var(--app-ink);
+  --meduc-text-disabled: var(--gems-text-muted);
+  --meduc-border: var(--gems-border-color);
+  --meduc-border-subtle: var(--gems-border-color);
+  --meduc-border-hover: var(--gems-primary-500);
+  --meduc-focus: var(--gems-primary-500);
+  --meduc-disabled-surface: var(--gems-bg-muted);
+  --meduc-shadow-control: 0 1px 2px color-mix(in srgb, var(--app-brand-dark) 5%, transparent);
+  --meduc-shadow-focus: 0 0 0 3px color-mix(in srgb, var(--gems-primary-500) 20%, transparent);
+  --meduc-shadow-card: 0 4px 8px color-mix(in srgb, var(--app-brand-dark) 5%, transparent);
+  --meduc-selection-hover-ring: var(--meduc-shadow-focus);
+  --meduc-selection-selected-bg: var(--gems-bg-subtle);
 }
 
 body {
   font-family:
-    'Inter',
+    'Plus Jakarta Sans',
     -apple-system,
     BlinkMacSystemFont,
     'Segoe UI',
@@ -683,4 +688,41 @@ label,
 
 .step-empty i {
   font-size: 2.5rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+:focus-visible {
+  outline: 3px solid var(--gems-primary-500) !important;
+  outline-offset: 3px;
+}
+.btn-save {
+  background: var(--gems-primary-500);
+  border-color: var(--gems-primary-500);
+}
+html .gems-password-label,
+html .gems-input-label {
+  color: var(--app-ink);
+}
+html .gems-password-input,
+html .gems-input.gems-input,
+html .form-control.form-control {
+  background: var(--app-surface);
+  border-color: var(--app-control-border);
+}
+@media (max-width: 600px) {
+  .list-container,
+  .form-container {
+    padding: 1.25rem;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }

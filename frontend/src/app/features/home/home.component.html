@@ -1,13 +1,13 @@
-<div class="list-container animate__animated animate__fadeIn">
-  <h1 class="home-title">Bem-vindo ao App</h1>
-
-  @if (semAcesso()) {
-    <div class="sem-acesso">
-      <i class="fa-solid fa-circle-info"></i>
-      <p>
-        Seu perfil ainda não tem acesso a nenhuma funcionalidade do sistema. Procure o
-        administrador.
+<section class="list-container">
+  <div class="header">
+    <div class="header-titles">
+      <h2>Seu espaço de trabalho</h2>
+      <p class="subtitle">
+        Selecione uma empresa para acessar os recursos disponíveis para sua conta.
       </p>
     </div>
-  }
-</div>
+  </div>
+  <a class="btn-secondary" routerLink="/tenants"
+    >Escolher empresa <i class="fa-solid fa-building" aria-hidden="true"></i
+  ></a>
+</section>

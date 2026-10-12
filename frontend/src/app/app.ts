@@ -1,14 +1,14 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { GemsSideMenuComponent, GemsSideMenuConfig } from '@gabriel-mdias/angular-gems-sdk';
-
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  GemsNavigationService,
+  GemsSideMenuComponent,
+  GemsSideMenuConfig,
+} from '@gabriel-mdias/angular-gems-sdk';
 import { AuthService } from './core/auth/auth.service';
 import { AppFooterComponent } from './core/footer/app-footer.component';
 import { buildMenu } from './core/menu/menu.builder';
-
-/** Nome genérico exibido na casca autenticada (sem branding de terceiros). */
-const APP_NAME = 'App';
-
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, GemsSideMenuComponent, AppFooterComponent],
@@ -18,38 +18,38 @@ const APP_NAME = 'App';
 export class App {
   protected readonly auth = inject(AuthService);
   private readonly router = inject(Router);
-
-  protected readonly appName = APP_NAME;
-
-  private readonly currentUrl = signal(this.router.url);
-
-  /** Estado de colapso do menu lateral, refletido em `.app-shell.menu-collapsed`
-   * (app.css) para que o rodapé fixo (que consome `--app-menu-width`)
-   * acompanhe a largura real do menu. */
+  private readonly navigation = inject(GemsNavigationService);
+  protected readonly currentUrl = signal(this.router.url);
   protected readonly menuCollapsed = signal(false);
-
+  protected readonly showShell = computed(
+    () =>
+      !!this.auth.me() &&
+      !this.currentUrl().startsWith('/login') &&
+      !this.currentUrl().startsWith('/acesso-negado'),
+  );
+  protected readonly menuConfig = computed<GemsSideMenuConfig>(() => ({
+    headerTitle: 'G&Ms',
+    items: buildMenu(this.auth),
+  }));
   constructor() {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.currentUrl.set(event.urlAfterRedirects);
-      }
+    this.router.events.pipe(takeUntilDestroyed(inject(DestroyRef))).subscribe((event) => {
+      if (event instanceof NavigationEnd) this.currentUrl.set(event.urlAfterRedirects);
+    });
+    this.auth.invalidated.pipe(takeUntilDestroyed()).subscribe(() => {
+      if (!this.auth.authenticatedUser() && !/^\/login(?:[?#]|$)/.test(this.router.url))
+        this.navigation.navigate(['/login']);
     });
   }
 
-  readonly showShell = computed(
-    () => this.auth.isLoggedIn() && !this.currentUrl().startsWith('/acesso-negado'),
-  );
-
-  readonly menuConfig = computed<GemsSideMenuConfig>(() => ({
-    headerTitle: this.appName,
-    items: buildMenu(this.auth),
-  }));
-
-  onLogout(): void {
-    this.auth.logout();
+  protected async onLogout(): Promise<void> {
+    try {
+      await this.auth.signOut();
+    } catch {
+      /* A sessão local já foi invalidada. */
+    }
   }
 
-  onMenuCollapsedChange(collapsed: boolean): void {
-    this.menuCollapsed.set(collapsed);
+  protected changeTenant(): void {
+    this.navigation.navigate(['/tenants']);
   }
 }

@@ -3,7 +3,7 @@
   "$id": "https://gems.example/schemas/rule.schema.json",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "title", "version", "status", "path", "mandatory", "profiles", "tasks", "risk", "precedence", "related_rules", "required_gates"],
+  "required": ["id", "title", "version", "status", "path", "mandatory", "profiles", "tasks", "risk", "precedence", "related_rules", "required_rules", "required_gates"],
   "properties": {
     "id": { "type": "string", "pattern": "^[a-z][a-z0-9.-]+$" },
     "title": { "type": "string", "minLength": 1 },
@@ -16,6 +16,7 @@
     "risk": { "enum": ["low", "medium", "high", "critical"] },
     "precedence": { "type": "integer", "minimum": 0 },
     "related_rules": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "required_rules": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
     "required_gates": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
   }
 }

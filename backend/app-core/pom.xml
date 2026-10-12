@@ -14,6 +14,7 @@
     <description>Regras de negócio, controllers REST e acesso a dados. Depende de model, security e events.</description>
 
     <dependencies>
+<dependency><groupId>br.com.gems</groupId><artifactId>gems-jpa-multi-tenant</artifactId></dependency>
         <dependency>
             <groupId>br.com.gems</groupId>
             <artifactId>app-model</artifactId>

@@ -1,0 +1,37 @@
+<section class="list-container animate__animated animate__fadeIn">
+  <div class="header">
+    <div class="header-titles">
+      <h2>Registros de exemplo</h2>
+      <p class="subtitle">Dados da empresa {{ auth.currentTenant()?.name }}.</p>
+    </div>
+    @if (canCreate()) {
+      <button class="btn-novo" (click)="create()">
+        <i class="fa-solid fa-plus" aria-hidden="true"></i> Novo registro
+      </button>
+    }
+  </div>
+  <gems-form-card title="Filtros" icon="fa-solid fa-magnifying-glass">
+    <form [formGroup]="filter" (ngSubmit)="search()">
+      <gems-input-text
+        label="Nome"
+        formControlName="nome"
+        placeholder="Pesquisar por nome"
+      /><button class="btn-save" [disabled]="loading()">
+        Pesquisar <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      </button>
+    </form>
+  </gems-form-card>
+  <div class="table-region">
+    <gems-table
+      [data]="rows()"
+      [columns]="columns()"
+      [actions]="actions()"
+      [isLoading]="loading()"
+      [totalRecords]="total()"
+      [page]="page()"
+      [size]="10"
+      (actionClick)="onAction($event)"
+      (pageChange)="search($event.page ?? 0)"
+    />
+  </div>
+</section>

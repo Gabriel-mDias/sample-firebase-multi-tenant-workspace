@@ -1,60 +1,31 @@
 <!--
-SYNC IMPACT REPORT — v2.0.0
-Version change: 1.0.0 → 2.0.0 (MAJOR: regras de escrita vencem código consolidado).
-Aprovado na rodada 010 do Meduc, roteiro §12, 2026-09-14.
-Atualizados: Governance, Adoção de Módulo SDK GEMS, IV (Spring rollbackFor),
-V (BaseController incondicional e catálogo derivado), VI (SDK, shared, rotas), VII (mutação).
-Preservados: cinco módulos app-*, single-tenant, schemas public/security/auditoria,
-domínios parceiro/solicitacao e remoção do scaffold no primeiro domínio real.
-Contexto propagado na mesma alteração; a conformação do código será a rodada 002.
-Nenhum registro factual da fundação Meduc nem requisito tenant foi importado.
--->
-<!--
-SYNC IMPACT REPORT — v1.0.0 (criação)
-=====================================
-Version change: — → 1.0.0
-Bump rationale: ratificação inicial. Nove princípios definidos, nenhum herdado de versão anterior.
+SYNC IMPACT REPORT — v3.1.0
+Emenda 2026-10-09 (3.0.0 → 3.1.0, MINOR: expansão material da orientação do Princípio IX e da tabela de stack; nenhum princípio removido nem redefinido de forma incompatível). Decisão do usuário 6B ("6 - opcao b"; contexto: "Esse projeto em si é um TESTE"; usar o ambiente Firebase entregue): suíte automatizada e CI usam o projeto Firebase real de testes sample-firebase-multi-tenant via ADC; emulador só opção demo/offline do Compose local; Google OAuth real e entrega de reset por e-mail são verificação humana. A ratificação vem da decisão do usuário nesta data; nenhuma assinatura humana adicional foi criada.
 
-Motivação: este repositório é um molde. A constituição nasce completa porque o custo de descobrir
-estas regras uma segunda vez já foi pago — cada uma delas existe para fechar uma falha silenciosa
-concreta: schema que diverge do código sem erro, endpoint que esquece a anotação de autorização,
-rota de UI liberada por omissão do guard, alteração de ambiente feita no console que sobrevive a
-todos os deploys, backup que nunca foi restaurado, e domínio de exemplo que apodrece no repositório.
-
-Princípios definidos (9):
-  I.    Fronteiras de Módulo Impostas pelo Reator Maven
-  II.   Persistência Declarada, Nunca Inferida
-  III.  Changelog Liquibase Organizado e Rastreável
-  IV.   Validação Acumulada e Ordem Canônica de Serviço
-  V.    Contrato REST e Autorização Espelhada na UI
-  VI.   Frontend Modular e Padronizado pela GEMS SDK
-  VII.  Testes como Gate (NÃO NEGOCIÁVEL)
-  VIII. Especificação Antes de Código, Sem Sobras de Exemplo
-  IX.   Configuração de Ambiente é Código
-
-Seções adicionadas: Stack e Restrições Técnicas; Fluxo de Trabalho e Portões de Qualidade;
-Governance.
-
-Artefatos dependentes, todos criados na mesma ratificação:
-  ✅ .specify/templates/{spec,plan,tasks,checklist,roteiro,change,pacote-de-execucao,estado-lote}-template.md
-  ✅ AGENTS.md (raiz) e os aninhados de backend/, frontend/, environments/, specs/
-  ✅ CLAUDE.md, CODEX.md, GEMINI.md, .cursor/rules/, .github/instructions/, kilo.json
-  ✅ .gems-ai/rules/ e .gems-ai/recipes/
-
-Pendências: nenhuma.
-
-NOTA AO PROJETO QUE HERDA ESTE MOLDE — o domínio `parceiro`/`solicitacao` presente no código é
-scaffold de referência e está sujeito à última cláusula do Princípio VIII: deve ser removido por
-inteiro assim que o primeiro domínio real ocupar o papel de referência. Até lá, ele é a resposta
-concreta a "como se faz aqui".
+Histórico anterior — v3.0.0
+Version change: 2.0.0 → 3.0.0 (MAJOR: identidade, tenancy, autorização e operação redefinidas).
+Autorização existente: usuário "Implement the plan." após plano aprovado/revisão PLAN_REV3_20261007 PASS.
+Registro literal em specs/003-firebase-multi-tenant/roteiro.md; nenhuma assinatura fabricada.
+Princípios preservados: cinco módulos, direção Maven, Liquibase/ddlvalidate, UUID, validação
+acumulada, REST/serviços GEMS, frontend modular/UI, testes/mutações e SDD antes de código.
+Princípios redefinidos: identidade Firebase+SQL, vigência completa, tenant schemas/contexto,
+auditoria empresarial, lifecycle durável, envio nativo, exemplos mínimos/cleanup, local+CI+homolog.
+Histórico2.0.0 arquivado .specify/history/constitution-2.0.0.md (não executável).
+Sincronização local: AGENTS raiz/backend/frontend/environments/specs; README/CODEX/CLAUDE/GEMINI;
+skill local spec-driven/templates; rodada 003 e contrato Java SDK. Adapters de outras ferramentas
++pendentes de propagação em contrato sucessor; seus fatos locais precisam ser sincronizados.
+Snapshot/adapters GEMS AI 3.0.0: exclusivamente CLI oficial; pendência administrativa de contrato
+para gems-ai.json não habilita edição manual nem altera a autoridade3.0.0.
+Gates produção/publicação/consumers/homolog: NOT_RUN nesta preparação documental.
 -->
 
 # Constituição do projeto
 
-Este é um sistema interno **single-tenant**, com um **segundo executável** (portal externo, app de
-campo, integração) previsto no futuro. Essa previsão não é um detalhe de roadmap: ela condiciona a
-arquitetura descrita no Princípio I. Se ela não valer para o seu projeto, o Princípio I é a primeira
-emenda a fazer — e é uma emenda, com Sync Impact Report e bump, não uma edição.
+Este repositório é um **molde Firebase multi-tenant** para uma software factory eficiente com IA,
+preservando a assinatura GEMS. O produto SaaS de referência atende 100–1000 empresas, sem promessa
+de capacidade ou SLA. Um projeto Firebase por produto/ambiente; tenant empresarial é local ao banco.
+Exemplos mínimos removíveis demonstram contratos, sem carregar regras de negócio pesadas.
+O plano autorizado está em `specs/003-firebase-multi-tenant/roteiro.md`.
 
 ## Core Principles
 
@@ -66,7 +37,7 @@ grafo de dependência estritamente unidirecional.
 | Módulo Maven | Depende de | Conteúdo | Organização de pacotes |
 | :--- | :--- | :--- | :--- |
 | `app-model` | — | entidades JPA, DTOs, params de filtro, responses, enums | **camada-primeiro**: `br.com.gems.app.model.entity.<agrupamento>`, `model.dto`, `model.params`, `model.response` |
-| `app-security` | — | resource server Keycloak, ações, Admin API, `@PublicEndpoint` | `br.com.gems.app.security.*` |
+| `app-security` | — | Firebase auth adapter, ações, contexto e classificações de endpoint | `br.com.gems.app.security.*` |
 | `app-events` | model | **somente POJOs de evento** (ver regra abaixo) | `br.com.gems.app.<dominio>.event` |
 | `app-core` | model, security, events | regra de negócio | **domínio-primeiro**: `br.com.gems.app.<dominio>.{controller,service,repository}` |
 | `app-deploy` | core | `AppApplication`, `application.yml`, changelogs Liquibase, fat jar | raiz |
@@ -89,20 +60,17 @@ Regras não negociáveis:
 - Comunicação entre domínios de negócio dentro de `app-core` distingue **acionar** de **consultar**:
   - **Acionar regra de negócio de outro domínio é por evento** (`ApplicationEventPublisher` +
     `@EventListener`/`@TransactionalEventListener` do próprio Spring), nunca chamada direta de
-    service a service. É assim que concluir uma solicitação atualiza o parceiro sem que
-    `solicitacao` conheça o service de `parceiro`.
+    service a service. O exemplo mínimo deve demonstrar comunicação sem dependência circular entre domínios.
   - **Consultar dado de outro domínio pelo repository dele é permitido.** São leituras síncronas, e
     um evento não responde pergunta — ele avisa que algo aconteceu. Forçá-las a passar por evento
     tornaria a resposta assíncrona sem ganho de isolamento nenhum.
   - O que continua proibido é **escrever** no dado de outro domínio, direta ou indiretamente:
     chamar o service dele, ou salvar pelo repository dele.
 - Esta regra é **convenção revisada em code review** — não há gate automatizado que a verifique.
-- **Nota sobre entrega de eventos em memória**: não há registro persistido de publicações, então
-  eventos de domínio são entregues **apenas em memória**, dentro do próprio processo. Se a aplicação
-  cair entre a publicação e a execução do listener, o evento se perde — não há reprocessamento.
-  Isso é aceitável enquanto nenhum evento carregar consequência que não possa ser recalculada;
-  quando um evento não puder ser perdido, a persistência de publicações MUST voltar como decisão
-  consciente e documentada, não por omissão.
+- Eventos de domínio recalculáveis podem usar Spring em memória. Comandos de ciclo de vida de
+  identidade e eventos de segurança com consequência não descartável usam outbox persistida
+  atomicamente com a mutação SQL, idempotência por UID e versão monotônica. SQL e Firebase não
+  compartilham transação. Nunca persistir senha, token, chave ou action link.
 - `spring-boot-maven-plugin` só pode estar ativo em `app-deploy`; nos demais módulos fica em
   `<pluginManagement>`. Ativo no POM pai, o goal `repackage` transformaria os jars de biblioteca em
   fat jars com `BOOT-INF/`, inutilizáveis como dependência.
@@ -128,9 +96,16 @@ nem altera tabela.
 - Relacionamentos `ManyToOne` são sempre `LAZY`. Com `open-in-view: false`, todo relacionamento
   consumido fora da transação MUST estar coberto por `@NamedEntityGraph` ou carregado dentro do
   service — caso contrário estoura `LazyInitializationException` em produção, não no teste.
-- **Schemas:** `public` para o domínio de negócio; `security` para entidades de segurança
-  persistidas; `auditoria` para logs de auditoria, disparo de e-mail e execução de schedules.
-  Nenhuma outra segmentação.
+- **Schemas:** `security` é JDBC compartilhado opt-in; `administracao` guarda metadados globais;
+  `auditoria` guarda trilha global separada; `modelo` é técnico para bootstrap/validação;
+  `tenant_<alias>` contém negócio e auditoria empresarial sem schema fixo em anotação.
+  Sem fallback para `public`: global JPA exige `TenantScope.global()` deliberado; tenant JPA só
+  após autenticação, membership vigente, READY e revisão mínima aplicada. OSIV=false, sem EM antes
+  de autenticar e sem troca de scope dentro de EM/transação. Limpar contexto no início e finally,
+  pois `TenantScope.close()` restaura o anterior. Async usado captura security/tenant/actor.
+- Segurança usa UUID/Instant e Clock injetado; DT_INICIO/DT_FIM em toda cadeia, sem FL_ATIVO.
+  CHECK fim >= início permite intervalo vazio. Grants imediatos, encerramento de vínculo não reabre;
+  novas concessões geram nova linha. Composite FKs/CHECK provam tenant e escopo no banco.
 - Lombok padrão nas entidades: `@Builder @AllArgsConstructor @NoArgsConstructor @Getter @Setter
   @ToString`, com `@ToString.Exclude` nos `ManyToOne` para evitar recursão.
 
@@ -140,8 +115,8 @@ nem altera tabela.
   infraestrutura e uma sequência de `<include>` apontando para um arquivo por domínio, em
   `backend/app-deploy/src/main/resources/db/changelog/`.
 - Um arquivo por domínio ou agrupamento (`changelog-localidades.xml`, `changelog-normalizacao.xml`,
-  `changelog-parceiro.xml`). É **proibido** continuar inflando o master com `createTable`.
-- `id` de changeset descritivo e estável (`create-table-parceiro`, `seed-pais`,
+  `changelog-demo-registro.xml`). É **proibido** continuar inflando o master com `createTable`.
+- `id` de changeset descritivo e estável (`create-table-demo-registro`, `seed-pais`,
   `seed-estado-brasil`); `author` é o responsável pela alteração. Changeset já aplicado **nunca** é
   editado — corrige-se com um changeset novo. Editar um changeset aplicado muda o checksum e quebra
   o boot de todo ambiente que já o rodou.
@@ -183,42 +158,49 @@ nem altera tabela.
   compilação; o JSON gerado deve ser verificado no build, nunca mantido à mão.
 - Busca paginada é **`POST /search`** com `@RequestBody FilterParams` e `@PageableDefault` — nunca
   GET com query params.
-- **Autorização é por ação, não por nível.** Cada endpoint declara
-  `@PreAuthorize("hasRole('<AÇÃO>')")` com **uma** ação de `AcaoSistema` (`br.com.gems.app.security`)
-  — `INSERIR_PARCEIRO`, `EXCLUIR_SOLICITACAO`, `CONCLUIR_SOLICITACAO`. Os perfis de atuação são
-  **grupos** do provedor de identidade, e cada grupo carrega uma role **composta** (`ADMIN` para o
-  perfil pleno, `PERFIL_<NOME>` para os demais) que o servidor expande em ações no token. O sistema
-  nunca atribui role a usuário: apenas o coloca no grupo.
-- É **proibido** escrever `hasAnyRole(..., 'ADMIN')`. `ADMIN` é composta de todas as ações e já
-  expande; incluí-la à mão é redundante e sugere uma exceção que o modelo não tem. Quem se pegar
-  escrevendo isso deve corrigir a **composta do perfil**, não a anotação.
+- **Autorização é por ação, não por nível.** Endpoint protegido usa uma ação concreta do catálogo
+  e classificação GlobalEndpoint/TenantEndpoint. União SQL de caminhos vigentes diretos/perfil/grupo
+  deduplica e intersecciona catálogo+scope; todos os elos e provider precisam vigência. Sem cache,
+  claims de roles ou autoridade por drift. Mudança de scope no catálogo falha startup.
+- Tenant admin administra somente memberships/grants próprios e concede subconjunto das ações
+  efetivas do ator intersectadas com catálogo delegável, inclusive por grupo/perfil. Cadastro
+  central e ação GLOBAL distinta criam o primeiro administrador da empresa. Nenhum bypass ADMIN.
+- UID/provider/issuer é identidade permanente; ownership imutável. Google vincula por e-mail
+  somente UID jamais ligado, google.com, e-mail verificado e exatamente um pending elegível sob
+  lock/uniques. Identidade histórica encerrada nunca faz fallback. Senha usa UID planejado/Admin,
+  envio nativo Firebase pelo cliente e nenhum segredo persistido. Bootstrap central é CLI explícita
+  com project+UID verificado Admin, idempotente/auditado; sem primeiro login virar administrador.
+- Desativação global bloqueia SQL antes de disable/revoke remoto; falha externa não desfaz bloqueio.
+  Reativação exige enable ACK da última versão+CAS e nunca reabre grants encerrados. Encerrar
+  membership não desabilita a conta Firebase. Revogação vale no próximo request após commit;
+  request já autorizado pode concluir com snapshot.
 - Dado referencial sem regra de negócio (países, estados, CEP) usa `isAuthenticated()`.
 - **Autorização de campo** é o segundo mecanismo, e vive no **service**, não na anotação: quando a
   regra é "este perfil vê o registro mas não vê *este campo*", o service consulta
   `UsuarioAutenticadoService.possuiAcao()` e omite o valor na projeção — em `toDTO`, na busca **e**
   na gravação, para que um payload malicioso não sobrescreva o que o chamador não podia ler. O
-  sigilo da comissão do parceiro é a implementação de referência. Aplicá-lo só na UI é defeito, não
+  campo restrito de DemoRegistro é a referência mínima planejada. Aplicá-lo só na UI é defeito, não
   estilo: a API continua devolvendo o valor a quem chamar direto.
 - **Estado de fluxo nunca entra pelo corpo da requisição.** Situação, etapa e marco avançam por
-  endpoints de ação dedicados (`POST /api/solicitacoes/{id}/concluir`), cada um com a sua própria
+  endpoints de ação dedicados (endpoint de transição dedicado), cada um com a sua própria
   ação de `AcaoSistema`. Aceitar a situação num `PUT` genérico transforma a máquina de estados em
   sugestão e a autorização por transição em ficção.
-- A UI **espelha a ação concreta**: `isAuthorized(Acoes.EXCLUIR_PARCEIRO)` no sinal que controla o botão,
-  `data: { roles: [Acoes.INSERIR_PARCEIRO] }` na rota. O JSON frontend é gerado e verificado a partir de
+- A UI **espelha a ação concreta**: `isAuthorized(Acoes.EXCLUIR_DEMO)` no sinal que controla o botão,
+  `data: { roles: [Acoes.INSERIR_DEMO] }` na rota. O JSON frontend é gerado e verificado a partir de
   `AcaoSistema.java`, verificado por diff dos dois conjuntos.
-- **As duas varreduras que fecham a falha silenciosa são obrigatórias**, e toda rodada nova MUST
-  entrar nelas: `CoberturaPreAuthorizeTest` falha se um método mapeado de `br.com.gems.app` não
-  tiver `@PreAuthorize`; `routes-coverage.spec.ts` percorre `app.routes.ts`, resolve cada
-  `loadChildren` e falha se uma rota guardada não declarar `data.roles`. Sem elas, o endpoint
-  esquecido não gera erro — gera acesso.
+- Scanner `EndpointAuthorizationScan.assertProtected` registrado e
+  `TenantAuthorizationInterceptor` obrigatório. Authentication implementa AuthorizationContextAware
+  com JwtAuthorizationContext publicado real e authorities ROLE_ação. Uma única registration do
+  filtro stateless. Cobertura de rotas resolve loadChildren e reprova metadata `data.roles` ausente.
 - O `roleGuard` do frontend falha **fechado**: rota guardada sem `data.roles` é negada, nunca
   liberada.
-- Segurança stateless, CSRF desabilitado, `@EnableMethodSecurity`. Público apenas: `OPTIONS`,
-  `/actuator/health`, `/api/auth/**` e endpoints anotados com `@PublicEndpoint`. **`/actuator/**`
-  como um todo NÃO é público** — `/actuator/metrics/http.server.requests` enumera anonimamente todos
-  os URIs da API, com contagem e latência. A documentação OpenAPI (`/v3/api-docs/**`,
-  `/swagger-ui/**`) é pública apenas quando `SPRINGDOC_ENABLED` permite, e MUST estar desligada em
-  ambiente exposto à internet.
+- Segurança stateless, CSRF desabilitado, EnableMethodSecurity. Público apenas OPTIONS, health e
+  endpoint declarado PublicEndpoint. `/api/auth/me` é GlobalEndpoint+CONSULTAR_PROPRIA_CONTA;
+  `/api/auth/context` é TenantEndpoint+CONSULTAR_PROPRIO_CONTEXTO_TENANT, com grants atômicos no
+  pré-provisionamento/membership. Auth não vira público para contornar scanner. Token ausente,
+  inválido, revogado ou disabled=401; negado local=403; provider indisponível=503 fail closed.
+  Verificação real de revogação é obrigatória no sample, não presumida de verify default.
+  OpenAPI público somente quando SPRINGDOC_ENABLED permite; desligado em ambiente exposto.
 - Rota de terceiro que o projeto publica sem controlar (o `S3Controller` do `gems-aws-web`, cuja
   classe está num jar e não pode receber `@PreAuthorize`) MUST ser negada por regra de caminho no
   `SecurityConfig`, antes de qualquer registro de endpoint público.
@@ -253,16 +235,24 @@ nem altera tabela.
   só a barra de progresso: quem renderiza o passo ativo é o orquestrador, com `@switch`.
 - **Mensagem de erro de campo usa `gems-field-error` da SDK (≥ 2.0.0)**, e **senha usa
   `gems-input-password`** com `enforcePolicy`, `showCriteria` e `matchControl` — não se recria
-  política de senha nem `passwordMismatch` no projeto. A SDK 2.1.0 fornece os componentes e a política aprovados para a rodada 002. Cópia local de componente que a SDK entrega é o
+  política de senha nem `passwordMismatch` no projeto. A versão core publicada e provada fornece os componentes e a política; adapter de autenticação é separado. Cópia local de componente que a SDK entrega é o
   defeito que a seção "Adoção de Módulo da SDK GEMS" existe para remover.
 - **Estrutura duplicada em duas features tem um dono só, e ele fica em `shared/`** — nunca dentro
   de uma delas: formulários, componentes, modelos, constantes e funções puras que atravessam
   features. Uma feature importar de outra feature é defeito estrutural; `core/` ou `shared/`
   importar de `features/` é o mesmo defeito, invertido.
 - A mesma rota base atende os três modos, com os nomes de
-  `.gems-ai/rules/frontend-angular/organization.md`: `/<recurso>/list`, `/<recurso>/form` (novo),
+  `.gems-ai/rules/angular.organization.md`: `/<recurso>/list`, `/<recurso>/form` (novo),
   `/<recurso>/form/:id` (edição) e `/<recurso>/view/:id` (leitura); a base `/<recurso>` redireciona
   para `list`. Menu, redirects e `navigate([...])` mudam juntos, com teste.
+
+
+- A fachada de autenticação Firebase e guard são locais ao produto, sem inventar export da SDK.
+  `data.roles`/roleMode e authorizationScope global|tenant tipados; lista ausente/vazia nega.
+  Interceptor captura generation/UID/alias/sessão/payload ANTES de await getIdToken, revalida antes
+  de enviar e usa headers do snapshot. Bearer somente origem API e boundary do path. Switch/logout/
+  UID novo cancela pendências e limpa stores/menus/forms/actions; loading bloqueia negócio até
+  contexto destino válido. Falha deixa ações tenant vazias; response antiga não muda UI/navegação.
 
 ### VII. Testes como Gate (NÃO NEGOCIÁVEL)
 
@@ -288,11 +278,13 @@ nem altera tabela.
   ambiente usa o ciclo completo. Bug que restaura contrato usa teste de regressão e gate. Refatoração
   ou ajuste técnico sem mudança de comportamento usa registro curto (`change-template.md`), tarefas e
   gates; artefato vazio não é criado por cerimônia.
-- O `roteiro.md` é o **portão de aprovação humana antes do código**, escrito depois do `analyze` e
-  nunca antes. Ele consolida numa peça única o que será desenvolvido em banco, backend e frontend,
+- O `roteiro.md` é o **portão de aprovação humana antes do código**, escrito depois da análise de planejamento e
+  antes de produção. Ele consolida numa peça única o que será desenvolvido em banco, backend e frontend,
   os testes esperados de cada bloco, o **raio de impacto sobre o que já foi entregue**, a divisão de
   tarefas com a delegação por modelo e os critérios de aprovação. Nenhuma linha de código de uma
-  feature MUST ser escrita antes de o roteiro dela existir e ter sido aprovado. O template está em
+  feature MUST ser escrita antes de o roteiro dela existir e ter sido aprovado. Autorização prévia
+  explícita da conversa para o MESMO plano pode ser registrada literalmente, sem assinatura por
+  proxy nem pedido repetido; alterações materiais exigem decisão real. O template está em
   `.specify/templates/roteiro-template.md`.
 - O roteiro **consolida e aponta**, nunca duplica: todo número citado nele MUST bater com a sua fonte
   nos demais artefatos. Documento compilado que diverge da fonte é pior que a ausência dele, porque
@@ -307,28 +299,36 @@ nem altera tabela.
   escopo. Sessão existente SHOULD ser retomada em vez de recriada.
 - Durante a iteração, execute o gate focalizado da área. O gate completo continua obrigatório no
   fechamento, mas SHOULD rodar uma vez pelo orquestrador para evitar repetição de contexto e logs.
-- As especificações de requisito em `utils/documentação do projeto/` são a fonte de entrada. Quando
-  divergirem do código já consolidado, **o código vence** e a divergência é registrada no spec da
-  feature.
-- Código de exemplo, scaffold ou domínio de template MUST ser removido **por inteiro** — backend,
-  frontend, testes e changeset — assim que deixar de ser referência ativa. O projeto não carrega
-  domínio fictício em nenhuma branch de longa duração.
+- Requisito aprovado é o comportamento pretendido; código/testes são o estado real. Divergência
+  exige investigação e correção ou registro de drift, não substituição silenciosa de autoridade.
+- Exemplos mínimos ativos podem permanecer no molde até adoção; devem ser removíveis integralmente
+  via `scripts/sample.py clean-demo` por manifesto fechado. Dry-run default; apply exige árvore
+  limpa/root absoluto e rejeita symlink/junction/escape. Não toca DB/volumes. Rename/cleanup em
+  cópia descartável prova build e preserva auth/tenants/security; catálogo regenerado oficialmente.
 
 ### IX. Configuração de Ambiente é Código
 
 O schema do banco já obedecia a isso desde o Princípio III. Este princípio estende a mesma exigência
 ao resto do ambiente.
 
-- **Todo ambiente nasce de arquivo versionado.** Realm do provedor de identidade, criação dos bancos,
-  imagens, topologia de serviços e proxy reverso vivem em `environments/`, sob controle de versão.
-  Subir um ambiente novo MUST ser `docker compose up`, sem passo manual intermediário.
-- **Nenhuma alteração de ambiente é feita por console ou script avulso.** Mudança de configuração do
-  provedor de identidade MUST ser feita editando o arquivo de realm e reaplicando. Alteração feita
-  direto no console administrativo é drift, não configuração — e MUST ser desfeita pela reaplicação.
-- **A reaplicação MUST reconciliar, não apenas aplicar diferenças de arquivo.** A ferramenta de
-  configuração roda com o cache de checksum desligado, para que o estado do ambiente convirja para o
-  arquivo mesmo quando o arquivo não mudou. Com o cache ligado, uma alteração manual sobrevive
-  indefinidamente e em silêncio, porque a ferramenta pula o reimport quando o arquivo não mudou.
+- **Todo ambiente local/CI nasce de arquivo versionado** em `environments/`: PostgreSQL 16 e,
+  como opção demo/offline do Compose local, Auth Emulator fixado15.32.1, projeto demo-gems, 9099/UI 4000.
+  Emulador só opt-in local, fora da suíte automatizada e do CI, nunca real/prod; host usa localhost e
+  container usa hostname de serviço. Tokens unsigned do emulador precisam verificação extra de
+  revogação mesmo check-revoked=false.
+- **Suíte automatizada e CI usam o projeto Firebase real de testes** `sample-firebase-multi-tenant`,
+  via ADC, com o secret `FIREBASE_TEST_SERVICE_ACCOUNT_JSON` materializado em arquivo temporário no
+  runtime. Usuários sintéticos usam namespace por execução (prefixo + run id no e-mail/UID), com limpeza
+  garantida e varredura de órfãos restrita ao namespace; o PostgreSQL permanece descartável
+  (Testcontainers). Indisponibilidade do provedor é testada por fault injection local determinística,
+  nunca derrubando o Firebase compartilhado. Google OAuth real e entrega de reset por e-mail ficam fora
+  da automação, em verificação humana.
+- Primeiro procurar `enviroments` e usar pasta real `environments` para identificar serviços antes
+  de conectar MCP/PostgreSQL. Não copiar credenciais para config.toml nem respostas.
+- Homologação real isolada usa configuração manual documentada no console (Google/email/password,
+  authorized localhost), ADC/segredo externo, banco separado, bootstrap UID verificado e dois
+  testers. O CI usa apenas a credencial do projeto de testes, como secret externo. Hospedagem será decidida depois; não é autorizada
+  por runbook herdado. LocalStack/S3 é profile opcional útil com denyall preservado.
 - **Segredo nunca é versionado.** Senha, client secret e credencial de nuvem chegam por variável de
   ambiente, com um `.env.example` versionado servindo de contrato e o `.env` real fora do Git.
   Nenhum valor real de produção pode existir no repositório, em nenhum arquivo.
@@ -396,37 +396,31 @@ passa pelo Princípio VIII.
 
 ## Stack e Restrições Técnicas
 
-| Camada | Tecnologia |
+| Camada | Tecnologia/contrato |
 | :--- | :--- |
-| Backend | Java 21, Spring Boot 4.1, Maven multi-módulo, GEMS SDK, Liquibase |
-| Banco | PostgreSQL 16 |
-| Frontend | Angular 22 standalone, TypeScript 6, `angular-gems-sdk` 2.1.0, Vitest, Prettier (**não há ESLint**) |
-| Segurança | Keycloak 26 como resource server JWT |
-| Arquivos | AWS S3 (LocalStack no ambiente local) |
-| DevOps | Docker Compose, GitHub Actions |
+| Backend | Java 21/Spring Boot 4.1, cinco módulos Maven, GEMS publicada, Liquibase |
+| Banco | PostgreSQL 16; JDBC security opt-in separado de JPA empresarial |
+| Frontend | Angular 22/TypeScript 6, core Angular GEMS 3.0.0 alvo, Vitest/Prettier |
+| Identidade | Firebase Admin 9.11.0, Web JS 12.19.0; Google+email/senha |
+| Local/CI | DockerCompose local (AuthEmulator/CLI 15.32.1, demo-gems, só demo/offline); suíte e CI no projeto Firebase real de testes via ADC, PostgreSQL por Testcontainers |
+| Factory | GEMS AI 3.0.0 pin 51b94e3a5479da74e06444f4133e07db85ece3cc |
 
-Restrições operacionais que MUST ser respeitadas:
-
-- No Windows, o build usa `.\mvnw.cmd`; use `-pl <modulo>` para mirar um módulo e `-am` para
-  recompilar suas dependências no próprio reator.
-- Na base SDK 1.1.0, `npm ci` exige temporariamente `--legacy-peer-deps`: o `angular-gems-sdk@1.1.0` declara peer
-  `@angular/common@^20` e o projeto está no Angular 22. Sem a flag, `ERESOLVE` aborta o install. Na rodada 002, SDK 2.1.0 e overrides resolvem os peers: a flag sai e npm ci deve passar sem ela.
-- Infra local em `environments/local`: **`docker compose up -d` e nada mais**. O serviço one-shot
-  `keycloak-config` aplica o realm declarado em `environments/shared/keycloak/` assim que o Keycloak
-  fica saudável — não há script manual a rodar depois. O Keycloak leva cerca de 80 segundos no
-  primeiro boot, e é por isso que a dependência é por `service_healthy`, nunca só por `depends_on`.
-- O serviço `keycloak-config` MUST rodar com `IMPORT_CACHE_ENABLED=false` em todos os ambientes
-  (Princípio IX).
-- `docker compose down -v` é **proibido**: `init-postgres.sh` cria `app-db` e `keycloak-db` no mesmo
-  volume, então limpá-lo destrói o banco de aplicação junto com o do Keycloak — e as senhas dos
-  usuários existem **apenas** no `keycloak-db`.
+- No Windows use mvnw.cmd; iterar -pl/-am, gate final reator inteiro. npm ci segue lockfile sem
+  legacy-peer-deps improvisado. Versões SDK só entram após publicação e consumidor externo isolado.
+- `docker compose down -v` é proibido: volumes são dados, não artefatos descartáveis de cleanup.
+- Provisionamento de schema é CLI/job fora HTTP, advisory lock por alias com sessão pinada,
+  unlock seguro/evict se falhar, Liquibase verificada antes READY+revision; suspensos também migram.
+  Inventário expectedSchemas fornece nomes de schema READY, não aliases.
+- Bootstrap técnico `modelo` é opt-in aditivo na SDK; migration antes de EMddlvalidate; missing
+  sentinel inválido como alias falha antes conexão/SQL; getAnyConnection restaura original.
+  Properties antigas ausentes preservam comportamento. Novo strict validator não muda sanitize legado.
 
 ## Fluxo de Trabalho e Portões de Qualidade
 
 - Branch a partir de `main` no padrão `feature/<descricao>` ou `bugfix/<descricao>`.
 - PR para `main` com título curto e corpo contendo: problema resolvido, recursos criados, recursos
   removidos ou depreciados, e pendências.
-- Antes do PR: `.\mvnw.cmd clean install` na raiz do backend, `npm test` e `npx prettier --write .`
+- Antes do PR: `.\mvnw.cmd clean install` na raiz do backend, `npm ci`, `npm test`, `npm run build` e `npx prettier --check .`
   no frontend.
 - Nenhum PR é aprovado com o gate do Princípio VII vermelho.
 - Alteração de infraestrutura ou de configuração de ambiente segue o **mesmo** ciclo spec-kit do
@@ -446,18 +440,18 @@ não a constituição.
 repositório divergir de uma regra de escrita, é **o código** que se corrige — e enquanto não se
 corrige, o desvio MUST carregar uma **exceção escrita** no próprio ponto do código.
 
-A hierarquia é invertida em 2026-09-14 por decisão do product owner na rodada 010 do Meduc. O levantamento do sample mediu repositories, transações e mecanismos locais que divergem das regras recebidas.
+A autoridade de regras de escrita é preservada da constituição 2.0.0. Referências de outros projetos não importam requisitos de produto. Constituição, segurança e contrato público publicado prevalecem sobre orientação genérica de adapter.
 
-**"Código vence documentação" permanece inteiro para o que ele sempre protegeu**: especificações,
-requisitos e documentos de negócio. Ali o código continua sendo a verdade, e a divergência é
-registrada, nunca corrigida em silêncio — é a proteção contra documento alucinado, e não é o que
+**"Código vence documentação" permanece inteiro para o que ele sempre protegeu**: documentos preliminares. Código e testes mostram o estado real; a spec aprovada
+continua sendo contrato do comportamento pretendido e a divergência é investigada — é a proteção contra documento alucinado, e não é o que
 esta seção troca. O que muda é **apenas** a relação entre código e **regra de escrita**.
 
 | Quando divergem | Quem vence | Onde |
 | :--- | :--- | :--- |
 | Constituição × qualquer outro documento | **a constituição** | acima |
 | Regra de `.gems-ai/rules/` × código consolidado | **a regra** | esta seção |
-| Spec, requisito ou documento de negócio × código | **o código** | Princípio VIII |
+| Spec aprovada × código | **spec como contrato; código como estado observado** | investigar bug/drift |
+| Documento preliminar × código | **código como evidência** | sem inventar estado implementado |
 
 **A regra também pode estar errada, e então é ela que se corrige.** A inversão não transforma a
 regra em verdade revelada: quando obedecê-la literalmente produziria código que não compila ou
@@ -474,7 +468,7 @@ GEMS-EXCEPTION(<arquivo-de-regra>#<seção>): <motivo>; expira AAAA-MM-DD
 ```
 
 O formato completo, os portadores por linguagem, o ciclo de vida e as três formas de reprovar —
-vencida, órfã e regra inexistente — vivem em **`.gems-ai/rules/conformance-exceptions.md`**, que
+vencida, órfã e regra inexistente — vivem em **`.gems-ai/rules/base.waivers.md`**, que
 esta seção autoriza e não duplica.
 
 Três exigências são constitucionais:
@@ -502,4 +496,4 @@ Toda revisão de PR MUST verificar conformidade com estes princípios. Complexid
 justificada por escrito no `plan.md` da feature — ausência de justificativa é motivo suficiente para
 recusar o PR.
 
-**Version**: 2.0.0 | **Ratified**: 2026-09-05 | **Last Amended**: 2026-09-14
+**Version**: 3.1.0 | **Ratified**: 2026-09-05 | **Last Amended**: 2026-10-09

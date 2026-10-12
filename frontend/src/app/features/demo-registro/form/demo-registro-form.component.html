@@ -1,0 +1,57 @@
+<section class="form-container animate__animated animate__fadeIn">
+  <div class="header">
+    <button class="btn-back" title="Voltar" aria-label="Voltar à lista" (click)="back()">
+      <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+    </button>
+    <div class="header-titles">
+      <h2>{{ readonly ? 'Visualizar registro' : id ? 'Editar registro' : 'Novo registro' }}</h2>
+    </div>
+  </div>
+  @if (loading()) {
+    <p class="form-loading" role="status">Carregando…</p>
+  }
+  <form [formGroup]="form" (ngSubmit)="save()" [attr.aria-busy]="loading()">
+    <gems-form-card title="Dados do registro" icon="fa-solid fa-layer-group"
+      ><div class="form-grid">
+        <div>
+          <gems-input-text
+            formControlName="nome"
+            label="Nome"
+            [required]="true"
+            [maxlength]="150"
+          /><gems-field-error [control]="form.controls.nome" />
+        </div>
+        @if (restricted()) {
+          <div>
+            <gems-input-text
+              formControlName="valorRestrito"
+              label="Valor restrito"
+              placeholder="0.00"
+            /><gems-field-error
+              [control]="form.controls.valorRestrito"
+              [messages]="{
+                decimal: 'Informe até 17 dígitos inteiros e 2 decimais, usando ponto.',
+              }"
+            />
+          </div>
+        }
+        <div class="full-width">
+          <gems-textarea
+            formControlName="descricao"
+            label="Descrição"
+            [maxlength]="1000"
+          /><gems-field-error [control]="form.controls.descricao" />
+        </div></div
+    ></gems-form-card>
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="back()">
+        {{ readonly ? 'Voltar' : 'Cancelar' }}
+      </button>
+      @if (canSave()) {
+        <button type="submit" class="btn-save" [disabled]="loading()">
+          Salvar <i class="fa-solid fa-check" aria-hidden="true"></i>
+        </button>
+      }
+    </div>
+  </form>
+</section>

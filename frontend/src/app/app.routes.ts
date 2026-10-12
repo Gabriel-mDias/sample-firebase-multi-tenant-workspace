@@ -1,39 +1,33 @@
 import { Routes } from '@angular/router';
-
-/**
- * Rotas de topo (a casca/side-menu vive no AppComponent, por fora).
- *
- * - `''` : home vazia de boas-vindas (`HOME_ROUTES`), qualquer usuário autenticado.
- * - `parceiros` : módulo com `list`, `form`, `form/:id` e `view/:id`.
- * - `solicitacoes` : módulo com as mesmas quatro rotas canônicas.
- * - `acesso-negado` : sem guard (destino da negação de ação; casca oculta nesta rota).
- * - `**` : qualquer rota desconhecida volta para a home.
- *
- * Cada domínio de negócio entra aqui como um único `loadChildren` — a raiz não conhece os
- * componentes internos da feature. O `routes-coverage.spec.ts` percorre esta lista, resolve cada
- * `loadChildren` e falha se uma rota guardada não declarar `data.roles`.
- */
+import { authGuard } from './core/guards/auth.guard';
+import { roleGuard } from './core/guards/role.guard';
+import { Acoes } from './core/auth/acoes';
+import { ProductAuthorizationData } from './core/auth/auth.model';
 export const routes: Routes = [
-  {
-    path: '',
-    loadChildren: () => import('./features/home/home.routes').then((m) => m.HOME_ROUTES),
-  },
-  {
-    path: 'parceiros',
-    loadChildren: () =>
-      import('./features/parceiro/parceiro.routes').then((m) => m.PARCEIRO_ROUTES),
-  },
-  {
-    path: 'solicitacoes',
-    loadChildren: () =>
-      import('./features/solicitacao/solicitacao.routes').then((m) => m.SOLICITACAO_ROUTES),
-  },
+  { path: 'login', loadChildren: () => import('./features/login/login.routes') },
   {
     path: 'acesso-negado',
-    loadComponent: () =>
-      import('./features/acesso-negado/acesso-negado.component').then(
-        (c) => c.AcessoNegadoComponent,
-      ),
+    loadChildren: () => import('./features/acesso-negado/acesso-negado.routes'),
+  },
+  {
+    path: 'tenants',
+    canActivate: [authGuard],
+    loadChildren: () => import('./features/tenants/tenants.routes'),
+  },
+  {
+    path: 'demo-registro',
+    canActivate: [roleGuard],
+    data: {
+      roles: [Acoes.CONSULTAR_DEMO],
+      authorizationScope: 'tenant',
+    } satisfies ProductAuthorizationData,
+    loadChildren: () => import('./features/demo-registro/demo-registro.routes'),
+  },
+  {
+    path: '',
+    canActivate: [authGuard],
+    pathMatch: 'full',
+    loadChildren: () => import('./features/home/home.routes'),
   },
   { path: '**', redirectTo: '' },
 ];

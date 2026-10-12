@@ -1,23 +1,21 @@
-# Ambientes
+# Ambientes — local, CI e homologação isolada
 
-- Configuração de ambiente é código versionado.
-- Realm do Keycloak: `shared/keycloak/app-realm.yaml`; alterações no console são drift.
-- `IMPORT_CACHE_ENABLED=false` em todos os ambientes.
-- Segredos vêm por variável; somente `.env.example` é versionado.
-- Em produção apenas o Caddy expõe porta.
-- Nunca execute `docker compose down -v`.
-- Subida local ou de produção deve ser `docker compose up -d`, sem script manual posterior.
-- Mudança de infraestrutura usa ciclo spec-driven e exige validação de restore quando tocar backup.
-- Três ambientes: `local`, `staging` e `production`. Staging pode dividir a máquina com produção,
-  desde que com rede, volume, banco, identidade e credencial próprios — `vps/08-staging.md`.
-  **Dado real nunca entra nele.**
-- A rede `app_staging_network` é externa às duas stacks; crie-a uma vez com `docker network create`.
-- Teto de heap é `JAVA_TOOL_OPTIONS` no backend (o ENTRYPOINT é forma exec, `JAVA_OPTS` seria inerte)
-  e `JAVA_OPTS_KC_HEAP` no Keycloak. Sem `mem_limit`, as JVMs dimensionam heap pelo host — e num host
-  compartilhado elas somam mais memória do que existe.
+A constituição 3.1.0 é autoridade. A spec aprovada é contrato de comportamento; código/testes
+mostram o estado real. Regras GEMS vencem código consolidado sob constituição, segurança e API
+publicada. Nenhum waiver/exceção ou baseline é criado pelo agente para passar gate. Referências
+anteriores servem à forma de código. Adoção SDK exige publicação, alcance medido, garantia nomeada,
+equivalência/mutação no consumidor e remoção da classe duplicada na mesma alteração.
 
-> **O ensaio de restore é gate, não documentação.** O Princípio IX exige backup *verificado*: um
-> mecanismo de backup entregue sem um restore executado atende metade da cláusula. Quem alterar
-> backup herda essa pendência e a declara aqui.
+Procurar primeiro enviroments; pasta real aqui environments. Usar arquivos de ambiente para
+identificar container/porta/banco/URL antes de conectarMCP/PostgreSQL. Nunca copiar credenciais
+para config.toml ou respostas. Segredos externos porADC/variável/mount; .envreal/keys foraGit/imagem/CI.
 
-Regras GEMS vencem código consolidado; referência não autoriza desvio. Consulte a constituição 2.0.0 e a seção Adoção de Módulo da SDK GEMS.
+PostgreSQL 16 e Auth Emulator 9099/UI 4000 projeto demo-gems, Firebase CLI 15.32.1 fixada. Hostlocalhost;
+container hostname de serviço. Emu só demo/offline com demo-id. Suíte/CI usam Firebase real de testes via ADC/FIREBASE_TEST_SERVICE_ACCOUNT_JSON, nunca prod; PR de fork pula E2E real com aviso;
+LocalStack/S3 profile optativo útil com denyall preservado.
+Nunca dockercomposedown-v; cleanupdemo não tocaDBvolumes. Backupalterado exige restoreexecutado.
+
+Homologação Spark Web emprojetoisolado, Google/email/password/authorized localhost configurados manualmente,
+ADC/Admin mínimo/banco separado, bootstrapoperatorprojectUIDverified e dois testersalpha-only/alpha+beta
+comloginGoogle/password/reset nativo/revoke/disable/spoof. Nenhumsenha/token/key/action link é logado.
+Hosting permanece decisão posterior; runbookherdado não autoriza publicação nesta fase.

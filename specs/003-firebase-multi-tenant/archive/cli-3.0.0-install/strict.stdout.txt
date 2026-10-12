@@ -1,0 +1,6 @@
+{
+  "status": "conformant",
+  "scope": "snapshot_integrity",
+  "rules": 37,
+  "strict": true
+}

@@ -1,0 +1,13 @@
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: end;
+}
+gems-input-text {
+  flex: 1;
+  min-width: 180px;
+}
+.table-region {
+  margin-top: 2rem;
+}

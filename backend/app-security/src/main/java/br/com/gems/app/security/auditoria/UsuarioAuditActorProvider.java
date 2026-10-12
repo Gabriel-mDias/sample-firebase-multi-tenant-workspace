@@ -8,38 +8,20 @@ import br.com.gems.app.security.service.UsuarioAutenticadoService;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
-/** Fornece à auditoria a identidade estável do JWT e a correlação da requisição. */
+/** Ator estável comprovado pelo resolver SQL da SDK. */
 @Component
 public class UsuarioAuditActorProvider implements AuditActorProvider, AuditContextProvider {
-
-    private static final String CORRELATION_ID = "correlationId";
-
-    private final UsuarioAutenticadoService usuarioAutenticado;
-
-    public UsuarioAuditActorProvider( UsuarioAutenticadoService usuarioAutenticado ) {
-        this.usuarioAutenticado = usuarioAutenticado;
+    private final UsuarioAutenticadoService usuario;
+    public UsuarioAuditActorProvider( UsuarioAutenticadoService usuario ) {
+        this.usuario = usuario;
     }
-
     @Override
     public AuditActor currentActor() {
-        try {
-            return usuarioAutenticado.loginDoUsuarioAutenticado()
-                    .map( AuditActor::usuario )
-                    .orElseGet( AuditActor::tecnico );
-        } catch ( RuntimeException falhaDeContexto ) {
-            return AuditActor.tecnico();
-        }
+        return usuario.loginDoUsuarioAutenticado().map( AuditActor::usuario ).orElseGet( AuditActor::tecnico );
     }
-
     @Override
     public AuditContext currentContext() {
-        try {
-            var actorId = usuarioAutenticado.idDoUsuarioAutenticado()
-                    .map( Object::toString )
-                    .orElse( null );
-            return new AuditContext( actorId, MDC.get( CORRELATION_ID ) );
-        } catch ( RuntimeException falhaDeContexto ) {
-            return AuditContext.empty();
-        }
+        return new AuditContext( usuario.idDoUsuarioAutenticado().map( Object::toString ).orElse( null ),
+                MDC.get( "correlationId" ) );
     }
 }

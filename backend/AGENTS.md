@@ -1,47 +1,41 @@
-# Backend
+# Backend — Firebase multi-tenant
 
-## Arquitetura
+A constituição 3.1.0 é autoridade. A spec aprovada é contrato de comportamento; código/testes
+mostram o estado real. Regras GEMS vencem código consolidado sob constituição, segurança e API
+publicada. Nenhum waiver/exceção ou baseline é criado pelo agente para passar gate. Referências
+anteriores servem à forma de código. Adoção SDK exige publicação, alcance medido, garantia nomeada,
+equivalência/mutação no consumidor e remoção da classe duplicada na mesma alteração.
 
-- Reator Maven: `app-model`, `app-security`, `app-events`, `app-core`, `app-deploy`.
-- Dependências são unidirecionais; somente `app-deploy` executa e guarda ambiente/Liquibase.
-- `app-model` é camada-primeiro; `app-core` é domínio-primeiro.
-- `app-events` contém somente POJOs; listener que chama regra de negócio fica em `app-core`.
-- Leitura entre domínios pode usar repository; escrita/regra de outro domínio usa evento.
-- Sem cascade.
+Reator app-model/ app-security/ app-events/ app-core/ app-deploy com grafo unidirecional.
+Model camada-primeiro; core domínio-primeiro. App-events só POJOs; listeners com regra em core.
+Semcascade; evento aciona outro domínio, repository pode consultar. Toda config/migration/resource
+de aplicação só app-deploy. SDK fornece changelog reutilizável e JDBC security explicitamente opt-in.
 
-## Domínios de `app-core`
+UUID/Clock/Instant; Liquibase/ddlvalidate; JPA negócio EntidadeAuditavel/softdelete, LAZY/entitygraph.
+Services findById>search>delete>insert>save>validate; validação acumuladaBusinessException;
+Spring @Transactional(rollbackFor=Exception.class). RepositoryJpa+BaseCustom/trincaHQL/parâmetrosnomeados,
+busca POST/search/projeçãoDTO. ControllerBaseController inclusiveGET; setBodyToExceptionLog emPOST/PUT,
+mas nunca registrar senha/token/action link. Status201/204/200 e ações concretas do catálogo gerado.
 
-- `parceiro`, `solicitacao`, `localidade`, `normalizacao`, `usuario`, `auditoria`, `autorizacao`,
-  `commons`.
-- Cada domínio segue `{controller,service,repository,listener}`; nem todo domínio usa os quatro.
+Firebase Google+e-mail/senha; SQL security vigente/catalog/scope, sem cache/claims de roles.
+Tenant admin só membership/grants próprios com subset do ator∩catálogo delegável; central cria
+identidade/tenants/primeiro admin. UID+issuer+provider e ownership imutáveis; Google somente pending elegível
+com e-mail verificado e rowlock. Lifecycle outbox durável/CAS de versão/bloqueio local antes da chamada remota.
 
-## Persistência e serviços
+Authentication implementsAuthorizationContextAware/JwtAuthorizationContext real; scannerassertProtected
+registrado e TenantAuthorizationInterceptor obrigatório. Me éGlobalEndpoint+CONSULTAR_PROPRIA_CONTA;
+context éTenantEndpoint+CONSULTAR_PROPRIO_CONTEXTO_TENANT. SemclassificaçãoPublic de conveniência.
+Filtro stateless uma só registration. Token ausente/inválido/revogado/disabled401, negação local403,
+indisponibilidade do provider503falha fechada; check-revoked=true real. Authports semJpaDep/DS; manager JDBC qualificado.
 
-- IDs `UUID`; entidades de negócio estendem `EntidadeAuditavel` e usam soft delete.
-- `ManyToOne` é LAZY; associação usada fora da transação exige entity graph ou carga no service.
-- Schema muda somente por Liquibase em `app-deploy`; `ddl-auto: validate`.
-- Ordem de service: `findById > search > delete > insert > save > validate`.
-- Validação acumula mensagens em `BusinessException`; mutações usam
-  `@Transactional(rollbackFor = Exception.class)` do Spring`.
-- Agregados são persistidos/excluídos explicitamente: agregado-primeiro no insert, dono-primeiro no
-  delete.
+Schema negócio tenant_ validado; header→membership→Authenticationalias→TenantScope. Limparbegin/finally
+porque close restaura anterior. OSIV false/nenhum EM antes de auth/nenhuma troca de scope dentro de EM/tx; globalJPATenantScope.global
+deliberado; asyncquando usado security/tenant/actor. READY e revisão mínima antes tráfego;
+expectedSchemas fornece nomesREADY inclui suspensos; provisionamentoCLI/job fora de HTTP/locksconexão pinada.
+Auditoria empresarial por tenant semschemafix; global/security separado. Tests mesma PK/constraints/races/restart da outbox.
 
-## REST e segurança
-
-- Sucesso retorna tipo direto; busca paginada é `POST /search`.
-- Controller chama `setBodyToExceptionLog(dto, request)` em POST/PUT.
-- Cada endpoint usa uma ação concreta de `AcaoSistema`; nunca acrescente `ADMIN` manualmente.
-- Situação de fluxo nunca entra pelo corpo: cada transição é um endpoint de ação próprio.
-- Erro do Keycloak é 502; autorização negada é 403.
-- Auditoria é automática pelo Hibernate; domínio nunca chama serviço de auditoria.
-
-## Referência e gate
-
-- Espelhe o domínio `parceiro` e leia apenas as regras GEMS da camada tocada.
-- Iteração: `.\mvnw.cmd -pl <modulo> -am test`.
-- Fechamento: `.\mvnw.cmd clean install` uma vez.
-
-Transição aprovada na constituição 2.0.0: SDK transversal substitui implementações locais com prova de equivalência. A anotação Jakarta, handlers, auditoria e autorização locais ainda existem e serão conformados na rodada 002.
-Todo controller estende BaseController, inclusive GET; não estender exige motivo no Javadoc.
-
-Regras GEMS vencem código consolidado; referência não autoriza desvio. Consulte a constituição 2.0.0 e a seção Adoção de Módulo da SDK GEMS.
+Gates de fechamento: Java SDK clean verify/gate oficial/publicação/consumer M2 isolado;
+Angular core/adapter publicados/consumer npm isolado; sample GEMS strict+conformance efetiva de código
+novo E preservado baseline zero, backend mvnw.cmd clean install, frontend npm ci/test/build/prettier check,
+E2E PostgreSQL descartável+Firebase real de testes (ADC/FIREBASE_TEST_SERVICE_ACCOUNT_JSON; PR de fork pula com aviso; Emu só demo/offline)/constraints/races/outbox/thread/mesma PK. Planejado é
+NOT_RUN até execução observada; installlocal não comprova publicação.

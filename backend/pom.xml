@@ -30,8 +30,8 @@
 	<properties>
 		<java.version>21</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- 3.3.0 publica os contratos de autorização e ciclo Keycloak exigidos por C11. -->
-		<gems.version>3.3.0</gems.version>
+		<!-- SDK publicada e comprovada por consumidor Maven remoto. -->
+		<gems.version>3.4.1</gems.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 
@@ -50,6 +50,7 @@
 	<dependencyManagement>
 		<dependencies>
 			<!-- GEMS SDK -->
+<dependency><groupId>br.com.gems</groupId><artifactId>gems-jpa-multi-tenant</artifactId><version>${gems.version}</version></dependency>
 			<dependency>
 				<groupId>br.com.gems</groupId>
 				<artifactId>gems-rest-common</artifactId>
@@ -107,7 +108,7 @@
 			</dependency>
 			<dependency>
 				<groupId>br.com.gems</groupId>
-				<artifactId>gems-keycloak-admin</artifactId>
+				<artifactId>gems-firebase-auth</artifactId>
 				<version>${gems.version}</version>
 			</dependency>
 			<dependency>
@@ -331,7 +332,7 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<configuration>
 <systemPropertyVariables><gems.convencoes.relatorio>${gems.convencoes.relatorio}</gems.convencoes.relatorio></systemPropertyVariables>
-						<argLine>-javaagent:${org.mockito:mockito-core:jar} -Xshare:off</argLine>
+						<argLine>-javaagent:"${org.mockito:mockito-core:jar}" -Xshare:off</argLine>
 					</configuration>
 				</plugin>
 			</plugins>

@@ -6,7 +6,7 @@
   "required": ["schemaVersion", "version", "commit", "profile", "transaction", "rules", "assets", "adapters", "waivers"],
   "properties": {
     "schemaVersion": { "const": 1 },
-    "version": { "const": "2.0.0" },
+    "version": { "const": "3.0.0" },
     "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
     "profile": { "enum": ["java", "angular", "workspace"] },
     "transaction": { "type": "string", "minLength": 1 },
@@ -48,6 +48,25 @@
         }
       }
     },
-    "waivers": { "type": "array" }
+    "waivers": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/waiver" }
+    }
+  },
+  "$defs": {
+    "waiver": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule", "scope", "justification", "owner", "expires", "compensation", "approvedBy"],
+      "properties": {
+        "rule": { "type": "string", "pattern": "\\S" },
+        "scope": { "type": "string", "pattern": "\\S" },
+        "justification": { "type": "string", "pattern": "\\S" },
+        "owner": { "type": "string", "pattern": "\\S" },
+        "expires": { "type": "string", "format": "date" },
+        "compensation": { "type": "string", "pattern": "\\S" },
+        "approvedBy": { "type": "string", "pattern": "\\S" }
+      }
+    }
   }
 }
