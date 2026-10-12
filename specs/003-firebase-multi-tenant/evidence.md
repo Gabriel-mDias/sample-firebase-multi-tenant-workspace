@@ -240,12 +240,12 @@ As provas efêmeras (ID tokens) ficaram apenas em um arquivo local, foram apagad
 | Senha: entrega real do e-mail de primeiro acesso e reset pelo Firebase, definição da senha e login por e-mail e senha em seguida | PASS, observado pelo usuário. Fala literal: "login e senha após o reset/primeiro acesso: OK!" |
 
 | Disable e revogação Firebase com o token anterior do Tester Beta (login Google), via Identity Toolkit `accounts:update` com a conta de serviço de testes, chamando `GET /api/auth/me` a cada passo | PASS, observado pelo coordenador: 1) baseline 200; 2) conta desabilitada → 401 `INVALID_TOKEN`; 3) reabilitada, token não revogado → 200; 4) `validSince` atual (revogação) → 401 `INVALID_TOKEN`. A conta foi reabilitada no passo 3 |
+| Spoof de `X-Tenant-Alias`: `GET /api/auth/context`, `POST /api/demo-registros/search` e `GET /api/demo/tenant/read` com token real | PASS, observado pelo coordenador. Tester Beta: `beta` → 200 nos três; `alpha` → 403 `LOCAL_DENIED` nos três; alias inexistente → 403 `LOCAL_DENIED` nos três. Operador (vinculado a Alpha e Beta): alias inexistente → 403 `LOCAL_DENIED` nos três |
 
 **Não percorrido nesta sessão (NOT_RUN):**
 
 - suspensão pelo sample com o worker;
 - encerramento de vínculo e revogação de grant em tela;
-- tentativa explícita de spoof de `X-Tenant-Alias`, que o E2E automatizado cobre (403), mas que não foi refeita manualmente;
 - retorno pós-login com URL externa;
 - responsividade 320/768/1440, teclado e contraste da tela de login.
 
