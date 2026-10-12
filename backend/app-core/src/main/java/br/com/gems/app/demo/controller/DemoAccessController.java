@@ -28,7 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "Demonstrações de acesso")
 public class DemoAccessController extends BaseController {
+
     private final DemoRegistroService service;
+
     @GetMapping("/public")
     @PublicEndpoint
     @Operation(summary = "Acesso público deliberado")
@@ -36,6 +38,7 @@ public class DemoAccessController extends BaseController {
     public Map<String, String> publicAccess() {
         return Map.of( "message", "Demonstração pública GEMS" );
     }
+
     @GetMapping("/global")
     @GlobalEndpoint
     @PreAuthorize("hasRole('CONSULTAR_TENANT')")
@@ -44,6 +47,7 @@ public class DemoAccessController extends BaseController {
     public Map<String, String> globalAccess() {
         return Map.of( "scope", "global" );
     }
+
     @GetMapping("/tenant/read")
     @TenantEndpoint
     @PreAuthorize("hasRole('CONSULTAR_DEMO')")
@@ -52,6 +56,7 @@ public class DemoAccessController extends BaseController {
     public Page<DemoRegistroResponseDTO> read() {
         return service.search( new DemoRegistroFilterParams( null ), PageRequest.of( 0, 10 ) );
     }
+
     @PostMapping("/tenant/write")
     @TenantEndpoint
     @PreAuthorize("hasRole('ALTERAR_DEMO')")
@@ -61,4 +66,5 @@ public class DemoAccessController extends BaseController {
         super.setBodyToExceptionLog( new DemoRegistroDTO( dto.id(), dto.nome(), dto.descricao(), null ), request );
         return service.save( dto.id(), dto );
     }
+
 }

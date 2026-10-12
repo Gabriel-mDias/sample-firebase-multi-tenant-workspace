@@ -26,9 +26,9 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Network-free coverage of the real Firebase preflight, namespace, orphan filter and cleanup guarantees. */
 class FirebaseRealTestPreflightTest {
+
     private static final String SECRET_MARKER = "fake-service-account@diverge.iam.gserviceaccount.com";
     private static final Namespace RUN = new Namespace( "0123456789abcdef" );
-
     @TempDir
     Path directory;
 
@@ -39,8 +39,7 @@ class FirebaseRealTestPreflightTest {
     }
 
     private Path credential( String projectJson ) throws IOException {
-        return Files.writeString( directory.resolve( "adc.json" ),
-                "{\"type\":\"service_account\"," + projectJson + "\"client_email\":\"" + SECRET_MARKER + "\"}" );
+        return Files.writeString( directory.resolve( "adc.json" ), "{\"type\":\"service_account\"," + projectJson + "\"client_email\":\"" + SECRET_MARKER + "\"}" );
     }
 
     @Test
@@ -55,7 +54,7 @@ class FirebaseRealTestPreflightTest {
         assertThatThrownBy( () -> FirebaseRealTestProject.checkEnvironment( environmentWith( missing )::get, line -> {
         } ) ).isInstanceOf( PreflightException.class )
                 .satisfies( failure -> assertThat( failure.getMessage() ).doesNotContain( "ausente-segredo" )
-                        .doesNotContain( directory.toString() ) );
+                .doesNotContain( directory.toString() ) );
     }
 
     @Test
@@ -71,7 +70,7 @@ class FirebaseRealTestPreflightTest {
         assertThatThrownBy( () -> FirebaseRealTestProject.checkEnvironment( environmentWith( other )::get, line -> {
         } ) ).isInstanceOf( PreflightException.class ).hasMessageContaining( "diverge" )
                 .satisfies( failure -> assertThat( failure.getMessage() ).doesNotContain( SECRET_MARKER )
-                        .doesNotContain( "outro-projeto-real" ).doesNotContain( directory.toString() ) );
+                .doesNotContain( "outro-projeto-real" ).doesNotContain( directory.toString() ) );
     }
 
     @Test
@@ -170,8 +169,7 @@ class FirebaseRealTestPreflightTest {
         long now = Instant.parse( "2026-10-10T12:00:00Z" ).toEpochMilli();
         long old = now - Duration.ofHours( 3 ).toMillis();
         var other = "gems-t029-fedcba9876543210-bob";
-        assertThat( FirebaseRealTestProject.isOrphan( other, other + "@example.com", old, now,
-                FirebaseRealTestProject.ORPHAN_MAX_AGE, RUN ) ).isTrue();
+        assertThat( FirebaseRealTestProject.isOrphan( other, other + "@example.com", old, now, FirebaseRealTestProject.ORPHAN_MAX_AGE, RUN ) ).isTrue();
     }
 
     @Test
@@ -183,8 +181,7 @@ class FirebaseRealTestPreflightTest {
         assertThat( FirebaseRealTestProject.isOrphan( other, null, old, now, maxAge, RUN ) ).as( "so UID" ).isFalse();
         assertThat( FirebaseRealTestProject.isOrphan( other, "gente@example.com", old, now, maxAge, RUN ) )
                 .as( "UID do prefixo com e-mail alheio" ).isFalse();
-        assertThat( FirebaseRealTestProject.isOrphan( UUID.randomUUID().toString(), other + "@example.com", old, now,
-                maxAge, RUN ) ).as( "so e-mail" ).isFalse();
+        assertThat( FirebaseRealTestProject.isOrphan( UUID.randomUUID().toString(), other + "@example.com", old, now, maxAge, RUN ) ).as( "so e-mail" ).isFalse();
     }
 
     @Test
@@ -194,11 +191,9 @@ class FirebaseRealTestPreflightTest {
         long young = now - Duration.ofMinutes( 30 ).toMillis();
         var maxAge = FirebaseRealTestProject.ORPHAN_MAX_AGE;
         var other = "gems-t029-fedcba9876543210-bob";
-        assertThat(
-                FirebaseRealTestProject.isOrphan( "operador-central", "gabriel@example.com", old, now, maxAge, RUN ) )
+        assertThat( FirebaseRealTestProject.isOrphan( "operador-central", "gabriel@example.com", old, now, maxAge, RUN ) )
                 .as( "fora do prefixo" ).isFalse();
-        assertThat( FirebaseRealTestProject.isOrphan( "xgems-t029-aaaa", "x-gems-t029-a@example.com", old, now, maxAge,
-                RUN ) ).as( "prefixo no meio" ).isFalse();
+        assertThat( FirebaseRealTestProject.isOrphan( "xgems-t029-aaaa", "x-gems-t029-a@example.com", old, now, maxAge, RUN ) ).as( "prefixo no meio" ).isFalse();
         assertThat( FirebaseRealTestProject.isOrphan( other, "gems-t029-a@outro-dominio.com", old, now, maxAge, RUN ) )
                 .as( "dominio diferente" ).isFalse();
         assertThat( FirebaseRealTestProject.isOrphan( other, other + "@example.com", young, now, maxAge, RUN ) )
@@ -209,6 +204,7 @@ class FirebaseRealTestPreflightTest {
                 .as( "run atual" ).isFalse();
         assertThat( FirebaseRealTestProject.isOrphan( null, null, old, now, maxAge, RUN ) ).isFalse();
     }
+
     @Test
     void deveApagarSomenteOrfaos_quandoAVarreduraPercorreOProjeto() {
         long now = Instant.parse( "2026-10-10T12:00:00Z" ).toEpochMilli();
@@ -218,10 +214,8 @@ class FirebaseRealTestPreflightTest {
         store.add( "operador-central", "operador@example.com", old );
         store.add( "gems-t029-fedcba9876543211-new", "gems-t029-fedcba9876543211-new@example.com", now );
         store.add( RUN.uid( "alice" ), RUN.email( "alice" ), old );
-        assertThat( FirebaseRealTestProject.sweepOrphans( store, RUN, Instant.ofEpochMilli( now ),
-                FirebaseRealTestProject.ORPHAN_MAX_AGE ) ).isOne();
-        assertThat( store.accounts.keySet() ).containsExactlyInAnyOrder( "operador-central",
-                "gems-t029-fedcba9876543211-new", RUN.uid( "alice" ) );
+        assertThat( FirebaseRealTestProject.sweepOrphans( store, RUN, Instant.ofEpochMilli( now ), FirebaseRealTestProject.ORPHAN_MAX_AGE ) ).isOne();
+        assertThat( store.accounts.keySet() ).containsExactlyInAnyOrder( "operador-central", "gems-t029-fedcba9876543211-new", RUN.uid( "alice" ) );
     }
 
     @Test
@@ -268,13 +262,11 @@ class FirebaseRealTestPreflightTest {
 
     @Test
     void deveEsconderAConfiguracaoPublica_quandoOObjetoEImpresso() {
-        var config = new FirebaseRealTestProject.PublicWebConfig( "chave-publica", "dominio.example",
-                FirebaseRealTestProject.PROJECT_ID, "1:1:web:1" );
+        var config = new FirebaseRealTestProject.PublicWebConfig( "chave-publica", "dominio.example", FirebaseRealTestProject.PROJECT_ID, "1:1:web:1" );
         assertThat( config.toString() ).doesNotContain( "chave-publica" ).doesNotContain( "dominio.example" );
     }
 
-    private static final String ALL_PERMISSIONS = "{\"permissions\":[\"firebaseauth.users.get\","
-            + "\"firebaseauth.users.create\",\"firebaseauth.users.update\",\"firebaseauth.users.delete\"]}";
+    private static final String ALL_PERMISSIONS = "{\"permissions\":[\"firebaseauth.users.get\"," + "\"firebaseauth.users.create\",\"firebaseauth.users.update\",\"firebaseauth.users.delete\"]}";
 
     @Test
     void deveAceitar_quandoOIamConfirmaTodasAsPermissoesDeEscrita() {
@@ -319,9 +311,7 @@ class FirebaseRealTestPreflightTest {
 
     @Test
     void deveFalharPorQuota_quandoOIamDevolve429() {
-        assertThatThrownBy( () -> FirebaseRealTestProject.requireWritePermissions(
-                () -> new FirebaseRealTestProject.IamResponse( 429,
-                        "{\"error\":{\"status\":\"RESOURCE_EXHAUSTED\"}}" ) ) )
+        assertThatThrownBy( () -> FirebaseRealTestProject.requireWritePermissions( () -> new FirebaseRealTestProject.IamResponse( 429, "{\"error\":{\"status\":\"RESOURCE_EXHAUSTED\"}}" ) ) )
                 .hasMessageContaining( "Quota" );
     }
 
@@ -370,7 +360,7 @@ class FirebaseRealTestPreflightTest {
             throw new IllegalStateException( "falha da suite" );
         } ) ).isInstanceOf( IllegalStateException.class ).hasMessage( "falha da suite" )
                 .satisfies( failure -> assertThat( failure.getSuppressed() ).singleElement()
-                        .isInstanceOf( AssertionError.class ) );
+                .isInstanceOf( AssertionError.class ) );
     }
 
     @Test
@@ -386,8 +376,10 @@ class FirebaseRealTestPreflightTest {
         cleanup.register( RUN.uid( "bob" ) );
         assertThat( FirebaseRealTestProject.finishRun( cleanup ) ).isFalse();
     }
+
     /** In-memory stand-in for the shared project's user store. */
     private static final class FakeDirectory implements UserDirectory {
+
         private final Map<String, Account> accounts = new LinkedHashMap<>();
         private boolean deleteEnabled = true;
 
@@ -404,5 +396,7 @@ class FirebaseRealTestPreflightTest {
         public boolean delete( String uid ) {
             return deleteEnabled && accounts.remove( uid ) != null;
         }
+
     }
+
 }

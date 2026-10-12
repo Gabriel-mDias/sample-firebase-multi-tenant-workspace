@@ -19,7 +19,6 @@ final class FontesJava {
     private static final JavaParser PARSER = new JavaParser( new ParserConfiguration()
             .setLanguageLevel( ParserConfiguration.LanguageLevel.JAVA_21 )
             .setCharacterEncoding( StandardCharsets.UTF_8 ) );
-
     private static Map<String, CompilationUnit> producao;
     private static Map<String, CompilationUnit> teste;
 
@@ -47,8 +46,7 @@ final class FontesJava {
             try {
                 var resultado = PARSER.parse( absoluto );
                 var unidade = resultado.getResult()
-                        .orElseThrow( () -> new IllegalStateException(
-                                caminho + " não parseou: " + resultado.getProblems() ) );
+                        .orElseThrow( () -> new IllegalStateException( caminho + " não parseou: " + resultado.getProblems() ) );
                 unidades.put( caminho, unidade );
             } catch ( IOException e ) {
                 throw new UncheckedIOException( e );
@@ -56,4 +54,5 @@ final class FontesJava {
         }
         return unidades;
     }
+
 }

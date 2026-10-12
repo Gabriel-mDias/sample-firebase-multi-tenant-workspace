@@ -47,15 +47,18 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 @Import(FirebaseBackendIntegrationTest.Ports.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class TenantProvisioningFailureIntegrationTest {
+
     private static final String RAW_FAILURE = "detalhe-interno-do-unlock";
     @Container
     static final PostgreSQLContainer DATABASE = new PostgreSQLContainer( "postgres:16-alpine" );
+
     @DynamicPropertySource
     static void database( DynamicPropertyRegistry registry ) {
         registry.add( "spring.datasource.url", DATABASE::getJdbcUrl );
         registry.add( "spring.datasource.username", DATABASE::getUsername );
         registry.add( "spring.datasource.password", DATABASE::getPassword );
     }
+
     @Autowired
     SecurityEventSink events;
     @Autowired
@@ -72,11 +75,8 @@ class TenantProvisioningFailureIntegrationTest {
     TransactionTemplate tx;
 
     @ParameterizedTest
-    @CsvSource({"false, false, TENANT_PROVISIONING_SESSION_FAILED",
-            "false, true, TENANT_PROVISIONING_SESSION_FAILED", "true, false, TENANT_PROVISIONING_FAILED",
-            "true, true, TENANT_PROVISIONING_FAILED"})
-    void deveDescartarSessaoEPermitirRetry_quandoUnlockFalha( boolean migrationFails, boolean abortFails,
-            String expectedMessage ) throws Exception {
+    @CsvSource({ "false, false, TENANT_PROVISIONING_SESSION_FAILED", "false, true, TENANT_PROVISIONING_SESSION_FAILED", "true, false, TENANT_PROVISIONING_FAILED", "true, true, TENANT_PROVISIONING_FAILED" })
+    void deveDescartarSessaoEPermitirRetry_quandoUnlockFalha( boolean migrationFails, boolean abortFails, String expectedMessage ) throws Exception {
         var actor = SecurityActorProvider.trustedBootstrap( UUID.randomUUID() );
         var tenants = new JdbcTenantService( jdbc, tx, events, clock, aliases, catalog, actor );
         String alias = "unlock" + UUID.randomUUID().toString().replace( "-", "" );
@@ -88,16 +88,17 @@ class TenantProvisioningFailureIntegrationTest {
         config.setMaximumPoolSize( 1 );
         config.setMinimumIdle( 0 );
         config.setConnectionTimeout( 2000 );
-        try ( var pool = new HikariDataSource( config ) ) {
+        try (var pool = new HikariDataSource( config )) {
             var faulty = new UnlockFailureDataSource( pool, abortFails );
             var provisioner = new JdbcTenantProvisioner( faulty, jdbc, tx, events, aliases, clock );
             var migration = new SampleTenantMigration();
             var pinnedPid = new AtomicInteger();
             String originalSchema;
-            try ( var session = pool.getConnection() ) {
+            try (var session = pool.getConnection()) {
                 originalSchema = session.getSchema();
             }
             var failingMigration = new JdbcTenantProvisioner.Migration() {
+
                 @Override
                 public void apply( Connection session, String schema ) throws Exception {
                     Probe before = probe( session );
@@ -111,11 +112,13 @@ class TenantProvisioningFailureIntegrationTest {
                         throw new SQLException( RAW_FAILURE );
                     }
                 }
+
                 @Override
                 public long appliedRevision( Connection session, String schema ) throws Exception {
                     assertThat( probe( session ).pid() ).isEqualTo( pinnedPid.get() );
                     return migration.appliedRevision( session, schema );
                 }
+
             };
 
             Throwable failure = catchThrowable( () -> provisioner.provision( id, 1, failingMigration ) );
@@ -136,7 +139,7 @@ class TenantProvisioningFailureIntegrationTest {
             assertions.assertThat( jdbc.sql( "SELECT nr_revisao_aplicada FROM security.tenant WHERE id_tenant=:id" )
                     .param( "id", id ).query( Long.class ).single() ).isZero();
             Probe next;
-            try ( var session = pool.getConnection() ) {
+            try (var session = pool.getConnection()) {
                 next = probe( session );
             }
             assertions.assertThat( next.pid() ).as( "Sessão descartada não pode voltar ao pool" )
@@ -157,7 +160,7 @@ class TenantProvisioningFailureIntegrationTest {
                     .param( "id", id ).query( Long.class ).single() ).isOne();
             assertThat( jdbc.sql( "SELECT count(*) FROM tenant_" + alias + ".revisao_modelo" )
                     .query( Long.class ).single() ).isOne();
-            try ( var session = pool.getConnection() ) {
+            try (var session = pool.getConnection()) {
                 Probe afterRetry = probe( session );
                 assertions.assertThat( afterRetry.locked() ).isFalse();
                 assertions.assertThat( afterRetry.schema() ).isEqualTo( originalSchema );
@@ -166,72 +169,77 @@ class TenantProvisioningFailureIntegrationTest {
             assertions.assertAll();
         }
     }
+
     private long locks( int pid ) {
         return jdbc.sql( "SELECT count(*) FROM pg_locks WHERE pid=:pid AND locktype='advisory' AND granted" )
                 .param( "pid", pid ).query( Long.class ).single();
     }
+
     private static Probe probe( Connection session ) throws SQLException {
-        try ( var statement = session.createStatement();
-                var rows = statement.executeQuery( "SELECT pg_backend_pid(), "
-                        + "EXISTS(SELECT 1 FROM pg_locks WHERE pid=pg_backend_pid() "
-                        + "AND locktype='advisory' AND granted)" ) ) {
+        try (var statement = session.createStatement(); var rows = statement.executeQuery( "SELECT pg_backend_pid(), " + "EXISTS(SELECT 1 FROM pg_locks WHERE pid=pg_backend_pid() " + "AND locktype='advisory' AND granted)" )) {
             assertThat( rows.next() ).isTrue();
             return new Probe( rows.getInt( 1 ), rows.getBoolean( 2 ), session.getSchema(), session.getAutoCommit() );
         }
     }
+
     private record Probe(int pid, boolean locked, String schema, boolean autoCommit) {
+
     }
 
     private static final class UnlockFailureDataSource extends AbstractDataSource {
+
         private final HikariDataSource pool;
         private final boolean abortFails;
         private final AtomicBoolean failUnlock = new AtomicBoolean( true );
         private final AtomicInteger unlockFailures = new AtomicInteger();
         private final AtomicInteger unlockPid = new AtomicInteger();
         private final AtomicInteger returnedSessions = new AtomicInteger();
+
         private UnlockFailureDataSource( HikariDataSource pool, boolean abortFails ) {
             this.pool = pool;
             this.abortFails = abortFails;
         }
+
         @Override
         public Connection getConnection() throws SQLException {
             Connection borrowed = pool.getConnection();
-            return (Connection) Proxy.newProxyInstance( Connection.class.getClassLoader(),
-                    new Class<?>[]{Connection.class}, ( proxy, method, args ) -> {
-                        if ( method.getName().equals( "abort" ) ) {
-                            if ( abortFails ) {
-                                // JDBC permite abort indisponível; close sozinho devolve uma sessão com lock.
-                                throw new SQLException( RAW_FAILURE, "0A000" );
-                            }
-                        }
-                        if ( method.getName().equals( "close" ) ) {
-                            returnedSessions.incrementAndGet();
-                        }
-                        Object result = invoke( borrowed, method, args );
-                        if ( method.getName().equals( "prepareStatement" )
-                                && ((String) args[0]).contains( "pg_advisory_unlock" ) ) {
-                            return unlockStatement( borrowed, (PreparedStatement) result );
-                        }
-                        return result;
-                    } );
+            return (Connection) Proxy.newProxyInstance( Connection.class.getClassLoader(), new Class<?>[] { Connection.class }, ( proxy, method, args ) -> {
+                if ( method.getName().equals( "abort" ) ) {
+                    if ( abortFails ) {
+                        // JDBC permite abort indisponível; close sozinho devolve uma sessão com lock.
+                        throw new SQLException( RAW_FAILURE, "0A000" );
+                    }
+                }
+                if ( method.getName().equals( "close" ) ) {
+                    returnedSessions.incrementAndGet();
+                }
+                Object result = invoke( borrowed, method, args );
+                if ( method.getName().equals( "prepareStatement" )
+                        && ((String) args[0]).contains( "pg_advisory_unlock" ) ) {
+                    return unlockStatement( borrowed, (PreparedStatement) result );
+                }
+                return result;
+            } );
         }
+
         @Override
         public Connection getConnection( String username, String password ) throws SQLException {
             return getConnection();
         }
+
         private PreparedStatement unlockStatement( Connection session, PreparedStatement statement ) {
-            return (PreparedStatement) Proxy.newProxyInstance( PreparedStatement.class.getClassLoader(),
-                    new Class<?>[]{PreparedStatement.class}, ( proxy, method, args ) -> {
-                        if ( method.getName().equals( "executeQuery" ) && failUnlock.compareAndSet( true, false ) ) {
-                            unlockFailures.incrementAndGet();
-                            Probe atUnlock = probe( session );
-                            assertThat( atUnlock.locked() ).isTrue();
-                            unlockPid.set( atUnlock.pid() );
-                            throw new SQLException( RAW_FAILURE, "XX000" );
-                        }
-                        return invoke( statement, method, args );
-                    } );
+            return (PreparedStatement) Proxy.newProxyInstance( PreparedStatement.class.getClassLoader(), new Class<?>[] { PreparedStatement.class }, ( proxy, method, args ) -> {
+                if ( method.getName().equals( "executeQuery" ) && failUnlock.compareAndSet( true, false ) ) {
+                    unlockFailures.incrementAndGet();
+                    Probe atUnlock = probe( session );
+                    assertThat( atUnlock.locked() ).isTrue();
+                    unlockPid.set( atUnlock.pid() );
+                    throw new SQLException( RAW_FAILURE, "XX000" );
+                }
+                return invoke( statement, method, args );
+            } );
         }
+
         private static Object invoke( Object target, Method method, Object[] args ) throws Throwable {
             try {
                 return method.invoke( target, args );
@@ -239,5 +247,7 @@ class TenantProvisioningFailureIntegrationTest {
                 throw failure.getCause();
             }
         }
+
     }
+
 }

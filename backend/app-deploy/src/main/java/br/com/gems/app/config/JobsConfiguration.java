@@ -33,24 +33,22 @@ import org.springframework.transaction.support.TransactionTemplate;
 @Configuration
 @ConditionalOnNotWebApplication
 public class JobsConfiguration {
+
     @Bean
     @ConditionalOnProperty(name = "app.jobs.mode", havingValue = "bootstrap")
-    public BootstrapOperator bootstrapOperator( @Value("${app.jobs.operator-uid}") String uid, IdTokenVerifier verifier,
-            FirebaseAdminGateway admin, FirebaseAuthProperties properties ) {
-        return BootstrapOperator.verify( properties.projectId(), uid, System.getenv( "GEMS_BOOTSTRAP_ID_TOKEN" ),
-                verifier, admin );
+    public BootstrapOperator bootstrapOperator( @Value("${app.jobs.operator-uid}") String uid, IdTokenVerifier verifier, FirebaseAdminGateway admin, FirebaseAuthProperties properties ) {
+        return BootstrapOperator.verify( properties.projectId(), uid, System.getenv( "GEMS_BOOTSTRAP_ID_TOKEN" ), verifier, admin );
     }
+
     @Bean
     @ConditionalOnProperty(name = "app.jobs.mode", havingValue = "bootstrap")
     public SecurityActorProvider bootstrapActor( BootstrapOperator operator ) {
         return operator.actor();
     }
+
     @Bean
     @ConditionalOnProperty(name = "app.jobs.mode", havingValue = "bootstrap")
-    public ApplicationRunner bootstrapRunner( BootstrapOperator operator, UserAdministration users,
-            GrantAdministration grants, AuthorizationResolver resolver, AuthorizationCatalog catalog, Clock clock,
-            @Qualifier("firebaseSecurityTransactions") TransactionTemplate tx,
-            ConfigurableApplicationContext context ) {
+    public ApplicationRunner bootstrapRunner( BootstrapOperator operator, UserAdministration users, GrantAdministration grants, AuthorizationResolver resolver, AuthorizationCatalog catalog, Clock clock, @Qualifier("firebaseSecurityTransactions") TransactionTemplate tx, ConfigurableApplicationContext context ) {
         return args -> {
             try {
                 new CentralBootstrapWorkflow().initialize( operator, users, grants, resolver, catalog, clock, tx );
@@ -59,16 +57,13 @@ public class JobsConfiguration {
             }
         };
     }
+
     @Bean
     @ConditionalOnProperty(name = "app.jobs.mode", havingValue = "provision")
-    public ApplicationRunner provisionRunner( @Value("${app.jobs.tenant-id}") UUID tenant,
-            @Value("${gems.firebase.auth.minimum-applied-migration}") long revision,
-            JdbcTenantProvisioner provisioner, IdTokenVerifier verifier, AuthorizationResolver resolver, Clock clock,
-            ConfigurableApplicationContext context ) {
+    public ApplicationRunner provisionRunner( @Value("${app.jobs.tenant-id}") UUID tenant, @Value("${gems.firebase.auth.minimum-applied-migration}") long revision, JdbcTenantProvisioner provisioner, IdTokenVerifier verifier, AuthorizationResolver resolver, Clock clock, ConfigurableApplicationContext context ) {
         return args -> {
             try {
-                var resolution = resolver.resolve( verifier.verify( System.getenv( "GEMS_JOB_ID_TOKEN" ) ),
-                        Optional.empty(), clock.instant() );
+                var resolution = resolver.resolve( verifier.verify( System.getenv( "GEMS_JOB_ID_TOKEN" ) ), Optional.empty(), clock.instant() );
                 if ( !resolution.context().globalActions().contains( "ALTERAR_TENANT" ) ) {
                     throw new AccessDeniedException( "Provisionamento exige operador central" );
                 }
@@ -78,11 +73,10 @@ public class JobsConfiguration {
             }
         };
     }
+
     @Bean
     @ConditionalOnProperty(name = "app.jobs.mode", havingValue = "identity-worker")
-    public ApplicationRunner identityWorkerRunner( JdbcIdentityCommandWorker worker, JdbcSecurityEventOutbox events,
-            SecurityEventPublisher publisher,
-            ConfigurableApplicationContext context ) {
+    public ApplicationRunner identityWorkerRunner( JdbcIdentityCommandWorker worker, JdbcSecurityEventOutbox events, SecurityEventPublisher publisher, ConfigurableApplicationContext context ) {
         return args -> {
             try {
                 for ( int processed = 0; processed < 1000 && worker.runOnce(); processed++ ) {
@@ -94,4 +88,5 @@ public class JobsConfiguration {
             }
         };
     }
+
 }

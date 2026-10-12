@@ -15,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 /** Boots the production YAML with isolated PostgreSQL and deterministic Firebase ports. */
 @Testcontainers
 class OpenApiDisabledStartupIntegrationTest {
+
     @Container
     static final PostgreSQLContainer DATABASE = new PostgreSQLContainer( "postgres:16-alpine" );
 
@@ -54,11 +55,10 @@ class OpenApiDisabledStartupIntegrationTest {
             properties.put( "springdoc.swagger-ui.enabled", "true" );
         }
         var yaml = Path.of( "src/main/resources/application.yml" ).toAbsolutePath().toUri().toString();
-        try ( var context = new SpringApplicationBuilder( AppApplication.class,
-                FirebaseBackendIntegrationTest.Ports.class )
+        try (var context = new SpringApplicationBuilder( AppApplication.class, FirebaseBackendIntegrationTest.Ports.class )
                 .initializers( app -> app.getEnvironment().getPropertySources()
-                        .addFirst( new MapPropertySource( "isolated-test-input", properties ) ) )
-                .run( "--spring.config.location=" + yaml, "--server.port=0", "--spring.main.banner-mode=off" ) ) {
+                .addFirst( new MapPropertySource( "isolated-test-input", properties ) ) )
+                .run( "--spring.config.location=" + yaml, "--server.port=0", "--spring.main.banner-mode=off" )) {
             assertThat( context.isActive() ).isTrue();
             assertThat( context.getEnvironment().getProperty( "springdoc.api-docs.enabled", Boolean.class ) ).isFalse();
             assertThat( context.getEnvironment().getProperty( "springdoc.swagger-ui.enabled", Boolean.class ) )
@@ -67,8 +67,9 @@ class OpenApiDisabledStartupIntegrationTest {
                     .isEqualTo( "validate" );
             assertThat( context.getBeansOfType( RequestMappingHandlerMapping.class ).values() )
                     .allSatisfy( mappings -> assertThat( mappings.getHandlerMethods().keySet() )
-                            .noneMatch( mapping -> mapping.toString().contains( "/v3/api-docs" )
-                                    || mapping.toString().contains( "/swagger-ui" ) ) );
+                    .noneMatch( mapping -> mapping.toString().contains( "/v3/api-docs" )
+                    || mapping.toString().contains( "/swagger-ui" ) ) );
         }
     }
+
 }

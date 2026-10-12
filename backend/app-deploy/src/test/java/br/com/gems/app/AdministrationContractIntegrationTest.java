@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Import(FirebaseBackendIntegrationTest.Ports.class)
 class AdministrationContractIntegrationTest extends FirebaseContractSupport {
+
     private static final String CENTRAL = "/api/admin/central";
     private static final String TENANT = "/api/admin/tenants/{tenant}";
     @Autowired
@@ -50,8 +51,7 @@ class AdministrationContractIntegrationTest extends FirebaseContractSupport {
         assertFirstAdministrator( tenant, subject.id(), membership );
         assertThat( jdbc.sql( "SELECT count(*) FROM security.usuario_tenant WHERE id_usuario=:id" )
                 .param( "id", central.id() ).query( Long.class ).single() ).isZero();
-        assertThat( jdbc.sql( "SELECT count(*) FROM security.evento_seguranca "
-                + "WHERE id_tenant=:tenant AND id_ator=:actor" ).param( "tenant", tenant )
+        assertThat( jdbc.sql( "SELECT count(*) FROM security.evento_seguranca " + "WHERE id_tenant=:tenant AND id_ator=:actor" ).param( "tenant", tenant )
                 .param( "actor", central.id() ).query( Long.class ).single() ).isPositive();
     }
 
@@ -74,8 +74,7 @@ class AdministrationContractIntegrationTest extends FirebaseContractSupport {
     void deveRollbackIntegral_quandoBootstrapIncluiAcaoGlobalDepoisDeAcaoTenantValida() throws Exception {
         UUID tenant = tenants.create( unique( "rollback" ), "Bootstrap inválido" );
         var before = securityState();
-        String body = "{\"userId\":\"" + subject.id()
-                + "\",\"actions\":[\"CONSULTAR_DEMO\",\"CONSULTAR_TENANT\"]}";
+        String body = "{\"userId\":\"" + subject.id() + "\",\"actions\":[\"CONSULTAR_DEMO\",\"CONSULTAR_TENANT\"]}";
 
         var response = mvc.perform( firstAdministrator( tenant, body, operator.uid() ) )
                 .andReturn().getResponse();
@@ -101,8 +100,7 @@ class AdministrationContractIntegrationTest extends FirebaseContractSupport {
         assertThat( responseId( repeated ) ).isEqualTo( membership );
         assertThat( firstAdministratorState( tenant ) )
                 .as( "Repetição preserva membership, grants, identidade e eventos do comando." ).isEqualTo( before );
-        var different = mvc.perform( firstAdministrator( tenant,
-                administratorBody( tenantAdmin.id(), catalog.tenantActions() ), operator.uid() ) )
+        var different = mvc.perform( firstAdministrator( tenant, administratorBody( tenantAdmin.id(), catalog.tenantActions() ), operator.uid() ) )
                 .andReturn().getResponse();
         assertThat( different.getStatus() ).isEqualTo( 403 );
         assertThat( firstAdministratorState( tenant ) ).isEqualTo( before );
@@ -115,7 +113,7 @@ class AdministrationContractIntegrationTest extends FirebaseContractSupport {
         var started = new CountDownLatch( 2 );
         var release = new CountDownLatch( 1 );
         var beforeEvents = securityEvents();
-        try ( var pool = Executors.newVirtualThreadPerTaskExecutor() ) {
+        try (var pool = Executors.newVirtualThreadPerTaskExecutor()) {
             var first = pool.submit( () -> concurrentBootstrap( tenant, subject.id(), started, release ) );
             var second = pool.submit( () -> concurrentBootstrap( tenant, tenantAdmin.id(), started, release ) );
             try {
@@ -165,8 +163,7 @@ class AdministrationContractIntegrationTest extends FirebaseContractSupport {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("routes")
-    void deveAutorizarSoAcaoEspecificaEProprioTenant_quandoRotaAdministrativaEExecutada( Route route )
-            throws Exception {
+    void deveAutorizarSoAcaoEspecificaEProprioTenant_quandoRotaAdministrativaEExecutada( Route route ) throws Exception {
         var prepared = prepareRoute( route );
         revokeAction( route.action(), route.tenant() );
         var deniedState = securityState();
@@ -193,34 +190,27 @@ class AdministrationContractIntegrationTest extends FirebaseContractSupport {
         assertRouteResult( route, prepared, response, before, beforeEvents );
     }
 
-    private MockHttpServletResponse concurrentBootstrap( UUID tenant, UUID user, CountDownLatch started,
-            CountDownLatch release ) throws Exception {
+    private MockHttpServletResponse concurrentBootstrap( UUID tenant, UUID user, CountDownLatch started, CountDownLatch release ) throws Exception {
         started.countDown();
         if ( !release.await( 5, TimeUnit.SECONDS ) ) {
             throw new IllegalStateException( "O teste excedeu o limite de concorrência." );
         }
-        return mvc.perform( firstAdministrator( tenant, administratorBody( user, catalog.tenantActions() ),
-                operator.uid() ) ).andReturn().getResponse();
+        return mvc.perform( firstAdministrator( tenant, administratorBody( user, catalog.tenantActions() ), operator.uid() ) ).andReturn().getResponse();
     }
 
     /** Estado durável do comando; agendamento de entrega e comandos de outros testes ficam fora da comparação. */
     private Map<String, String> firstAdministratorState( UUID tenant ) {
         var state = new TreeMap<String, String>();
         for ( String table : List.of( "usuario_tenant", "usuario_tenant_role", "evento_seguranca" ) ) {
-            state.put( table, jdbc.sql( "SELECT coalesce(jsonb_agg(to_jsonb(row) "
-                    + "ORDER BY to_jsonb(row)::text),'[]'::jsonb)::text FROM security." + table
-                    + " row WHERE id_tenant=:tenant" ).param( "tenant", tenant ).query( String.class ).single() );
+            state.put( table, jdbc.sql( "SELECT coalesce(jsonb_agg(to_jsonb(row) " + "ORDER BY to_jsonb(row)::text),'[]'::jsonb)::text FROM security." + table + " row WHERE id_tenant=:tenant" ).param( "tenant", tenant ).query( String.class ).single() );
         }
-        state.put( "usuario_identidade", jdbc.sql( "SELECT coalesce(jsonb_agg(to_jsonb(row) "
-                + "ORDER BY to_jsonb(row)::text),'[]'::jsonb)::text FROM security.usuario_identidade row "
-                + "WHERE id_usuario IN (:users)" ).param( "users", List.of( subject.id(), tenantAdmin.id() ) )
+        state.put( "usuario_identidade", jdbc.sql( "SELECT coalesce(jsonb_agg(to_jsonb(row) " + "ORDER BY to_jsonb(row)::text),'[]'::jsonb)::text FROM security.usuario_identidade row " + "WHERE id_usuario IN (:users)" ).param( "users", List.of( subject.id(), tenantAdmin.id() ) )
                 .query( String.class ).single() );
         return state;
     }
 
     private long bootstrapEvents( UUID tenant ) {
-        return jdbc.sql( "SELECT count(*) FROM security.evento_seguranca "
-                + "WHERE id_tenant=:tenant AND cd_evento='TENANT_ADMIN_BOOTSTRAPPED'" )
+        return jdbc.sql( "SELECT count(*) FROM security.evento_seguranca " + "WHERE id_tenant=:tenant AND cd_evento='TENANT_ADMIN_BOOTSTRAPPED'" )
                 .param( "tenant", tenant ).query( Long.class ).single();
     }
 
@@ -236,12 +226,9 @@ class AdministrationContractIntegrationTest extends FirebaseContractSupport {
     }
 
     private void assertFirstAdministrator( UUID tenant, UUID user, UUID membership ) {
-        var members = jdbc.sql( "SELECT id_usuario_tenant,id_usuario FROM security.usuario_tenant "
-                + "WHERE id_tenant=:id" ).param( "id", tenant ).query().listOfRows();
+        var members = jdbc.sql( "SELECT id_usuario_tenant,id_usuario FROM security.usuario_tenant " + "WHERE id_tenant=:id" ).param( "id", tenant ).query().listOfRows();
         assertThat( members ).containsExactly( Map.of( "id_usuario_tenant", membership, "id_usuario", user ) );
-        assertThat( jdbc.sql( "SELECT r.cd_acao FROM security.usuario_tenant_role g "
-                + "JOIN security.role_seguranca r ON r.id_role=g.id_role "
-                + "WHERE g.id_usuario_tenant=:id AND g.dt_fim IS NULL" ).param( "id", membership )
+        assertThat( jdbc.sql( "SELECT r.cd_acao FROM security.usuario_tenant_role g " + "JOIN security.role_seguranca r ON r.id_role=g.id_role " + "WHERE g.id_usuario_tenant=:id AND g.dt_fim IS NULL" ).param( "id", membership )
                 .query( String.class ).list() ).containsExactlyInAnyOrderElementsOf( catalog.tenantActions() );
     }
 
@@ -270,34 +257,24 @@ class AdministrationContractIntegrationTest extends FirebaseContractSupport {
             return new Prepared( path.replace( "{id}", subject.id().toString() ), queryBody(), "", null, Map.of() );
         }
         return switch ( route.kind() ) {
-            case "USER_CREATE" -> new Prepared( path, "{\"name\":\"Novo\",\"email\":\""
-                    + unique( "novo" ) + "@example.test\",\"method\":\"GOOGLE\"}", "usuario", null,
-                    Map.of( "nm_usuario", "Novo" ) );
-            case "USER_UPDATE" -> new Prepared( path.replace( "{id}", subject.id().toString() ),
-                    "{\"name\":\"Renomeado\",\"email\":\"" + subject.email() + "\"}", "usuario", subject.id(),
-                    Map.of( "nm_usuario", "Renomeado", "cd_email", subject.email() ) );
-            case "USER_SUSPEND" -> new Prepared( path.replace( "{id}", subject.id().toString() ), "{}",
-                    "usuario", subject.id(), Map.of() );
-            case "USER_REACTIVATE" -> prepareReactivation( path );
-            case "TENANT_CREATE" -> prepareTenantCreation( path );
-            case "TENANT_RENAME" -> new Prepared( path.replace( "{id}", alphaId.toString() ),
-                    "{\"name\":\"Renomeado\"}", "tenant", alphaId,
-                    Map.of( "nm_tenant", "Renomeado", "cd_alias", alpha ) );
-            case "TENANT_SUSPEND" -> new Prepared( path.replace( "{id}", alphaId.toString() ), "{}", "tenant",
-                    alphaId, Map.of() );
-            case "FIRST" -> prepareFirst( path );
-            case "GLOBAL_GRANT", "GLOBAL_REVOKE" -> prepareGlobalGrant( route, path );
-            case "MEMBER_CREATE" -> {
-                var account = bind( "semvinculo" );
-                yield new Prepared( path, "{\"userId\":\"" + account.id() + "\"}", "usuario_tenant", null,
-                        Map.of( "id_usuario", account.id(), "id_tenant", alphaId ) );
-            }
-            case "MEMBER_END" -> new Prepared( path.replace( "{id}", subjectMember.toString() ), "{}",
-                    "usuario_tenant", subjectMember, Map.of( "id_usuario", subject.id(), "id_tenant", alphaId ) );
-            case "PROFILE_CREATE", "GROUP_CREATE" -> prepareContainer( route, path );
-            case "GRANT", "REVOKE" -> prepareTenantGrant( route, path );
-            case "LINK", "UNLINK" -> prepareLink( route, path );
-            default -> throw new IllegalArgumentException( "Rota fora do contrato." );
+        case "USER_CREATE" -> new Prepared( path, "{\"name\":\"Novo\",\"email\":\"" + unique( "novo" ) + "@example.test\",\"method\":\"GOOGLE\"}", "usuario", null, Map.of( "nm_usuario", "Novo" ) );
+        case "USER_UPDATE" -> new Prepared( path.replace( "{id}", subject.id().toString() ), "{\"name\":\"Renomeado\",\"email\":\"" + subject.email() + "\"}", "usuario", subject.id(), Map.of( "nm_usuario", "Renomeado", "cd_email", subject.email() ) );
+        case "USER_SUSPEND" -> new Prepared( path.replace( "{id}", subject.id().toString() ), "{}", "usuario", subject.id(), Map.of() );
+        case "USER_REACTIVATE" -> prepareReactivation( path );
+        case "TENANT_CREATE" -> prepareTenantCreation( path );
+        case "TENANT_RENAME" -> new Prepared( path.replace( "{id}", alphaId.toString() ), "{\"name\":\"Renomeado\"}", "tenant", alphaId, Map.of( "nm_tenant", "Renomeado", "cd_alias", alpha ) );
+        case "TENANT_SUSPEND" -> new Prepared( path.replace( "{id}", alphaId.toString() ), "{}", "tenant", alphaId, Map.of() );
+        case "FIRST" -> prepareFirst( path );
+        case "GLOBAL_GRANT", "GLOBAL_REVOKE" -> prepareGlobalGrant( route, path );
+        case "MEMBER_CREATE" -> {
+            var account = bind( "semvinculo" );
+            yield new Prepared( path, "{\"userId\":\"" + account.id() + "\"}", "usuario_tenant", null, Map.of( "id_usuario", account.id(), "id_tenant", alphaId ) );
+        }
+        case "MEMBER_END" -> new Prepared( path.replace( "{id}", subjectMember.toString() ), "{}", "usuario_tenant", subjectMember, Map.of( "id_usuario", subject.id(), "id_tenant", alphaId ) );
+        case "PROFILE_CREATE", "GROUP_CREATE" -> prepareContainer( route, path );
+        case "GRANT", "REVOKE" -> prepareTenantGrant( route, path );
+        case "LINK", "UNLINK" -> prepareLink( route, path );
+        default -> throw new IllegalArgumentException( "Rota fora do contrato." );
         };
     }
 
@@ -309,15 +286,12 @@ class AdministrationContractIntegrationTest extends FirebaseContractSupport {
 
     private Prepared prepareTenantCreation( String path ) {
         String alias = unique( "criado" );
-        return new Prepared( path, "{\"alias\":\"" + alias + "\",\"name\":\"Criado\"}", "tenant", null,
-                Map.of( "cd_alias", alias, "nm_tenant", "Criado", "cd_provisionamento", "PENDING" ) );
+        return new Prepared( path, "{\"alias\":\"" + alias + "\",\"name\":\"Criado\"}", "tenant", null, Map.of( "cd_alias", alias, "nm_tenant", "Criado", "cd_provisionamento", "PENDING" ) );
     }
 
     private Prepared prepareFirst( String path ) {
         UUID tenant = tenants.create( unique( "matriz" ), "Primeiro administrador" );
-        return new Prepared( path.replace( "{id}", tenant.toString() ),
-                administratorBody( subject.id(), catalog.tenantActions() ), "usuario_tenant", null,
-                Map.of( "id_usuario", subject.id(), "id_tenant", tenant ) );
+        return new Prepared( path.replace( "{id}", tenant.toString() ), administratorBody( subject.id(), catalog.tenantActions() ), "usuario_tenant", null, Map.of( "id_usuario", subject.id(), "id_tenant", tenant ) );
     }
 
     private Prepared prepareGlobalGrant( Route route, String path ) {
@@ -326,31 +300,28 @@ class AdministrationContractIntegrationTest extends FirebaseContractSupport {
             grant = grants.grantGlobal( subject.id(), "CONSULTAR_TENANT" );
             path = path.replace( "{grant}", grant.toString() );
         }
-        return new Prepared( path.replace( "{id}", subject.id().toString() ),
-                "{\"action\":\"CONSULTAR_TENANT\"}", "usuario_role_global", grant,
-                Map.of( "id_usuario", subject.id() ) );
+        return new Prepared( path.replace( "{id}", subject.id().toString() ), "{\"action\":\"CONSULTAR_TENANT\"}", "usuario_role_global", grant, Map.of( "id_usuario", subject.id() ) );
     }
 
     private Prepared prepareContainer( Route route, String path ) {
         String code = unique( "container" );
         String table = route.kind().equals( "PROFILE_CREATE" ) ? "perfil" : "grupo";
-        return new Prepared( path, "{\"code\":\"" + code + "\",\"name\":\"Novo container\"}", table, null,
-                Map.of( "id_tenant", alphaId, "cd_" + table, code ) );
+        return new Prepared( path, "{\"code\":\"" + code + "\",\"name\":\"Novo container\"}", table, null, Map.of( "id_tenant", alphaId, "cd_" + table, code ) );
     }
 
     private Prepared prepareTenantGrant( Route route, String path ) {
         String target = route.variant();
         UUID owner = switch ( target ) {
-            case "MEMBER" -> subjectMember;
-            case "PROFILE" -> grants.createProfile( alphaId, unique( "perfil" ), "Perfil" );
-            case "GROUP" -> grants.createGroup( alphaId, unique( "grupo" ), "Grupo" );
-            default -> throw new IllegalArgumentException( "Destino fora do contrato." );
+        case "MEMBER" -> subjectMember;
+        case "PROFILE" -> grants.createProfile( alphaId, unique( "perfil" ), "Perfil" );
+        case "GROUP" -> grants.createGroup( alphaId, unique( "grupo" ), "Grupo" );
+        default -> throw new IllegalArgumentException( "Destino fora do contrato." );
         };
         String table = switch ( target ) {
-            case "MEMBER" -> "usuario_tenant_role";
-            case "PROFILE" -> "perfil_role";
-            case "GROUP" -> "grupo_role";
-            default -> throw new IllegalArgumentException( "Destino fora do contrato." );
+        case "MEMBER" -> "usuario_tenant_role";
+        case "PROFILE" -> "perfil_role";
+        case "GROUP" -> "grupo_role";
+        default -> throw new IllegalArgumentException( "Destino fora do contrato." );
         };
         UUID grant = null;
         if ( route.kind().equals( "REVOKE" ) ) {
@@ -358,8 +329,7 @@ class AdministrationContractIntegrationTest extends FirebaseContractSupport {
             path = path.replace( "{id}", grant.toString() );
         }
         path = path.replace( "{target}", target );
-        return new Prepared( path, "{\"ownerId\":\"" + owner + "\",\"action\":\"CONSULTAR_DEMO\"}", table, grant,
-                Map.of( "id_tenant", alphaId, "id_role", role( "CONSULTAR_DEMO" ) ) );
+        return new Prepared( path, "{\"ownerId\":\"" + owner + "\",\"action\":\"CONSULTAR_DEMO\"}", table, grant, Map.of( "id_tenant", alphaId, "id_role", role( "CONSULTAR_DEMO" ) ) );
     }
 
     private UUID role( String action ) {
@@ -374,23 +344,20 @@ class AdministrationContractIntegrationTest extends FirebaseContractSupport {
         UUID left = link == GrantAdministration.Link.MEMBER_PROFILE ? subjectMember : group;
         UUID right = link == GrantAdministration.Link.GROUP_MEMBER ? subjectMember : profile;
         String table = switch ( link ) {
-            case MEMBER_PROFILE -> "usuario_tenant_perfil";
-            case GROUP_MEMBER -> "grupo_usuario";
-            case GROUP_PROFILE -> "grupo_perfil";
-            default -> throw new IllegalArgumentException( "Relacionamento fora do contrato." );
+        case MEMBER_PROFILE -> "usuario_tenant_perfil";
+        case GROUP_MEMBER -> "grupo_usuario";
+        case GROUP_PROFILE -> "grupo_perfil";
+        default -> throw new IllegalArgumentException( "Relacionamento fora do contrato." );
         };
         UUID id = null;
         if ( route.kind().equals( "UNLINK" ) ) {
             id = grants.link( link, alphaId, left, right );
             path = path.replace( "{id}", id.toString() );
         }
-        return new Prepared( path.replace( "{link}", route.variant() ),
-                "{\"leftId\":\"" + left + "\",\"rightId\":\"" + right + "\"}", table, id,
-                Map.of( "id_tenant", alphaId ) );
+        return new Prepared( path.replace( "{link}", route.variant() ), "{\"leftId\":\"" + left + "\",\"rightId\":\"" + right + "\"}", table, id, Map.of( "id_tenant", alphaId ) );
     }
 
-    private void assertRouteResult( Route route, Prepared prepared, MockHttpServletResponse response,
-            Map<String, String> before, List<Map<String, Object>> beforeEvents ) throws Exception {
+    private void assertRouteResult( Route route, Prepared prepared, MockHttpServletResponse response, Map<String, String> before, List<Map<String, Object>> beforeEvents ) throws Exception {
         if ( route.pattern().endsWith( "/search" ) ) {
             Map<String, Object> page = com.jayway.jsonpath.JsonPath.read( response.getContentAsString(), "$" );
             var lists = page.values().stream().filter( List.class::isInstance )
@@ -418,8 +385,7 @@ class AdministrationContractIntegrationTest extends FirebaseContractSupport {
         }
         if ( route.kind().equals( "USER_SUSPEND" ) || route.kind().equals( "USER_REACTIVATE" ) ) {
             String type = route.kind().equals( "USER_SUSPEND" ) ? "DISABLE" : "ENABLE";
-            assertThat( jdbc.sql( "SELECT count(*) FROM security.comando_identidade "
-                    + "WHERE id_usuario=:id AND cd_tipo=:type AND cd_estado='PENDING'" )
+            assertThat( jdbc.sql( "SELECT count(*) FROM security.comando_identidade " + "WHERE id_usuario=:id AND cd_tipo=:type AND cd_estado='PENDING'" )
                     .param( "id", id ).param( "type", type ).query( Long.class ).single() ).isPositive();
         }
         if ( route.kind().equals( "FIRST" ) ) {
@@ -431,52 +397,23 @@ class AdministrationContractIntegrationTest extends FirebaseContractSupport {
     }
 
     private static Stream<Route> routes() {
-        var central = Stream.of(
-                new Route( "POST", CENTRAL + "/users/search", "CONSULTAR_USUARIO", 200, "QUERY", "" ),
-                new Route( "POST", CENTRAL + "/users", "INSERIR_USUARIO", 201, "USER_CREATE", "" ),
-                new Route( "PUT", CENTRAL + "/users/{id}", "ALTERAR_USUARIO", 200, "USER_UPDATE", "" ),
-                new Route( "POST", CENTRAL + "/users/{id}/suspend", "SUSPENDER_USUARIO", 200, "USER_SUSPEND", "" ),
-                new Route( "POST", CENTRAL + "/users/{id}/reactivate", "REATIVAR_USUARIO", 200, "USER_REACTIVATE", "" ),
-                new Route( "POST", CENTRAL + "/tenants/search", "CONSULTAR_TENANT", 200, "QUERY", "" ),
-                new Route( "POST", CENTRAL + "/tenants", "INSERIR_TENANT", 201, "TENANT_CREATE", "" ),
-                new Route( "PUT", CENTRAL + "/tenants/{id}", "ALTERAR_TENANT", 200, "TENANT_RENAME", "" ),
-                new Route( "POST", CENTRAL + "/tenants/{id}/suspend", "SUSPENDER_TENANT", 200, "TENANT_SUSPEND", "" ),
-                new Route( "POST", CENTRAL + "/users/{id}/global-grants/search", "CONSULTAR_ACAO_GLOBAL", 200,
-                        "QUERY", "" ),
-                new Route( "POST", CENTRAL + "/users/{id}/global-grants", "CONCEDER_ACAO_GLOBAL", 201,
-                        "GLOBAL_GRANT", "" ),
-                new Route( "DELETE", CENTRAL + "/users/{id}/global-grants/{grant}", "REVOGAR_ACAO_GLOBAL", 204,
-                        "GLOBAL_REVOKE", "" ),
-                new Route( "POST", CENTRAL + "/tenants/{id}/first-administrator", "CRIAR_ADMINISTRADOR_TENANT", 201,
-                        "FIRST", "" ) );
-        var tenant = Stream.of(
-                new Route( "POST", TENANT + "/memberships/search", "CONSULTAR_MEMBERSHIP", 200, "QUERY", "" ),
-                new Route( "POST", TENANT + "/grants/search", "CONSULTAR_GRANT", 200, "QUERY", "" ),
-                new Route( "POST", TENANT + "/memberships", "INSERIR_MEMBERSHIP", 201, "MEMBER_CREATE", "" ),
-                new Route( "DELETE", TENANT + "/memberships/{id}", "ENCERRAR_MEMBERSHIP", 204, "MEMBER_END", "" ),
-                new Route( "POST", TENANT + "/grants", "CONCEDER_GRANT", 201, "GRANT", "MEMBER" ),
-                new Route( "DELETE", TENANT + "/grants/{id}", "REVOGAR_GRANT", 204, "REVOKE", "MEMBER" ),
-                new Route( "POST", TENANT + "/profiles/search", "CONSULTAR_GRANT", 200, "QUERY", "" ),
-                new Route( "POST", TENANT + "/groups/search", "CONSULTAR_GRANT", 200, "QUERY", "" ),
-                new Route( "POST", TENANT + "/profiles", "CONCEDER_GRANT", 201, "PROFILE_CREATE", "" ),
-                new Route( "POST", TENANT + "/groups", "CONCEDER_GRANT", 201, "GROUP_CREATE", "" ) );
-        var targets = Arrays.stream( GrantAdministration.Target.values() ).flatMap( target -> Stream.of(
-                new Route( "POST", TENANT + "/grants/targets/{target}", "CONCEDER_GRANT", 201, "GRANT", target.name() ),
-                new Route( "DELETE", TENANT + "/grants/targets/{target}/{id}", "REVOGAR_GRANT", 204,
-                        "REVOKE", target.name() ) ) );
-        var links = Arrays.stream( GrantAdministration.Link.values() ).flatMap( link -> Stream.of(
-                new Route( "POST", TENANT + "/grants/links/{link}", "CONCEDER_GRANT", 201, "LINK", link.name() ),
-                new Route( "DELETE", TENANT + "/grants/links/{link}/{id}", "REVOGAR_GRANT", 204,
-                        "UNLINK", link.name() ) ) );
+        var central = Stream.of( new Route( "POST", CENTRAL + "/users/search", "CONSULTAR_USUARIO", 200, "QUERY", "" ), new Route( "POST", CENTRAL + "/users", "INSERIR_USUARIO", 201, "USER_CREATE", "" ), new Route( "PUT", CENTRAL + "/users/{id}", "ALTERAR_USUARIO", 200, "USER_UPDATE", "" ), new Route( "POST", CENTRAL + "/users/{id}/suspend", "SUSPENDER_USUARIO", 200, "USER_SUSPEND", "" ), new Route( "POST", CENTRAL + "/users/{id}/reactivate", "REATIVAR_USUARIO", 200, "USER_REACTIVATE", "" ), new Route( "POST", CENTRAL + "/tenants/search", "CONSULTAR_TENANT", 200, "QUERY", "" ), new Route( "POST", CENTRAL + "/tenants", "INSERIR_TENANT", 201, "TENANT_CREATE", "" ), new Route( "PUT", CENTRAL + "/tenants/{id}", "ALTERAR_TENANT", 200, "TENANT_RENAME", "" ), new Route( "POST", CENTRAL + "/tenants/{id}/suspend", "SUSPENDER_TENANT", 200, "TENANT_SUSPEND", "" ), new Route( "POST", CENTRAL + "/users/{id}/global-grants/search", "CONSULTAR_ACAO_GLOBAL", 200, "QUERY", "" ), new Route( "POST", CENTRAL + "/users/{id}/global-grants", "CONCEDER_ACAO_GLOBAL", 201, "GLOBAL_GRANT", "" ), new Route( "DELETE", CENTRAL + "/users/{id}/global-grants/{grant}", "REVOGAR_ACAO_GLOBAL", 204, "GLOBAL_REVOKE", "" ), new Route( "POST", CENTRAL + "/tenants/{id}/first-administrator", "CRIAR_ADMINISTRADOR_TENANT", 201, "FIRST", "" ) );
+        var tenant = Stream.of( new Route( "POST", TENANT + "/memberships/search", "CONSULTAR_MEMBERSHIP", 200, "QUERY", "" ), new Route( "POST", TENANT + "/grants/search", "CONSULTAR_GRANT", 200, "QUERY", "" ), new Route( "POST", TENANT + "/memberships", "INSERIR_MEMBERSHIP", 201, "MEMBER_CREATE", "" ), new Route( "DELETE", TENANT + "/memberships/{id}", "ENCERRAR_MEMBERSHIP", 204, "MEMBER_END", "" ), new Route( "POST", TENANT + "/grants", "CONCEDER_GRANT", 201, "GRANT", "MEMBER" ), new Route( "DELETE", TENANT + "/grants/{id}", "REVOGAR_GRANT", 204, "REVOKE", "MEMBER" ), new Route( "POST", TENANT + "/profiles/search", "CONSULTAR_GRANT", 200, "QUERY", "" ), new Route( "POST", TENANT + "/groups/search", "CONSULTAR_GRANT", 200, "QUERY", "" ), new Route( "POST", TENANT + "/profiles", "CONCEDER_GRANT", 201, "PROFILE_CREATE", "" ), new Route( "POST", TENANT + "/groups", "CONCEDER_GRANT", 201, "GROUP_CREATE", "" ) );
+        var targets = Arrays.stream( GrantAdministration.Target.values() ).flatMap( target -> Stream.of( new Route( "POST", TENANT + "/grants/targets/{target}", "CONCEDER_GRANT", 201, "GRANT", target.name() ), new Route( "DELETE", TENANT + "/grants/targets/{target}/{id}", "REVOGAR_GRANT", 204, "REVOKE", target.name() ) ) );
+        var links = Arrays.stream( GrantAdministration.Link.values() ).flatMap( link -> Stream.of( new Route( "POST", TENANT + "/grants/links/{link}", "CONCEDER_GRANT", 201, "LINK", link.name() ), new Route( "DELETE", TENANT + "/grants/links/{link}/{id}", "REVOGAR_GRANT", 204, "UNLINK", link.name() ) ) );
         return Stream.of( central, tenant, targets, links ).flatMap( stream -> stream );
     }
 
     private record Route(String method, String pattern, String action, int status, String kind, String variant) {
+
         boolean tenant() {
             return pattern.startsWith( "/api/admin/tenants/" );
         }
+
     }
 
     private record Prepared(String path, String body, String table, UUID id, Map<String, Object> expected) {
+
     }
+
 }

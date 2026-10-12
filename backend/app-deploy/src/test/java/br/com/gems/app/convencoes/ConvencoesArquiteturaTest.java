@@ -51,10 +51,7 @@ class ConvencoesArquiteturaTest {
 
         for ( JavaClass repositorio : repositorios() ) {
             if ( !repositorio.isAnnotatedWith( "org.springframework.stereotype.Repository" ) ) {
-                relatorio.registrar( chave( repositorio, "repository-annotation" ),
-                        LocalizadorDeFonte.caminhoRelativo( repositorio.getName() ), 0, "repositories.md#1",
-                        repositorio.getSimpleName() + " estende JpaRepository sem @Repository",
-                        "@Repository na declaração da interface" );
+                relatorio.registrar( chave( repositorio, "repository-annotation" ), LocalizadorDeFonte.caminhoRelativo( repositorio.getName() ), 0, "repositories.md#1", repositorio.getSimpleName() + " estende JpaRepository sem @Repository", "@Repository na declaração da interface" );
             }
         }
 
@@ -68,14 +65,10 @@ class ConvencoesArquiteturaTest {
         for ( JavaClass repositorio : repositorios() ) {
             var estende = repositorio.getAllRawInterfaces().stream()
                     .anyMatch( interfaceDoTipo -> interfaceDoTipo.getName()
-                            .equals( "br.com.gems.jpa.repository.BaseCustomJpaRepository" ) );
+                    .equals( "br.com.gems.jpa.repository.BaseCustomJpaRepository" ) );
 
             if ( !estende ) {
-                relatorio.registrar( chave( repositorio, "base-custom-jpa-repository" ),
-                        LocalizadorDeFonte.caminhoRelativo( repositorio.getName() ), 0, "repositories.md#1",
-                        repositorio.getSimpleName() + " não estende BaseCustomJpaRepository",
-                        "extends JpaRepository<Entidade, UUID>, BaseCustomJpaRepository<Entidade> — "
-                                + "é ele que entrega executeHql e executeCountHql" );
+                relatorio.registrar( chave( repositorio, "base-custom-jpa-repository" ), LocalizadorDeFonte.caminhoRelativo( repositorio.getName() ), 0, "repositories.md#1", repositorio.getSimpleName() + " não estende BaseCustomJpaRepository", "extends JpaRepository<Entidade, UUID>, BaseCustomJpaRepository<Entidade> — " + "é ele que entrega executeHql e executeCountHql" );
             }
         }
 
@@ -106,10 +99,7 @@ class ConvencoesArquiteturaTest {
                     && !search.getModifiers().contains( JavaModifier.ABSTRACT )
                     && !search.getModifiers().contains( JavaModifier.STATIC );
             if ( !ehDefaultPublico ) {
-                relatorio.registrar( chave( repositorio, "search-default" ), caminho, 0, "repositories.md#2.1",
-                        "search não é um método default público",
-                        "default Page<EntidadeResponseDTO> search( EntidadeFilterParams filterParams, "
-                                + "Pageable pageable )" );
+                relatorio.registrar( chave( repositorio, "search-default" ), caminho, 0, "repositories.md#2.1", "search não é um método default público", "default Page<EntidadeResponseDTO> search( EntidadeFilterParams filterParams, " + "Pageable pageable )" );
             }
         }
 
@@ -124,10 +114,7 @@ class ConvencoesArquiteturaTest {
             for ( JavaMethod metodo : classe.getMethods() ) {
                 var query = metodo.tryGetAnnotationOfType( Query.class );
                 if ( query.isPresent() && query.get().nativeQuery() ) {
-                    relatorio.registrar( chave( classe, "native-query-" + metodo.getName() ),
-                            LocalizadorDeFonte.caminhoRelativo( classe.getName() ), 0, "repositories.md#anti-patterns",
-                            metodo.getName() + " usa @Query( nativeQuery = true )",
-                            "HQL sempre — portabilidade e type-safety" );
+                    relatorio.registrar( chave( classe, "native-query-" + metodo.getName() ), LocalizadorDeFonte.caminhoRelativo( classe.getName() ), 0, "repositories.md#anti-patterns", metodo.getName() + " usa @Query( nativeQuery = true )", "HQL sempre — portabilidade e type-safety" );
                 }
             }
         }
@@ -152,10 +139,7 @@ class ConvencoesArquiteturaTest {
                     .anyMatch( pai -> pai.getName().equals( "br.com.gems.exception.base.BaseController" ) );
 
             if ( !estende ) {
-                relatorio.registrar( chave( classe, "base-controller" ),
-                        LocalizadorDeFonte.caminhoRelativo( classe.getName() ), 0, "controllers.md#1",
-                        classe.getSimpleName() + " é @RestController e não estende BaseController",
-                        "extends BaseController (br.com.gems.exception.base.BaseController)" );
+                relatorio.registrar( chave( classe, "base-controller" ), LocalizadorDeFonte.caminhoRelativo( classe.getName() ), 0, "controllers.md#1", classe.getSimpleName() + " é @RestController e não estende BaseController", "extends BaseController (br.com.gems.exception.base.BaseController)" );
             }
         }
 
@@ -179,10 +163,7 @@ class ConvencoesArquiteturaTest {
 
             var config = mapper.get().config();
             if ( !config.getName().equals( "br.com.gems.mapstruct.GemsMappingConfig" ) ) {
-                relatorio.registrar( chave( classe, "mapper-config" ),
-                        LocalizadorDeFonte.caminhoRelativo( classe.getName() ), 0, "mapping.md#2",
-                        classe.getSimpleName() + " é @Mapper com config = " + config.getSimpleName(),
-                        "@Mapper( config = GemsMappingConfig.class ) — é ele que traz unmappedTargetPolicy = ERROR" );
+                relatorio.registrar( chave( classe, "mapper-config" ), LocalizadorDeFonte.caminhoRelativo( classe.getName() ), 0, "mapping.md#2", classe.getSimpleName() + " é @Mapper com config = " + config.getSimpleName(), "@Mapper( config = GemsMappingConfig.class ) — é ele que traz unmappedTargetPolicy = ERROR" );
             }
         }
 
@@ -205,10 +186,7 @@ class ConvencoesArquiteturaTest {
                         .map( dependencia -> dependencia.getTargetClass() ).toList() ) {
                     if ( dependencia.getPackageName().startsWith( BASE )
                             && dependencia.getPackageName().endsWith( ".repository" ) ) {
-                        relatorio.registrar( chave( classe, "controller-repository" ), caminho, 0,
-                                "controllers.md#1",
-                                classe.getSimpleName() + " depende diretamente de " + dependencia.getSimpleName(),
-                                "UMA única dependência de Service — o controller não enxerga repository" );
+                        relatorio.registrar( chave( classe, "controller-repository" ), caminho, 0, "controllers.md#1", classe.getSimpleName() + " depende diretamente de " + dependencia.getSimpleName(), "UMA única dependência de Service — o controller não enxerga repository" );
                     }
                 }
             }
@@ -219,13 +197,9 @@ class ConvencoesArquiteturaTest {
                     var pacote = dependencia.getPackageName();
                     var ehCamadaDeAplicacao = pacote.startsWith( BASE )
                             && (pacote.endsWith( ".controller" ) || pacote.endsWith( ".service" )
-                                    || pacote.endsWith( ".repository" ));
+                            || pacote.endsWith( ".repository" ));
                     if ( ehCamadaDeAplicacao ) {
-                        relatorio.registrar( chave( classe, "model-aplicacao" ), caminho, 0, "architecture.md#1",
-                                classe.getSimpleName() + " (app-model) depende de "
-                                        + dependencia.getSimpleName(),
-                                "app-model contém apenas Entities, DTOs e Enums — a dependência vai de "
-                                        + "model/security para events/core, nunca ao contrário" );
+                        relatorio.registrar( chave( classe, "model-aplicacao" ), caminho, 0, "architecture.md#1", classe.getSimpleName() + " (app-model) depende de " + dependencia.getSimpleName(), "app-model contém apenas Entities, DTOs e Enums — a dependência vai de " + "model/security para events/core, nunca ao contrário" );
                     }
                 }
             }
@@ -238,26 +212,21 @@ class ConvencoesArquiteturaTest {
         return classes.stream()
                 .filter( JavaClass::isInterface )
                 .filter( classe -> classe.getAllRawInterfaces().stream()
-                        .anyMatch( interfaceDoTipo -> interfaceDoTipo.getName()
-                                .equals( "org.springframework.data.jpa.repository.JpaRepository" ) ) )
+                .anyMatch( interfaceDoTipo -> interfaceDoTipo.getName()
+                .equals( "org.springframework.data.jpa.repository.JpaRepository" ) ) )
                 .collect( java.util.stream.Collectors.toSet() );
     }
 
-    private static void exigirMetodoPrivado( RelatorioDeConformidade relatorio, JavaClass repositorio, String caminho,
-            String nome ) {
+    private static void exigirMetodoPrivado( RelatorioDeConformidade relatorio, JavaClass repositorio, String caminho, String nome ) {
         var metodo = metodo( repositorio, nome );
 
         if ( metodo == null ) {
-            relatorio.registrar( chave( repositorio, "tetrade-ausente-" + nome ), caminho, 0, "repositories.md#2",
-                    repositorio.getSimpleName() + " tem search e não declara " + nome,
-                    "a tétrade completa: search > countQuery > searchQuery > appendFilters" );
+            relatorio.registrar( chave( repositorio, "tetrade-ausente-" + nome ), caminho, 0, "repositories.md#2", repositorio.getSimpleName() + " tem search e não declara " + nome, "a tétrade completa: search > countQuery > searchQuery > appendFilters" );
             return;
         }
 
         if ( !metodo.getModifiers().contains( JavaModifier.PRIVATE ) ) {
-            relatorio.registrar( chave( repositorio, "tetrade-visibilidade-" + nome ), caminho, 0,
-                    "repositories.md#2", nome + " não é privado",
-                    nome + " privado — a montagem do HQL não é interface pública do repositório" );
+            relatorio.registrar( chave( repositorio, "tetrade-visibilidade-" + nome ), caminho, 0, "repositories.md#2", nome + " não é privado", nome + " privado — a montagem do HQL não é interface pública do repositório" );
         }
     }
 
@@ -271,4 +240,5 @@ class ConvencoesArquiteturaTest {
     private static String chave( JavaClass classe, String regra ) {
         return String.join( "|", List.of( classe.getName(), regra ) );
     }
+
 }

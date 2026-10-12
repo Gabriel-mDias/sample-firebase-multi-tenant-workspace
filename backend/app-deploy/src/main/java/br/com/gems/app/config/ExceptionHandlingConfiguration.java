@@ -8,12 +8,15 @@ import org.springframework.context.annotation.Configuration;
 /** Preserva os handlers públicos SDK ao adicionar o envelope específico Firebase. */
 @Configuration
 public class ExceptionHandlingConfiguration {
+
     @Bean
     public GlobalExceptionHandler globalExceptionHandler() {
         return new GlobalExceptionHandler();
     }
+
     @Bean
     public AuthorizationExceptionHandler authorizationExceptionHandler() {
         return new AuthorizationExceptionHandler();
     }
+
 }

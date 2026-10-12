@@ -35,14 +35,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Import(FirebaseBackendIntegrationTest.Ports.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class TenantSchemaContractIntegrationTest {
+
     @Container
     static final PostgreSQLContainer DATABASE = new PostgreSQLContainer( "postgres:16-alpine" );
+
     @DynamicPropertySource
     static void database( DynamicPropertyRegistry registry ) {
         registry.add( "spring.datasource.url", DATABASE::getJdbcUrl );
         registry.add( "spring.datasource.username", DATABASE::getUsername );
         registry.add( "spring.datasource.password", DATABASE::getPassword );
     }
+
     @Autowired
     TenantSchemaNaming naming;
     @Autowired
@@ -93,11 +96,9 @@ class TenantSchemaContractIntegrationTest {
         Set<String> persisted = jdbc.sql( "SELECT cd_alias FROM security.tenant WHERE cd_provisionamento='READY'" )
                 .query( String.class ).list().stream().map( naming::schemaFor ).collect( Collectors.toSet() );
         assertThat( actual ).isEqualTo( persisted );
-        assertThat( actual ).containsExactlyInAnyOrder( naming.schemaFor( active ), naming.schemaFor( suspended ),
-                naming.schemaFor( boundary ) );
+        assertThat( actual ).containsExactlyInAnyOrder( naming.schemaFor( active ), naming.schemaFor( suspended ), naming.schemaFor( boundary ) );
         assertThat( actual ).isEqualTo( before );
-        assertThat( actual ).doesNotContain( active, suspended, boundary, naming.schemaFor( pending ),
-                naming.schemaFor( failed ) );
+        assertThat( actual ).doesNotContain( active, suspended, boundary, naming.schemaFor( pending ), naming.schemaFor( failed ) );
         assertMetadata( activeId, active, "READY", false );
         assertMetadata( suspendedId, suspended, "READY", true );
         assertMetadata( boundaryId, boundary, "READY", false );
@@ -113,6 +114,7 @@ class TenantSchemaContractIntegrationTest {
         assertThat( jdbc.sql( "SELECT count(*) FROM pg_namespace WHERE nspname=:schema" )
                 .param( "schema", naming.schemaFor( pending ) ).query( Long.class ).single() ).isZero();
     }
+
     private void assertMetadata( UUID id, String alias, String state, boolean suspended ) {
         assertThat( jdbc.sql( "SELECT cd_alias FROM security.tenant WHERE id_tenant=:id" ).param( "id", id )
                 .query( String.class ).single() ).isEqualTo( alias );
@@ -123,8 +125,10 @@ class TenantSchemaContractIntegrationTest {
         assertThat( jdbc.sql( "SELECT nr_revisao_aplicada FROM security.tenant WHERE id_tenant=:id" )
                 .param( "id", id ).query( Long.class ).single() ).isEqualTo( state.equals( "READY" ) ? 1L : 0L );
     }
+
     private long migrationRevision( String schema ) {
         return jdbc.sql( "SELECT MAX(nr_revisao) FROM " + schema + ".revisao_modelo" )
                 .query( Long.class ).single();
     }
+
 }

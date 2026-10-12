@@ -34,34 +34,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "Administração da empresa")
 public class TenantAdministrationController extends BaseController {
+
     private final AdministracaoService service;
+
     @PostMapping("/memberships/search")
     @PreAuthorize("hasRole('CONSULTAR_MEMBERSHIP')")
     @Operation(summary = "Consultar memberships")
     @ApiResponse(responseCode = "200", description = "Consultar memberships")
-    public AdministrationViews.Page<AdministrationViews.Membership> memberships( @PathVariable UUID tenant,
-            @RequestBody AdministrationViews.Query dto, HttpServletRequest request ) {
+    public AdministrationViews.Page<AdministrationViews.Membership> memberships( @PathVariable UUID tenant, @RequestBody AdministrationViews.Query dto, HttpServletRequest request ) {
         super.setBodyToExceptionLog( dto, request );
         return service.memberships( tenant, dto );
     }
+
     @PostMapping("/grants/search")
     @PreAuthorize("hasRole('CONSULTAR_GRANT')")
     @Operation(summary = "Consultar grants")
     @ApiResponse(responseCode = "200", description = "Consultar grants")
-    public AdministrationViews.Page<AdministrationViews.Grant> grants( @PathVariable UUID tenant,
-            @RequestBody AdministrationViews.Query dto, HttpServletRequest request ) {
+    public AdministrationViews.Page<AdministrationViews.Grant> grants( @PathVariable UUID tenant, @RequestBody AdministrationViews.Query dto, HttpServletRequest request ) {
         super.setBodyToExceptionLog( dto, request );
         return service.grants( tenant, dto );
     }
+
     @PostMapping("/memberships")
     @PreAuthorize("hasRole('INSERIR_MEMBERSHIP')")
     @Operation(summary = "Criar vínculo na própria empresa")
     @ApiResponse(responseCode = "201", description = "Criar vínculo na própria empresa")
-    public ResponseEntity<Map<String, UUID>> addMember( @PathVariable UUID tenant,
-            @RequestBody MembershipCadastroDTO dto, HttpServletRequest request ) {
+    public ResponseEntity<Map<String, UUID>> addMember( @PathVariable UUID tenant, @RequestBody MembershipCadastroDTO dto, HttpServletRequest request ) {
         super.setBodyToExceptionLog( dto, request );
         return ResponseEntity.status( 201 ).body( Map.of( "id", service.addMember( tenant, dto.userId() ) ) );
     }
+
     @DeleteMapping("/memberships/{id}")
     @PreAuthorize("hasRole('ENCERRAR_MEMBERSHIP')")
     @Operation(summary = "Encerrar vínculo local")
@@ -70,16 +72,17 @@ public class TenantAdministrationController extends BaseController {
         service.endMember( tenant, id );
         return ResponseEntity.noContent().build();
     }
+
     @PostMapping("/grants")
     @PreAuthorize("hasRole('CONCEDER_GRANT')")
     @Operation(summary = "Conceder ação delegável")
     @ApiResponse(responseCode = "201", description = "Conceder ação delegável")
-    public ResponseEntity<Map<String, UUID>> grant( @PathVariable UUID tenant, @RequestBody GrantCadastroDTO dto,
-            HttpServletRequest request ) {
+    public ResponseEntity<Map<String, UUID>> grant( @PathVariable UUID tenant, @RequestBody GrantCadastroDTO dto, HttpServletRequest request ) {
         super.setBodyToExceptionLog( dto, request );
         return ResponseEntity.status( 201 )
                 .body( Map.of( "id", service.grant( tenant, dto.ownerId(), dto.action() ) ) );
     }
+
     @DeleteMapping("/grants/{id}")
     @PreAuthorize("hasRole('REVOGAR_GRANT')")
     @Operation(summary = "Revogar concessão")
@@ -88,4 +91,5 @@ public class TenantAdministrationController extends BaseController {
         service.revoke( tenant, id );
         return ResponseEntity.noContent().build();
     }
+
 }

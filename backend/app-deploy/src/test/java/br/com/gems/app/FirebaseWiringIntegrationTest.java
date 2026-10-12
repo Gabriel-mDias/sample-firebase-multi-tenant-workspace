@@ -37,15 +37,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 @Import(FirebaseBackendIntegrationTest.Ports.class)
 class FirebaseWiringIntegrationTest {
+
     private static final String SECURITY_MANAGER = "firebaseSecurityTransactionManager";
     @Container
     static final PostgreSQLContainer DATABASE = new PostgreSQLContainer( "postgres:16-alpine" );
+
     @DynamicPropertySource
     static void database( DynamicPropertyRegistry registry ) {
         registry.add( "spring.datasource.url", DATABASE::getJdbcUrl );
         registry.add( "spring.datasource.username", DATABASE::getUsername );
         registry.add( "spring.datasource.password", DATABASE::getPassword );
     }
+
     @Autowired
     ApplicationContext context;
     @Autowired
@@ -58,7 +61,7 @@ class FirebaseWiringIntegrationTest {
     void deveInstalarFiltroFirebaseUmaUnicaVezNaCadeia_quandoContextoWebInicia() {
         var chainsWithFirebase = securityFilterChains.getFilterChains().stream()
                 .filter( chain -> chain.getFilters().stream()
-                        .anyMatch( FirebaseAuthenticationFilter.class::isInstance ) )
+                .anyMatch( FirebaseAuthenticationFilter.class::isInstance ) )
                 .toList();
 
         assertThat( chainsWithFirebase ).hasSize( 1 );
@@ -69,7 +72,7 @@ class FirebaseWiringIntegrationTest {
         assertThat( firebase ).isSameAs( context.getBean( FirebaseAuthenticationFilter.class ) );
         assertThat( filters.indexOf( firebase ) )
                 .isLessThan( filters.indexOf( filters.stream().filter( AuthorizationFilter.class::isInstance )
-                        .findFirst().orElseThrow() ) );
+                .findFirst().orElseThrow() ) );
     }
 
     @Test
@@ -84,8 +87,7 @@ class FirebaseWiringIntegrationTest {
 
     @Test
     void deveRegistrarInterceptorDeTenantNoMVC_quandoEndpointExigeEmpresa() throws Exception {
-        for ( String path : new String[]{"/api/auth/context", "/api/demo/tenant/read",
-                "/api/demo-registros/" + UUID.randomUUID()} ) {
+        for ( String path : new String[] { "/api/auth/context", "/api/demo/tenant/read", "/api/demo-registros/" + UUID.randomUUID() } ) {
             var request = new MockHttpServletRequest( "GET", path );
             ServletRequestPathUtils.parseAndCache( request );
 
@@ -128,8 +130,8 @@ class FirebaseWiringIntegrationTest {
             assertThat( transactional.rollbackFor() ).as( method.getName() ).contains( Exception.class );
         } );
         assertThat( businessWrites ).isNotEmpty();
-        assertThat( businessWrites ).allSatisfy( method -> assertThat(
-                AnnotatedElementUtils.findMergedAnnotation( method, Transactional.class ).transactionManager() )
+        assertThat( businessWrites ).allSatisfy( method -> assertThat( AnnotatedElementUtils.findMergedAnnotation( method, Transactional.class ).transactionManager() )
                 .as( method.getName() ).isEmpty() );
     }
+
 }

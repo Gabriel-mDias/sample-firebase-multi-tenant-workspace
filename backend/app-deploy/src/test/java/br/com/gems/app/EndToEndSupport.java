@@ -86,6 +86,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * deterministic backend test JVM. Every account is synthetic, namespaced per run and removed in {@code finally}.
  */
 public final class EndToEndSupport {
+
     private static final String SAME_ID = "00000000-0000-0000-0000-000000000123";
     private static final GsonFactory JSON = GsonFactory.getDefaultInstance();
     private final ConfigurableApplicationContext application;
@@ -115,8 +116,7 @@ public final class EndToEndSupport {
     private UUID bobBeta;
     private String checkpoint = "STARTUP";
 
-    private EndToEndSupport( ConfigurableApplicationContext application, Namespace namespace, RunCleanup cleanup,
-            FirebaseRealTestProject.Session session, PublicWebConfig webConfig ) {
+    private EndToEndSupport( ConfigurableApplicationContext application, Namespace namespace, RunCleanup cleanup, FirebaseRealTestProject.Session session, PublicWebConfig webConfig ) {
         this.application = application;
         this.namespace = namespace;
         this.cleanup = cleanup;
@@ -130,10 +130,8 @@ public final class EndToEndSupport {
         catalog = application.getBean( AuthorizationCatalog.class );
         var actor = SecurityActorProvider.trustedBootstrap( UUID.randomUUID() );
         users = new JdbcUserService( jdbc, tx, events, clock, FirebaseRealTestProject.PROJECT_ID, catalog, actor );
-        tenants = new JdbcTenantService( jdbc, tx, events, clock, application.getBean( TenantAliasValidator.class ),
-                catalog, actor );
-        grants = new JdbcGrantService( jdbc, tx, events, catalog, application.getBean( DelegationPolicy.class ), clock,
-                actor );
+        tenants = new JdbcTenantService( jdbc, tx, events, clock, application.getBean( TenantAliasValidator.class ), catalog, actor );
+        grants = new JdbcGrantService( jdbc, tx, events, catalog, application.getBean( DelegationPolicy.class ), clock, actor );
         provisioner = application.getBean( JdbcTenantProvisioner.class );
         admin = application.getBean( FirebaseAdminGateway.class );
         api = "http://localhost:" + ((WebServerApplicationContext) application).getWebServer().getPort();
@@ -141,11 +139,8 @@ public final class EndToEndSupport {
 
     /** Real-provider mode: no emulator profile or host, so the SDK validates the project and uses ADC. */
     private static String[] arguments() {
-        return new String[]{"--spring.config.location=" + Path.of( "src/main/resources/application.yml" )
-                .toAbsolutePath().toUri(), "--server.port=0", "--logging.level.root=OFF",
-                "--spring.main.banner-mode=off", "--app.security.cors.allowed-origins=http://localhost:4301",
-                "--spring.threads.virtual.enabled=false", "--server.tomcat.threads.max=1",
-                "--server.tomcat.threads.min-spare=1"};
+        return new String[] { "--spring.config.location=" + Path.of( "src/main/resources/application.yml" )
+                .toAbsolutePath().toUri(), "--server.port=0", "--logging.level.root=OFF", "--spring.main.banner-mode=off", "--app.security.cors.allowed-origins=http://localhost:4301", "--spring.threads.virtual.enabled=false", "--server.tomcat.threads.max=1", "--server.tomcat.threads.min-spare=1" };
     }
 
     public static void main( String[] args ) {
@@ -158,8 +153,8 @@ public final class EndToEndSupport {
             var namespace = new Namespace( System.getenv( "T029_RUN_ID" ) );
             cleanup = new RunCleanup( namespace, session.directory() );
             var webConfig = FirebaseRealTestProject.inheritedWebConfig( System::getenv );
-            try ( var context = new SpringApplicationBuilder( AppApplication.class, Observation.class )
-                    .run( arguments() ) ) {
+            try (var context = new SpringApplicationBuilder( AppApplication.class, Observation.class )
+                    .run( arguments() )) {
                 suite = new EndToEndSupport( context, namespace, cleanup, session, webConfig );
                 suite.seed();
                 suite.http();
@@ -184,8 +179,7 @@ public final class EndToEndSupport {
                 failure = failure.getCause();
             }
             // Never print remote exception causes, bearer values, passwords or reset links.
-            System.err.println( "T029 FAIL " + (suite == null ? "STARTUP" : suite.checkpoint) + " "
-                    + failure.getClass().getSimpleName() );
+            System.err.println( "T029 FAIL " + (suite == null ? "STARTUP" : suite.checkpoint) + " " + failure.getClass().getSimpleName() );
             if ( failure.getMessage() != null && (failure instanceof AssertionError
                     || failure instanceof IllegalStateException) ) {
                 System.err.println( "T029 ASSERT " + failure.getMessage()
@@ -231,8 +225,7 @@ public final class EndToEndSupport {
             grants.grantGlobal( bob, action );
         }
         for ( String alias : List.of( "alpha", "beta" ) ) {
-            jdbc.sql( "INSERT INTO tenant_" + alias
-                    + ".demo_registro VALUES(:id,:name,:description,:value,now(),NULL)" )
+            jdbc.sql( "INSERT INTO tenant_" + alias + ".demo_registro VALUES(:id,:name,:description,:value,now(),NULL)" )
                     .param( "id", UUID.fromString( SAME_ID ) )
                     .param( "name", alias.equals( "alpha" ) ? "Alpha" : "Beta" )
                     .param( "description", alias + " somente" )
@@ -258,12 +251,9 @@ public final class EndToEndSupport {
         assertThat( expect( "GET", "/api/demo-registros/" + SAME_ID, aliceToken, "alpha", null, 200 ) )
                 .doesNotContain( "123.45" );
         expect( "GET", "/api/demo-registros/" + SAME_ID, aliceToken, "beta", null, 403 );
-        expect( "POST", "/api/admin/central/tenants", aliceToken, null,
-                "{\"alias\":\"evil\",\"name\":\"Evil\"}", 403 );
-        expect( "POST", "/api/admin/tenants/" + alpha + "/grants", aliceToken, "alpha",
-                "{\"ownerId\":\"" + aliceMember + "\",\"action\":\"VISUALIZAR_VALOR_RESTRITO\"}", 403 );
-        expect( "POST", "/api/admin/tenants/" + beta + "/memberships", aliceToken, "alpha",
-                "{\"userId\":\"" + alice + "\"}", 403 );
+        expect( "POST", "/api/admin/central/tenants", aliceToken, null, "{\"alias\":\"evil\",\"name\":\"Evil\"}", 403 );
+        expect( "POST", "/api/admin/tenants/" + alpha + "/grants", aliceToken, "alpha", "{\"ownerId\":\"" + aliceMember + "\",\"action\":\"VISUALIZAR_VALOR_RESTRITO\"}", 403 );
+        expect( "POST", "/api/admin/tenants/" + beta + "/memberships", aliceToken, "alpha", "{\"userId\":\"" + alice + "\"}", 403 );
         var pending = tenants.create( "pending", "Pending" );
         tenants.addMember( pending, bob );
         expect( "GET", "/api/auth/context", bobToken, "pending", null, 403 );
@@ -286,24 +276,13 @@ public final class EndToEndSupport {
         var gb = grants.createGroup( beta, "G", "Group" );
         var role = role( "CONSULTAR_DEMO" );
         var global = role( "CONSULTAR_PROPRIA_CONTA" );
-        for ( Object[] invalid : List.of( new Object[]{"perfil_role", "id_perfil", pb, "id_role", role},
-                new Object[]{"usuario_tenant_role", "id_usuario_tenant", bobBeta, "id_role", role},
-                new Object[]{"grupo_role", "id_grupo", gb, "id_role", role},
-                new Object[]{"usuario_tenant_perfil", "id_usuario_tenant", bobAlpha, "id_perfil", pb},
-                new Object[]{"usuario_tenant_perfil", "id_usuario_tenant", bobBeta, "id_perfil", pa},
-                new Object[]{"grupo_usuario", "id_grupo", ga, "id_usuario_tenant", bobBeta},
-                new Object[]{"grupo_usuario", "id_grupo", gb, "id_usuario_tenant", bobAlpha},
-                new Object[]{"grupo_perfil", "id_grupo", ga, "id_perfil", pb},
-                new Object[]{"grupo_perfil", "id_grupo", gb, "id_perfil", pa} ) ) {
+        for ( Object[] invalid : List.of( new Object[] { "perfil_role", "id_perfil", pb, "id_role", role }, new Object[] { "usuario_tenant_role", "id_usuario_tenant", bobBeta, "id_role", role }, new Object[] { "grupo_role", "id_grupo", gb, "id_role", role }, new Object[] { "usuario_tenant_perfil", "id_usuario_tenant", bobAlpha, "id_perfil", pb }, new Object[] { "usuario_tenant_perfil", "id_usuario_tenant", bobBeta, "id_perfil", pa }, new Object[] { "grupo_usuario", "id_grupo", ga, "id_usuario_tenant", bobBeta }, new Object[] { "grupo_usuario", "id_grupo", gb, "id_usuario_tenant", bobAlpha }, new Object[] { "grupo_perfil", "id_grupo", ga, "id_perfil", pb }, new Object[] { "grupo_perfil", "id_grupo", gb, "id_perfil", pa } ) ) {
             invalidInsert( invalid, alpha );
         }
-        for ( Object[] invalid : List.of( new Object[]{"perfil_role", "id_perfil", pa, "id_role", global},
-                new Object[]{"grupo_role", "id_grupo", ga, "id_role", global},
-                new Object[]{"usuario_tenant_role", "id_usuario_tenant", bobAlpha, "id_role", global} ) ) {
+        for ( Object[] invalid : List.of( new Object[] { "perfil_role", "id_perfil", pa, "id_role", global }, new Object[] { "grupo_role", "id_grupo", ga, "id_role", global }, new Object[] { "usuario_tenant_role", "id_usuario_tenant", bobAlpha, "id_role", global } ) ) {
             invalidInsert( invalid, alpha );
         }
-        assertThatThrownBy( () -> jdbc.sql( "INSERT INTO security.usuario_role_global "
-                + "(id_usuario_role_global,id_usuario,id_role,dt_inicio) VALUES(:id,:user,:role,now())" )
+        assertThatThrownBy( () -> jdbc.sql( "INSERT INTO security.usuario_role_global " + "(id_usuario_role_global,id_usuario,id_role,dt_inicio) VALUES(:id,:user,:role,now())" )
                 .param( "id", UUID.randomUUID() ).param( "user", alice ).param( "role", role ).update() )
                 .isInstanceOf( DataIntegrityViolationException.class );
         grants.link( GrantAdministration.Link.MEMBER_PROFILE, alpha, bobAlpha, pa );
@@ -311,17 +290,12 @@ public final class EndToEndSupport {
         grants.link( GrantAdministration.Link.GROUP_PROFILE, alpha, ga, pa );
         grants.grant( GrantAdministration.Target.PROFILE, alpha, pa, "CONSULTAR_DEMO" );
         grants.grant( GrantAdministration.Target.GROUP, alpha, ga, "CONSULTAR_DEMO" );
-        for ( String table : List.of( "usuario", "usuario_identidade", "provedor_identidade", "tenant",
-                "usuario_tenant",
-                "role_seguranca", "perfil", "grupo", "perfil_role", "grupo_role", "usuario_tenant_role",
-                "usuario_tenant_perfil", "grupo_usuario", "grupo_perfil", "usuario_role_global" ) ) {
-            assertThatThrownBy( () -> jdbc.sql( "UPDATE security." + table
-                    + " SET dt_fim=dt_inicio-interval '1 second'" ).update() ).as( table )
+        for ( String table : List.of( "usuario", "usuario_identidade", "provedor_identidade", "tenant", "usuario_tenant", "role_seguranca", "perfil", "grupo", "perfil_role", "grupo_role", "usuario_tenant_role", "usuario_tenant_perfil", "grupo_usuario", "grupo_perfil", "usuario_role_global" ) ) {
+            assertThatThrownBy( () -> jdbc.sql( "UPDATE security." + table + " SET dt_fim=dt_inicio-interval '1 second'" ).update() ).as( table )
                     .isInstanceOf( DataIntegrityViolationException.class );
         }
-        assertThatThrownBy(
-                () -> jdbc.sql( "UPDATE security.usuario_identidade SET id_usuario=:other WHERE id_usuario=:id" )
-                        .param( "id", bob ).param( "other", alice ).update() )
+        assertThatThrownBy( () -> jdbc.sql( "UPDATE security.usuario_identidade SET id_usuario=:other WHERE id_usuario=:id" )
+                .param( "id", bob ).param( "other", alice ).update() )
                 .isInstanceOf( DataIntegrityViolationException.class );
         assertThatThrownBy( () -> jdbc.sql( "UPDATE security.tenant SET cd_alias='changed' WHERE id_tenant=:id" )
                 .param( "id", alpha ).update() ).isInstanceOf( DataIntegrityViolationException.class );
@@ -329,8 +303,7 @@ public final class EndToEndSupport {
     }
 
     private void invalidInsert( Object[] values, UUID tenant ) {
-        assertThatThrownBy( () -> jdbc.sql( "INSERT INTO security." + values[0] + "(id_" + values[0] + ",id_tenant,"
-                + values[1] + "," + values[3] + ",dt_inicio) VALUES(:id,:tenant,:left,:right,now())" )
+        assertThatThrownBy( () -> jdbc.sql( "INSERT INTO security." + values[0] + "(id_" + values[0] + ",id_tenant," + values[1] + "," + values[3] + ",dt_inicio) VALUES(:id,:tenant,:left,:right,now())" )
                 .param( "id", UUID.randomUUID() ).param( "tenant", tenant ).param( "left", values[2] )
                 .param( "right", values[4] ).update() ).as( values[0].toString() )
                 .isInstanceOf( DataIntegrityViolationException.class );
@@ -347,14 +320,11 @@ public final class EndToEndSupport {
         jdbc.sql( "UPDATE security.usuario_identidade SET dt_fim=dt_inicio WHERE id_usuario=:id" ).param( "id", id )
                 .update();
         expect( "GET", "/api/auth/me", token, null, null, 403 );
-        assertThatThrownBy( () -> jdbc.sql( "INSERT INTO security.usuario_identidade SELECT :id,:user,"
-                + "id_provedor_identidade,cd_emissor,cd_sujeito_externo,cd_email_identidade,dt_inicio,NULL "
-                + "FROM security.usuario_identidade WHERE id_usuario=:owner" ).param( "id", UUID.randomUUID() )
+        assertThatThrownBy( () -> jdbc.sql( "INSERT INTO security.usuario_identidade SELECT :id,:user," + "id_provedor_identidade,cd_emissor,cd_sujeito_externo,cd_email_identidade,dt_inicio,NULL " + "FROM security.usuario_identidade WHERE id_usuario=:owner" ).param( "id", UUID.randomUUID() )
                 .param( "user", alice ).param( "owner", id ).update() )
-                .isInstanceOf( DataIntegrityViolationException.class ).satisfies( failure -> assertThat(
-                        ((java.sql.SQLException) ((DataIntegrityViolationException) failure).getMostSpecificCause())
-                                .getSQLState() )
-                        .isEqualTo( "23505" ) );
+                .isInstanceOf( DataIntegrityViolationException.class ).satisfies( failure -> assertThat( ((java.sql.SQLException) ((DataIntegrityViolationException) failure).getMostSpecificCause())
+                .getSQLState() )
+                .isEqualTo( "23505" ) );
         System.out.println( "T029 HISTORICAL_UID duplicateHistoricalUidRejected=23505" );
         passed();
     }
@@ -363,9 +333,7 @@ public final class EndToEndSupport {
         checkpoint = "OUTBOX_RESTART_REMOTE_DISABLE_REVOKE_LATEST_VERSION";
         var id = create( "Lifecycle", "lifecycle" );
         // Persisted expired claim survives constructing a new worker instance.
-        jdbc.sql(
-                "UPDATE security.comando_identidade SET cd_estado='CLAIMED',cd_claim=:claim,dt_lease=now()-interval '1 minute'"
-                        + " WHERE id_usuario=:id" )
+        jdbc.sql( "UPDATE security.comando_identidade SET cd_estado='CLAIMED',cd_claim=:claim,dt_lease=now()-interval '1 minute'" + " WHERE id_usuario=:id" )
                 .param( "claim", UUID.randomUUID() ).param( "id", id ).update();
         bind( id );
         var uid = plannedUid( id );
@@ -380,12 +348,10 @@ public final class EndToEndSupport {
         users.cancelReactivation( id );
         drain();
         assertThat( admin.getUser( uid ).disabled() ).isTrue();
-        assertThat( jdbc.sql( "SELECT count(*) FROM security.comando_identidade WHERE id_usuario=:id"
-                + " AND cd_tipo='ENABLE' AND cd_estado='OBSOLETE'" ).param( "id", id ).query( Long.class ).single() )
+        assertThat( jdbc.sql( "SELECT count(*) FROM security.comando_identidade WHERE id_usuario=:id" + " AND cd_tipo='ENABLE' AND cd_estado='OBSOLETE'" ).param( "id", id ).query( Long.class ).single() )
                 .isOne();
-        assertThat(
-                jdbc.sql( "SELECT count(*) FROM security.usuario_role_global WHERE id_usuario=:id AND dt_fim IS NULL" )
-                        .param( "id", id ).query( Long.class ).single() )
+        assertThat( jdbc.sql( "SELECT count(*) FROM security.usuario_role_global WHERE id_usuario=:id AND dt_fim IS NULL" )
+                .param( "id", id ).query( Long.class ).single() )
                 .isZero();
         passed();
     }
@@ -419,9 +385,7 @@ public final class EndToEndSupport {
                 .as( "REVOKE_CLAIMS: iat do token renovado deve ser numérico." ).isTrue();
         long renewedIat = ((Number) renewedClaims.get( "iat" )).longValue();
         assertThat( Math.multiplyExact( renewedIat, 1000L ) >= validAfterMs )
-                .as( "CLOCK_SKEW: o token renovado deve alcançar o corte remoto; iat=" + renewedIat
-                        + " auth_time=" + authTime + " validAfterMs=" + validAfterMs + " epochLocal="
-                        + Instant.now().getEpochSecond() + "." )
+                .as( "CLOCK_SKEW: o token renovado deve alcançar o corte remoto; iat=" + renewedIat + " auth_time=" + authTime + " validAfterMs=" + validAfterMs + " epochLocal=" + Instant.now().getEpochSecond() + "." )
                 .isTrue();
         expect( "GET", "/api/auth/me", renewed, null, null, 200 );
         admin.setDisabled( uid, true );
@@ -438,24 +402,20 @@ public final class EndToEndSupport {
         long localEpoch = Instant.now().getEpochSecond();
         while ( localEpoch <= Math.max( iat, authTime ) + 1 ) {
             if ( System.nanoTime() - startedNs >= TimeUnit.SECONDS.toNanos( 30 ) ) {
-                throw new AssertionError( "CLOCK_SKEW: o relógio local não superou a emissão em até 30 s; iat="
-                        + iat + " auth_time=" + authTime + " epochLocal=" + localEpoch + "." );
+                throw new AssertionError( "CLOCK_SKEW: o relógio local não superou a emissão em até 30 s; iat=" + iat + " auth_time=" + authTime + " epochLocal=" + localEpoch + "." );
             }
             Thread.sleep( 200 );
             localEpoch = Instant.now().getEpochSecond();
         }
     }
 
-    private void awaitRenewalClock( long iat, long authTime, long tokenReceivedNs, long validAfterMs )
-            throws InterruptedException {
+    private void awaitRenewalClock( long iat, long authTime, long tokenReceivedNs, long validAfterMs ) throws InterruptedException {
         // Se o host estiver adiantado, o tempo monotônico desde a recepção dá um piso para o relógio remoto.
         long startedNs = System.nanoTime();
         long validSince = Instant.ofEpochMilli( validAfterMs ).getEpochSecond();
         while ( iat + TimeUnit.NANOSECONDS.toSeconds( System.nanoTime() - tokenReceivedNs ) <= validSince ) {
             if ( System.nanoTime() - startedNs >= TimeUnit.SECONDS.toNanos( 30 ) ) {
-                throw new AssertionError( "CLOCK_SKEW: o relógio remoto não alcançou o corte em até 30 s; iat="
-                        + iat + " auth_time=" + authTime + " validAfterMs=" + validAfterMs + " epochLocal="
-                        + Instant.now().getEpochSecond() + "." );
+                throw new AssertionError( "CLOCK_SKEW: o relógio remoto não alcançou o corte em até 30 s; iat=" + iat + " auth_time=" + authTime + " validAfterMs=" + validAfterMs + " epochLocal=" + Instant.now().getEpochSecond() + "." );
             }
             Thread.sleep( 200 );
         }
@@ -510,14 +470,11 @@ public final class EndToEndSupport {
                 http = send( api, "GET", "/api/auth/me", token, null, null ).statusCode();
             }
         } finally {
-            System.out.println( "T029 REVOKE_DIAG iat=" + iat + " auth_time=" + authTime + " validAfterMs="
-                    + validAfterMs + " direct=" + direct + " port=" + port + " http=" + http );
+            System.out.println( "T029 REVOKE_DIAG iat=" + iat + " auth_time=" + authTime + " validAfterMs=" + validAfterMs + " direct=" + direct + " port=" + port + " http=" + http );
         }
 
         assertThat( validAfterMs > authTimeMs && validAfterMs > iatMs )
-                .as( "REVOKE_PRECONDITION: o corte remoto deve superar auth_time e iat; iat=" + iat
-                        + " auth_time=" + authTime + " validAfterMs=" + validAfterMs + " iatMs=" + iatMs
-                        + " authTimeMs=" + authTimeMs + "." )
+                .as( "REVOKE_PRECONDITION: o corte remoto deve superar auth_time e iat; iat=" + iat + " auth_time=" + authTime + " validAfterMs=" + validAfterMs + " iatMs=" + iatMs + " authTimeMs=" + authTimeMs + "." )
                 .isTrue();
         assertThat( direct ).as( "PROVIDER_ACCEPTS_REVOKED: o Admin direto deve rejeitar o token revogado." )
                 .isNotEqualTo( "ACCEPTED" );
@@ -540,9 +497,11 @@ public final class EndToEndSupport {
         var reached = new CountDownLatch( 1 );
         var release = new CountDownLatch( 1 );
         var forwarding = new FirebaseAdminGateway() {
+
             public User getUser( String uid ) {
                 return admin.getUser( uid );
             }
+
             public User createUser( String uid, String email, String name ) {
                 var created = admin.createUser( uid, email, name );
                 reached.countDown();
@@ -555,22 +514,22 @@ public final class EndToEndSupport {
                 }
                 return created;
             }
+
             public void setDisabled( String uid, boolean disabled ) {
                 admin.setDisabled( uid, disabled );
             }
+
             public void revokeRefreshTokens( String uid ) {
                 admin.revokeRefreshTokens( uid );
             }
+
             public String passwordResetLink( String email ) {
                 throw new UnsupportedOperationException();
             }
+
         };
-        var worker = new JdbcIdentityCommandWorker( jdbc,
-                application.getBean( "firebaseSecurityTransactions", TransactionTemplate.class ),
-                application.getBean( SecurityEventSink.class ),
-                application.getBean( "firebaseSecurityDataSource", DataSource.class ), forwarding,
-                application.getBean( Clock.class ), Duration.ofMinutes( 2 ) );
-        try ( var executor = Executors.newSingleThreadExecutor() ) {
+        var worker = new JdbcIdentityCommandWorker( jdbc, application.getBean( "firebaseSecurityTransactions", TransactionTemplate.class ), application.getBean( SecurityEventSink.class ), application.getBean( "firebaseSecurityDataSource", DataSource.class ), forwarding, application.getBean( Clock.class ), Duration.ofMinutes( 2 ) );
+        try (var executor = Executors.newSingleThreadExecutor()) {
             var pending = executor.submit( worker::runOnce );
             try {
                 assertThat( reached.await( 20, TimeUnit.SECONDS ) ).as( "real Admin CREATE reached before ACK" )
@@ -581,15 +540,13 @@ public final class EndToEndSupport {
                 assertNamespaced( uid );
                 // Deliberately adversarial SQL writer bypasses the service advisory lock.
                 // This is the actual persisted-version CAS boundary, with real Admin forwarding.
-                jdbc.sql( "UPDATE security.usuario SET nr_versao_identidade=nr_versao_identidade+1,"
-                        + "dt_fim=now() WHERE id_usuario=:id" ).param( "id", id ).update();
+                jdbc.sql( "UPDATE security.usuario SET nr_versao_identidade=nr_versao_identidade+1," + "dt_fim=now() WHERE id_usuario=:id" ).param( "id", id ).update();
             } finally {
                 release.countDown();
             }
             assertThat( pending.get( 20, TimeUnit.SECONDS ) ).isTrue();
         }
-        assertThat( jdbc.sql( "SELECT cd_estado FROM security.comando_identidade WHERE id_usuario=:id"
-                + " AND cd_tipo='CREATE'" ).param( "id", id ).query( String.class ).single() ).isEqualTo( "OBSOLETE" );
+        assertThat( jdbc.sql( "SELECT cd_estado FROM security.comando_identidade WHERE id_usuario=:id" + " AND cd_tipo='CREATE'" ).param( "id", id ).query( String.class ).single() ).isEqualTo( "OBSOLETE" );
         assertThat( jdbc.sql( "SELECT count(*) FROM security.usuario_identidade WHERE id_usuario=:id" )
                 .param( "id", id ).query( Long.class ).single() ).isZero();
         FirebaseRealTestProject.setPassword( realAdmin, plannedUid( id ), password );
@@ -624,37 +581,40 @@ public final class EndToEndSupport {
     }
 
     private record ObservedRequest(long thread, boolean beforeClean, boolean afterClean, int status) {
+
     }
 
     /** Explicitly installed in the child only; observes the real chain and poisons its input. */
     @TestConfiguration(proxyBeanMethods = false)
     public static class Observation {
+
         private static final ConcurrentLinkedQueue<ObservedRequest> requests = new ConcurrentLinkedQueue<>();
         private static final Clock clock = Clock.tickMillis( java.time.ZoneOffset.UTC );
+
         @Bean
         @org.springframework.context.annotation.Primary
         public Clock t029Clock() {
             return clock;
         }
+
         @Bean
         public FilterRegistrationBean<OncePerRequestFilter> t029ThreadObserver() {
             var registration = new FilterRegistrationBean<OncePerRequestFilter>();
             registration.setOrder( Ordered.HIGHEST_PRECEDENCE );
             registration.setFilter( new OncePerRequestFilter() {
-                protected void doFilterInternal( HttpServletRequest request, HttpServletResponse response,
-                        FilterChain chain ) throws ServletException, IOException {
+
+                protected void doFilterInternal( HttpServletRequest request, HttpServletResponse response, FilterChain chain ) throws ServletException, IOException {
                     boolean before = clean();
                     JpaTenantContext.setCurrentTenant( "beta" );
                     MDC.put( "actorId", "t029-poisoned-actor" );
-                    SecurityContextHolder.getContext().setAuthentication(
-                            new UsernamePasswordAuthenticationToken( "t029-poisoned-user", null, List.of() ) );
+                    SecurityContextHolder.getContext().setAuthentication( new UsernamePasswordAuthenticationToken( "t029-poisoned-user", null, List.of() ) );
                     try {
                         chain.doFilter( request, response );
                     } finally {
-                        requests.add( new ObservedRequest( Thread.currentThread().threadId(), before, clean(),
-                                response.getStatus() ) );
+                        requests.add( new ObservedRequest( Thread.currentThread().threadId(), before, clean(), response.getStatus() ) );
                     }
                 }
+
                 private boolean clean() {
                     return JpaTenantContext.current().isEmpty()
                             && SecurityContextHolder.getContext().getAuthentication() == null
@@ -662,9 +622,11 @@ public final class EndToEndSupport {
                             && !TransactionSynchronizationManager.isActualTransactionActive()
                             && TransactionSynchronizationManager.getResourceMap().isEmpty();
                 }
+
             } );
             return registration;
         }
+
     }
 
     private void validityChain() throws Exception {
@@ -687,12 +649,10 @@ public final class EndToEndSupport {
             var group = grants.createGroup( alpha, path + "G", "Matrix group" );
             var edges = new HashMap<String, UUID>();
             edges.put( "usuario", user );
-            edges.put( "usuario_identidade",
-                    jdbc.sql( "SELECT id_usuario_identidade FROM security.usuario_identidade WHERE id_usuario=:id" )
-                            .param( "id", user ).query( UUID.class ).single() );
-            edges.put( "provedor_identidade",
-                    jdbc.sql( "SELECT id_provedor_identidade FROM security.provedor_identidade" ).query( UUID.class )
-                            .single() );
+            edges.put( "usuario_identidade", jdbc.sql( "SELECT id_usuario_identidade FROM security.usuario_identidade WHERE id_usuario=:id" )
+                    .param( "id", user ).query( UUID.class ).single() );
+            edges.put( "provedor_identidade", jdbc.sql( "SELECT id_provedor_identidade FROM security.provedor_identidade" ).query( UUID.class )
+                    .single() );
             if ( path.equals( "GLOBAL" ) ) {
                 edges.clear();
                 edges.put( "usuario_role_global", grants.grantGlobal( user, "CONSULTAR_TENANT" ) );
@@ -702,31 +662,24 @@ public final class EndToEndSupport {
                 edges.put( "usuario_tenant", member );
                 edges.put( "role_seguranca", role( "CONSULTAR_DEMO" ) );
                 switch ( path ) {
-                    case "DIRECT" -> edges.put( "usuario_tenant_role",
-                            grants.grant( GrantAdministration.Target.MEMBER, alpha, member, "CONSULTAR_DEMO" ) );
-                    case "PROFILE" -> {
-                        edges.put( "usuario_tenant_perfil",
-                                grants.link( GrantAdministration.Link.MEMBER_PROFILE, alpha, member, profile ) );
+                case "DIRECT" -> edges.put( "usuario_tenant_role", grants.grant( GrantAdministration.Target.MEMBER, alpha, member, "CONSULTAR_DEMO" ) );
+                case "PROFILE" -> {
+                    edges.put( "usuario_tenant_perfil", grants.link( GrantAdministration.Link.MEMBER_PROFILE, alpha, member, profile ) );
+                    edges.put( "perfil", profile );
+                    edges.put( "perfil_role", grants.grant( GrantAdministration.Target.PROFILE, alpha, profile, "CONSULTAR_DEMO" ) );
+                }
+                case "GROUP", "GROUP_PROFILE" -> {
+                    edges.put( "grupo_usuario", grants.link( GrantAdministration.Link.GROUP_MEMBER, alpha, group, member ) );
+                    edges.put( "grupo", group );
+                    if ( path.equals( "GROUP" ) ) {
+                        edges.put( "grupo_role", grants.grant( GrantAdministration.Target.GROUP, alpha, group, "CONSULTAR_DEMO" ) );
+                    } else {
+                        edges.put( "grupo_perfil", grants.link( GrantAdministration.Link.GROUP_PROFILE, alpha, group, profile ) );
                         edges.put( "perfil", profile );
-                        edges.put( "perfil_role",
-                                grants.grant( GrantAdministration.Target.PROFILE, alpha, profile, "CONSULTAR_DEMO" ) );
+                        edges.put( "perfil_role", grants.grant( GrantAdministration.Target.PROFILE, alpha, profile, "CONSULTAR_DEMO" ) );
                     }
-                    case "GROUP", "GROUP_PROFILE" -> {
-                        edges.put( "grupo_usuario",
-                                grants.link( GrantAdministration.Link.GROUP_MEMBER, alpha, group, member ) );
-                        edges.put( "grupo", group );
-                        if ( path.equals( "GROUP" ) ) {
-                            edges.put( "grupo_role",
-                                    grants.grant( GrantAdministration.Target.GROUP, alpha, group, "CONSULTAR_DEMO" ) );
-                        } else {
-                            edges.put( "grupo_perfil",
-                                    grants.link( GrantAdministration.Link.GROUP_PROFILE, alpha, group, profile ) );
-                            edges.put( "perfil", profile );
-                            edges.put( "perfil_role", grants.grant( GrantAdministration.Target.PROFILE, alpha, profile,
-                                    "CONSULTAR_DEMO" ) );
-                        }
-                    }
-                    default -> throw new AssertionError( path );
+                }
+                default -> throw new AssertionError( path );
                 }
             }
             var alias = path.equals( "GLOBAL" ) ? Optional.<String>empty() : Optional.of( "alpha" );
@@ -739,9 +692,7 @@ public final class EndToEndSupport {
                         assertThat( path.equals( "GLOBAL" ) ? baseline.globalActions() : baseline.tenantActions() )
                                 .contains( action );
                         String key = edge.getKey().equals( "role_seguranca" ) ? "id_role" : "id_" + edge.getKey();
-                        jdbc.sql( "UPDATE security." + edge.getKey() + " SET "
-                                + (future ? "dt_inicio=now()+interval '1 day'" : "dt_fim=dt_inicio") + " WHERE " + key
-                                + "=:id" )
+                        jdbc.sql( "UPDATE security." + edge.getKey() + " SET " + (future ? "dt_inicio=now()+interval '1 day'" : "dt_fim=dt_inicio") + " WHERE " + key + "=:id" )
                                 .param( "id", edge.getValue() ).update();
                         try {
                             var changed = resolver.resolve( identity, alias, clock.instant() ).context();
@@ -762,12 +713,10 @@ public final class EndToEndSupport {
 
     private void negativeGates() throws Exception {
         checkpoint = "SCANNER_CATALOG_AND_INTEGRATION_MUTATIONS_RESTORED";
-        var mapping = application.getBean( "requestMappingHandlerMapping",
-                org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.class );
+        var mapping = application.getBean( "requestMappingHandlerMapping", org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.class );
         var route = org.springframework.web.servlet.mvc.method.RequestMappingInfo.paths( "/api/t029-unclassified" )
                 .build();
-        var scanner = application.getBean( "firebaseEndpointAuthorizationScan",
-                org.springframework.beans.factory.SmartInitializingSingleton.class );
+        var scanner = application.getBean( "firebaseEndpointAuthorizationScan", org.springframework.beans.factory.SmartInitializingSingleton.class );
         mapping.registerMapping( route, new UnsafeEndpoint(), UnsafeEndpoint.class.getMethod( "unsafe" ) );
         try {
             assertThatThrownBy( scanner::afterSingletonsInstantiated )
@@ -780,19 +729,14 @@ public final class EndToEndSupport {
         var globalActions = new java.util.HashSet<>( catalog.globalActions() );
         tenantActions.remove( "CONSULTAR_DEMO" );
         globalActions.add( "CONSULTAR_DEMO" );
-        var mutated = new JdbcSecurityCatalog( jdbc,
-                application.getBean( "firebaseSecurityTransactions", TransactionTemplate.class ),
-                application.getBean( SecurityEventSink.class ),
-                new AuthorizationCatalog( globalActions, tenantActions ),
-                () -> tenantActions, application.getBean( Clock.class ), FirebaseRealTestProject.PROJECT_ID );
+        var mutated = new JdbcSecurityCatalog( jdbc, application.getBean( "firebaseSecurityTransactions", TransactionTemplate.class ), application.getBean( SecurityEventSink.class ), new AuthorizationCatalog( globalActions, tenantActions ), () -> tenantActions, application.getBean( Clock.class ), FirebaseRealTestProject.PROJECT_ID );
         assertThatThrownBy( mutated::initialize ).isInstanceOf( IllegalStateException.class );
         application.getBean( JdbcSecurityCatalog.class ).initialize();
         jdbc.sql( "UPDATE tenant_beta.demo_registro SET nm_registro='Alpha' WHERE id_demo_registro=:id" )
                 .param( "id", UUID.fromString( SAME_ID ) ).update();
         try {
-            assertThatThrownBy(
-                    () -> assertThat( expect( "GET", "/api/demo-registros/" + SAME_ID, bobToken, "beta", null, 200 ) )
-                            .contains( "Beta" ) )
+            assertThatThrownBy( () -> assertThat( expect( "GET", "/api/demo-registros/" + SAME_ID, bobToken, "beta", null, 200 ) )
+                    .contains( "Beta" ) )
                     .isInstanceOf( AssertionError.class );
         } finally {
             jdbc.sql( "UPDATE tenant_beta.demo_registro SET nm_registro='Beta' WHERE id_demo_registro=:id" )
@@ -804,9 +748,11 @@ public final class EndToEndSupport {
 
     /** Only registered temporarily to prove the actual sample scanner rejects a mutated handler set. */
     public static final class UnsafeEndpoint {
+
         public String unsafe() {
             return "unsafe";
         }
+
     }
 
     private void providerOutage() throws Exception {
@@ -819,9 +765,8 @@ public final class EndToEndSupport {
         String uid = plannedUid( id );
         expect( "GET", "/api/auth/me", token, null, null, 200 );
         int unreachable = unreachablePort();
-        try ( var degraded = degradedInstance( unreachable ) ) {
-            String degradedApi = "http://localhost:"
-                    + ((WebServerApplicationContext) degraded.context()).getWebServer().getPort();
+        try (var degraded = degradedInstance( unreachable )) {
+            String degradedApi = "http://localhost:" + ((WebServerApplicationContext) degraded.context()).getWebServer().getPort();
             String body = expectAt( degradedApi, "GET", "/api/auth/me", token, null, null, 503 );
             assertThat( body ).isEqualTo( "{\"code\":\"PROVIDER_UNAVAILABLE\"}" ).doesNotContain( "127.0.0.1" )
                     .doesNotContain( String.valueOf( unreachable ) )
@@ -833,19 +778,16 @@ public final class EndToEndSupport {
             drain( degraded.context().getBean( FirebaseAdminGateway.class ) );
             assertThat( jdbc.sql( "SELECT dt_fim IS NOT NULL FROM security.usuario WHERE id_usuario=:id" )
                     .param( "id", id ).query( Boolean.class ).single() ).isTrue();
-            assertThat( jdbc.sql(
-                    "SELECT count(*) FROM security.comando_identidade WHERE id_usuario=:id AND cd_estado='RETRY'" )
+            assertThat( jdbc.sql( "SELECT count(*) FROM security.comando_identidade WHERE id_usuario=:id AND cd_estado='RETRY'" )
                     .param( "id", id ).query( Long.class ).single() ).isPositive();
             expect( "GET", "/api/auth/me", token, null, null, 403 );
         }
         // Recovery: the provider path works again, the durable commands complete and the remote state converges.
         // O recuo torna o comando elegível mesmo com o relógio do host atrás do relógio do banco.
-        jdbc.sql( "UPDATE security.comando_identidade SET dt_proxima_tentativa=now()-interval '1 minute'"
-                + " WHERE id_usuario=:id" )
+        jdbc.sql( "UPDATE security.comando_identidade SET dt_proxima_tentativa=now()-interval '1 minute'" + " WHERE id_usuario=:id" )
                 .param( "id", id ).update();
         drain();
-        assertThat( jdbc.sql(
-                "SELECT count(*) FROM security.comando_identidade WHERE id_usuario=:id AND cd_estado IN ('RETRY','PENDING','CLAIMED')" )
+        assertThat( jdbc.sql( "SELECT count(*) FROM security.comando_identidade WHERE id_usuario=:id AND cd_estado IN ('RETRY','PENDING','CLAIMED')" )
                 .param( "id", id ).query( Long.class ).single() ).isZero();
         assertThat( admin.getUser( uid ).disabled() ).isTrue();
         expectSettled( "GET", "/api/auth/me", token, 401 );
@@ -855,7 +797,7 @@ public final class EndToEndSupport {
 
     private static int unreachablePort() throws IOException {
         // Reserve and release an ephemeral loopback port: nothing listens on it afterwards.
-        try ( var reservation = new ServerSocket( 0, 1, InetAddress.getLoopbackAddress() ) ) {
+        try (var reservation = new ServerSocket( 0, 1, InetAddress.getLoopbackAddress() )) {
             return reservation.getLocalPort();
         }
     }
@@ -863,16 +805,13 @@ public final class EndToEndSupport {
     private DegradedInstance degradedInstance( int unreachable ) {
         var transport = new NetHttpTransport.Builder()
                 .setProxy( new Proxy( Proxy.Type.HTTP, new InetSocketAddress( "127.0.0.1", unreachable ) ) ).build();
-        var app = FirebaseApp.initializeApp(
-                FirebaseOptions.builder().setProjectId( FirebaseRealTestProject.PROJECT_ID )
-                        .setCredentials( GoogleCredentials
-                                .create( new AccessToken( "fault-injection", new Date( Long.MAX_VALUE ) ) ) )
-                        .setHttpTransport( transport ).setConnectTimeout( 2_000 ).setReadTimeout( 2_000 ).build(),
-                "t029-degraded" );
+        var app = FirebaseApp.initializeApp( FirebaseOptions.builder().setProjectId( FirebaseRealTestProject.PROJECT_ID )
+                .setCredentials( GoogleCredentials
+                .create( new AccessToken( "fault-injection", new Date( Long.MAX_VALUE ) ) ) )
+                .setHttpTransport( transport ).setConnectTimeout( 2_000 ).setReadTimeout( 2_000 ).build(), "t029-degraded" );
         DegradedProvider.app = app;
         try {
-            return new DegradedInstance( app,
-                    new SpringApplicationBuilder( AppApplication.class, DegradedProvider.class ).run( arguments() ) );
+            return new DegradedInstance( app, new SpringApplicationBuilder( AppApplication.class, DegradedProvider.class ).run( arguments() ) );
         } catch ( RuntimeException failure ) {
             app.delete();
             throw failure;
@@ -881,6 +820,7 @@ public final class EndToEndSupport {
 
     /** A second, local backend instance whose Admin SDK only reaches an unreachable endpoint. */
     private record DegradedInstance(FirebaseApp app, ConfigurableApplicationContext context) implements AutoCloseable {
+
         @Override
         public void close() {
             try {
@@ -889,17 +829,20 @@ public final class EndToEndSupport {
                 app.delete();
             }
         }
+
     }
 
     /** Replaces only the Admin app of the degraded instance; verifier, gateway, SQL and HTTP stay the real ones. */
     @TestConfiguration(proxyBeanMethods = false)
     public static class DegradedProvider {
+
         private static volatile FirebaseApp app;
 
         @Bean(destroyMethod = "")
         public FirebaseApp t029DegradedFirebaseApp() {
             return app;
         }
+
     }
 
     private void browser() throws Exception {
@@ -925,8 +868,7 @@ public final class EndToEndSupport {
                 .directory( frontend.toFile() );
         var environment = process.environment();
         // Admin credentials, database and backend settings never reach the browser toolchain.
-        for ( String name : List.of( "GOOGLE_APPLICATION_CREDENTIALS", "DB_URL", "DB_USERNAME", "DB_PASSWORD",
-                "FIREBASE_PROJECT_ID", "FIREBASE_EMULATOR_ENABLED", "FIREBASE_AUTH_EMULATOR_HOST", "T029_RUN_ID" ) ) {
+        for ( String name : List.of( "GOOGLE_APPLICATION_CREDENTIALS", "DB_URL", "DB_USERNAME", "DB_PASSWORD", "FIREBASE_PROJECT_ID", "FIREBASE_EMULATOR_ENABLED", "FIREBASE_AUTH_EMULATOR_HOST", "T029_RUN_ID" ) ) {
             environment.remove( name );
         }
         environment.put( "T029_API_URL", api + "/api" );
@@ -961,11 +903,7 @@ public final class EndToEndSupport {
     }
 
     private void drain( FirebaseAdminGateway gateway ) {
-        var worker = new JdbcIdentityCommandWorker( jdbc,
-                application.getBean( "firebaseSecurityTransactions", TransactionTemplate.class ),
-                application.getBean( SecurityEventSink.class ),
-                application.getBean( "firebaseSecurityDataSource", DataSource.class ), gateway,
-                application.getBean( Clock.class ), Duration.ofSeconds( 30 ) );
+        var worker = new JdbcIdentityCommandWorker( jdbc, application.getBean( "firebaseSecurityTransactions", TransactionTemplate.class ), application.getBean( SecurityEventSink.class ), application.getBean( "firebaseSecurityDataSource", DataSource.class ), gateway, application.getBean( Clock.class ), Duration.ofSeconds( 30 ) );
         for ( int index = 0; index < 100 && worker.runOnce(); index++ ) {
         }
     }
@@ -985,8 +923,7 @@ public final class EndToEndSupport {
         String uid = namespace.uid( caze );
         assertThat( jdbc.sql( "UPDATE security.usuario SET cd_uid_planejado=:uid WHERE id_usuario=:id" )
                 .param( "uid", uid ).param( "id", id ).update() ).isOne();
-        assertThat( jdbc.sql( "UPDATE security.comando_identidade SET cd_uid=:uid WHERE id_usuario=:id"
-                + " AND cd_tipo='CREATE'" ).param( "uid", uid ).param( "id", id ).update() ).isOne();
+        assertThat( jdbc.sql( "UPDATE security.comando_identidade SET cd_uid=:uid WHERE id_usuario=:id" + " AND cd_tipo='CREATE'" ).param( "uid", uid ).param( "id", id ).update() ).isOne();
         cleanup.register( uid );
         return id;
     }
@@ -1016,28 +953,21 @@ public final class EndToEndSupport {
     }
 
     private String login( String caze ) throws Exception {
-        var response = client.send(
-                HttpRequest
-                        .newBuilder(
-                                URI.create( "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key="
-                                        + URLEncoder.encode( webConfig.apiKey(), StandardCharsets.UTF_8 ) ) )
-                        .header( "Content-Type", "application/json" ).timeout( Duration.ofSeconds( 20 ) )
-                        .POST( HttpRequest.BodyPublishers.ofString( JSON.toString( Map.of( "email",
-                                namespace.email( caze ), "password", password, "returnSecureToken", true ) ) ) )
-                        .build(),
-                HttpResponse.BodyHandlers.ofString() );
+        var response = client.send( HttpRequest
+                .newBuilder( URI.create( "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + URLEncoder.encode( webConfig.apiKey(), StandardCharsets.UTF_8 ) ) )
+                .header( "Content-Type", "application/json" ).timeout( Duration.ofSeconds( 20 ) )
+                .POST( HttpRequest.BodyPublishers.ofString( JSON.toString( Map.of( "email", namespace.email( caze ), "password", password, "returnSecureToken", true ) ) ) )
+                .build(), HttpResponse.BodyHandlers.ofString() );
         FirebaseRealTestProject.failOnQuota( response.statusCode(), response.body(), "signInWithPassword" );
         assertThat( response.statusCode() ).as( "real signInWithPassword" ).isEqualTo( 200 );
         return (String) JSON.fromString( response.body(), Map.class ).get( "idToken" );
     }
 
-    private String expect( String method, String path, String token, String alias, String body, int status )
-            throws Exception {
+    private String expect( String method, String path, String token, String alias, String body, int status ) throws Exception {
         return expectAt( api, method, path, token, alias, body, status );
     }
 
-    private String expectAt( String base, String method, String path, String token, String alias, String body,
-            int status ) throws Exception {
+    private String expectAt( String base, String method, String path, String token, String alias, String body, int status ) throws Exception {
         var response = send( base, method, path, token, alias, body );
         assertThat( response.statusCode() ).as( method + " " + path ).isEqualTo( status );
         return response.body();
@@ -1048,8 +978,7 @@ public final class EndToEndSupport {
         expectSettled( "", method, path, token, status );
     }
 
-    private void expectSettled( String step, String method, String path, String token, int status )
-            throws Exception {
+    private void expectSettled( String step, String method, String path, String token, int status ) throws Exception {
         int actual = -1;
         for ( int attempt = 0; attempt < 30 && actual != status; attempt++ ) {
             if ( attempt > 0 ) {
@@ -1061,8 +990,7 @@ public final class EndToEndSupport {
         assertThat( actual ).as( step + " " + method + " " + path ).isEqualTo( status );
     }
 
-    private HttpResponse<String> send( String base, String method, String path, String token, String alias,
-            String body ) throws Exception {
+    private HttpResponse<String> send( String base, String method, String path, String token, String alias, String body ) throws Exception {
         var builder = HttpRequest.newBuilder( URI.create( base + path ) ).timeout( Duration.ofSeconds( 20 ) )
                 .header( "Content-Type", "application/json" );
         if ( token != null ) {
@@ -1079,4 +1007,5 @@ public final class EndToEndSupport {
     private void passed() {
         System.out.println( "T029 PASS " + checkpoint );
     }
+
 }

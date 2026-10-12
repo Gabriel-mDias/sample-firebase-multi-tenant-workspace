@@ -30,9 +30,7 @@ final class InventarioDeExcecoes {
 
     static final Path ARQUIVO = LocalizadorDeFonte.RAIZ_DO_REPOSITORIO.resolve( ".gems-ai" )
             .resolve( "conformance-exceptions.json" );
-
     static final String PROPRIEDADE_DE_GERACAO = "gems.excecoes.gerar";
-
     private static final List<String> EXTENSOES_DO_FRONTEND = List.of( ".ts", ".html", ".css" );
 
     private InventarioDeExcecoes() {
@@ -50,8 +48,7 @@ final class InventarioDeExcecoes {
     static String gerar( List<ExcecoesEscritas.Excecao> excecoes, LocalDate hoje ) {
         var json = new StringBuilder();
         json.append( "{\n" );
-        json.append(
-                "  \"_origem\": \"Derivado dos comentários GEMS-EXCEPTION(...) do código pelo ExcecoesEscritasTest. " )
+        json.append( "  \"_origem\": \"Derivado dos comentários GEMS-EXCEPTION(...) do código pelo ExcecoesEscritasTest. " )
                 .append( "Nunca editar à mão: regenerar com -Dgems.excecoes.gerar=true.\",\n" );
         json.append( "  \"excecoes\": [" );
 
@@ -111,11 +108,10 @@ final class InventarioDeExcecoes {
         if ( !Files.isDirectory( raiz ) ) {
             return List.of();
         }
-        try ( Stream<Path> caminhos = Files.walk( raiz ) ) {
+        try (Stream<Path> caminhos = Files.walk( raiz )) {
             var encontradas = new ArrayList<ExcecoesEscritas.Excecao>();
             for ( var caminho : caminhos.filter( InventarioDeExcecoes::ehFonteDoFrontend ).sorted().toList() ) {
-                var relativo = LocalizadorDeFonte.RAIZ_DO_REPOSITORIO.relativize( caminho ).toString().replace( '\\',
-                        '/' );
+                var relativo = LocalizadorDeFonte.RAIZ_DO_REPOSITORIO.relativize( caminho ).toString().replace( '\\', '/' );
                 encontradas.addAll( lerDeTexto( relativo, Files.readAllLines( caminho, StandardCharsets.UTF_8 ) ) );
             }
             return encontradas;
@@ -141,8 +137,7 @@ final class InventarioDeExcecoes {
             }
             i = ultima;
             // Índices são 0-based; linhas do relatório são 1-based, e a coberta é a seguinte à última.
-            encontradas.add(
-                    ExcecoesEscritas.interpretar( caminho, inicio + 1, ultima + 2, acumulado.toString().strip() ) );
+            encontradas.add( ExcecoesEscritas.interpretar( caminho, inicio + 1, ultima + 2, acumulado.toString().strip() ) );
         }
         return encontradas;
     }
@@ -176,14 +171,15 @@ final class InventarioDeExcecoes {
         var escapado = new StringBuilder( "\"" );
         for ( var caractere : valor.toCharArray() ) {
             switch ( caractere ) {
-                case '"' -> escapado.append( "\\\"" );
-                case '\\' -> escapado.append( "\\\\" );
-                case '\n' -> escapado.append( "\\n" );
-                case '\r' -> escapado.append( "\\r" );
-                case '\t' -> escapado.append( "\\t" );
-                default -> escapado.append( caractere );
+            case '"' -> escapado.append( "\\\"" );
+            case '\\' -> escapado.append( "\\\\" );
+            case '\n' -> escapado.append( "\\n" );
+            case '\r' -> escapado.append( "\\r" );
+            case '\t' -> escapado.append( "\\t" );
+            default -> escapado.append( caractere );
             }
         }
         return escapado.append( '"' ).toString();
     }
+
 }

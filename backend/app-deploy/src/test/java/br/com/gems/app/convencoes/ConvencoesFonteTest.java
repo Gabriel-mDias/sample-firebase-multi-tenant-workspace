@@ -94,4 +94,5 @@ class ConvencoesFonteTest {
         regra.accept( relatorio );
         relatorio.concluir();
     }
+
 }

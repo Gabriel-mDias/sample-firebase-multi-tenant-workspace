@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "Conta e contexto")
 public class AuthController extends BaseController {
+
     private final AuthService service;
+
     @GetMapping("/me")
     @GlobalEndpoint
     @PreAuthorize("hasRole('CONSULTAR_PROPRIA_CONTA')")
@@ -29,6 +31,7 @@ public class AuthController extends BaseController {
     public AuthMeResponse me() {
         return service.me();
     }
+
     @GetMapping("/context")
     @TenantEndpoint
     @PreAuthorize("hasRole('CONSULTAR_PROPRIO_CONTEXTO_TENANT')")
@@ -37,4 +40,5 @@ public class AuthController extends BaseController {
     public AuthContextResponse context() {
         return service.context();
     }
+
 }

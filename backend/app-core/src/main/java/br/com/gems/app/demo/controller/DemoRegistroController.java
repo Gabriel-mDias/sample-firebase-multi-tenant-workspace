@@ -32,7 +32,9 @@ import org.springframework.web.bind.annotation.RestController;
 @TenantEndpoint
 @Tag(name = "DemoRegistro")
 public class DemoRegistroController extends BaseController {
+
     private final DemoRegistroService service;
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('CONSULTAR_DEMO')")
     @Operation(summary = "Consultar registro")
@@ -40,15 +42,16 @@ public class DemoRegistroController extends BaseController {
     public DemoRegistroDTO findById( @PathVariable UUID id ) {
         return service.findById( id );
     }
+
     @PostMapping("/search")
     @PreAuthorize("hasRole('CONSULTAR_DEMO')")
     @Operation(summary = "Pesquisar registros")
     @ApiResponse(responseCode = "200", description = "Página")
-    public Page<DemoRegistroResponseDTO> search( @RequestBody DemoRegistroFilterParams dto,
-            @PageableDefault(size = 10) Pageable pageable, HttpServletRequest request ) {
+    public Page<DemoRegistroResponseDTO> search( @RequestBody DemoRegistroFilterParams dto, @PageableDefault(size = 10) Pageable pageable, HttpServletRequest request ) {
         super.setBodyToExceptionLog( dto, request );
         return service.search( dto, pageable );
     }
+
     @PostMapping
     @PreAuthorize("hasRole('INSERIR_DEMO')")
     @Operation(summary = "Inserir registro")
@@ -57,6 +60,7 @@ public class DemoRegistroController extends BaseController {
         super.setBodyToExceptionLog( new DemoRegistroDTO( dto.id(), dto.nome(), dto.descricao(), null ), request );
         return ResponseEntity.status( 201 ).body( service.insert( dto ) );
     }
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ALTERAR_DEMO')")
     @Operation(summary = "Alterar registro")
@@ -65,6 +69,7 @@ public class DemoRegistroController extends BaseController {
         super.setBodyToExceptionLog( new DemoRegistroDTO( dto.id(), dto.nome(), dto.descricao(), null ), request );
         return service.save( id, dto );
     }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('EXCLUIR_DEMO')")
     @Operation(summary = "Excluir registro logicamente")
@@ -73,4 +78,5 @@ public class DemoRegistroController extends BaseController {
         service.delete( id );
         return ResponseEntity.noContent().build();
     }
+
 }

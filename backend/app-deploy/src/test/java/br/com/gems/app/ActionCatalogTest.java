@@ -6,9 +6,10 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 
 class ActionCatalogTest {
+
     @Test
     void deveVerificarCatalogoGeradoOficialmente_quandoBuildCompilaAcoes() {
-        FrontendActionCatalogGenerator.verify( Path.of( "src/main/resources/authorization.actions.json" ),
-                AcaoSistema.class );
+        FrontendActionCatalogGenerator.verify( Path.of( "src/main/resources/authorization.actions.json" ), AcaoSistema.class );
     }
+
 }

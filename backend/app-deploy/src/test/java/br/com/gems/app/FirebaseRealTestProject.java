@@ -42,14 +42,13 @@ import java.util.regex.Pattern;
  * specs/003-firebase-multi-tenant/configuracao-homologacao-firebase.md.
  */
 public final class FirebaseRealTestProject {
+
     public static final String PROJECT_ID = "sample-firebase-multi-tenant";
     /** Reserved prefix: only accounts whose UID or e-mail start with it are ever touched by automation. */
     public static final String AUTOMATION_PREFIX = "gems-t029-";
     public static final String EMAIL_DOMAIN = "example.com";
     public static final Duration ORPHAN_MAX_AGE = Duration.ofHours( 2 );
-    public static final String SKIP_NOTICE = "T029 AVISO: E2E Firebase real IGNORADO (T029_FIREBASE_REAL=skip, PR de fork"
-            + " sem secret); nenhuma credencial, conta ou projeto foi consultado e este NAO e um PASS do gate.";
-
+    public static final String SKIP_NOTICE = "T029 AVISO: E2E Firebase real IGNORADO (T029_FIREBASE_REAL=skip, PR de fork" + " sem secret); nenhuma credencial, conta ou projeto foi consultado e este NAO e um PASS do gate.";
     private static final String SKIP_VARIABLE = "T029_FIREBASE_REAL";
     private static final String CREDENTIAL_VARIABLE = "GOOGLE_APPLICATION_CREDENTIALS";
     private static final GsonFactory JSON = GsonFactory.getDefaultInstance();
@@ -58,8 +57,7 @@ public final class FirebaseRealTestProject {
             .compile( "^" + Pattern.quote( AUTOMATION_PREFIX ) + "[a-z0-9-]+@" + Pattern.quote( EMAIL_DOMAIN ) + "$" );
     private static final Pattern CASE_NAME = Pattern.compile( "[a-z0-9-]{1,16}" );
     private static final Pattern APP_ID = Pattern.compile( "[A-Za-z0-9:_-]{5,128}" );
-    private static final List<String> REQUIRED_PERMISSIONS = List.of( "firebaseauth.users.get",
-            "firebaseauth.users.create", "firebaseauth.users.update", "firebaseauth.users.delete" );
+    private static final List<String> REQUIRED_PERMISSIONS = List.of( "firebaseauth.users.get", "firebaseauth.users.create", "firebaseauth.users.update", "firebaseauth.users.delete" );
     private static final String PASSWORD_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!#%+-_";
 
     private FirebaseRealTestProject() {
@@ -67,16 +65,20 @@ public final class FirebaseRealTestProject {
 
     /** Whether the real suite runs or is explicitly skipped (fork pull requests only). */
     public enum Mode {
+
         RUN, SKIP
+
     }
 
     /** Preflight refusal. The message never carries a credential path, key, token or account identity. */
     public static final class PreflightException extends IllegalStateException {
+
         private static final long serialVersionUID = 1L;
 
         public PreflightException( String message ) {
             super( message );
         }
+
     }
 
     // ------------------------------------------------------------------ preflight (no network)
@@ -95,9 +97,7 @@ public final class FirebaseRealTestProject {
             return Mode.SKIP;
         }
         if ( !blankToEmpty( env.apply( "FIREBASE_AUTH_EMULATOR_HOST" ) ).isBlank() ) {
-            throw new PreflightException(
-                    "FIREBASE_AUTH_EMULATOR_HOST esta definido: o E2E usa somente o projeto Firebase"
-                            + " real de testes " + PROJECT_ID + ". Remova a variavel do ambiente." );
+            throw new PreflightException( "FIREBASE_AUTH_EMULATOR_HOST esta definido: o E2E usa somente o projeto Firebase" + " real de testes " + PROJECT_ID + ". Remova a variavel do ambiente." );
         }
         String configured = blankToEmpty( env.apply( "FIREBASE_PROJECT_ID" ) ).strip();
         if ( !configured.isEmpty() && !PROJECT_ID.equals( configured ) ) {
@@ -105,9 +105,7 @@ public final class FirebaseRealTestProject {
         }
         String credential = blankToEmpty( env.apply( CREDENTIAL_VARIABLE ) ).strip();
         if ( credential.isEmpty() ) {
-            throw new PreflightException( "Credencial ADC ausente: defina " + CREDENTIAL_VARIABLE
-                    + " com o JSON da conta de servico do projeto " + PROJECT_ID + " (ou use T029_FIREBASE_REAL=skip"
-                    + " somente em PR de fork)." );
+            throw new PreflightException( "Credencial ADC ausente: defina " + CREDENTIAL_VARIABLE + " com o JSON da conta de servico do projeto " + PROJECT_ID + " (ou use T029_FIREBASE_REAL=skip" + " somente em PR de fork)." );
         }
         Path file;
         try {
@@ -125,8 +123,7 @@ public final class FirebaseRealTestProject {
             throw new PreflightException( "Arquivo de " + CREDENTIAL_VARIABLE + " ilegivel ou nao e JSON valido." );
         }
         if ( document == null || !PROJECT_ID.equals( document.get( "project_id" ) ) ) {
-            throw new PreflightException( "O project_id da credencial ADC e ausente ou diverge do projeto de testes "
-                    + PROJECT_ID + "; recusado antes de qualquer operacao." );
+            throw new PreflightException( "O project_id da credencial ADC e ausente ou diverge do projeto de testes " + PROJECT_ID + "; recusado antes de qualquer operacao." );
         }
         return Mode.RUN;
     }
@@ -135,6 +132,7 @@ public final class FirebaseRealTestProject {
 
     /** Unique-per-execution synthetic identity namespace: reserved prefix + run id + case. */
     public record Namespace(String runId) {
+
         private static final Pattern RUN_ID = Pattern.compile( "[a-z0-9-]{16,40}" );
 
         public Namespace {
@@ -148,8 +146,7 @@ public final class FirebaseRealTestProject {
             String token = uuids.get().toString().replace( "-", "" ).substring( 0, 16 );
             String run = digits( env.apply( "GITHUB_RUN_ID" ), 12 );
             String attempt = digits( env.apply( "GITHUB_RUN_ATTEMPT" ), 3 );
-            return new Namespace(
-                    run == null ? token : "gh" + run + "a" + (attempt == null ? "1" : attempt) + "-" + token );
+            return new Namespace( run == null ? token : "gh" + run + "a" + (attempt == null ? "1" : attempt) + "-" + token );
         }
 
         public String prefix() {
@@ -173,6 +170,7 @@ public final class FirebaseRealTestProject {
                     && email.toLowerCase( Locale.ROOT ).startsWith( prefix() )
                     && email.toLowerCase( Locale.ROOT ).endsWith( "@" + EMAIL_DOMAIN );
         }
+
     }
 
     private static String digits( String value, int maximum ) {
@@ -196,14 +194,17 @@ public final class FirebaseRealTestProject {
 
     /** An account as seen by the cleanup logic. */
     public record Account(String uid, String email, long createdMillis) {
+
     }
 
     /** Abstraction of the shared project's user store; faked in unit tests, real in the E2E. */
     public interface UserDirectory {
+
         List<Account> list();
 
         /** @return true when the account existed and was deleted; false when it was already absent */
         boolean delete( String uid );
+
     }
 
     /**
@@ -211,8 +212,7 @@ public final class FirebaseRealTestProject {
      * pattern, from another run and older than {@code maxAge}, qualify. Accounts of unknown age or outside
      * the prefix never do.
      */
-    public static boolean isOrphan( String uid, String email, long createdMillis, long nowMillis, Duration maxAge,
-            Namespace current ) {
+    public static boolean isOrphan( String uid, String email, long createdMillis, long nowMillis, Duration maxAge, Namespace current ) {
         boolean automation = uid != null && uid.startsWith( AUTOMATION_PREFIX )
                 && email != null && AUTOMATION_EMAIL.matcher( email.toLowerCase( Locale.ROOT ) ).matches();
         if ( !automation || current.owns( uid, email ) ) {
@@ -225,8 +225,7 @@ public final class FirebaseRealTestProject {
     public static int sweepOrphans( UserDirectory directory, Namespace current, Instant now, Duration maxAge ) {
         int deleted = 0;
         for ( Account account : directory.list() ) {
-            if ( isOrphan( account.uid(), account.email(), account.createdMillis(), now.toEpochMilli(), maxAge,
-                    current )
+            if ( isOrphan( account.uid(), account.email(), account.createdMillis(), now.toEpochMilli(), maxAge, current )
                     && directory.delete( account.uid() ) ) {
                 deleted++;
             }
@@ -236,10 +235,12 @@ public final class FirebaseRealTestProject {
 
     /** Outcome of a run cleanup: accounts registered and accounts that were still present and removed. */
     public record CleanupResult(int registered, int deleted) {
+
     }
 
     /** Registers every created account and guarantees they are removed, asserting an empty namespace. */
     public static final class RunCleanup {
+
         private final Namespace namespace;
         private final UserDirectory directory;
         private final Set<String> registered = ConcurrentHashMap.newKeySet();
@@ -286,16 +287,18 @@ public final class FirebaseRealTestProject {
                 }
             }
             if ( failed > 0 || !remaining.isEmpty() ) {
-                throw new AssertionError( "Namespace do run nao ficou vazio: " + remaining.size()
-                        + " conta(s) restante(s) e " + failed + " falha(s) de remocao" );
+                throw new AssertionError( "Namespace do run nao ficou vazio: " + remaining.size() + " conta(s) restante(s) e " + failed + " falha(s) de remocao" );
             }
             return new CleanupResult( registered.size(), deleted );
         }
+
     }
 
     /** Test body that may fail; used with {@link #runAndClean}. */
     public interface Body {
+
         void run() throws Exception;
+
     }
 
     /**
@@ -312,8 +315,7 @@ public final class FirebaseRealTestProject {
         } finally {
             try {
                 var result = cleanup.closeAndAssertEmpty();
-                System.out.println( "T029 NAMESPACE remaining=0 registered=" + result.registered() + " deleted="
-                        + result.deleted() );
+                System.out.println( "T029 NAMESPACE remaining=0 registered=" + result.registered() + " deleted=" + result.deleted() );
             } catch ( Throwable cleanupFailure ) {
                 if ( failure == null ) {
                     throw cleanupFailure;
@@ -327,8 +329,7 @@ public final class FirebaseRealTestProject {
     public static boolean finishRun( RunCleanup cleanup ) {
         try {
             var result = cleanup.closeAndAssertEmpty();
-            System.out.println( "T029 USERS registered=" + result.registered() + " deletedByCleanup="
-                    + result.deleted() + " remaining=0" );
+            System.out.println( "T029 USERS registered=" + result.registered() + " deletedByCleanup=" + result.deleted() + " remaining=0" );
             return true;
         } catch ( Throwable failure ) {
             System.err.println( "T029 FAIL CLEANUP " + failure.getClass().getSimpleName() );
@@ -343,11 +344,14 @@ public final class FirebaseRealTestProject {
 
     /** Raw answer of the IAM permission check. */
     public record IamResponse(int status, String body) {
+
     }
 
     /** The IAM permission check; a lambda in unit tests, the real call in the E2E. */
     public interface IamProbe {
+
         IamResponse call() throws IOException, InterruptedException;
+
     }
 
     /**
@@ -360,17 +364,14 @@ public final class FirebaseRealTestProject {
         try {
             response = probe.call();
         } catch ( IOException failure ) {
-            throw new PreflightException(
-                    "Permissoes da ADC nao confirmadas (falha de rede ou token); recusado antes de qualquer mutacao." );
+            throw new PreflightException( "Permissoes da ADC nao confirmadas (falha de rede ou token); recusado antes de qualquer mutacao." );
         } catch ( InterruptedException failure ) {
             Thread.currentThread().interrupt();
             throw new PreflightException( "Verificacao de permissoes da ADC interrompida; recusado." );
         }
         failOnQuota( response.status(), response.body(), "testIamPermissions" );
         if ( response.status() != 200 ) {
-            throw new PreflightException( "Permissoes da ADC nao confirmadas (HTTP " + response.status()
-                    + "): habilite a Cloud Resource Manager API do projeto " + PROJECT_ID
-                    + " e confirme as permissoes; recusado antes de qualquer mutacao." );
+            throw new PreflightException( "Permissoes da ADC nao confirmadas (HTTP " + response.status() + "): habilite a Cloud Resource Manager API do projeto " + PROJECT_ID + " e confirme as permissoes; recusado antes de qualquer mutacao." );
         }
         Object granted;
         try {
@@ -391,18 +392,15 @@ public final class FirebaseRealTestProject {
     static IllegalStateException translate( String operation, FirebaseAuthException failure ) {
         ErrorCode code = failure.getErrorCode();
         if ( code == ErrorCode.RESOURCE_EXHAUSTED ) {
-            return new IllegalStateException( "Quota do Firebase excedida (RESOURCE_EXHAUSTED) em " + operation
-                    + "; sem retry automatico." );
+            return new IllegalStateException( "Quota do Firebase excedida (RESOURCE_EXHAUSTED) em " + operation + "; sem retry automatico." );
         }
         if ( code == ErrorCode.PERMISSION_DENIED ) {
             return new IllegalStateException( "ADC sem permissao no projeto " + PROJECT_ID + " em " + operation + "." );
         }
         if ( code == ErrorCode.UNAUTHENTICATED ) {
-            return new IllegalStateException( "Credencial ADC rejeitada pelo projeto " + PROJECT_ID + " em " + operation
-                    + "." );
+            return new IllegalStateException( "Credencial ADC rejeitada pelo projeto " + PROJECT_ID + " em " + operation + "." );
         }
-        return new IllegalStateException( "Firebase real falhou em " + operation + " (" + code + "/"
-                + failure.getAuthErrorCode() + ")." );
+        return new IllegalStateException( "Firebase real falhou em " + operation + " (" + code + "/" + failure.getAuthErrorCode() + ")." );
     }
 
     /** Sets the synthetic account password through the real Admin SDK (the backend gateway never handles passwords). */
@@ -419,13 +417,13 @@ public final class FirebaseRealTestProject {
         String text = body == null ? "" : body;
         if ( status == 429 || text.contains( "RESOURCE_EXHAUSTED" ) || text.contains( "QUOTA_EXCEEDED" )
                 || text.contains( "TOO_MANY_ATTEMPTS_TRY_LATER" ) ) {
-            throw new IllegalStateException( "Quota do Firebase excedida (HTTP " + status + ") em " + operation
-                    + "; sem retry automatico." );
+            throw new IllegalStateException( "Quota do Firebase excedida (HTTP " + status + ") em " + operation + "; sem retry automatico." );
         }
     }
 
     /** User store backed by the real Admin SDK of the shared test project. */
     public static final class AdminDirectory implements UserDirectory {
+
         private final FirebaseAuth auth;
 
         AdminDirectory( FirebaseAuth auth ) {
@@ -437,8 +435,7 @@ public final class FirebaseRealTestProject {
             var accounts = new ArrayList<Account>();
             try {
                 for ( ExportedUserRecord user : auth.listUsers( null ).iterateAll() ) {
-                    accounts.add( new Account( user.getUid(), user.getEmail(),
-                            user.getUserMetadata() == null ? 0 : user.getUserMetadata().getCreationTimestamp() ) );
+                    accounts.add( new Account( user.getUid(), user.getEmail(), user.getUserMetadata() == null ? 0 : user.getUserMetadata().getCreationTimestamp() ) );
                 }
             } catch ( FirebaseAuthException failure ) {
                 throw translate( "listUsers", failure );
@@ -458,10 +455,12 @@ public final class FirebaseRealTestProject {
                 throw translate( "deleteUser", failure );
             }
         }
+
     }
 
     /** An Admin SDK app on the shared project, authorized by ADC only. */
     public static final class Session implements AutoCloseable {
+
         private final FirebaseApp app;
         private final GoogleCredentials credentials;
 
@@ -474,8 +473,7 @@ public final class FirebaseRealTestProject {
             try {
                 GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();
                 FirebaseApp app = FirebaseApp.initializeApp( FirebaseOptions.builder().setProjectId( PROJECT_ID )
-                        .setCredentials( credentials ).setConnectTimeout( 15_000 ).setReadTimeout( 30_000 ).build(),
-                        name );
+                        .setCredentials( credentials ).setConnectTimeout( 15_000 ).setReadTimeout( 30_000 ).build(), name );
                 return new Session( app, credentials );
             } catch ( IOException | IllegalStateException failure ) {
                 throw new PreflightException( "A credencial ADC nao pode ser carregada pelo Admin SDK." );
@@ -508,12 +506,10 @@ public final class FirebaseRealTestProject {
             requireWritePermissions( () -> {
                 String body = JSON.toString( Map.of( "permissions", REQUIRED_PERMISSIONS ) );
                 var response = HTTP.send( HttpRequest
-                        .newBuilder( URI.create( "https://cloudresourcemanager.googleapis.com/v1/projects/"
-                                + PROJECT_ID + ":testIamPermissions" ) )
+                        .newBuilder( URI.create( "https://cloudresourcemanager.googleapis.com/v1/projects/" + PROJECT_ID + ":testIamPermissions" ) )
                         .timeout( Duration.ofSeconds( 30 ) )
                         .header( "Content-Type", "application/json" ).header( "Authorization", "Bearer " + bearer() )
-                        .POST( HttpRequest.BodyPublishers.ofString( body ) ).build(),
-                        HttpResponse.BodyHandlers.ofString() );
+                        .POST( HttpRequest.BodyPublishers.ofString( body ) ).build(), HttpResponse.BodyHandlers.ofString() );
                 return new IamResponse( response.statusCode(), response.body() );
             } );
         }
@@ -531,12 +527,14 @@ public final class FirebaseRealTestProject {
         public void close() {
             app.delete();
         }
+
     }
 
     // ------------------------------------------------------------------ public web app configuration
 
     /** Public Firebase Web configuration (not a secret) obtained at runtime; never versioned or logged. */
     public record PublicWebConfig(String apiKey, String authDomain, String projectId, String appId) {
+
         public PublicWebConfig {
             if ( blankToEmpty( apiKey ).isBlank() || blankToEmpty( authDomain ).isBlank()
                     || blankToEmpty( appId ).isBlank() || !PROJECT_ID.equals( projectId ) ) {
@@ -555,14 +553,14 @@ public final class FirebaseRealTestProject {
 
         /** Variables handed to child processes; the values must not be echoed. */
         public Map<String, String> asEnvironment() {
-            return Map.of( "T029_FIREBASE_API_KEY", apiKey, "T029_FIREBASE_AUTH_DOMAIN", authDomain,
-                    "T029_FIREBASE_APP_ID", appId, "T029_FIREBASE_PROJECT_ID", projectId );
+            return Map.of( "T029_FIREBASE_API_KEY", apiKey, "T029_FIREBASE_AUTH_DOMAIN", authDomain, "T029_FIREBASE_APP_ID", appId, "T029_FIREBASE_PROJECT_ID", projectId );
         }
 
         @Override
         public String toString() {
             return "PublicWebConfig[redacted]";
         }
+
     }
 
     /** Child side: the parent already resolved the configuration and passed it through the environment. */
@@ -586,9 +584,7 @@ public final class FirebaseRealTestProject {
             if ( appId.isEmpty() ) {
                 Object apps = managementGet( session, base + "?pageSize=100" ).get( "apps" );
                 if ( !(apps instanceof List<?> list) || list.isEmpty() ) {
-                    throw new PreflightException(
-                            "O projeto " + PROJECT_ID + " nao tem app Web registrado; registre-o no"
-                                    + " console (a automacao nao cria apps) ou informe as variaveis T029_FIREBASE_*." );
+                    throw new PreflightException( "O projeto " + PROJECT_ID + " nao tem app Web registrado; registre-o no" + " console (a automacao nao cria apps) ou informe as variaveis T029_FIREBASE_*." );
                 }
                 appId = chooseApp( list );
             }
@@ -596,8 +592,7 @@ public final class FirebaseRealTestProject {
                 throw new PreflightException( "appId do app Web invalido." );
             }
             Map<?, ?> config = managementGet( session, base + "/" + appId + "/config" );
-            return new PublicWebConfig( text( config, "apiKey" ), text( config, "authDomain" ), PROJECT_ID,
-                    text( config, "appId" ) );
+            return new PublicWebConfig( text( config, "apiKey" ), text( config, "authDomain" ), PROJECT_ID, text( config, "appId" ) );
         } catch ( IOException failure ) {
             throw new PreflightException( "Falha de rede ao ler a configuracao publica do app Web." );
         } catch ( InterruptedException failure ) {
@@ -621,23 +616,22 @@ public final class FirebaseRealTestProject {
         }
         return first;
     }
+
     private static String text( Map<?, ?> values, String key ) {
         return values.get( key ) instanceof String value ? value : "";
     }
 
     private static Map<?, ?> managementGet( Session session, String url ) throws IOException, InterruptedException {
         var response = HTTP.send( HttpRequest.newBuilder( URI.create( url ) ).timeout( Duration.ofSeconds( 30 ) )
-                .header( "Authorization", "Bearer " + session.bearer() ).GET().build(),
-                HttpResponse.BodyHandlers.ofString() );
+                .header( "Authorization", "Bearer " + session.bearer() ).GET().build(), HttpResponse.BodyHandlers.ofString() );
         failOnQuota( response.statusCode(), response.body(), "firebase management API" );
         if ( response.statusCode() == 403 || response.statusCode() == 401 ) {
-            throw new PreflightException( "ADC sem permissao para ler o app Web (firebase.clients.list/get); defina"
-                    + " T029_FIREBASE_API_KEY, T029_FIREBASE_AUTH_DOMAIN e T029_FIREBASE_APP_ID." );
+            throw new PreflightException( "ADC sem permissao para ler o app Web (firebase.clients.list/get); defina" + " T029_FIREBASE_API_KEY, T029_FIREBASE_AUTH_DOMAIN e T029_FIREBASE_APP_ID." );
         }
         if ( response.statusCode() != 200 ) {
-            throw new PreflightException( "A API de gerenciamento do Firebase respondeu HTTP " + response.statusCode()
-                    + " ao ler o app Web." );
+            throw new PreflightException( "A API de gerenciamento do Firebase respondeu HTTP " + response.statusCode() + " ao ler o app Web." );
         }
         return JSON.fromString( response.body(), Map.class );
     }
+
 }
