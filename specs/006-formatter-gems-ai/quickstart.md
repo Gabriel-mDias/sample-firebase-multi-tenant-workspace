@@ -28,6 +28,8 @@ build do sample; ADC do Firebase de testes por `GOOGLE_APPLICATION_CREDENTIALS`,
 | A6 | Mutação | igual a S6 | o gate A1 falha |
 | A7 | Autoria | igual a S7 | commit anterior |
 | A8 | CI | PR com os 4 jobs | verdes; o log do `gems-ai` mostra "gems-ai 3.1.0 instalado do ref 'v3.1.0'" |
+| A10 | Testes Python | `python -B -m unittest discover -s scripts -p "test_*.py"` | verde (hoje: 50 falhas e 7 erros em 60) |
+| A11 | Clean-demo e inicializador | `clean-demo --dry-run` no checkout; `clean-demo` e `initialize` num clone descartável, seguidos de `check-java --all` e `mvnw clean install` | aceito; clone verde |
 | A9 | Frontend | `npm ci`, `npm test`, `npm run build` e `npx prettier --check .` | verdes. A rodada não toca no frontend; o gate só confirma que nada vazou |
 
 ## IDE (usuário)

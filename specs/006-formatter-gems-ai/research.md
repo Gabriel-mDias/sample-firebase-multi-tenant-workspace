@@ -137,6 +137,33 @@ conferir o hash do wheel contra o `SHA256SUMS`
   comando. O hook Stop e o CI rodam o mesmo script, então a falha aparece antes do push. O custo é de
   cerca de 6 s.
 
+## R11 — Inicializador, clean-demo e testes Python (decisão 8)
+
+- **Medido em 2026-10-12, depois do portão:** o `scripts/sample.py` formata o Java com
+  `mvnw -B -q spotless:apply` (`initializer_formatter`, `format_initialized_backend`). Isso vale para o
+  código renomeado e para os textos de substituição do `scripts/demo-manifest.json`. O manifesto tem
+  58 entradas (27 `delete`, 28 `transform` com o texto antes e depois, 3 `regenerate`) e 8 metadados
+  com hash. Entre os metadados estão `backend/pom.xml`, `.gitattributes` e
+  `GenerateActionCatalog.java`, e a 006 muda os três.
+- **Já quebrado na `main`:** o `clean-demo --dry-run` do checkout real recusa com `Protected metadata
+  integrity conflict: backend/app-security/pom.xml`. O `python -m unittest discover -s scripts` roda
+  60 testes, com 50 falhas e 7 erros; 48 deles são essa mesma recusa. Os outros 9 só podem ser
+  diagnosticados depois do manifesto corrigido.
+- **Decisão:**
+  - o formatter do `sample.py` passa a ser `gems-ai format java --project <raiz> --all --apply`, com a
+    CLI do PATH e a mesma checagem de Java que existe hoje. O teste usa um formatter falso, como já
+    faz;
+  - a mensagem de erro, a ajuda do `--skip-format` e o `inicializar-projeto.ps1` deixam de citar o
+    Spotless;
+  - o manifesto é regenerado depois do commit de estilo: hashes do estado atual, `before` igual ao
+    arquivo formatado, `after` formatado pelo gems-ai e pin `MANIFEST_SHA256` recalculado;
+  - teste só é removido com prova de obsolescência, listada no `evidence.md`.
+- **Prova:**
+  - `unittest` verde;
+  - `clean-demo --dry-run` aceito no checkout real;
+  - num clone descartável, `clean-demo` e `initialize` aplicados, seguidos de `check-java --all` e
+    `mvnw clean install`. É a prova da T028 da 003 refeita no formato novo.
+
 ## R10 — Conflito com as branches abertas
 
 - A 004 (`feature/004-*`) e a 005 (`feature/005-*`) só têm commits de documentação. A 005 não toca em

@@ -8,8 +8,8 @@ Formato: `- [ ] Tnnn [P] [USn] descrição com caminho`. `SDK/` = `Java-GEMS-SDK
 
 ## Phase 1: Setup
 
-- [ ] T001 Conferir de novo o hash do wheel `gems_ai-3.1.0` contra o `SHA256SUMS` da release `v3.1.0` e instalar a CLI num venv isolado fora dos repositórios; `gems-ai --version` = `3.1.0`
-- [ ] T002 Criar a branch `feature/006-formatter-gems-ai` em `SDK/` a partir de `origin/main` (`e830533`) e medir a linha de base: `mvn --batch-mode clean verify -DgenerateBackupPoms=false`, com o total de testes por módulo registrado em `specs/006-formatter-gems-ai/evidence.md`
+- [x] T001 Conferir de novo o hash do wheel `gems_ai-3.1.0` contra o `SHA256SUMS` da release `v3.1.0` e instalar a CLI num venv isolado fora dos repositórios; `gems-ai --version` = `3.1.0`
+- [x] T002 Criar a branch `feature/006-formatter-gems-ai` em `SDK/` a partir de `origin/main` (`e830533`) e medir a linha de base: `mvn --batch-mode clean verify -DgenerateBackupPoms=false`, com o total de testes por módulo registrado em `specs/006-formatter-gems-ai/evidence.md`
 - [ ] T003 Fazer checkout de `909c69aa846ea97b3aea06a08fdfed8c6657d391` em `../.tooling/gems-ai-sdk` (ferramenta local do workspace, R2) e confirmar `scripts/gems-ai.ps1 --version` = `3.1.0` depois de T013
 
 ## Phase 2: User Story 1 — SDK formatado (P1) 🎯 MVP
@@ -40,13 +40,15 @@ Formato: `- [ ] Tnnn [P] [USn] descrição com caminho`. `SDK/` = `Java-GEMS-SDK
 - [ ] T015 [US2] Acrescentar `.gems-ai/java/** text eol=crlf` ao bloco GEMS de `.gitattributes`, depois do `*.properties`; `git add --renormalize .`; provar A5
 - [ ] T016 [P] [US2] Atualizar a parte local, fora do bloco gerenciado, de `AGENTS.md`, `CLAUDE.md`, `CODEX.md`, `GEMINI.md` e `.github/copilot-instructions.md`: de "3.0.0"/"pin 51b94e3a…" para 3.1.0/`909c69aa…`, com paridade entre os arquivos; `README.md:103`; rodar A2
 - [ ] T017 [P] [US2] Remover de `backend/pom.xml` o plugin `spotless-maven-plugin` e a propriedade `spotless.check.phase`, e apagar `backend/config/spotless/eclipse-formatter.xml`; manter o Checkstyle (R5); procurar menções a Spotless em `backend/`, `.claude/`, `specs/AGENTS.md` e `D:/repos/build a new sample multi tenant/AGENTS.md` e atualizar para o formatter do GEMS AI (FR-011)
+- [ ] T031 [US2] Trocar o formatter de `scripts/sample.py` (`initializer_formatter`, `format_initialized_backend`, relatório do dry-run, mensagem de erro, ajuda do `--skip-format`) de `mvnw spotless:apply` para `gems-ai format java --project <raiz> --all --apply` (R11); ajustar `scripts/inicializar-projeto.ps1`, `scripts/benchmark-tenants/README.md` e os formatters falsos de `scripts/test_initializer.py` e `scripts/test_sample.py`
 - [ ] T018 [US2] Em `scripts/gems-ai-gate.ps1`, acrescentar `check-java --project . --all` como terceiro comando (R9)
 - [ ] T019 [US2] Em `.github/workflows/ci.yml`: action `Gabriel-mDias/gems-ai-sdk@v3.1.0` (C2), `actions/setup-java@v6` temurin 21 no job `gems-ai` antes do gate, comentário do job atualizado e comentário do `fetch-depth: 0` do job backend corrigido (R5)
-- [ ] T020 [US2] Commit `chore(gems-ai): migra para o GEMS AI 3.1.0 e troca o Spotless pelo formatter` (T013–T019; nenhum `.java`)
+- [ ] T020 [US2] Commit `chore(gems-ai): migra para o GEMS AI 3.1.0 e troca o Spotless pelo formatter` (T013–T019 e T031; nenhum `.java`)
 - [ ] T021 [US2] Compilar o reator `backend/` em espelho com os mesmos parâmetros de T008 (`-Dcheckstyle.skip=true` permitido; ensaio: 130 `.class`) e guardar os SHA-256 (linha de base de R7)
 - [ ] T022 [US2] `gems-ai format java --project . --all --apply` (77 arquivos esperados) e commit isolado `style: formata o Java com o formatter do GEMS AI 3.1.0`, só com `.java`
 - [ ] T023 [US2] Recompilar com `-g:none` e comparar com T021: idênticos (A4); registrar em `evidence.md`
 - [ ] T024 [US2] Criar `.git-blame-ignore-revs` com o SHA de T022; commit `chore: ignora o commit de estilo no blame`; provar A7
+- [ ] T032 [US2] Regenerar `scripts/demo-manifest.json` sobre o código formatado (hashes, `before`/`after` das 28 transformações formatados pelo gems-ai, metadados) e o pin `MANIFEST_SHA256` de `scripts/sample.py`; diagnosticar e corrigir os testes Python restantes (remoção só com prova de obsolescência em `evidence.md`); commit `fix(scripts): regenera o manifesto do clean-demo sobre o código formatado`; provar A10 e A11
 
 ## Phase 5: User Story 3 — mutação e autoria (P2)
 
@@ -56,7 +58,7 @@ Formato: `- [ ] Tnnn [P] [USn] descrição com caminho`. `SDK/` = `Java-GEMS-SDK
 
 - [ ] T026 Review Sol read-only dos dois diffs, sem o commit de estilo, que já tem a prova mecânica: escopo, ausência de waiver, `.gems-ai/` só pela CLI, CI fixada em `@v3.1.0`
 - [ ] T027 Gate do SDK: S1–S3; PR no `Gabriel-mDias/Java-GEMS-SDK` (só com o ok do usuário); CI verde (S8); merge pelo usuário. Sem release: a próxima versão publicada (3.5.0, 004) já sai formatada
-- [ ] T028 Gate do sample: A1, A2, A3 (290 testes com Firebase real) e A9; PR no sample (só com o ok do usuário); CI verde nos 4 jobs (A8); merge pelo usuário
+- [ ] T028 Gate do sample: A1, A2, A3 (290 testes com Firebase real), A9, A10 e A11; PR no sample (só com o ok do usuário); CI verde nos 4 jobs (A8); merge pelo usuário
 - [ ] T029 Registrar `evidence.md` (números, bytecode, mutação, CI) e fechar a §12 do roteiro; atualizar o `.specify/feature.json` para a próxima rodada ativa
 - [ ] T030 Entregar ao usuário a saída de `gems-ai ide artifacts` para a instalação nas IDEs (C7)
 
@@ -65,8 +67,8 @@ Formato: `- [ ] Tnnn [P] [USn] descrição com caminho`. `SDK/` = `Java-GEMS-SDK
 ```
 T001 → T002 → T004 → T005 → T006 → T007 → T008 → T009 → T010 → T011 → T012 → (PR SDK, T027)
 T001 → T003
-T001 → T013 → T014 → T015 → {T016, T017} → T018 → T019 → T020 → T021 → T022 → T023 → T024
-T011, T024 → T025 → T026 → T027, T028 → T029 → T030
+T001 → T013 → T014 → T015 → {T016, T017, T031} → T018 → T019 → T020 → T021 → T022 → T023 → T024 → T032
+T011, T032 → T025 → T026 → T027, T028 → T029 → T030
 ```
 
 O SDK vem primeiro (decisão 5). O sample pode começar depois de T012, sem esperar o merge do SDK, porque
