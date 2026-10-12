@@ -13,7 +13,7 @@ import time
 from datetime import datetime, timezone
 import xml.etree.ElementTree as ET
 
-MANIFEST_SHA256 = '5498c75af67e62301bd154d3c15e83880a13b401e173ca0e0cd8051fd1af8028'
+MANIFEST_SHA256 = 'db531a1b5382afdaecc1cf665819cf3c5766256a223fe08c9f0a09f7ff9a9f9a'
 MANIFEST = Path(__file__).with_name('demo-manifest.json')
 PRUNED = {'.git', 'node_modules', 'target', 'dist', '.angular', '__pycache__', '.cache'}
 EXECUTIONS = []
@@ -172,12 +172,6 @@ def rename_text(text, relative, name, group, description):
         for module in sorted(APP_MODULES):
             value = value.replace(module, name + module[3:])
         value = value.replace('app.jobs.', name + '.jobs.')
-        if relative.endswith('/config/JobsConfiguration.java'):
-            # Renaming the property expands this signature beyond the project's formatter limit.
-            value = value.replace(
-                'bootstrapOperator( @Value("${' + name + '.jobs.operator-uid}") String uid, IdTokenVerifier verifier,',
-                'bootstrapOperator( @Value("${' + name + '.jobs.operator-uid}") String uid,\n'
-                '            IdTokenVerifier verifier,')
         if relative == 'environments/local/docker-compose.yml':
             value = re.sub(r'\bapp(?=[_-](?:containers|postgres|auth-emulator|backend|frontend|network|localstack))', name, value)
             value = value.replace('gems-demo', name + '-demo')
@@ -192,7 +186,7 @@ def rename_text(text, relative, name, group, description):
     return result
 
 
-def initialize_plan(root, name, group, description):
+def initialize_plan(root, name, group, description, skip_format=False):
     if (not re.fullmatch(r'[a-z][a-z0-9]*', name) or name in JAVA_KEYWORDS | WINDOWS_DEVICES | {'app'}
             or not re.fullmatch(r'[a-z][a-z0-9]*(?:\.[a-z][a-z0-9]*)+', group)
             or any(part in JAVA_KEYWORDS | WINDOWS_DEVICES for part in group.split('.'))):
@@ -273,11 +267,80 @@ def initialize_plan(root, name, group, description):
                            'after_sha256': digest(staged[destination])} for source, destination in sorted(destinations.items())],
               'manifest_sha256': digest(manifest_new), 'clean_demo': ['python', '-B', 'scripts/sample.py',
                   'clean-demo', '--root', str(root), '--dry-run'],
-              'services_started': [], 'managed_snapshot': 'byte-preserved'}
+              'services_started': [], 'managed_snapshot': 'byte-preserved',
+              'formatting': {'enabled': not skip_format, 'cwd': 'backend',
+                             'argv': ['mvnw.cmd' if os.name == 'nt' else './mvnw', '-B', '-q', 'spotless:apply'],
+                             'manifest_java_payloads': True}, 'formatted': []}
     return report, originals, staged, destinations
 
 
-def initialize_apply(root, report, originals, staged, destinations):
+def initializer_formatter(root, runner):
+    """Check the local wrapper and Java before the first rename write."""
+    wrapper = 'backend/' + ('mvnw.cmd' if os.name == 'nt' else 'mvnw')
+    path = inside(root, wrapper, required=False)
+    if not path.is_file():
+        raise Refusal('Backend formatting requires the Maven wrapper: ' + wrapper)
+    if os.name != 'nt' and not os.access(path, os.X_OK):
+        raise Refusal('Backend formatting requires an executable Maven wrapper: ' + wrapper)
+    java_home = os.environ.get('JAVA_HOME')
+    java = str(Path(java_home) / 'bin' / ('java.exe' if os.name == 'nt' else 'java')) if java_home else 'java'
+    try:
+        runner([java, '-version'], root / 'backend', timeout=30)
+    except (OSError, Refusal, subprocess.TimeoutExpired) as error:
+        raise Refusal('Backend formatting requires available Java (JAVA_HOME or PATH)') from error
+    return [str(path) if os.name == 'nt' else './mvnw', '-B', '-q', 'spotless:apply']
+
+
+def format_initialized_backend(root, report, argv, java_paths, runner):
+    """Use the project's formatter for both live Java and clean-demo replacement payloads."""
+    before = {relative: inside(root, relative).read_bytes() for relative in java_paths}
+    manifest_path = inside(root, 'scripts/demo-manifest.json')
+    manifest = json.loads(manifest_path.read_bytes())
+    try:
+        runner(argv, root / 'backend', timeout=600)
+        formatted = {relative: inside(root, relative).read_bytes() for relative in java_paths}
+        replacements = [entry for entry in manifest['files'] if entry.get('operation') == 'transform'
+                        and entry['path'] in formatted]
+        # A subsequent clean-demo must not reintroduce lines made too long by the rename.
+        try:
+            for entry in replacements:
+                inside(root, entry['path']).write_bytes(entry['after'].encode('utf-8'))
+            if replacements:
+                runner(argv, root / 'backend', timeout=600)
+                for entry in replacements:
+                    entry['after'] = inside(root, entry['path']).read_bytes().decode('utf-8')
+                    entry['after_sha256'] = digest(entry['after'].encode('utf-8'))
+        finally:
+            for relative, data in formatted.items():
+                inside(root, relative).write_bytes(data)
+    except (OSError, Refusal, subprocess.TimeoutExpired) as error:
+        raise Refusal('Backend Spotless formatting failed; initialization rolled back. '
+                      'Check Maven wrapper, Java and local dependencies; --skip-format is an offline '
+                      'fallback only, never for gates.') from error
+    for entry in manifest['files'] + manifest['metadata_entries']:
+        if entry['path'] in formatted:
+            entry['sha256'] = digest(formatted[entry['path']])
+            if entry.get('operation') == 'transform':
+                entry['before'] = formatted[entry['path']].decode('utf-8')
+    manifest_data = (json.dumps(manifest, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
+    script_path = inside(root, 'scripts/sample.py')
+    before.update({'scripts/demo-manifest.json': manifest_path.read_bytes(),
+                   'scripts/sample.py': script_path.read_bytes()})
+    script_data, count = re.subn(rb"MANIFEST_SHA256 = '[a-f0-9]{64}'",
+                                ("MANIFEST_SHA256 = '" + digest(manifest_data) + "'").encode(),
+                                before['scripts/sample.py'])
+    if count != 1:
+        raise Refusal('Nonunique formatted manifest pin')
+    manifest_path.write_bytes(manifest_data)
+    script_path.write_bytes(script_data)
+    formatted.update({'scripts/demo-manifest.json': manifest_data, 'scripts/sample.py': script_data})
+    report['formatted'] = [{'path': relative, 'before_sha256': digest(before[relative]),
+                            'after_sha256': digest(data)} for relative, data in sorted(formatted.items())
+                           if data != before[relative]]
+    report['formatted_manifest_sha256'] = digest(manifest_data)
+
+
+def initialize_apply(root, report, originals, staged, destinations, tool_runner=None):
     checkout(root)
     for relative, original in originals.items():
         if inside(root, relative).read_bytes() != original:
@@ -285,6 +348,14 @@ def initialize_apply(root, report, originals, staged, destinations):
     for source, destination in destinations.items():
         if source != destination and inside(root, destination, required=False).exists():
             raise Refusal('Concurrent destination conflict: ' + destination)
+    runner = tool_runner or command
+    java_originals = {}
+    if report['formatting']['enabled']:
+        argv = initializer_formatter(root, runner)
+        tracked = command(['git', '--no-optional-locks', '-C', str(root), 'ls-files', '-z'], root).split('\x00')
+        java_originals = {relative: inside(root, relative).read_bytes() for relative in tracked
+                          if relative.startswith('backend/') and relative.endswith('.java')
+                          and not secret_path(relative)}
     print(json.dumps({'validated_plan': report}), file=sys.stderr, flush=True)
     created = []
     try:
@@ -297,12 +368,17 @@ def initialize_apply(root, report, originals, staged, destinations):
         for source, destination in destinations.items():
             if source != destination:
                 inside(root, source).unlink()
-    except (OSError, Refusal):
+        if report['formatting']['enabled']:
+            format_initialized_backend(root, report, argv,
+                                       [destinations.get(relative, relative) for relative in java_originals], runner)
+    except (OSError, Refusal, subprocess.TimeoutExpired):
         for relative in created:
             path = inside(root, relative, required=False)
             if path.exists():
                 path.unlink()
         for relative, original in originals.items():
+            inside(root, relative, required=False).write_bytes(original)
+        for relative, original in java_originals.items():
             inside(root, relative, required=False).write_bytes(original)
         raise
     report['mode'], report['result'] = 'apply', 'INITIALIZED'
@@ -499,10 +575,29 @@ def plan(root):
                      ['node', 'scripts/action-catalog.mjs', '--write'],
                      ['node', 'scripts/verify-authorization-actions.mjs']],
     }
+    report['formatted'] = sorted(relative for relative in report['transform'] + report['regenerate']
+                                 if relative.startswith('frontend/')
+                                 and PurePosixPath(relative).suffix in {'.ts', '.html', '.scss', '.json'})
     return report, originals, staged, catalog_cp, classes
 
 
-def apply(root, report, originals, staged, catalog_cp, classes):
+def clean_demo_prettier(root):
+    """Resolve only the installed project CLI; never download a global formatter."""
+    try:
+        inside(root, 'frontend/node_modules/prettier/package.json')
+        cli = inside(root, 'frontend/node_modules/prettier/bin/prettier.cjs')
+        import shutil
+        node = shutil.which('node')
+        if not node:
+            raise Refusal('Node is unavailable')
+        unlinked(Path(node).absolute())
+    except (OSError, Refusal) as error:
+        raise Refusal('Project Prettier is unavailable; run npm ci in the copy frontend '
+                      'before clean-demo. No files were changed.') from error
+    return [node, str(cli), '--write']
+
+
+def apply(root, report, originals, staged, catalog_cp, classes, prettier_runner=None):
     # Preconditions for external generators are checked before the first source write.
     output_preflight(root, classes, report['catalog']['commands'][1][3])
     unlinked(catalog_cp)
@@ -518,7 +613,10 @@ def apply(root, report, originals, staged, catalog_cp, classes):
         unlinked(jar)
     inside(root, 'frontend/scripts/action-catalog.mjs')
     inside(root, 'frontend/scripts/verify-authorization-actions.mjs')
-    inside(root, 'frontend/node_modules/prettier/package.json')
+    # Injectable only for offline unit tests; production always resolves the copy's CLI.
+    prettier_argv = (['node', 'node_modules/prettier/bin/prettier.cjs', '--write']
+                     if prettier_runner is not None else clean_demo_prettier(root))
+    prettier_argv += [relative.removeprefix('frontend/') for relative in report['formatted']]
     for executable in ['java', 'javac', 'node']:
         import shutil
         resolved = shutil.which(executable)
@@ -569,6 +667,11 @@ def apply(root, report, originals, staged, catalog_cp, classes):
                 command([instruction[0], '@' + str(argument_paths[index])], cwd)
             else:
                 command(instruction, cwd)
+        if report['formatted']:
+            try:
+                (prettier_runner or command)(prettier_argv, root / 'frontend', timeout=120)
+            except (OSError, Refusal, subprocess.TimeoutExpired) as error:
+                raise Refusal('Project Prettier formatting failed; clean-demo rolled back.') from error
     except (OSError, Refusal, subprocess.TimeoutExpired):
         for relative, original in originals.items():
             inside(root, relative, required=False).write_bytes(original)
@@ -578,13 +681,15 @@ def apply(root, report, originals, staged, catalog_cp, classes):
     report['result'] = 'APPLIED'
 
 
-def main():
+def main(tool_runner=None, prettier_runner=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('operation', choices=['clean-demo', 'initialize'])
     parser.add_argument('--root', required=True)
     parser.add_argument('--name')
     parser.add_argument('--group', default='br.com.gems')
     parser.add_argument('--description', default='')
+    parser.add_argument('--skip-format', action='store_true',
+                        help='initialize only: offline fallback without Spotless; never use for gates')
     flags = parser.add_mutually_exclusive_group()
     flags.add_argument('--dry-run', action='store_true')
     flags.add_argument('--apply', action='store_true')
@@ -596,15 +701,17 @@ def main():
         if args.operation == 'initialize':
             if args.name is None:
                 raise Refusal('Product name is required')
-            report, originals, staged, destinations = initialize_plan(root, args.name, args.group, args.description)
+            report, originals, staged, destinations = initialize_plan(root, args.name, args.group, args.description,
+                                                                     args.skip_format)
             if args.apply:
-                initialize_apply(root, report, originals, staged, destinations)
+                initialize_apply(root, report, originals, staged, destinations, tool_runner=tool_runner)
         else:
-            if args.name is not None or args.group != 'br.com.gems' or args.description:
+            if args.name is not None or args.group != 'br.com.gems' or args.description or args.skip_format:
                 raise Refusal('Initializer options are not valid for clean-demo')
             report, originals, staged, catalog_cp, classes = plan(root)
             if args.apply:
-                apply(root, report, originals, staged, catalog_cp, classes)
+                apply(root, report, originals, staged, catalog_cp, classes,
+                      prettier_runner=prettier_runner)
         report['commands_executed'] = EXECUTIONS
         print(json.dumps(report, indent=2))
         return 0

@@ -9,9 +9,13 @@ import subprocess
 import sys
 import unittest
 import uuid
+from unittest.mock import patch
+import contextlib
+import io
 
 SOURCE = Path(__file__).resolve().parents[1]
-OUTPUT = SOURCE.parent / '.tooling/astra-sample-development-20261009/t027-clean-demo'
+OUTPUT = Path(os.environ.get('SAMPLE_TEST_OUTPUT', str(
+    Path(os.environ.get('TEMP', str(SOURCE))) / 't028c9-clean-demo-fixtures')))
 CLI = Path(os.environ.get('SAMPLE_TEST_CLI', str(SOURCE / 'scripts/sample.py')))
 
 
@@ -21,6 +25,13 @@ def hashes(root):
 
 
 class CleanDemoSafety(unittest.TestCase):
+    def test_manifest_operation_counts_match_files(self):
+        manifest = json.loads((SOURCE / 'scripts/demo-manifest.json').read_text('utf-8'))
+        actual = {operation: sum(entry['operation'] == operation for entry in manifest['files'])
+                  for operation in manifest['counts']}
+        self.assertEqual(actual['delete'], 27)
+        self.assertEqual(manifest['counts'], actual)
+
     def setUp(self):
         self.root = OUTPUT / ('fixture-' + uuid.uuid4().hex)
         self.root.mkdir(parents=True)
@@ -69,7 +80,7 @@ class CleanDemoSafety(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             plan = json.loads(result.stdout)
             self.assertEqual(plan['mode'], 'dry-run')
-            self.assertEqual(len(plan['delete']), 26)
+            self.assertEqual(len(plan['delete']), 27)
             self.assertEqual(len(plan['regenerate']), 3)
             self.assertEqual(hashes(self.root), before)
 
@@ -173,6 +184,112 @@ class CleanDemoSafety(unittest.TestCase):
         module = importlib.util.module_from_spec(specification)
         specification.loader.exec_module(module)
         return module
+
+    def prepared_apply(self):
+        module = self.module()
+        clean = module.plan(self.root)
+        security = clean[3].parent
+        security.mkdir(parents=True, exist_ok=True)
+        jar = security / 'fixture.jar'
+        jar.write_bytes(b'offline jar')
+        clean[3].write_text(str(jar), encoding='utf-8')
+        tool = security / 'fixture-tool.exe'
+        tool.write_bytes(b'offline tool')
+        return module, clean, tool
+
+    def test_prettier_formats_closed_frontend_list_and_replay_matches(self):
+        module, clean, tool = self.prepared_apply()
+        dry_plan = json.loads(json.dumps(clean[0]))
+        expected = sorted(relative for relative in clean[0]['transform'] + clean[0]['regenerate']
+                          if relative.startswith('frontend/')
+                          and Path(relative).suffix in {'.ts', '.html', '.scss', '.json'})
+        self.assertEqual(clean[0]['formatted'], expected)
+        calls = []
+
+        def catalog(argv, cwd):
+            if argv == ['javac', '-version']:
+                return 'javac 21.0.0'
+            if argv[:3] == ['node', 'scripts/action-catalog.mjs', '--write']:
+                for relative in clean[0]['regenerate']:
+                    (self.root / relative).write_bytes(b'{}  \n')
+            return ''
+
+        def prettier(argv, cwd, timeout=120):
+            self.assertEqual(argv[:3], ['node', 'node_modules/prettier/bin/prettier.cjs', '--write'])
+            self.assertEqual(cwd, self.root / 'frontend')
+            self.assertEqual(argv[3:], [relative.removeprefix('frontend/') for relative in expected])
+            calls.append(argv.copy())
+            for relative in argv[3:]:
+                path = cwd / relative
+                path.write_text('\n'.join(line.rstrip() for line in path.read_text('utf-8').splitlines())
+                                + '\n', encoding='utf-8', newline='\n')
+
+        def run(plan):
+            with patch.object(module, 'command', side_effect=catalog), \
+                    patch('shutil.which', return_value=str(tool)), contextlib.redirect_stderr(io.StringIO()):
+                module.apply(self.root, *plan, prettier_runner=prettier)
+
+        run(clean)
+        first = {relative: (self.root / relative).read_bytes()
+                 for relative in clean[0]['transform'] + clean[0]['regenerate']}
+        self.assertEqual(clean[0]['formatted'], expected, 'Dry-run/apply formatting plans must match')
+        self.assertTrue(all(clean[0]['hashes_after'][relative] == module.digest(data)
+                            for relative, data in first.items()))
+        prettier(calls[0], self.root / 'frontend')
+        self.assertEqual(first, {relative: (self.root / relative).read_bytes() for relative in first})
+        # Independent replay starts from the exact original source bytes, with no network.
+        for relative, data in clean[1].items():
+            (self.root / relative).write_bytes(data)
+        replay = module.plan(self.root)
+        self.assertEqual(replay[0], dry_plan, 'Independent dry-run plans must be identical')
+        self.assertEqual(replay[0]['formatted'], expected)
+        run(replay)
+        self.assertEqual(first, {relative: (self.root / relative).read_bytes() for relative in first})
+
+    def test_prettier_failure_rolls_back_all_manifest_sources(self):
+        module, clean, tool = self.prepared_apply()
+
+        def failed(argv, cwd, timeout=120):
+            (cwd / argv[3]).write_bytes(b'partial formatter output')
+            raise module.Refusal('offline formatter failure')
+
+        def catalog(argv, cwd):
+            return 'javac 21.0.0' if argv == ['javac', '-version'] else ''
+
+        with patch.object(module, 'command', side_effect=catalog), \
+                patch('shutil.which', return_value=str(tool)), contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaisesRegex(module.Refusal, 'Prettier formatting failed.*rolled back'):
+                module.apply(self.root, *clean, prettier_runner=failed)
+        for relative, original in clean[1].items():
+            self.assertEqual((self.root / relative).read_bytes(), original, relative)
+
+    def test_missing_project_prettier_refuses_before_mutation(self):
+        module, clean, tool = self.prepared_apply()
+        before = hashes(self.root)
+        with self.assertRaisesRegex(module.Refusal, 'Project Prettier is unavailable.*npm ci'):
+            module.apply(self.root, *clean)
+        self.assertEqual(hashes(self.root), before)
+        self.assertFalse((clean[3].parent / 'clean-demo-backup.json').exists())
+
+    def test_prettier_resolves_only_the_copy_project_cli(self):
+        module = self.module()
+        cli = self.root / 'frontend/node_modules/prettier/bin/prettier.cjs'
+        cli.parent.mkdir(parents=True)
+        cli.write_bytes(b'offline fixture CLI')
+        (cli.parent.parent / 'package.json').write_bytes(b'{}')
+        tool = cli.parent / 'node.exe'
+        tool.write_bytes(b'offline node')
+        with patch('shutil.which', return_value=str(tool)):
+            self.assertEqual(module.clean_demo_prettier(self.root), [str(tool), str(cli), '--write'])
+
+    def test_app_spec_payload_and_manifest_pin_are_updated(self):
+        module = self.module()
+        data = module.MANIFEST.read_bytes()
+        self.assertEqual(module.digest(data), module.MANIFEST_SHA256)
+        entry = next(entry for entry in json.loads(data)['files']
+                     if entry['path'] == 'frontend/src/app/app.spec.ts')
+        self.assertIn("])('devePreservarRetorno_quandoLoginEmAndamentoEm %s', (url) => {", entry['after'])
+        self.assertEqual(module.digest(entry['after'].encode('utf-8')), entry['after_sha256'])
 
     def test_regular_external_hardlinks_refuse_before_any_write(self):
         module = self.module()
