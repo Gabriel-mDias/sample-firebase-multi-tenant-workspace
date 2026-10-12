@@ -235,7 +235,9 @@ flags de segurança e persistência são verdadeiras.
 T001→T005 → US1 → US2 → US3 → docs/review/gate → PR SDK → release (usuário) → adoção sample → gate → humano → PR
 ```
 
-Ordens obrigatórias: teste antes da implementação em cada história; T018b depois de T018; nada do
+Ordens obrigatórias: a fase 3 desta rodada só começa depois que a
+[006](../006-formatter-gems-ai/roteiro.md) formatar o Java-GEMS-SDK (decisão 5 da 006, de
+2026-10-12), e a 3.5.0 sai no formato novo; teste antes da implementação em cada história; T018b depois de T018; nada do
 sample antes da tag publicada (T025). Sem paralelismo de escritores: US1, US2 e US3 dividem o mesmo
 arquivo de teste.
 
