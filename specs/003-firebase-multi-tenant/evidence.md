@@ -184,3 +184,79 @@ rg -n -i -- 'termos operacionais|termo operacional' specs/003-firebase-multi-ten
 **CI remoto no HEAD `98db709`: NOT_RUN**, até push e execução observada. MIG3B e o checker local não são execução remota. **T032: NOT_RUN** até homologação manual pelo usuário. **T030 N=1000: NOT_RUN**. Toda execução planejada e não observada permanece NOT_RUN.
 
 DOC1 executou apenas leitura e edição documental, sem builds, rede ou commit. O gate GEMS não foi reexecutado neste contrato, que proíbe builds e restringe a verificação a uma busca de leitura; seu PASS acima é a evidência observada pelo coordenador em T031. A regra `/frontend/e2e/.artifacts/` já existia em `.gitignore` e foi preservada com comentário documental. Nenhum segredo, caminho de credencial ou endereço de correio foi acrescentado. Estado da lista principal: **23 tarefas `[x]`, 11 tarefas `[ ]`**; não equivale a fechamento integral da feature.
+
+<a id="ci-remoto-20261012"></a>
+
+## CI remoto — 2026-10-12
+
+O PR #9 (`feature/003-firebase-multi-tenant` → `main`) entrou com o merge `c111d8e`. Execução observada: run **38295576662**, com os 4 jobs PASS.
+
+| Job | Resultado observado |
+| --- | --- |
+| Backend, reator Maven com testes | PASS, 5m14s. `app-security` 1, `app-core` 87 e `app-deploy` 202 testes, todos com 0 falhas, 0 erros e 0 skips. `T029 SUITE PASS` contra o projeto Firebase real de testes, usando o secret `FIREBASE_TEST_SERVICE_ACCOUNT_JSON` |
+| Frontend: testes, build e formatação | PASS. Vitest com 419 testes em 24 arquivos |
+| GEMS AI, gate das rules | PASS. `check --strict` conformant e `verify-angular` passed |
+| Contexto de agentes | PASS |
+
+Duas correções de CI entraram no mesmo PR, cada uma com prova antes do push:
+
+- **`7b5cb5b`.** O job `gems-ai` deixou de fazer o checkout cross-repo do `gems-ai-sdk` privado, que respondia "Repository not found" com o `GITHUB_TOKEN`. Agora ele usa a action compartilhada `Gabriel-mDias/gems-ai-sdk@main`, que veio do PR #15 do SDK (merge `baba0f5`), com Actions access `user` e sem token. O `scripts/gems-ai.ps1` passou a comparar a versão por igualdade exata, onde antes usava `Contains`.
+- **`53adbaa`.** O `.gitattributes` passou a usar `eol=crlf` nos caminhos do `gems-ai.lock.json`. A CLI 3.0.0 grava o hash dos bytes CRLF, e o checkout limpo com `eol=lf` acusava drift em todos os arquivos gerenciados. Prova: um clone limpo sem a correção falhou com drift (exit 1); com a correção, retornou conformant/passed (exit 0), tanto com `autocrlf=false` quanto com `autocrlf=true`.
+
+Com isso, a pendência "CI remoto NOT_RUN" da verificação T031 acima fica **satisfeita**.
+
+<a id="homologacao-local-20261012"></a>
+
+## Homologação em tela pelo product owner — 2026-10-12
+
+**Ambiente.** Execução local na máquina do usuário, com o código de `main` `c111d8e` e o projeto Firebase real de testes `sample-firebase-multi-tenant`. Não foi usado emulador.
+
+| Componente | Configuração |
+| --- | --- |
+| Backend | Jar do `app-deploy` no host, porta 8081. `FIREBASE_EMULATOR_ENABLED=false`, `check-revoked` ativo, ADC pela conta de serviço de testes e CORS restrito a `http://localhost:4280` |
+| Frontend | Imagem do próprio `frontend/` em container, porta 4280. `APP_RUNTIME_PROFILE=production`, com a configuração Web pública lida do app registrado no projeto |
+| Banco | PostgreSQL 16 dedicado (`gems-local-real-db`, porta 55432), separado do demo e criado vazio. As migrations foram aplicadas pela aplicação |
+
+**Preparação.** Operador e testers são identificados por rótulo, sem e-mail.
+
+1. Login Google do **Operador** sem cadastro SQL: a API recusou com `LOCAL_DENIED`, e o evento `ACCESS_REFUSED_LOCAL_DENIED` foi registrado. Isso confirma que o primeiro login não concede administração.
+2. Job `bootstrap` com o UID Google do Operador e uma prova efêmera: concluído. O Operador ficou `BOUND`, com as 14 ações globais do catálogo.
+3. Empresas **Alpha** e **Beta** criadas pela API central. Cada uma foi provisionada pelo job `provision` (schemas `tenant_alpha` e `tenant_beta`), e o Operador foi definido como primeiro administrador nas duas, com as 12 ações tenant. `/api/auth/context` retornou 200 para Alpha e para Beta.
+4. **Tester Beta**, pré-cadastrado como Google (`GOOGLE_PENDING`) pela API central, recebeu vínculo **somente em Beta** pela API tenant. Ganhou `CONSULTAR_DEMO`, `INSERIR_DEMO`, `ALTERAR_DEMO` e `EXCLUIR_DEMO`, sem `VISUALIZAR_VALOR_RESTRITO`. Uma tentativa anterior com o token de uma conta sem cadastro foi recusada com `LOCAL_DENIED`, como esperado.
+
+As provas efêmeras (ID tokens) ficaram apenas em um arquivo local, foram apagadas depois do uso e não aparecem em nenhum artefato.
+
+**Percorrido e aprovado pelo usuário em tela**, com resposta literal: "Homologado as ações dos dois usuários, a visão restrita daquele que tem o tenant isolado, além da tabela de audit da base de dados, a flag sigilosa e a gestão dos usuários pelo backend! Aqui, está perfeito até o momento."
+
+| Cenário (matriz da [seção 8 do guia](configuracao-homologacao-firebase.md)) | Resultado |
+| --- | --- |
+| Login Google real do Operador e do Tester Beta (vínculo `GOOGLE_PENDING` → `BOUND` no primeiro login) | PASS, observado pelo usuário |
+| Isolamento: o Tester Beta vê somente Beta; registros de Alpha e Beta cadastrados pelo usuário permanecem separados | PASS, observado pelo usuário |
+| Campo restrito: sem `VISUALIZAR_VALOR_RESTRITO`, o valor fica oculto para o Tester Beta e visível para o Operador | PASS, observado pelo usuário |
+| Ações de DemoRegistro dos dois usuários (consultar, inserir, alterar, excluir) | PASS, observado pelo usuário |
+| Auditoria por tenant (`tenant_*.audit_operation` e `audit_change`) no banco | PASS, observado pelo usuário no DBeaver |
+| Gestão de usuários pelo backend: pré-cadastro, vínculo e concessões | PASS, observado pelo coordenador e conferido pelo usuário |
+| Primeiro login sem cadastro SQL não concede acesso | PASS, `LOCAL_DENIED` observado |
+| Senha: entrega real do e-mail de primeiro acesso e reset pelo Firebase, definição da senha e login por e-mail e senha em seguida | PASS, observado pelo usuário. Fala literal: "login e senha após o reset/primeiro acesso: OK!" |
+
+| Disable e revogação Firebase com o token anterior do Tester Beta (login Google), via Identity Toolkit `accounts:update` com a conta de serviço de testes, chamando `GET /api/auth/me` a cada passo | PASS, observado pelo coordenador: 1) baseline 200; 2) conta desabilitada → 401 `INVALID_TOKEN`; 3) reabilitada, token não revogado → 200; 4) `validSince` atual (revogação) → 401 `INVALID_TOKEN`. A conta foi reabilitada no passo 3 |
+| Spoof de `X-Tenant-Alias`: `GET /api/auth/context`, `POST /api/demo-registros/search` e `GET /api/demo/tenant/read` com token real | PASS, observado pelo coordenador. Tester Beta: `beta` → 200 nos três; `alpha` → 403 `LOCAL_DENIED` nos três; alias inexistente → 403 `LOCAL_DENIED` nos três. Operador (vinculado a Alpha e Beta): alias inexistente → 403 `LOCAL_DENIED` nos três |
+| Revogar grant SQL sem logout: `DELETE /grants/{id}` de `CONSULTAR_DEMO` do Tester Beta | PASS. Mesmo token: `/auth/me` 200, contexto Beta 200 e listar DemoRegistro 403. Em tela, depois do F5, o usuário observou o menu vazio e o aviso do espaço de trabalho com a sugestão de trocar de empresa |
+| Encerrar membership sem logout: `DELETE /memberships/{id}` em Beta | PASS. Mesmo token: `/auth/me` 200; contexto Beta e DemoRegistro 403 `LOCAL_DENIED`. Em tela: "Nenhuma empresa disponível" |
+| Suspensão pelo sample com o worker | PASS. `POST /users/{id}/suspend` 200: bloqueio local imediato (403 `LOCAL_DENIED` nas três chamadas com o token ainda válido no Firebase), com `DISABLE` e `REVOKE` v1 em `PENDING`. Rodada do `identity-worker`, exit 0: os dois comandos `ACKED`/`APPLIED` na 1ª tentativa, e o mesmo token passou a 401 `INVALID_TOKEN`. Em tela: sessão derrubada para o login e novo login recusado |
+| Reativação com o worker | PASS no ciclo remoto. `POST /users/{id}/reactivate` 200 → `ENABLE` v2 `PENDING`; rodada do worker → `ACKED`/`APPLIED`; usuário `BOUND`, versão 2, vigente; memberships 0, como manda o [data-model](data-model.md). Ver o achado 4 abaixo |
+| Restauração explícita depois da reativação | PASS. Global `CONSULTAR_PROPRIA_CONTA`, novo vínculo em Beta e as 4 ações do DemoRegistro com 201. O usuário confirmou o acesso em tela: "Teste realizado e respondeu como esperado" |
+| Retorno pós-login (`safeReturnPath`): `/demo-registro/list` volta à lista depois da escolha de Beta; `returnTo=https://example.com`, `returnTo=//example.com` e `returnTo=/login` terminam na home, sem navegação externa nem loop | PASS, observado pelo usuário: "Todos as urls responderam como esperado" |
+| Tela de login: sem rolagem horizontal em 320/768/1440 px, navegação por Tab/Enter com foco visível, erro de senha exibido com campo limpo, duplo clique gera um só envio e Voltar depois do logout não mostra dados | PASS, observado pelo usuário: "Deu tudo certo" |
+| Lighthouse na `/login` (container local, sem HTTPS) | Acessibilidade **100**, sem alerta de contraste. Performance 52, Melhores práticas 77 e SEO 83, registrados sem meta, por decisão do usuário: "para um projeto de sample, o critério de performance não precisa estar alto". Ver o achado 6 |
+
+Com isso, todos os cenários da matriz da seção 8 do guia foram percorridos, e a T032 passa a `[x]`.
+
+**Achados da preparação** (código vence; divergências reportadas):
+
+1. O guia aponta uma "pendência de CORS". Ela se resolve com a propriedade que o código já suporta, `app.security.cors.allowed-origins` (`SecurityConfig.java:50`), definida por `APP_SECURITY_CORS_ALLOWED_ORIGINS`. O guia ainda não menciona essa propriedade.
+2. O `nginx.conf` do frontend resolve o host `backend` no boot, mesmo quando `API_BASE_URL` é absoluta. Fora do Compose, o container só sobe com `--add-host backend:<ip>`.
+3. O `README.md` da raiz ainda descreve o E2E, o cleanup e o benchmark como pendentes, o que diverge do estado atual (seção [CI remoto](#ci-remoto-20261012) e T030 acima).
+4. **Reativação não devolve a ação básica de conta.** `JdbcUserService.suspend` (Java-GEMS-SDK `gems-firebase-auth`) encerra também `usuario_role_global`, incluindo `CONSULTAR_PROPRIA_CONTA`, que é concedida automaticamente no cadastro (`defaultSelfAction`). `requestReactivation` e o ACK do `ENABLE` não a devolvem, porque o [data-model](data-model.md) proíbe reabrir grants encerrados. Efeito observado: a conta fica vigente no Firebase e no SQL, mas `/auth/me` responde 403 e o login em tela não se completa (Google e senha), sem uma mensagem que explique o motivo. **Decisão do usuário (2026-10-12), literal:** "Sobre a reativação, a claim precisa automaticamente ser devolvida em uma reativação". Isso altera o contrato do data-model (somente a ação padrão de conta; memberships e demais grants continuam sem reabertura) e o SDK Java. Fica como mudança futura, com spec, release do SDK e adoção no sample; não foi implementada nesta homologação.
+5. No log do `identity-worker`, cada evento `IDENTITY_COMMAND_ACKED` aparece entregue duas vezes com o mesmo id, o que é compatível com entrega "pelo menos uma vez". Observação, sem falha funcional observada.
+6. O `frontend/nginx.conf` não envia headers de segurança (CSP com `frame-ancestors` ou `X-Frame-Options`, COOP; HSTS só se aplica com HTTPS) nem `Cache-Control` de longa duração para assets com hash. Também não existe `public/robots.txt`, e o fallback do SPA devolve o `index.html` no lugar dele. Nada disso é crítico para o sample local. A falta de proteção contra clickjacking é o único item com peso, porque o sample é molde de SaaS com login. Fica como melhoria, junto com o achado 2.

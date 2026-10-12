@@ -30,7 +30,7 @@ Essa autorização satisfaz o gate de roteiro antes de código para este plano. 
 - [x] Java SDK full clean verify/gate oficial/publicação/consumer remoto isolado e compatibilidade aditiva — satisfeito por T013 aceita (java-release-adjudication), conforme tasks.md. Nota histórica: em 2026-10-08 este gate constava aberto.
 - [x] Angular core+adapter publicados e consumer remoto isolado — aceite root 2026-10-08; consumers PASS histórico recuperado.
 - [ ] Sample baseline zero/gates backend/frontend/E2E constraints/races/outbox/thread/isolation/cleanup pass.
-- [ ] Homolog real isolada passa e bench 100/1000 registrado sem promessa de capacidade.
+- [ ] Homolog real isolada passa e bench 100/1000 registrado sem promessa de capacidade. *(2026-10-12: homologação em tela parcial aprovada, ver bloco abaixo; bench só com 100.)*
 
 A preparação histórica de 2026-10-07 não marcou critérios satisfeitos; agora Java (T013) e Angular estão satisfeitos por aceite. [evidence.md](evidence.md) distingue PASS/FAIL/NOT_RUN; autoridade de aceite pertence ao root+reviewer, não ao executor.
 
@@ -61,3 +61,45 @@ Java orçamento **6/6, escaladas 0/1**, consulta de extensão pendente, sem rese
 ## Emenda 6B — 2026-10-09
 
 Decisão do usuário, registrada literalmente: **"6 - opcao b"**, com o contexto "Esse projeto em si é um TESTE" e a instrução de usar o ambiente Firebase entregue. Efeito: a suíte automatizada, inclusive o CI, passa a usar o projeto Firebase real de testes `sample-firebase-multi-tenant` via ADC, com o secret `FIREBASE_TEST_SERVICE_ACCOUNT_JSON` materializado em arquivo temporário no runtime; usuários sintéticos usam namespace por execução (prefixo + run id no e-mail/UID), com limpeza garantida e varredura de órfãos restrita ao namespace; o PostgreSQL continua descartável (Testcontainers); o emulador fica apenas como opção demo/offline do Compose local; a indisponibilidade do provedor é testada por fault injection local determinística, nunca derrubando o Firebase compartilhado; Google OAuth real e entrega de reset por e-mail saem da automação e passam a verificação humana. Afeta FR-013, T026, T029, plan, quickstart, contracts/operations e contracts/backend; a constituição 3.1.0 (MINOR) registra a emenda. A ratificação vem desta decisão do usuário na data; nenhuma assinatura humana adicional foi criada.
+
+## Critérios de aprovação — homologação
+
+> ✅ **HOMOLOGADA pelo product owner em 2026-10-12**, em tela, com dado real de negócio, no escopo
+> percorrido. O ambiente foi local, com o projeto Firebase real de testes e um PostgreSQL dedicado.
+> Foram percorridos: login Google real de dois usuários (Operador central e Tester só em Beta), o
+> isolamento Alpha/Beta com registros cadastrados pelo usuário, o campo restrito oculto para quem
+> não tem a ação, o CRUD do DemoRegistro, a auditoria por tenant no banco e a gestão de usuários,
+> vínculos e concessões pelo backend. Fala do usuário: "Aqui, está perfeito até o momento.
+> Acredito que podemos prosseguir para a próxima fase". A rodada libera a fase de História.
+> Depois, no mesmo dia, o usuário aprovou o fluxo por senha: "login e senha após o reset/primeiro
+> acesso: OK!". Disable e revogação com o token anterior do Tester retornaram 401, e a reabilitação
+> retornou 200. O spoof de `X-Tenant-Alias` com o token real do Tester retornou 403 para Alpha e
+> para alias inexistente, e 200 para Beta. Revogação de grant, encerramento de vínculo, suspensão
+> com worker e reativação se comportaram como o contrato, sem logout. A decisão do usuário de devolver
+> a ação básica de conta na reativação ficou registrada como mudança futura (achado 4 da evidência).
+> Por fim, o retorno pós-login (rota interna preservada; URL externa, `//host` e loop descartados) e
+> a tela de login (320/768/1440 px, teclado, erro, duplo envio, logout e Lighthouse Acessibilidade
+> 100) passaram. A matriz da seção 8 do guia foi percorrida por inteiro, e a T032 está `[x]`.
+> Detalhe e achados estão em
+> [evidence.md](evidence.md#homologacao-local-20261012).
+>
+> ✅ **Rodada encerrada em 2026-10-12, sem a fase de História.** O product owner dispensou o
+> documento de negócio `business/RF0NN-*.md`. Fala literal: "ignore a história. Para esse projeto
+> não faz sentido". As correções dos achados seguem nas rodadas
+> [004](../004-reativacao-acao-padrao/roteiro.md) e [005](../005-endurecimento-frontend-docs/roteiro.md).
+
+#### Números medidos em 2026-10-12
+
+As medições vêm do CI run 38295576662, no merge `c111d8e`, e do T030 no HEAD `7080bc7`. A coluna
+"Antes" fica sem valor porque a rodada não mediu a linha de base.
+
+| Métrica | Antes | Depois |
+| :--- | ---: | ---: |
+| Testes de backend (reator inteiro) | — | **290** |
+| — `app-security` | — | 1 |
+| — `app-core` | — | 87 |
+| — `app-deploy` (integração, Testcontainers e E2E com Firebase real) | — | 202 |
+| Testes de frontend (Vitest) | — | **419** em 24 arquivos |
+| Ações do catálogo: globais / tenant | — | 14 / 12 |
+| Provisionamento N=100 (T030): p50 / p95 / máx por tenant | — | 1,43 s / 1,56 s / 1,69 s |
+| Prova por mutação (MUT1, D001-B) | — | 10/10 detectadas |
