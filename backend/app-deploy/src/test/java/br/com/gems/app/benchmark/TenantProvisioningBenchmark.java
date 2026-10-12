@@ -72,7 +72,7 @@ class TenantProvisioningBenchmark {
     TransactionTemplate tx;
 
     @Test
-    void deveMedirProvisionamentoEInventario_semLimiteDeDesempenho() throws Exception {
+    void deveMedirProvisionamentoEInventario_quandoBenchmarkHabilitado() throws Exception {
         int n = Integer.parseInt( System.getProperty( "benchmark.tenants" ) );
         if ( n > 100 ) {
             throw new IllegalArgumentException( "Escopo aprovado: de 1 a 100 tenants" );
