@@ -1,0 +1,21 @@
+{
+  "id": "20261012T224650Z542008",
+  "changed": [
+    ".gems-ai\\rules\\java.formatting.md",
+    ".gems-ai\\rules\\java.controllers.md",
+    ".gems-ai\\rules\\signature.invariants.md",
+    ".gems-ai\\catalog.json",
+    ".gems-ai\\.version",
+    ".gems-ai\\schemas\\gems-ai-lock.schema.json",
+    ".gems-ai\\schemas\\gems-ai.schema.json",
+    ".gems-ai\\java\\engine.json",
+    ".gems-ai\\java\\profile.properties",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "GEMINI.md",
+    ".cursor\\rules\\gems.mdc",
+    ".github\\copilot-instructions.md",
+    "gems-ai.json",
+    "gems-ai.lock.json"
+  ]
+}

@@ -268,27 +268,41 @@ def initialize_plan(root, name, group, description, skip_format=False):
               'manifest_sha256': digest(manifest_new), 'clean_demo': ['python', '-B', 'scripts/sample.py',
                   'clean-demo', '--root', str(root), '--dry-run'],
               'services_started': [], 'managed_snapshot': 'byte-preserved',
-              'formatting': {'enabled': not skip_format, 'cwd': 'backend',
-                             'argv': ['mvnw.cmd' if os.name == 'nt' else './mvnw', '-B', '-q', 'spotless:apply'],
+              'formatting': {'enabled': not skip_format, 'cwd': '.',
+                             'argv': ['gems-ai', *formatter_arguments(root)],
                              'manifest_java_payloads': True}, 'formatted': []}
     return report, originals, staged, destinations
 
 
-def initializer_formatter(root, runner):
-    """Check the local wrapper and Java before the first rename write."""
-    wrapper = 'backend/' + ('mvnw.cmd' if os.name == 'nt' else 'mvnw')
-    path = inside(root, wrapper, required=False)
-    if not path.is_file():
-        raise Refusal('Backend formatting requires the Maven wrapper: ' + wrapper)
-    if os.name != 'nt' and not os.access(path, os.X_OK):
-        raise Refusal('Backend formatting requires an executable Maven wrapper: ' + wrapper)
+def formatter_arguments(root):
+    return ['format', 'java', '--project', str(root), '--all', '--apply']
+
+
+def initializer_formatter(root, runner, resolve=True):
+    """Check the installed GEMS AI CLI, its pinned version and Java before the first rename write."""
+    executable = 'gems-ai'
+    # Injected runners are offline unit doubles; production always resolves the installed CLI.
+    if resolve:
+        import shutil
+        resolved = shutil.which(executable)
+        if not resolved:
+            raise Refusal('Backend formatting requires the GEMS AI CLI (gems-ai) on PATH')
+        unlinked(Path(resolved).absolute())
+        executable = resolved
+    expected = json.loads(inside(root, 'gems-ai.json').read_bytes()).get('version')
+    try:
+        version = runner([executable, '--version'], root, timeout=30)
+    except (OSError, Refusal, subprocess.TimeoutExpired) as error:
+        raise Refusal('Backend formatting requires the GEMS AI CLI (gems-ai) on PATH') from error
+    if not expected or version.strip() != expected:
+        raise Refusal('GEMS AI CLI version differs from gems-ai.json')
     java_home = os.environ.get('JAVA_HOME')
     java = str(Path(java_home) / 'bin' / ('java.exe' if os.name == 'nt' else 'java')) if java_home else 'java'
     try:
-        runner([java, '-version'], root / 'backend', timeout=30)
+        runner([java, '-version'], root, timeout=30)
     except (OSError, Refusal, subprocess.TimeoutExpired) as error:
         raise Refusal('Backend formatting requires available Java (JAVA_HOME or PATH)') from error
-    return [str(path) if os.name == 'nt' else './mvnw', '-B', '-q', 'spotless:apply']
+    return [executable, *formatter_arguments(root)]
 
 
 def format_initialized_backend(root, report, argv, java_paths, runner):
@@ -297,7 +311,7 @@ def format_initialized_backend(root, report, argv, java_paths, runner):
     manifest_path = inside(root, 'scripts/demo-manifest.json')
     manifest = json.loads(manifest_path.read_bytes())
     try:
-        runner(argv, root / 'backend', timeout=600)
+        runner(argv, root, timeout=600)
         formatted = {relative: inside(root, relative).read_bytes() for relative in java_paths}
         replacements = [entry for entry in manifest['files'] if entry.get('operation') == 'transform'
                         and entry['path'] in formatted]
@@ -306,7 +320,7 @@ def format_initialized_backend(root, report, argv, java_paths, runner):
             for entry in replacements:
                 inside(root, entry['path']).write_bytes(entry['after'].encode('utf-8'))
             if replacements:
-                runner(argv, root / 'backend', timeout=600)
+                runner(argv, root, timeout=600)
                 for entry in replacements:
                     entry['after'] = inside(root, entry['path']).read_bytes().decode('utf-8')
                     entry['after_sha256'] = digest(entry['after'].encode('utf-8'))
@@ -314,8 +328,8 @@ def format_initialized_backend(root, report, argv, java_paths, runner):
             for relative, data in formatted.items():
                 inside(root, relative).write_bytes(data)
     except (OSError, Refusal, subprocess.TimeoutExpired) as error:
-        raise Refusal('Backend Spotless formatting failed; initialization rolled back. '
-                      'Check Maven wrapper, Java and local dependencies; --skip-format is an offline '
+        raise Refusal('Backend GEMS AI formatting failed; initialization rolled back. '
+                      'Check the GEMS AI CLI and Java 21+; --skip-format is an offline '
                       'fallback only, never for gates.') from error
     for entry in manifest['files'] + manifest['metadata_entries']:
         if entry['path'] in formatted:
@@ -351,7 +365,7 @@ def initialize_apply(root, report, originals, staged, destinations, tool_runner=
     runner = tool_runner or command
     java_originals = {}
     if report['formatting']['enabled']:
-        argv = initializer_formatter(root, runner)
+        argv = initializer_formatter(root, runner, resolve=tool_runner is None)
         tracked = command(['git', '--no-optional-locks', '-C', str(root), 'ls-files', '-z'], root).split('\x00')
         java_originals = {relative: inside(root, relative).read_bytes() for relative in tracked
                           if relative.startswith('backend/') and relative.endswith('.java')
@@ -689,7 +703,7 @@ def main(tool_runner=None, prettier_runner=None):
     parser.add_argument('--group', default='br.com.gems')
     parser.add_argument('--description', default='')
     parser.add_argument('--skip-format', action='store_true',
-                        help='initialize only: offline fallback without Spotless; never use for gates')
+                        help='initialize only: offline fallback without the GEMS AI formatter; never use for gates')
     flags = parser.add_mutually_exclusive_group()
     flags.add_argument('--dry-run', action='store_true')
     flags.add_argument('--apply', action='store_true')

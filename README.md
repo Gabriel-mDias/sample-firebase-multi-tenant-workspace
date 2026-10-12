@@ -100,4 +100,4 @@ campo restrito e isolamento; cleanup e rename serão comprovados em cópia desca
 Homologação real exige projeto Firebase isolado, ADC externo, Google/password habilitados
 e testers confirmados. Não foi executada pela preparação local. Hosting permanece fora
 desta fase. Constituição [.specify/memory/constitution.md](.specify/memory/constitution.md)
-3.0.0, specs aprovadas e AGENTS continuam a autoridade do projeto.
+3.1.0, specs aprovadas e AGENTS continuam a autoridade do projeto.

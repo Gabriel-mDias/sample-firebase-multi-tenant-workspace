@@ -12,14 +12,15 @@
   `pom.xml`: a regra que não vale num escopo entra com severidade `ignore`. Aplicar o padrão de
   nome de teste ao código de produção produziria ruído puro, e é o que a separação evita.
 
-  POR QUE `ParenPad` EXISTE SE O SPOTLESS JÁ FORMATA. Ele é a rede para quem desligar o Spotless
-  ou editar fora da IDE. Os `tokens` abaixo são deliberadamente MAIS ESTREITOS que o padrão da
-  regra: o padrão inclui `EXPR`, que exigiria `( a + b ) * c`, e o perfil do Eclipse mantém
-  expressão entre parênteses colada. Gate que reprova o que o formatador do projeto produz é gate
-  que alguém desliga — os dois precisam concordar, e aqui eles concordam por construção.
+  POR QUE `ParenPad` EXISTE SE O FORMATTER JÁ FORMATA. Ele é a rede para quem edita fora do
+  executor do GEMS AI (`gems-ai format java`, rodada 006, que substituiu o Spotless). Os `tokens`
+  abaixo são deliberadamente MAIS ESTREITOS que o padrão da regra: o padrão inclui `EXPR`, que
+  exigiria `( a + b ) * c`, e o formatter mantém expressão entre parênteses colada. Gate que reprova
+  o que o formatador do projeto produz é gate que alguém desliga — os dois precisam concordar, e o
+  código formatado pelo GEMS AI passou com 0 violações (rodada 006, research R5).
 
   ⚠️ `RECORD_DEF` SAIU DOS TOKENS na fase 7 (T066), e o motivo é o mesmo princípio, medido: com ele
-  ligado o gate reprovava **19 linhas em 7 records** que o próprio Spotless acabara de formatar, e a
+  ligado o gate reprovava **19 linhas em 7 records** que o Spotless da época acabara de formatar, e a
   única declaração de `record` prescrita em `.gems-ai` — `domain-event-end-to-end.md:39`,
   `public record {Entidade}CriadoEvent(String {entidade}Id) {}` — escreve-a **sem** espaço interno.
   Duas evidências independentes apontando para o mesmo lado: a regra não prescreve espaço em

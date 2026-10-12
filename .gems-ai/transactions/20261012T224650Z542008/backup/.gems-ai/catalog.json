@@ -1,0 +1,1073 @@
+{
+  "version": "3.0.0",
+  "rules": [
+    {
+      "id": "base.precedence",
+      "title": "Authority and precedence",
+      "version": "3.0.0",
+      "status": "candidate",
+      "path": "contract/base/precedence.md",
+      "mandatory": true,
+      "profiles": [
+        "java",
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "all"
+      ],
+      "risk": "critical",
+      "precedence": 0,
+      "related_rules": [
+        "base.safe-change"
+      ],
+      "required_gates": [
+        "gems-ai-check"
+      ],
+      "required_rules": []
+    },
+    {
+      "id": "base.safe-change",
+      "title": "Safe and auditable change",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/base/safe-change.md",
+      "mandatory": true,
+      "profiles": [
+        "java",
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "all"
+      ],
+      "risk": "critical",
+      "precedence": 1,
+      "related_rules": [
+        "base.precedence"
+      ],
+      "required_gates": [
+        "diff-check",
+        "gems-ai-check"
+      ],
+      "required_rules": []
+    },
+    {
+      "id": "base.waivers",
+      "title": "Conformance waivers",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/base/waivers.md",
+      "mandatory": true,
+      "profiles": [
+        "java",
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "all"
+      ],
+      "risk": "critical",
+      "precedence": 2,
+      "related_rules": [
+        "base.precedence",
+        "base.safe-change"
+      ],
+      "required_gates": [
+        "gems-ai-check"
+      ],
+      "required_rules": []
+    },
+    {
+      "id": "profile.angular",
+      "title": "Angular profile",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/angular/core.md",
+      "mandatory": false,
+      "profiles": [
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "bug",
+        "infrastructure",
+        "governance",
+        "angular-crud",
+        "security",
+        "angular-wizard",
+        "angular-auth",
+        "angular-error",
+        "angular-ui"
+      ],
+      "risk": "high",
+      "precedence": 20,
+      "related_rules": [
+        "base.precedence",
+        "base.safe-change"
+      ],
+      "required_gates": [
+        "frontend-test",
+        "frontend-build"
+      ],
+      "required_rules": []
+    },
+    {
+      "id": "profile.java",
+      "title": "Java profile",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/core.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "bug",
+        "infrastructure",
+        "governance",
+        "java-crud",
+        "java-event",
+        "java-api",
+        "storage",
+        "security",
+        "persistence",
+        "multi-tenant"
+      ],
+      "risk": "high",
+      "precedence": 20,
+      "related_rules": [
+        "base.precedence",
+        "base.safe-change"
+      ],
+      "required_gates": [
+        "maven-reactor"
+      ],
+      "required_rules": []
+    },
+    {
+      "id": "java.architecture",
+      "title": "Java architecture",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/architecture.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "bug",
+        "infrastructure",
+        "java-crud",
+        "workspace-crud"
+      ],
+      "risk": "high",
+      "precedence": 21,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "maven-reactor",
+        "architecture-test"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "angular.auth",
+      "title": "Angular auth",
+      "version": "3.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/angular/auth.md",
+      "mandatory": false,
+      "profiles": [
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "infrastructure",
+        "security",
+        "angular-auth"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.angular"
+      ],
+      "required_gates": [
+        "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
+      ]
+    },
+    {
+      "id": "angular.feedback-alerts",
+      "title": "Angular feedback alerts",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/angular/feedback-alerts.md",
+      "mandatory": false,
+      "profiles": [
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "angular-crud",
+        "workspace-crud",
+        "angular-error"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.angular"
+      ],
+      "required_gates": [
+        "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
+      ]
+    },
+    {
+      "id": "angular.forms",
+      "title": "Angular forms",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/angular/forms.md",
+      "mandatory": false,
+      "profiles": [
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "angular-crud",
+        "workspace-crud",
+        "angular-wizard",
+        "angular-error"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.angular"
+      ],
+      "required_gates": [
+        "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
+      ]
+    },
+    {
+      "id": "angular.gems-components",
+      "title": "Angular GEMS components",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/angular/gems-components.md",
+      "mandatory": false,
+      "profiles": [
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "angular-crud",
+        "workspace-crud",
+        "angular-wizard",
+        "angular-ui"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.angular"
+      ],
+      "required_gates": [
+        "frontend-test",
+        "frontend-build"
+      ],
+      "required_rules": [
+        "profile.angular"
+      ]
+    },
+    {
+      "id": "angular.http-interceptors",
+      "title": "Angular http interceptors",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/angular/http-interceptors.md",
+      "mandatory": false,
+      "profiles": [
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "infrastructure",
+        "security",
+        "angular-auth"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.angular"
+      ],
+      "required_gates": [
+        "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
+      ]
+    },
+    {
+      "id": "angular.lists",
+      "title": "Angular lists",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/angular/lists.md",
+      "mandatory": false,
+      "profiles": [
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "angular-crud",
+        "workspace-crud"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.angular"
+      ],
+      "required_gates": [
+        "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
+      ]
+    },
+    {
+      "id": "angular.organization",
+      "title": "Angular organization",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/angular/organization.md",
+      "mandatory": false,
+      "profiles": [
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "bug",
+        "angular-crud",
+        "workspace-crud",
+        "angular-ui"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.angular"
+      ],
+      "required_gates": [
+        "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
+      ]
+    },
+    {
+      "id": "angular.signals-standards",
+      "title": "Angular signals standards",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/angular/signals-standards.md",
+      "mandatory": false,
+      "profiles": [
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "bug",
+        "angular-crud",
+        "workspace-crud",
+        "angular-ui"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.angular"
+      ],
+      "required_gates": [
+        "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
+      ]
+    },
+    {
+      "id": "angular.stepper",
+      "title": "Angular stepper",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/angular/stepper.md",
+      "mandatory": false,
+      "profiles": [
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "angular-wizard"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.angular"
+      ],
+      "required_gates": [
+        "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
+      ]
+    },
+    {
+      "id": "angular.stores",
+      "title": "Angular stores",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/angular/stores.md",
+      "mandatory": false,
+      "profiles": [
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "bug",
+        "angular-crud",
+        "workspace-crud",
+        "angular-wizard",
+        "angular-auth",
+        "angular-error"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.angular"
+      ],
+      "required_gates": [
+        "angular-conformance"
+      ],
+      "required_rules": [
+        "profile.angular"
+      ]
+    },
+    {
+      "id": "angular.testing",
+      "title": "Angular testing",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/angular/testing.md",
+      "mandatory": false,
+      "profiles": [
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "bug",
+        "angular-crud",
+        "workspace-crud",
+        "angular-wizard"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.angular"
+      ],
+      "required_gates": [
+        "frontend-test",
+        "frontend-build"
+      ],
+      "required_rules": [
+        "profile.angular"
+      ]
+    },
+    {
+      "id": "angular.visual-standards",
+      "title": "Angular visual standards",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/angular/visual-standards.md",
+      "mandatory": false,
+      "profiles": [
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "angular-crud",
+        "workspace-crud",
+        "angular-ui"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.angular"
+      ],
+      "required_gates": [
+        "frontend-conformance",
+        "accessibility-test"
+      ],
+      "required_rules": [
+        "profile.angular"
+      ]
+    },
+    {
+      "id": "java.controllers",
+      "title": "Java controllers",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/controllers.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "bug",
+        "java-crud",
+        "workspace-crud",
+        "java-api"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "java.events",
+      "title": "Java events",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/events.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "java-event"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "java.mapping",
+      "title": "Java mapping",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/mapping.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "java-crud",
+        "workspace-crud"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "java-conformance",
+        "mapping-test"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "java.multi-tenant",
+      "title": "Java multi-tenancy",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/multi-tenant.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "multi-tenant"
+      ],
+      "risk": "critical",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java",
+        "java.security",
+        "java.persistence-db"
+      ],
+      "required_gates": [
+        "tenant-isolation-test"
+      ],
+      "required_rules": [
+        "java.security",
+        "java.persistence-db"
+      ]
+    },
+    {
+      "id": "java.observability",
+      "title": "Java observability",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/observability.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "infrastructure"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "java.openapi",
+      "title": "Java openapi",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/openapi.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "java-api"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "java.persistence-db",
+      "title": "Java persistence and migrations",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/persistence-db.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "java-crud",
+        "workspace-crud",
+        "persistence",
+        "multi-tenant"
+      ],
+      "risk": "critical",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "migration-test",
+        "schema-validate"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "java.repositories",
+      "title": "Java repositories",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/repositories.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "bug",
+        "java-crud",
+        "workspace-crud",
+        "persistence",
+        "multi-tenant"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "java.rest-common",
+      "title": "Java rest common",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/rest-common.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "java-crud",
+        "workspace-crud",
+        "java-api"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "java.security",
+      "title": "Java security",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/security.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "storage",
+        "security",
+        "multi-tenant"
+      ],
+      "risk": "critical",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "authorization-test",
+        "security-mutation"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "java.services",
+      "title": "Java services",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/services.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "bug",
+        "java-crud",
+        "workspace-crud",
+        "java-event",
+        "storage"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "java.storage-s3",
+      "title": "Java storage s3",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/storage-s3.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "storage"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "java.testing",
+      "title": "Java testing",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/testing.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "bug",
+        "java-crud",
+        "workspace-crud",
+        "java-event"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "java.utils",
+      "title": "Java utils",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/utils.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "java-crud"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "java.validation",
+      "title": "Java validation",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/validation.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "bug",
+        "java-crud",
+        "workspace-crud",
+        "java-api"
+      ],
+      "risk": "high",
+      "precedence": 25,
+      "related_rules": [
+        "profile.java"
+      ],
+      "required_gates": [
+        "java-conformance"
+      ],
+      "required_rules": [
+        "profile.java"
+      ]
+    },
+    {
+      "id": "profile.workspace",
+      "title": "Workspace integration profile",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/profiles/workspace/integration.md",
+      "mandatory": false,
+      "profiles": [
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "infrastructure",
+        "governance",
+        "workspace-crud"
+      ],
+      "risk": "high",
+      "precedence": 30,
+      "related_rules": [
+        "profile.java",
+        "profile.angular"
+      ],
+      "required_gates": [
+        "cross-layer-contract"
+      ],
+      "required_rules": [
+        "profile.java",
+        "profile.angular"
+      ]
+    },
+    {
+      "id": "sdd.round",
+      "title": "Spec-driven round",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/sdd/round.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "sdd"
+      ],
+      "risk": "high",
+      "precedence": 40,
+      "related_rules": [
+        "stories.traceability"
+      ],
+      "required_gates": [
+        "round-validate"
+      ],
+      "required_rules": [
+        "stories.traceability"
+      ]
+    },
+    {
+      "id": "stories.traceability",
+      "title": "Story traceability",
+      "version": "2.0.0",
+      "status": "candidate",
+      "path": "contract/stories/traceability.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "sdd"
+      ],
+      "risk": "medium",
+      "precedence": 50,
+      "related_rules": [
+        "sdd.round"
+      ],
+      "required_gates": [
+        "requirements-trace"
+      ],
+      "required_rules": []
+    },
+    {
+      "id": "signature.invariants",
+      "title": "GEMS signature invariants",
+      "version": "3.0.0",
+      "status": "candidate",
+      "path": "contract/signature/invariants.md",
+      "mandatory": false,
+      "profiles": [
+        "java",
+        "angular",
+        "workspace"
+      ],
+      "tasks": [
+        "feature",
+        "governance"
+      ],
+      "risk": "critical",
+      "precedence": 60,
+      "related_rules": [
+        "base.precedence",
+        "base.safe-change"
+      ],
+      "required_gates": [
+        "signature-score"
+      ],
+      "required_rules": []
+    }
+  ]
+}

@@ -135,9 +135,8 @@ public ResponseEntity<Void> nomeAcao( @PathVariable UUID id ) {
   `@RequestMapping("/api/recurso")`, `(UUID) id`. É o que o `eclipse-formatter.xml` do projeto impõe
   no Spotless — exemplo que diverge dele é exemplo a corrigir.
 - **Sem espaço interno** em generics: `ResponseEntity<Page<{Entidade}ResponseDTO>>`.
-- **120 colunas**, indentação de 4 espaços, chave na mesma linha. Linha maior que 120 quebra antes de
-  chegar ao formatador; constantes de enum curtas cabem em uma linha (`NACIONAL, ESTADUAL, MUNICIPAL`).
-- Imports: framework → gems-sdk → java std.
+- Estilo universal em `java.formatting`: sem teto de colunas; assinaturas e instruções comuns em linha única, indentação de 4 espaços e chaves na mesma linha.
+- Imports: preservar ordem e grupos existentes; o executor n?o ordena imports.
 - Uma linha em branco entre cada método.
 - Sem Javadoc ou comentários em métodos CRUD padrão.
 

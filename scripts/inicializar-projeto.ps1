@@ -3,7 +3,7 @@
     Inicializa um produto Firebase a partir de um checkout limpo do molde.
 .DESCRIPTION
     Preserva SDKs publicadas, snapshot GEMS AI, seletores Angular e APP_RUNTIME_PROFILE/FIREBASE_*.
-    Formata Java e os payloads Java do clean-demo com o Spotless do backend renomeado (Java/Maven exigidos).
+    Formata Java e os payloads Java do clean-demo com o formatter do GEMS AI (gems-ai no PATH, na versao de gems-ai.json, e Java 21+ exigidos).
     -SkipFormat e fallback offline de inicializacao; nunca usar nos gates.
     Nao conecta Docker ou nuvem. Revise/registre o rename na copia antes de executar clean-demo.
 .EXAMPLE

@@ -1,0 +1,23 @@
+---
+alwaysApply: true
+---
+
+<!-- GEMS-AI:BEGIN -->
+GEMS AI SDK 3.1.0 is mandatory for this repository. Law, security and the local constitution govern
+the consumer's domain; published SDK contracts govern API facts. Toolkit base rules govern safe
+operation. Profiles, task overlays and local facts specialize them without weakening higher duties.
+Material conflicts name IDs and paths and fail closed before mutation. Generated files
+under `.gems-ai/` must not be edited manually.
+
+Before changing code, run `gems-ai rules bundle --project . --task <type>` and follow every returned
+rule and required gate. Run `gems-ai check --project . --strict` before completion. A waiver must be
+explicitly approved, scoped, unexpired, and recorded in `gems-ai.lock.json`; it cannot hide a broken
+tool, build, functional gate, or infrastructure failure.
+
+For every authored Java file, including tests, follow universal `java.formatting`. Use the pinned
+canonical executor `gems-ai check-java --project . --changed --base <revision>` on whole changed
+files; apply only with `gems-ai format java --project . --changed --apply`. A separate full audit is
+`gems-ai check-java --project . --all`. All agents (Codex, Claude, Gemini, Cursor, Copilot) share
+this authority; controller-only style and a plain IDE JDT profile do not replace the executor.
+Preserve tokens, comments, literal values and logical groups. Java formatter failures fail closed.
+<!-- GEMS-AI:END -->

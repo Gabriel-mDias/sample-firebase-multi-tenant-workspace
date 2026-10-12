@@ -36,7 +36,6 @@
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 
         <gems.config.dir>${maven.multiModuleProjectDirectory}/config</gems.config.dir>
-        <spotless.check.phase>validate</spotless.check.phase>
         <checkstyle.fail>true</checkstyle.fail>
         <gems.convencoes.relatorio>false</gems.convencoes.relatorio>
 </properties>
@@ -142,35 +141,6 @@
 
 	<build>
 		<plugins>
-<plugin>
-				<groupId>com.diffplug.spotless</groupId>
-				<artifactId>spotless-maven-plugin</artifactId>
-				<version>3.10.2</version>
-				<configuration>
-					<java>
-						<includes>
-							<include>src/main/java/**/*.java</include>
-							<include>src/test/java/**/*.java</include>
-						</includes>
-						<eclipse>
-							<file>${gems.config.dir}/spotless/eclipse-formatter.xml</file>
-						</eclipse>
-						<!-- O portador da exceção escrita (N-06) no formatador: um trecho marcado
-						     suspende o Spotless sem que ninguém precise desligá-lo no projeto todo. -->
-						<toggleOffOn/>
-					</java>
-				</configuration>
-				<executions>
-					<execution>
-						<id>spotless-check</id>
-						<!-- `none` sob `-Pconvencoes`, que volta ao modo medição. -->
-						<phase>${spotless.check.phase}</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>

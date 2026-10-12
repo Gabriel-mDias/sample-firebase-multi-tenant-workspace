@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "version": "3.0.0",
-  "commit": "51b94e3a5479da74e06444f4133e07db85ece3cc",
+  "version": "3.1.0",
+  "commit": "909c69aa846ea97b3aea06a08fdfed8c6657d391",
   "profile": "workspace",
-  "transaction": "20261007T210108Z479329",
+  "transaction": "20261012T224749Z841066",
   "rules": [
     {
       "id": "base.precedence",
@@ -19,6 +19,11 @@
       "id": "base.waivers",
       "path": ".gems-ai\\rules\\base.waivers.md",
       "sha256": "fb10ba739abd4ad58063bfcc55c9d02b8f344f0b06a47691468582209152eea9"
+    },
+    {
+      "id": "java.formatting",
+      "path": ".gems-ai\\rules\\java.formatting.md",
+      "sha256": "c81cd9b613e1babb60b5e214bbcc11a05b2e1c8a10afd209354b4dc6d48a34a6"
     },
     {
       "id": "profile.angular",
@@ -98,7 +103,7 @@
     {
       "id": "java.controllers",
       "path": ".gems-ai\\rules\\java.controllers.md",
-      "sha256": "2f75092424955987dd3a364347d3e9c0f4cb817fca18f4613adc3d3fa5e1261a"
+      "sha256": "30644fb1f449d8379d1bdfd89f1bd859a14fc4a3f1ab0572cde073e8eee52f2b"
     },
     {
       "id": "java.events",
@@ -188,29 +193,29 @@
     {
       "id": "signature.invariants",
       "path": ".gems-ai\\rules\\signature.invariants.md",
-      "sha256": "d0b4b6da38e3238bca73251487ded6409adbe1f7c8fbed64ee47b3adab8e393f"
+      "sha256": "efe40e248ca026f3f4cd3d799f1f0ae78ecdbe6f73015a0a7a6998df51cd0158"
     }
   ],
   "assets": [
     {
       "kind": "catalog",
       "path": ".gems-ai\\catalog.json",
-      "sha256": "c3f239b7c26a5b78a2def7b447cb2a2ed30574683c4e893639f4873f33bf8781"
+      "sha256": "e8daee21fe283dace564198c8e847ffdafa9e9bcfae5a3b1e7162074453285f4"
     },
     {
       "kind": "version",
       "path": ".gems-ai\\.version",
-      "sha256": "b97c7f28087977393a99695de8e3a57be7f2c904d9f4132f04c5666a0be39be7"
+      "sha256": "5e33023692f9444ef9f77fcd732c57f3015cee605f326e5bf57502a67a2b77ce"
     },
     {
       "kind": "schema",
       "path": ".gems-ai\\schemas\\gems-ai-lock.schema.json",
-      "sha256": "90d27548099d7a87d8e9c8671c96da94148c76a0ef75a4b22dfd0aa4eea2e8fd"
+      "sha256": "d61671b31c1767ece850630ad4d3a34c5bae0ebd9df0cbc8797ee26201c7f951"
     },
     {
       "kind": "schema",
       "path": ".gems-ai\\schemas\\gems-ai.schema.json",
-      "sha256": "67fc66a9f035cc05a7f4b90a74dfdc15db9aeabaac0a2d19dc4ac97101444d7a"
+      "sha256": "e945bde6730ecbdcf5fb89f025b9be61cc89044f9dea17b2135f0f10bf9d8c33"
     },
     {
       "kind": "schema",
@@ -246,20 +251,38 @@
       "kind": "skill",
       "path": ".agents\\skills\\rodada-sdd\\SKILL.md",
       "sha256": "163649f1886a1af72ad4ddc310e3508d568f808abaf5989ca0d8fd6fb521f62d"
+    },
+    {
+      "kind": "formatter",
+      "path": ".gems-ai\\java\\engine.json",
+      "sha256": "23de584b42d141395e069ca0bc90453012e9571637ea80447eb18dc7454a2eb1"
+    },
+    {
+      "kind": "formatter",
+      "path": ".gems-ai\\java\\profile.properties",
+      "sha256": "9f3fe0454c675698885ee668fa2be0a2f6f1ab13aef6a77a6aa6fe4ef6938fec"
     }
   ],
   "adapters": [
     {
       "path": "AGENTS.md",
-      "managedSha256": "f384e79dc2a9ac4ea8f0c207dced6df90afee32ca1867bfc625c9e7c0e615b53"
+      "managedSha256": "801122f2399d9f5313edeaa9e19dd554115d017b1c812e2b04023b0ea61c2bd9"
     },
     {
       "path": "CLAUDE.md",
-      "managedSha256": "f384e79dc2a9ac4ea8f0c207dced6df90afee32ca1867bfc625c9e7c0e615b53"
+      "managedSha256": "801122f2399d9f5313edeaa9e19dd554115d017b1c812e2b04023b0ea61c2bd9"
     },
     {
       "path": "GEMINI.md",
-      "managedSha256": "f384e79dc2a9ac4ea8f0c207dced6df90afee32ca1867bfc625c9e7c0e615b53"
+      "managedSha256": "801122f2399d9f5313edeaa9e19dd554115d017b1c812e2b04023b0ea61c2bd9"
+    },
+    {
+      "path": ".cursor/rules/gems.mdc",
+      "managedSha256": "801122f2399d9f5313edeaa9e19dd554115d017b1c812e2b04023b0ea61c2bd9"
+    },
+    {
+      "path": ".github/copilot-instructions.md",
+      "managedSha256": "801122f2399d9f5313edeaa9e19dd554115d017b1c812e2b04023b0ea61c2bd9"
     }
   ],
   "waivers": [],

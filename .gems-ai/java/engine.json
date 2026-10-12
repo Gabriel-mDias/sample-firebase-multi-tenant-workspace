@@ -1,0 +1,164 @@
+{
+  "version": "3.1.0",
+  "engine": "eclipse-jdt-3.46.0-gems-3",
+  "protocol": 2,
+  "java": 21,
+  "sha256": "fae474a2eb5fd0406fdb65c9e7e15f1f58bd6335293cb7f084506169c76839d7",
+  "profileSha256": "579f92a5b5eeef2018213af67cd3d002cbe402782c110c99137bcddc171104c0",
+  "dependencies": [
+    {
+      "coordinate": "org.eclipse.jdt:org.eclipse.jdt.core:3.46.0",
+      "bytes": 4510431,
+      "sha256": "52b3c3d995bd67f9c1445500d4597299ddcfab7d585e208eec3db3d102239a5f",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.eclipse.platform:org.eclipse.core.resources:3.24.0",
+      "bytes": 964311,
+      "sha256": "e26702d817d6c26e83e4d6e7e6ff4761a53774487a247b1faf7c975d395683fe",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.eclipse.platform:org.eclipse.core.expressions:3.9.600",
+      "bytes": 99317,
+      "sha256": "eff84cfc8f20e235448c3a64fa4c2fa65f97e0ed08d26302f331b677dff77a66",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.eclipse.platform:org.eclipse.core.runtime:3.34.200",
+      "bytes": 90520,
+      "sha256": "b4f36a0acb08f03d0b3db54b21fc5638c820c447446a410ba496a5070fa34363",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.eclipse.platform:org.eclipse.osgi:3.24.200",
+      "bytes": 1615534,
+      "sha256": "bfe83fcd1fa034eb9a986b3cb6e5e2b18dbbacb67eabdaad2da32804ecd8c65a",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.eclipse.platform:org.eclipse.equinox.common:3.20.400",
+      "bytes": 164849,
+      "sha256": "423b58613a4e9bbbe6ec2239690ff329f13d69ebb28406a5f9d70516a6643a24",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.eclipse.platform:org.eclipse.core.jobs:3.15.700",
+      "bytes": 120879,
+      "sha256": "37015179a7b9b90d16cb92f4b1be6083a1a6dad25428fa8f6b89626f0cc2da79",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.eclipse.platform:org.eclipse.equinox.registry:3.12.600",
+      "bytes": 206425,
+      "sha256": "4f8cd72681446b598390a8c24ee9b9996f6e4c5fabed022b50bd26f6f5a0bf6c",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.eclipse.platform:org.eclipse.equinox.preferences:3.12.100",
+      "bytes": 130382,
+      "sha256": "fd04e81a28ab32b6bb073286eb293c44b760176fcf1e35ef15614d62df820f86",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.osgi:org.osgi.service.prefs:1.1.2",
+      "bytes": 20165,
+      "sha256": "43c7c870710e363405d422da653cce0d798a4537f76e4930f79bceadd3a55345",
+      "licenses": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.osgi:osgi.annotation:8.0.1",
+      "bytes": 36875,
+      "sha256": "a0e8a4c362bd3600812f37b0ea45fba966c7bc049d01fed56a09ecc74082759e",
+      "licenses": [
+        "Apache-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.eclipse.platform:org.eclipse.core.contenttype:3.9.800",
+      "bytes": 108005,
+      "sha256": "e0c2db96600d519ce36a75f9b7c971afd2870d2d059eee4bf2436d9b33aa0b8d",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.eclipse.platform:org.eclipse.equinox.app:1.7.600",
+      "bytes": 93212,
+      "sha256": "fd353398835107608f554779a6e91891725efb94e0f57559d0ab3cea4b6156c7",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.eclipse.platform:org.eclipse.core.filesystem:1.11.400",
+      "bytes": 79139,
+      "sha256": "6f70b95d14b90ec57b94c5e3dba7e1d189679cf9a4bc4526e9c91beed7d6a0ef",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    },
+    {
+      "coordinate": "net.java.dev.jna:jna:5.18.1",
+      "bytes": 2002994,
+      "sha256": "260c4b1e22b1db9e110ee441c4f13ce115f841fa48c41d78750986214b395557",
+      "licenses": [
+        "LGPL-2.1-or-later",
+        "Apache-2.0"
+      ]
+    },
+    {
+      "coordinate": "net.java.dev.jna:jna-platform:5.18.1",
+      "bytes": 1380744,
+      "sha256": "ad14c1b1ec4f43d396231219dfa635ebf828f738eac9f890ea1bc07795892d9a",
+      "licenses": [
+        "LGPL-2.1-or-later",
+        "Apache-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.eclipse.platform:org.eclipse.text:3.14.700",
+      "bytes": 363943,
+      "sha256": "4075f7aa3a19f2ce6ffd1f555ebc0884e065cc40b59f71d774da0928c1423555",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.eclipse.platform:org.eclipse.core.commands:3.12.500",
+      "bytes": 122155,
+      "sha256": "44713362e55ed28e6db5d2c31bf67524fef087645a44dc3239dac60ece017cb9",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    },
+    {
+      "coordinate": "org.eclipse.jdt:ecj:3.46.0",
+      "bytes": 3370586,
+      "sha256": "d0d43f8e2d7003e5efed612e2cbb5f01870043397d8f1bbe536fd9128f4fcbf7",
+      "licenses": [
+        "EPL-2.0"
+      ]
+    }
+  ]
+}
