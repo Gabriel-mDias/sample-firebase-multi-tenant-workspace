@@ -117,6 +117,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <!-- Limita a memória dos testes de integração em um único fork reutilizado;
+                     o argLine do filho repete o agente Mockito e o -Xshare:off do pai. -->
+                <configuration>
+                    <argLine>-javaagent:"${org.mockito:mockito-core:jar}" -Xshare:off -Xmx1536m -XX:+UseSerialGC</argLine>
+                    <forkCount>1</forkCount>
+                    <reuseForks>true</reuseForks>
+                </configuration>
             </plugin>
         </plugins>
     </build>
