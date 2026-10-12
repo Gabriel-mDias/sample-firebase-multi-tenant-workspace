@@ -77,8 +77,10 @@ Decisão do usuário, registrada literalmente: **"6 - opcao b"**, com o contexto
 > para alias inexistente, e 200 para Beta. Revogação de grant, encerramento de vínculo, suspensão
 > com worker e reativação se comportaram como o contrato, sem logout. A decisão do usuário de devolver
 > a ação básica de conta na reativação ficou registrada como mudança futura (achado 4 da evidência).
-> **Fora do percorrido, NOT_RUN:** retorno externo e responsividade e acessibilidade do login. Esses itens mantêm a
-> T032 `[ ]`. Detalhe e achados da preparação estão em
+> Por fim, o retorno pós-login (rota interna preservada; URL externa, `//host` e loop descartados) e
+> a tela de login (320/768/1440 px, teclado, erro, duplo envio, logout e Lighthouse Acessibilidade
+> 100) passaram. A matriz da seção 8 do guia foi percorrida por inteiro, e a T032 está `[x]`.
+> Detalhe e achados estão em
 > [evidence.md](evidence.md#homologacao-local-20261012).
 
 #### Números medidos em 2026-10-12

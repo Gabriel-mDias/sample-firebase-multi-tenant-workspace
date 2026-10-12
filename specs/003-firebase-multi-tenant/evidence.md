@@ -246,13 +246,11 @@ As provas efêmeras (ID tokens) ficaram apenas em um arquivo local, foram apagad
 | Suspensão pelo sample com o worker | PASS. `POST /users/{id}/suspend` 200: bloqueio local imediato (403 `LOCAL_DENIED` nas três chamadas com o token ainda válido no Firebase), com `DISABLE` e `REVOKE` v1 em `PENDING`. Rodada do `identity-worker`, exit 0: os dois comandos `ACKED`/`APPLIED` na 1ª tentativa, e o mesmo token passou a 401 `INVALID_TOKEN`. Em tela: sessão derrubada para o login e novo login recusado |
 | Reativação com o worker | PASS no ciclo remoto. `POST /users/{id}/reactivate` 200 → `ENABLE` v2 `PENDING`; rodada do worker → `ACKED`/`APPLIED`; usuário `BOUND`, versão 2, vigente; memberships 0, como manda o [data-model](data-model.md). Ver o achado 4 abaixo |
 | Restauração explícita depois da reativação | PASS. Global `CONSULTAR_PROPRIA_CONTA`, novo vínculo em Beta e as 4 ações do DemoRegistro com 201. O usuário confirmou o acesso em tela: "Teste realizado e respondeu como esperado" |
+| Retorno pós-login (`safeReturnPath`): `/demo-registro/list` volta à lista depois da escolha de Beta; `returnTo=https://example.com`, `returnTo=//example.com` e `returnTo=/login` terminam na home, sem navegação externa nem loop | PASS, observado pelo usuário: "Todos as urls responderam como esperado" |
+| Tela de login: sem rolagem horizontal em 320/768/1440 px, navegação por Tab/Enter com foco visível, erro de senha exibido com campo limpo, duplo clique gera um só envio e Voltar depois do logout não mostra dados | PASS, observado pelo usuário: "Deu tudo certo" |
+| Lighthouse na `/login` (container local, sem HTTPS) | Acessibilidade **100**, sem alerta de contraste. Performance 52, Melhores práticas 77 e SEO 83, registrados sem meta, por decisão do usuário: "para um projeto de sample, o critério de performance não precisa estar alto". Ver o achado 6 |
 
-**Não percorrido nesta sessão (NOT_RUN):**
-
-- retorno pós-login com URL externa;
-- responsividade 320/768/1440, teclado e contraste da tela de login.
-
-T032 permanece `[ ]` por esses itens.
+Com isso, todos os cenários da matriz da seção 8 do guia foram percorridos, e a T032 passa a `[x]`.
 
 **Achados da preparação** (código vence; divergências reportadas):
 
@@ -261,3 +259,4 @@ T032 permanece `[ ]` por esses itens.
 3. O `README.md` da raiz ainda descreve o E2E, o cleanup e o benchmark como pendentes, o que diverge do estado atual (seção [CI remoto](#ci-remoto-20261012) e T030 acima).
 4. **Reativação não devolve a ação básica de conta.** `JdbcUserService.suspend` (Java-GEMS-SDK `gems-firebase-auth`) encerra também `usuario_role_global`, incluindo `CONSULTAR_PROPRIA_CONTA`, que é concedida automaticamente no cadastro (`defaultSelfAction`). `requestReactivation` e o ACK do `ENABLE` não a devolvem, porque o [data-model](data-model.md) proíbe reabrir grants encerrados. Efeito observado: a conta fica vigente no Firebase e no SQL, mas `/auth/me` responde 403 e o login em tela não se completa (Google e senha), sem uma mensagem que explique o motivo. **Decisão do usuário (2026-10-12), literal:** "Sobre a reativação, a claim precisa automaticamente ser devolvida em uma reativação". Isso altera o contrato do data-model (somente a ação padrão de conta; memberships e demais grants continuam sem reabertura) e o SDK Java. Fica como mudança futura, com spec, release do SDK e adoção no sample; não foi implementada nesta homologação.
 5. No log do `identity-worker`, cada evento `IDENTITY_COMMAND_ACKED` aparece entregue duas vezes com o mesmo id, o que é compatível com entrega "pelo menos uma vez". Observação, sem falha funcional observada.
+6. O `frontend/nginx.conf` não envia headers de segurança (CSP com `frame-ancestors` ou `X-Frame-Options`, COOP; HSTS só se aplica com HTTPS) nem `Cache-Control` de longa duração para assets com hash. Também não existe `public/robots.txt`, e o fallback do SPA devolve o `index.html` no lugar dele. Nada disso é crítico para o sample local. A falta de proteção contra clickjacking é o único item com peso, porque o sample é molde de SaaS com login. Fica como melhoria, junto com o achado 2.
