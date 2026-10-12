@@ -13,7 +13,7 @@ import time
 from datetime import datetime, timezone
 import xml.etree.ElementTree as ET
 
-MANIFEST_SHA256 = 'db531a1b5382afdaecc1cf665819cf3c5766256a223fe08c9f0a09f7ff9a9f9a'
+MANIFEST_SHA256 = '5ccb504f2006bf155dca5435f6ad233867d05b40fe89fdf444852ea277ee159c'
 MANIFEST = Path(__file__).with_name('demo-manifest.json')
 PRUNED = {'.git', 'node_modules', 'target', 'dist', '.angular', '__pycache__', '.cache'}
 EXECUTIONS = []
