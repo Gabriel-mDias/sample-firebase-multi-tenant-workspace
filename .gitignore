@@ -31,3 +31,7 @@ CLAUDE.local.md
 
 # Telemetria bruta de custo (pode conter identificadores de sessões)
 .agents/metrics/*.csv
+
+# Artefatos locais do E2E frontend
+/frontend/e2e/.artifacts/
+# DOC1: capturas e relatórios locais desta pasta permanecem fora do versionamento.
