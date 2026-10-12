@@ -111,6 +111,60 @@ Os outros 6 módulos (raiz, BOM, AWS Web, REST Common, OpenAPI e Observability) 
 - **T025 e A6:** com um espaço extra em `BootstrapOperator.java`, o gate sai com exit 1
   (`falhou: gems-ai check-java --project . --all (exit 10)`). Revertido, exit 0.
 
+## Gates de build e cópias descartáveis (sample)
+
+Rodados num clone limpo da branch, em `.tooling/a11-006/`, fora do checkout.
+
+- **A3:** `mvnw.cmd -B clean install` com Firebase real (ADC só pelo caminho). O resultado foi **290 testes**
+  (app-security 1, app-core 87 e app-deploy 202), com 0 falhas, `T029 SUITE PASS` e **0 execuções de
+  Spotless**. O reator rodou em duas invocações (`-pl` dos quatro primeiros módulos com `-am`, e depois
+  `app-deploy`), porque um build anterior em background foi encerrado pelo Claude Code por falta de
+  memória da máquina.
+- **A9:** `npm ci`, `npm test` (24 arquivos e 419 testes), `npm run build` e `prettier --check`, todos
+  verdes.
+- **A11 default (`br.com.gems`):**
+  - `initialize --dry-run` não mudou a árvore; `--apply` formatou com o gems-ai; o replay do formatter
+    (`check-java --all`) deu exit 0; o reapply foi recusado (exit 1) sem mutação;
+  - `npm ci`, o classpath do catálogo e `clean-demo` em dry-run e apply passaram, e o verificador do
+    catálogo e o `check-java --all` também;
+  - `mvnw clean install` com Firebase real: 259 testes, `T029 SUITE PASS` e 0 Spotless;
+  - frontend: test, build e prettier verdes.
+- **A11 custom (`com.acme`):** os mesmos passos, com o backend sob `T029_FIREBASE_REAL=skip` (aviso
+  observado; o smoke real não foi provado nesta cópia). Deu 259 testes, 1 ignorado pelo skip. Os passos
+  do frontend foram retomados depois do encerramento por memória e passaram.
+
+## T026 — Review independente
+
+O Sol (`gpt-6.1-sol`, read-only, esforço medium) deu PASS nos critérios 1 a 4 e 6 a 8. Não houve finding
+high nem critical.
+- **Critério 9:** um finding low. Os diffs exportados para o review, no scratchpad e fora do git, trazem
+  o e-mail de autoria dos commits. Nenhum diff versionado e nenhuma evidência têm e-mail.
+- **Critério 5:** ficou UNCERTAIN, porque o sandbox recebeu `PermissionError` ao ler um `.java`. O
+  coordenador fechou a questão: a comparação dos manifestos de `5b849a3` e `c95dcb3` mostra as mesmas 58
+  entradas e as mesmas operações, e os `before` e `after` das 28 transformações só diferem em espaço em
+  branco (0 problemas). A ausência de drift também foi conferida.
+
+**Delegação:** o plano previa o Sol low para as edições de `pom.xml`, CI, gate e docs de agente, mas elas
+foram feitas pelo coordenador. Eram poucas linhas com gate imediato, e o onboarding não se amortizava.
+
+## T030 — Plugins de IDE
+
+`gems-ai ide artifacts` (3.1.0). Cópias conferidas por SHA-256 em `.tooling/gems-ai-ide-3.1.0/`, fora
+dos repositórios:
+
+| Artefato | SHA-256 |
+| :--- | :--- |
+| `gems-java-formatter-3.1.0.vsix` (VS Code) | `7cd3ab194b3e74c842dbbc0a8d2a924d5cd6f0e2dd48cec0f1e79a4ca61cc08f` |
+| `gems-java-formatter-intellij-3.1.0.zip` (IntelliJ) | `da86fe415d3c947eb8ab3a37891fd8e7d7a67591f57c88fd411ae9fee24ad758` |
+| `gems-java-formatter-sources-3.1.0.zip` | `ac64e748428be2fb784681d8a5cfd798407ae210b83537ea9e7f7efbbb090104` |
+
+A instalação é do usuário (C7).
+
+## Pendente (NOT_RUN)
+
+- S8 e A8: a CI dos PRs, que exige o ok do usuário para push e PR.
+- Mutação na CI (prova 5 da §6).
+
 ## Linha de base dos testes Python do sample (R11)
 
 Em 2026-10-12, na branch da 005 rebaseada sobre `origin/main` `5b849a3`,

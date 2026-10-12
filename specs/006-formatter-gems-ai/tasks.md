@@ -48,7 +48,7 @@ Formato: `- [ ] Tnnn [P] [USn] descrição com caminho`. `SDK/` = `Java-GEMS-SDK
 - [x] T022 [US2] `gems-ai format java --project . --all --apply` (77 arquivos esperados) e commit isolado `style: formata o Java com o formatter do GEMS AI 3.1.0`, só com `.java`
 - [x] T023 [US2] Recompilar com `-g:none` e comparar com T021: idênticos (A4); registrar em `evidence.md`
 - [x] T024 [US2] Criar `.git-blame-ignore-revs` com o SHA de T022; commit `chore: ignora o commit de estilo no blame`; provar A7
-- [ ] T032 [US2] Regenerar `scripts/demo-manifest.json` sobre o código formatado (hashes, `before`/`after` das 28 transformações formatados pelo gems-ai, metadados) e o pin `MANIFEST_SHA256` de `scripts/sample.py`; diagnosticar e corrigir os testes Python restantes (remoção só com prova de obsolescência em `evidence.md`); commit `fix(scripts): regenera o manifesto do clean-demo sobre o código formatado`; provar A10 e A11
+- [x] T032 [US2] Regenerar `scripts/demo-manifest.json` sobre o código formatado (hashes, `before`/`after` das 28 transformações formatados pelo gems-ai, metadados) e o pin `MANIFEST_SHA256` de `scripts/sample.py`; diagnosticar e corrigir os testes Python restantes (remoção só com prova de obsolescência em `evidence.md`); commit `fix(scripts): regenera o manifesto do clean-demo sobre o código formatado`; provar A10 e A11
 
 ## Phase 5: User Story 3 — mutação e autoria (P2)
 
@@ -56,11 +56,11 @@ Formato: `- [ ] Tnnn [P] [USn] descrição com caminho`. `SDK/` = `Java-GEMS-SDK
 
 ## Phase 6: Review, gates e PRs
 
-- [ ] T026 Review Sol read-only dos dois diffs, sem o commit de estilo, que já tem a prova mecânica: escopo, ausência de waiver, `.gems-ai/` só pela CLI, CI fixada em `@v3.1.0`
+- [x] T026 Review Sol read-only dos dois diffs, sem o commit de estilo, que já tem a prova mecânica: escopo, ausência de waiver, `.gems-ai/` só pela CLI, CI fixada em `@v3.1.0`
 - [ ] T027 Gate do SDK: S1–S3; PR no `Gabriel-mDias/Java-GEMS-SDK` (só com o ok do usuário); CI verde (S8); merge pelo usuário. Sem release: a próxima versão publicada (3.5.0, 004) já sai formatada
 - [ ] T028 Gate do sample: A1, A2, A3 (290 testes com Firebase real), A9, A10 e A11; PR no sample (só com o ok do usuário); CI verde nos 4 jobs (A8); merge pelo usuário
 - [ ] T029 Registrar `evidence.md` (números, bytecode, mutação, CI) e fechar a §12 do roteiro; atualizar o `.specify/feature.json` para a próxima rodada ativa
-- [ ] T030 Entregar ao usuário a saída de `gems-ai ide artifacts` para a instalação nas IDEs (C7)
+- [x] T030 Entregar ao usuário a saída de `gems-ai ide artifacts` para a instalação nas IDEs (C7)
 
 ## Dependencies
 

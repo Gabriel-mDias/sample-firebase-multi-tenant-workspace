@@ -3,7 +3,7 @@
 **Feature**: `006-formatter-gems-ai` · **Branch**: `feature/006-formatter-gems-ai` (sample) e uma
 branch própria no Java-GEMS-SDK · **Requisito**: pedido do product owner em 2026-10-12 ("aplique esse
 formatador no projeto backend, para deixá-lo no formato que eu desejo de escrita de código")
-**Data**: 2026-10-12 · **Status**: fase 2 concluída, aguardando o portão (§12)
+**Data**: 2026-10-12 · **Status**: fase 3 executada localmente; PRs aguardando o ok do product owner
 
 **Índice**: [1 Objetivo](#1-objetivo-da-rodada) · [2 Decisões de entrada](#2-decisões-de-entrada) ·
 [4 Backend e build](#4-backend-e-build) · [6 Testes](#6-testes-esperados-por-bloco) ·
@@ -158,7 +158,7 @@ nasce formatado (research R10).
 
 ## 8. Divisão de tasks e delegação por modelo
 
-**30 tarefas** em 6 fases ([tasks.md](tasks.md)). Distribuição: US1 9 (T004–T012), US2 12 (T013–T024),
+**32 tarefas** em 6 fases ([tasks.md](tasks.md)). Distribuição: US1 9 (T004–T012), US2 14 (T013–T024, T031, T032),
 US3 1 (T025) e infraestrutura, review e fechamento 8.
 
 | Fase | Escopo | Tarefas | Executor | Gate de saída |
@@ -260,11 +260,11 @@ O sample pode correr depois de T012, sem esperar o merge do SDK. T016 e T017 sã
 
 ### Para considerar a rodada concluída (depois do código)
 
-- [ ] `.class` idênticos com `-g:none` antes e depois do commit de estilo, nos dois repositórios
-- [ ] `mvn --batch-mode clean verify` verde no Java-GEMS-SDK, com a mesma contagem de T002
-- [ ] `.\mvnw.cmd clean install` verde no reator inteiro do sample, com 290 testes e Firebase real
-- [ ] `npm test`, `npm run build` e `prettier --check` verdes
-- [ ] Gate GEMS e contexto de agentes verdes; clone limpo conforme
+- [x] `.class` idênticos com `-g:none` antes e depois do commit de estilo, nos dois repositórios
+- [x] `mvn --batch-mode clean verify` verde no Java-GEMS-SDK, com a mesma contagem de T002
+- [x] `.\mvnw.cmd clean install` verde no reator inteiro do sample, com 290 testes e Firebase real
+- [x] `npm test`, `npm run build` e `prettier --check` verdes
+- [x] Gate GEMS e contexto de agentes verdes; clone limpo conforme
 - [ ] Mutação de formato observada localmente e na CI
 - [ ] CI verde nos dois PRs, com o log mostrando a CLI 3.1.0 instalada do ref `v3.1.0`
 - [ ] Os gates do [quickstart.md](quickstart.md) marcados
