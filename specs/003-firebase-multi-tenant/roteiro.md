@@ -82,6 +82,11 @@ Decisão do usuário, registrada literalmente: **"6 - opcao b"**, com o contexto
 > 100) passaram. A matriz da seção 8 do guia foi percorrida por inteiro, e a T032 está `[x]`.
 > Detalhe e achados estão em
 > [evidence.md](evidence.md#homologacao-local-20261012).
+>
+> ✅ **Rodada encerrada em 2026-10-12, sem a fase de História.** O product owner dispensou o
+> documento de negócio `business/RF0NN-*.md`. Fala literal: "ignore a história. Para esse projeto
+> não faz sentido". As correções dos achados seguem nas rodadas
+> [004](../004-reativacao-acao-padrao/roteiro.md) e [005](../005-endurecimento-frontend-docs/roteiro.md).
 
 #### Números medidos em 2026-10-12
 
