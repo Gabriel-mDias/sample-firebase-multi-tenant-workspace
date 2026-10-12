@@ -54,9 +54,11 @@ jobs:
 
   # Gate das rules GEMS AI. A CLI vem da action privada `Gabriel-mDias/gems-ai-sdk`, compartilhada
   # com os repositórios do mesmo dono (Actions access = user): sem token e sem checkout cross-repo.
-  # O ref `main` segue a versão mais recente do SDK; a action falha se ela divergir do campo
-  # `version` de gems-ai.json, e o wrapper scripts/gems-ai.ps1 usa a CLI do PATH. A conferência
-  # do commit do pin continua local (scripts/gems-ai.ps1 com a fonte em git).
+  # O ref fica fixado no commit da action que instala a 3.0.0 (merge da PR #15 do SDK; a tag
+  # v3.0.0 é anterior à action). `@main` passou a instalar a 3.1.0 e a action falha quando a CLI
+  # diverge do campo `version` de gems-ai.json. Ao migrar o manifesto pela CLI, troque para a tag da
+  # mesma versão. O wrapper scripts/gems-ai.ps1 usa a CLI do PATH, e a conferência do commit do pin
+  # continua local (scripts/gems-ai.ps1 com a fonte em git).
   #
   # Roda em windows-latest: o lock gerado pela CLI grava caminhos com `\` e o SDK pinado não os
   # normaliza (project.py:364), então o check falha em Ubuntu. Voltar para ubuntu-latest depende
@@ -71,7 +73,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: CLI GEMS AI
-        uses: Gabriel-mDias/gems-ai-sdk@main
+        uses: Gabriel-mDias/gems-ai-sdk@baba0f5e985a1a269f6bbad4bcd6e1f684b058a2 # 3.0.0
 
       - name: Gate GEMS AI
         shell: pwsh
