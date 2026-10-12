@@ -237,10 +237,10 @@ As provas efêmeras (ID tokens) ficaram apenas em um arquivo local, foram apagad
 | Auditoria por tenant (`tenant_*.audit_operation` e `audit_change`) no banco | PASS, observado pelo usuário no DBeaver |
 | Gestão de usuários pelo backend: pré-cadastro, vínculo e concessões | PASS, observado pelo coordenador e conferido pelo usuário |
 | Primeiro login sem cadastro SQL não concede acesso | PASS, `LOCAL_DENIED` observado |
+| Senha: entrega real do e-mail de primeiro acesso e reset pelo Firebase, definição da senha e login por e-mail e senha em seguida | PASS, observado pelo usuário. Fala literal: "login e senha após o reset/primeiro acesso: OK!" |
 
 **Não percorrido nesta sessão (NOT_RUN):**
 
-- login por senha e entrega real do e-mail de definição e reset;
 - revogação Firebase e disable com token anterior;
 - suspensão pelo sample com o worker;
 - encerramento de vínculo e revogação de grant em tela;

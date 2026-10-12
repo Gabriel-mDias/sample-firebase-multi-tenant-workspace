@@ -71,7 +71,9 @@ Decisão do usuário, registrada literalmente: **"6 - opcao b"**, com o contexto
 > não tem a ação, o CRUD do DemoRegistro, a auditoria por tenant no banco e a gestão de usuários,
 > vínculos e concessões pelo backend. Fala do usuário: "Aqui, está perfeito até o momento.
 > Acredito que podemos prosseguir para a próxima fase". A rodada libera a fase de História.
-> **Fora do percorrido, NOT_RUN:** senha e reset por e-mail, revoke e disable, suspensão com worker,
+> Depois, no mesmo dia, o usuário aprovou o fluxo por senha: "login e senha após o reset/primeiro
+> acesso: OK!".
+> **Fora do percorrido, NOT_RUN:** revoke e disable, suspensão com worker,
 > spoof manual, retorno externo e responsividade e acessibilidade do login. Esses itens mantêm a
 > T032 `[ ]`. Detalhe e achados da preparação estão em
 > [evidence.md](evidence.md#homologacao-local-20261012).
