@@ -74,8 +74,10 @@ Decisão do usuário, registrada literalmente: **"6 - opcao b"**, com o contexto
 > Depois, no mesmo dia, o usuário aprovou o fluxo por senha: "login e senha após o reset/primeiro
 > acesso: OK!". Disable e revogação com o token anterior do Tester retornaram 401, e a reabilitação
 > retornou 200. O spoof de `X-Tenant-Alias` com o token real do Tester retornou 403 para Alpha e
-> para alias inexistente, e 200 para Beta.
-> **Fora do percorrido, NOT_RUN:** suspensão com worker, retorno externo e responsividade e acessibilidade do login. Esses itens mantêm a
+> para alias inexistente, e 200 para Beta. Revogação de grant, encerramento de vínculo, suspensão
+> com worker e reativação se comportaram como o contrato, sem logout. A decisão do usuário de devolver
+> a ação básica de conta na reativação ficou registrada como mudança futura (achado 4 da evidência).
+> **Fora do percorrido, NOT_RUN:** retorno externo e responsividade e acessibilidade do login. Esses itens mantêm a
 > T032 `[ ]`. Detalhe e achados da preparação estão em
 > [evidence.md](evidence.md#homologacao-local-20261012).
 

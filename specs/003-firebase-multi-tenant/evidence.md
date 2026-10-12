@@ -241,11 +241,14 @@ As provas efêmeras (ID tokens) ficaram apenas em um arquivo local, foram apagad
 
 | Disable e revogação Firebase com o token anterior do Tester Beta (login Google), via Identity Toolkit `accounts:update` com a conta de serviço de testes, chamando `GET /api/auth/me` a cada passo | PASS, observado pelo coordenador: 1) baseline 200; 2) conta desabilitada → 401 `INVALID_TOKEN`; 3) reabilitada, token não revogado → 200; 4) `validSince` atual (revogação) → 401 `INVALID_TOKEN`. A conta foi reabilitada no passo 3 |
 | Spoof de `X-Tenant-Alias`: `GET /api/auth/context`, `POST /api/demo-registros/search` e `GET /api/demo/tenant/read` com token real | PASS, observado pelo coordenador. Tester Beta: `beta` → 200 nos três; `alpha` → 403 `LOCAL_DENIED` nos três; alias inexistente → 403 `LOCAL_DENIED` nos três. Operador (vinculado a Alpha e Beta): alias inexistente → 403 `LOCAL_DENIED` nos três |
+| Revogar grant SQL sem logout: `DELETE /grants/{id}` de `CONSULTAR_DEMO` do Tester Beta | PASS. Mesmo token: `/auth/me` 200, contexto Beta 200 e listar DemoRegistro 403. Em tela, depois do F5, o usuário observou o menu vazio e o aviso do espaço de trabalho com a sugestão de trocar de empresa |
+| Encerrar membership sem logout: `DELETE /memberships/{id}` em Beta | PASS. Mesmo token: `/auth/me` 200; contexto Beta e DemoRegistro 403 `LOCAL_DENIED`. Em tela: "Nenhuma empresa disponível" |
+| Suspensão pelo sample com o worker | PASS. `POST /users/{id}/suspend` 200: bloqueio local imediato (403 `LOCAL_DENIED` nas três chamadas com o token ainda válido no Firebase), com `DISABLE` e `REVOKE` v1 em `PENDING`. Rodada do `identity-worker`, exit 0: os dois comandos `ACKED`/`APPLIED` na 1ª tentativa, e o mesmo token passou a 401 `INVALID_TOKEN`. Em tela: sessão derrubada para o login e novo login recusado |
+| Reativação com o worker | PASS no ciclo remoto. `POST /users/{id}/reactivate` 200 → `ENABLE` v2 `PENDING`; rodada do worker → `ACKED`/`APPLIED`; usuário `BOUND`, versão 2, vigente; memberships 0, como manda o [data-model](data-model.md). Ver o achado 4 abaixo |
+| Restauração explícita depois da reativação | PASS. Global `CONSULTAR_PROPRIA_CONTA`, novo vínculo em Beta e as 4 ações do DemoRegistro com 201. O usuário confirmou o acesso em tela: "Teste realizado e respondeu como esperado" |
 
 **Não percorrido nesta sessão (NOT_RUN):**
 
-- suspensão pelo sample com o worker;
-- encerramento de vínculo e revogação de grant em tela;
 - retorno pós-login com URL externa;
 - responsividade 320/768/1440, teclado e contraste da tela de login.
 
@@ -256,3 +259,5 @@ T032 permanece `[ ]` por esses itens.
 1. O guia aponta uma "pendência de CORS". Ela se resolve com a propriedade que o código já suporta, `app.security.cors.allowed-origins` (`SecurityConfig.java:50`), definida por `APP_SECURITY_CORS_ALLOWED_ORIGINS`. O guia ainda não menciona essa propriedade.
 2. O `nginx.conf` do frontend resolve o host `backend` no boot, mesmo quando `API_BASE_URL` é absoluta. Fora do Compose, o container só sobe com `--add-host backend:<ip>`.
 3. O `README.md` da raiz ainda descreve o E2E, o cleanup e o benchmark como pendentes, o que diverge do estado atual (seção [CI remoto](#ci-remoto-20261012) e T030 acima).
+4. **Reativação não devolve a ação básica de conta.** `JdbcUserService.suspend` (Java-GEMS-SDK `gems-firebase-auth`) encerra também `usuario_role_global`, incluindo `CONSULTAR_PROPRIA_CONTA`, que é concedida automaticamente no cadastro (`defaultSelfAction`). `requestReactivation` e o ACK do `ENABLE` não a devolvem, porque o [data-model](data-model.md) proíbe reabrir grants encerrados. Efeito observado: a conta fica vigente no Firebase e no SQL, mas `/auth/me` responde 403 e o login em tela não se completa (Google e senha), sem uma mensagem que explique o motivo. **Decisão do usuário (2026-10-12), literal:** "Sobre a reativação, a claim precisa automaticamente ser devolvida em uma reativação". Isso altera o contrato do data-model (somente a ação padrão de conta; memberships e demais grants continuam sem reabertura) e o SDK Java. Fica como mudança futura, com spec, release do SDK e adoção no sample; não foi implementada nesta homologação.
+5. No log do `identity-worker`, cada evento `IDENTITY_COMMAND_ACKED` aparece entregue duas vezes com o mesmo id, o que é compatível com entrega "pelo menos uma vez". Observação, sem falha funcional observada.
