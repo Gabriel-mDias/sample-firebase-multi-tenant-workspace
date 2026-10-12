@@ -12,8 +12,8 @@ import java.util.Optional;
 
 /**
  * O leitor da exceção escrita ({@code conformance-exceptions.md}) nos comentários que o JavaParser
- * entrega — o terceiro portador de T077, ao lado do {@code SuppressWithNearbyCommentFilter} do
- * Checkstyle e do {@code toggleOffOn} do Spotless.
+ * entrega — o portador de T077 ao lado do {@code SuppressWithNearbyCommentFilter} do Checkstyle. O
+ * {@code toggleOffOn} do Spotless saiu com o próprio Spotless, na rodada 006.
  *
  * <p>
  * A forma canônica é {@code GEMS-EXCEPTION(<arquivo-de-regra>#<seção>): <motivo>; expira AAAA-MM-DD},
