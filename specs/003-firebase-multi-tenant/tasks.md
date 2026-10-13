@@ -94,7 +94,7 @@ Novamente marcadas `[x]`: T017, T018, T020, T021, T025, T026 e T028. Mantidas `[
 
 R003: BE1, BE2E e BE3C fecham as lacunas técnicas nomeadas de T017–T021/T025; B08/F05 conservam a limitação histórica em T019. R005: FE1D fecha G18, FE2A2 fecha G06/G09/G11 e FE2B3 fecha G12/G14. G13/G15/G17 ficam fora; o recorte autorizado não fornece a correspondência completa das demais lacunas R005 por tarefa. Por isso não se infere fechamento integral de T022/T023/T024/T029/T033/T034. Essa cautela documental não atribui novos IDs a essas tarefas nem declara falha das suítes observadas.
 
-D001-B foi transcrita em [evidence.md](evidence.md#decisão-d001--transcrição). A assinatura humana na proposta de regularização continua pendente, sem edição ou assinatura por proxy. Publicação/consumidores SDK são provas das tarefas próprias T013/T016 e da release Java 3.4.1; os gates do sample não os substituem. CI remoto neste HEAD e homologação manual permanecem NOT_RUN. Nenhum build, rede, gate funcional ou commit foi executado por DOC1.
+D001-B foi transcrita em [evidence.md](evidence.md#decisão-d001--transcrição). A assinatura humana na proposta de regularização continua pendente, sem edição ou assinatura por proxy. *(Superado em 2026-10-13: a seção "Decisão" foi preenchida com a opção B por instrução expressa do usuário; ver [evidence.md](evidence.md#doc1-d001).)* Publicação/consumidores SDK são provas das tarefas próprias T013/T016 e da release Java 3.4.1; os gates do sample não os substituem. CI remoto neste HEAD e homologação manual permanecem NOT_RUN. Nenhum build, rede, gate funcional ou commit foi executado por DOC1.
 
 <a id="doc1-retificacao"></a>
 
