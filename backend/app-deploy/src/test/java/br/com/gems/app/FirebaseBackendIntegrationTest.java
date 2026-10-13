@@ -1,6 +1,8 @@
 package br.com.gems.app;
 
+import br.com.gems.app.config.JobsConfiguration;
 import br.com.gems.app.demo.repository.DemoRegistroRepository;
+import br.com.gems.app.events.SegurancaAlteradaEvent;
 import br.com.gems.app.model.entity.demo.DemoRegistro;
 import br.com.gems.app.tenant.SampleTenantMigration;
 import br.com.gems.firebase.auth.AuthorizationResolver;
@@ -10,6 +12,7 @@ import br.com.gems.firebase.auth.FirebaseAuthenticationToken;
 import br.com.gems.firebase.auth.IdTokenVerifier;
 import br.com.gems.firebase.auth.SecurityActorProvider;
 import br.com.gems.firebase.auth.SecurityEventSink;
+import br.com.gems.firebase.auth.SecurityEventPublisher;
 import br.com.gems.firebase.auth.TenantAliasValidator;
 import br.com.gems.firebase.auth.VerifiedIdentity;
 import br.com.gems.firebase.auth.GrantAdministration;
@@ -18,6 +21,7 @@ import br.com.gems.firebase.auth.jdbc.JdbcTenantService;
 import br.com.gems.firebase.auth.jdbc.JdbcUserService;
 import br.com.gems.firebase.auth.jdbc.JdbcTenantProvisioner;
 import br.com.gems.firebase.auth.jdbc.JdbcIdentityCommandWorker;
+import br.com.gems.firebase.auth.jdbc.JdbcSecurityEventOutbox;
 import br.com.gems.security.authorization.AuthorizationCatalog;
 import br.com.gems.firebase.auth.DelegationPolicy;
 import br.com.gems.tenant.JpaTenantContext;
@@ -43,13 +47,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.DefaultApplicationArguments;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.event.ApplicationEvents;
+import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.testcontainers.junit.jupiter.Container;
@@ -69,6 +77,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Testcontainers
 @Import(FirebaseBackendIntegrationTest.Ports.class)
+@RecordApplicationEvents
 class FirebaseBackendIntegrationTest {
 
     @Container
@@ -94,6 +103,10 @@ class FirebaseBackendIntegrationTest {
     Clock clock;
     @Autowired
     SecurityEventSink events;
+    @Autowired
+    SecurityEventPublisher publisher;
+    @Autowired
+    ApplicationEvents applicationEvents;
     @Autowired
     TenantAliasValidator aliases;
     @Autowired
@@ -512,7 +525,7 @@ class FirebaseBackendIntegrationTest {
                 .query( String.class ).single();
         String email = jdbc.sql( "SELECT cd_email FROM security.usuario WHERE id_usuario=:id" ).param( "id", id )
                 .query( String.class ).single();
-        var restarted = new JdbcIdentityCommandWorker( jdbc, tx, events, source, admin, clock, java.time.Duration.ofMinutes( 2 ) );
+        var restarted = new JdbcIdentityCommandWorker( jdbc, tx, events, source, admin, clock, java.time.Duration.ofMinutes( 2 ), catalog );
         assertThat( restarted.runOnce() ).isTrue();
         var identity = new VerifiedIdentity( "sample-isolated-test", "https://securetoken.google.com/sample-isolated-test", uid, email, true, "password", "Senha", clock.instant() );
         IDENTITIES.put( uid, identity );
@@ -551,7 +564,7 @@ class FirebaseBackendIntegrationTest {
             }
 
         };
-        var restarted = new JdbcIdentityCommandWorker( jdbc, tx, events, source, racingAdmin, clock, java.time.Duration.ofMinutes( 2 ) );
+        var restarted = new JdbcIdentityCommandWorker( jdbc, tx, events, source, racingAdmin, clock, java.time.Duration.ofMinutes( 2 ), catalog );
         assertThat( restarted.runOnce() ).isTrue();
         assertThat( jdbc
                 .sql( "SELECT cd_estado FROM security.comando_identidade WHERE id_usuario=:id AND cd_tipo='CREATE'" )
@@ -564,12 +577,50 @@ class FirebaseBackendIntegrationTest {
     }
 
     @Test
+    void devePublicarCadaEventoUmaVez_quandoJobIdentityWorkerProcessaEDrenaOutbox() throws Exception {
+        var previous = jdbc.sql( "SELECT id_evento FROM security.evento_seguranca WHERE id_usuario=:id" )
+                .param( "id", aliceId ).query( UUID.class ).list();
+        var outbox = new JdbcSecurityEventOutbox( jdbc, tx, clock );
+        applicationEvents.clear();
+
+        users.suspend( aliceId );
+        runIdentityJob( outbox );
+        users.requestReactivation( aliceId );
+        runIdentityJob( outbox );
+
+        var expected = jdbc.sql( "SELECT id_evento FROM security.evento_seguranca WHERE id_usuario=:id" )
+                .param( "id", aliceId ).query( UUID.class ).list().stream().filter( id -> !previous.contains( id ) ).toList();
+        assertThat( expected ).hasSize( 6 );
+        assertThat( applicationEvents.stream( SegurancaAlteradaEvent.class ).filter( event -> aliceId.equals( event.usuarioId() ) ).map( SegurancaAlteradaEvent::id ).toList() )
+                .as( "O publisher do sample recebe cada UUID durável uma vez, inclusive os ACKs e a devolução." )
+                .containsExactlyInAnyOrderElementsOf( expected );
+        assertThat( applicationEvents.stream( SegurancaAlteradaEvent.class ).filter( event -> aliceId.equals( event.usuarioId() ) ).map( SegurancaAlteradaEvent::tipo ).toList() )
+                .contains( "IDENTITY_COMMAND_ACKED", "GLOBAL_SELF_ACTION_RESTORED" );
+        assertThat( jdbc.sql( "SELECT count(*) FROM security.entrega_evento d JOIN security.evento_seguranca e ON e.id_evento=d.id_evento " + "WHERE e.id_usuario=:id AND d.cd_estado<>'ACKED'" ).param( "id", aliceId ).query( Long.class ).single() ).isZero();
+        assertThat( outbox.publishNext( publisher ) ).isFalse();
+    }
+
+    private void runIdentityJob( JdbcSecurityEventOutbox outbox ) throws Exception {
+        // O runner real fecha seu contexto; usa-se um contexto separado do fixture web.
+        try (var jobContext = new GenericApplicationContext()) {
+            jobContext.refresh();
+            new JobsConfiguration().identityWorkerRunner( worker, outbox, publisher, jobContext ).run( new DefaultApplicationArguments() );
+        }
+    }
+
+    @Test
     void deveReentregarEventoComMesmoUUID_quandoOutboxReiniciaAposFalha() {
         jdbc.sql( "UPDATE security.entrega_evento SET dt_proxima_tentativa=now()+interval '1 day' WHERE cd_estado='PENDING'" )
                 .update();
-        UUID id = users.preProvisionGoogle( "Evento", "event" + UUID.randomUUID() + "@example.test" );
+        SecurityEventSink failingSink = event -> {
+            throw new IllegalStateException( "destination unavailable" );
+        };
+        var failingUsers = new JdbcUserService( jdbc, tx, failingSink, clock, "sample-isolated-test", catalog, SecurityActorProvider.trustedBootstrap( UUID.randomUUID() ) );
+        UUID id = failingUsers.preProvisionGoogle( "Evento", "event" + UUID.randomUUID() + "@example.test" );
         UUID eventId = jdbc.sql( "SELECT id_evento FROM security.evento_seguranca WHERE id_usuario=:id AND cd_evento LIKE '%USER_PREPROVISIONED'" )
                 .param( "id", id ).query( UUID.class ).single();
+        assertThat( jdbc.sql( "SELECT cd_estado FROM security.entrega_evento WHERE id_evento=:id" ).param( "id", eventId ).query( String.class ).single() ).isEqualTo( "PENDING" );
+        assertThat( jdbc.sql( "SELECT nr_tentativas FROM security.entrega_evento WHERE id_evento=:id" ).param( "id", eventId ).query( Long.class ).single() ).isOne();
         jdbc.sql( "UPDATE security.entrega_evento SET dt_proxima_tentativa=now()-interval '1 day' WHERE id_evento=:id" )
                 .param( "id", eventId ).update();
         var first = new br.com.gems.firebase.auth.jdbc.JdbcSecurityEventOutbox( jdbc, tx, clock );
@@ -577,6 +628,7 @@ class FirebaseBackendIntegrationTest {
             assertThat( event.id() ).isEqualTo( eventId );
             throw new IllegalStateException( "destination unavailable" );
         } ) ).isTrue();
+        assertThat( jdbc.sql( "SELECT cd_estado FROM security.entrega_evento WHERE id_evento=:id" ).param( "id", eventId ).query( String.class ).single() ).isEqualTo( "PENDING" );
         jdbc.sql( "UPDATE security.entrega_evento SET dt_proxima_tentativa=now()-interval '1 day' WHERE id_evento=:id" )
                 .param( "id", eventId ).update();
         var restarted = new br.com.gems.firebase.auth.jdbc.JdbcSecurityEventOutbox( jdbc, tx, clock );
@@ -584,6 +636,7 @@ class FirebaseBackendIntegrationTest {
         assertThat( jdbc.sql( "SELECT cd_estado FROM security.entrega_evento WHERE id_evento=:id" ).param( "id", eventId )
                 .query( String.class ).single() )
                 .isEqualTo( "ACKED" );
+        assertThat( jdbc.sql( "SELECT nr_tentativas FROM security.entrega_evento WHERE id_evento=:id" ).param( "id", eventId ).query( Long.class ).single() ).isEqualTo( 3 );
     }
 
     private jakarta.persistence.EntityManagerFactory repositoryEntityManagerFactory() {

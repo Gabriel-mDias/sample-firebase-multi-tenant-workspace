@@ -73,12 +73,40 @@ class IdentityLifecycleContractIntegrationTest extends FirebaseContractSupport {
         assertThat( firebase.getUser( subject.uid() ).disabled() ).isTrue();
         assertThat( blocked() ).isTrue();
         assertThat( identityVersion() ).isEqualTo( disableVersion );
+        assertNoRestoredAccess();
         mvc.perform( get( "/api/auth/me" ).header( "Authorization", "Bearer " + subject.uid() ) )
                 .andExpect( status().isForbidden() );
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = { "cancel", "suspend" })
+    void deveManterConcessoesEncerradas_quandoReativacaoEAnuladaAntesDoWorker( String operation ) {
+        suspendAndDrain();
+        users.requestReactivation( subject.id() );
+        assertThat( enableState() ).isEqualTo( "PENDING" );
+        assertNoRestoredAccess();
+        var closed = closedChains();
+
+        if ( operation.equals( "cancel" ) ) {
+            users.cancelReactivation( subject.id() );
+        } else {
+            users.suspend( subject.id() );
+        }
+        var current = worker( firebase );
+        int processed = 0;
+        while ( current.runOnce() ) {
+            assertThat( ++processed ).as( "Limite de comandos da reativação anulada." ).isLessThan( 10 );
+        }
+
+        assertThat( enableState() ).isEqualTo( "OBSOLETE" );
+        assertThat( blocked() ).isTrue();
+        assertThat( firebase.getUser( subject.uid() ).disabled() ).isTrue();
+        assertThat( closedChains() ).isEqualTo( closed );
+        assertNoRestoredAccess();
+    }
+
     @Test
-    void deveAtivarSomenteUsuario_quandoEnableVigenteRecebeAck() throws Exception {
+    void deveAtivarUsuarioEDevolverSomenteAcaoPadrao_quandoEnableVigenteRecebeAck() throws Exception {
         suspendAndDrain();
         users.requestReactivation( subject.id() );
         closeAuthorizationChains();
@@ -91,7 +119,9 @@ class IdentityLifecycleContractIntegrationTest extends FirebaseContractSupport {
         assertThat( enableState() ).isEqualTo( "ACKED" );
         assertThat( blocked() ).isFalse();
         assertThat( firebase.getUser( subject.uid() ).disabled() ).isFalse();
-        assertThat( closedChains() ).as( "ACK não reabre identidade, membership nem grants." ).isEqualTo( closed );
+        assertThat( closedChains() ).as( "ACK preserva identidades, memberships e grants encerrados." ).isEqualTo( closed );
+        assertOnlySelfAction();
+        // A identidade encerrada continua impedindo autenticação, apesar da nova concessão padrão.
         mvc.perform( get( "/api/auth/me" ).header( "Authorization", "Bearer " + subject.uid() ) )
                 .andExpect( status().isForbidden() );
     }
@@ -121,11 +151,13 @@ class IdentityLifecycleContractIntegrationTest extends FirebaseContractSupport {
         assertThat( blocked() ).isFalse();
         assertThat( firebase.getUser( subject.uid() ).disabled() ).isFalse();
         assertThat( closedChains() ).isEqualTo( closed );
+        assertOnlySelfAction();
         assertThat( jdbc.sql( "SELECT count(*) FROM security.comando_identidade " + "WHERE id_usuario=:id AND cd_tipo='ENABLE'" ).param( "id", subject.id() )
                 .query( Long.class ).single() ).isOne();
         String primaryKey = commandPrimaryKey();
         assertThat( enableCommand().get( primaryKey ) ).isEqualTo( initial.get( primaryKey ) );
         assertThat( restarted.runOnce() ).isFalse();
+        assertOnlySelfAction();
     }
 
     private void suspendAndDrain() {
@@ -174,7 +206,21 @@ class IdentityLifecycleContractIntegrationTest extends FirebaseContractSupport {
 
     private Map<String, String> closedChains() {
         var all = securityState();
-        return Map.of( "identities", all.get( "usuario_identidade" ), "memberships", all.get( "usuario_tenant" ), "globalGrants", all.get( "usuario_role_global" ), "tenantGrants", all.get( "usuario_tenant_role" ) );
+        // Uma nova concessão vigente é permitida; todas as linhas encerradas continuam imutáveis.
+        String closedGlobalGrants = jdbc.sql( "SELECT coalesce(jsonb_agg(to_jsonb(g) ORDER BY to_jsonb(g)::text),'[]'::jsonb)::text " + "FROM security.usuario_role_global g WHERE g.dt_fim IS NOT NULL" ).query( String.class ).single();
+        return Map.of( "identities", all.get( "usuario_identidade" ), "memberships", all.get( "usuario_tenant" ), "globalGrants", closedGlobalGrants, "tenantGrants", all.get( "usuario_tenant_role" ) );
+    }
+
+    private void assertOnlySelfAction() {
+        assertThat( jdbc.sql( "SELECT r.cd_acao FROM security.usuario_role_global g JOIN security.role_seguranca r ON r.id_role=g.id_role " + "WHERE g.id_usuario=:id AND g.dt_inicio<=now() AND (g.dt_fim IS NULL OR g.dt_fim>now())" )
+                .param( "id", subject.id() ).query( String.class ).list() ).containsExactly( "CONSULTAR_PROPRIA_CONTA" );
+    }
+
+    private void assertNoRestoredAccess() {
+        assertThat( jdbc.sql( "SELECT count(*) FROM security.usuario_role_global WHERE id_usuario=:id " + "AND dt_inicio<=now() AND (dt_fim IS NULL OR dt_fim>now())" )
+                .param( "id", subject.id() ).query( Long.class ).single() ).isZero();
+        assertThat( jdbc.sql( "SELECT count(*) FROM security.evento_seguranca WHERE id_usuario=:id AND cd_evento LIKE '%GLOBAL_SELF_ACTION_RESTORED'" )
+                .param( "id", subject.id() ).query( Long.class ).single() ).isZero();
     }
 
     private String commandPrimaryKey() {

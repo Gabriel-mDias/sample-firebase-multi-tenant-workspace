@@ -178,7 +178,7 @@ public abstract class FirebaseContractSupport {
     }
 
     protected JdbcIdentityCommandWorker worker( FirebaseAdminGateway gateway ) {
-        return new JdbcIdentityCommandWorker( jdbc, tx, events, source, gateway, clock, Duration.ofMinutes( 2 ) );
+        return new JdbcIdentityCommandWorker( jdbc, tx, events, source, gateway, clock, Duration.ofMinutes( 2 ), catalog );
     }
 
     protected void postponeCommands() {

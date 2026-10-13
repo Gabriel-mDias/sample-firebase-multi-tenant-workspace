@@ -94,7 +94,7 @@ class FirebaseAdoptionContractIntegrationTest extends FirebaseContractSupport {
         var location = firebaseFilter.getClass().getProtectionDomain().getCodeSource().getLocation();
         var path = Path.of( location.toURI() );
 
-        assertThat( path.getFileName().toString() ).isEqualTo( "gems-firebase-auth-3.4.1.jar" );
+        assertThat( path.getFileName().toString() ).isEqualTo( "gems-firebase-auth-3.5.0.jar" );
         try (var jar = new JarFile( path.toFile() )) {
             var metadata = jar.getJarEntry( "META-INF/maven/br.com.gems/gems-firebase-auth/pom.properties" );
             assertThat( metadata ).isNotNull();
@@ -103,7 +103,7 @@ class FirebaseAdoptionContractIntegrationTest extends FirebaseContractSupport {
                 properties.load( stream );
             }
             assertThat( properties ).containsEntry( "groupId", "br.com.gems" )
-                    .containsEntry( "artifactId", "gems-firebase-auth" ).containsEntry( "version", "3.4.1" );
+                    .containsEntry( "artifactId", "gems-firebase-auth" ).containsEntry( "version", "3.5.0" );
             assertThat( FirebaseAuthenticationFilter.class.getResource( "FirebaseAuthenticationFilter.class" )
                     .toExternalForm() ).startsWith( "jar:" + location.toExternalForm() + "!/" );
         }

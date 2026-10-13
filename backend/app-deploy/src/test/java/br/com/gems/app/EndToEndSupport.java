@@ -338,7 +338,10 @@ public final class EndToEndSupport {
         bind( id );
         var uid = plannedUid( id );
         var token = login( "lifecycle" );
+        long tokenReceivedNs = System.nanoTime();
         expect( "GET", "/api/auth/me", token, null, null, 200 );
+        tenants.addMember( alpha, id );
+        grants.grantGlobal( id, "CONSULTAR_USUARIO" );
         users.suspend( id );
         expect( "GET", "/api/auth/me", token, null, null, 403 );
         drain();
@@ -353,6 +356,26 @@ public final class EndToEndSupport {
         assertThat( jdbc.sql( "SELECT count(*) FROM security.usuario_role_global WHERE id_usuario=:id AND dt_fim IS NULL" )
                 .param( "id", id ).query( Long.class ).single() )
                 .isZero();
+
+        checkpoint = "REACTIVATION_ACK_RESTORES_ONLY_SELF_ACTION_WITHOUT_TENANTS";
+        users.requestReactivation( id );
+        assertThat( jdbc.sql( "SELECT count(*) FROM security.usuario_role_global WHERE id_usuario=:id AND dt_fim IS NULL" )
+                .param( "id", id ).query( Long.class ).single() ).isZero();
+        drain();
+
+        assertThat( jdbc.sql( "SELECT count(*) FROM security.comando_identidade WHERE id_usuario=:id" + " AND cd_tipo='ENABLE' AND cd_estado='ACKED'" ).param( "id", id ).query( Long.class ).single() ).isOne();
+        assertThat( admin.getUser( uid ).disabled() ).isFalse();
+        assertThat( jdbc.sql( "SELECT r.cd_acao FROM security.usuario_role_global g JOIN security.role_seguranca r ON r.id_role=g.id_role " + "WHERE g.id_usuario=:id AND g.dt_inicio<=now() AND (g.dt_fim IS NULL OR g.dt_fim>now())" )
+                .param( "id", id ).query( String.class ).list() ).containsExactly( "CONSULTAR_PROPRIA_CONTA" );
+        assertThat( jdbc.sql( "SELECT count(*) FROM security.usuario_tenant WHERE id_usuario=:id AND dt_inicio<=now() AND (dt_fim IS NULL OR dt_fim>now())" )
+                .param( "id", id ).query( Long.class ).single() ).isZero();
+        // Reutiliza a espera de relógio para o token novo alcançar o corte do REVOKE real.
+        var claims = unverifiedRevocationClaims( token );
+        awaitRenewalClock( ((Number) claims.get( "iat" )).longValue(), ((Number) claims.get( "auth_time" )).longValue(), tokenReceivedNs, realAdmin.getUser( uid ).getTokensValidAfterTimestamp() );
+        var reactivated = login( "lifecycle" );
+        var me = JSON.fromString( expect( "GET", "/api/auth/me", reactivated, null, null, 200 ), Map.class );
+        assertThat( (List<?>) me.get( "tenants" ) ).isEmpty();
+        assertThat( me.get( "globalActions" ) ).isEqualTo( List.of( "CONSULTAR_PROPRIA_CONTA" ) );
         passed();
     }
 
@@ -528,7 +551,7 @@ public final class EndToEndSupport {
             }
 
         };
-        var worker = new JdbcIdentityCommandWorker( jdbc, application.getBean( "firebaseSecurityTransactions", TransactionTemplate.class ), application.getBean( SecurityEventSink.class ), application.getBean( "firebaseSecurityDataSource", DataSource.class ), forwarding, application.getBean( Clock.class ), Duration.ofMinutes( 2 ) );
+        var worker = new JdbcIdentityCommandWorker( jdbc, application.getBean( "firebaseSecurityTransactions", TransactionTemplate.class ), application.getBean( SecurityEventSink.class ), application.getBean( "firebaseSecurityDataSource", DataSource.class ), forwarding, application.getBean( Clock.class ), Duration.ofMinutes( 2 ), catalog );
         try (var executor = Executors.newSingleThreadExecutor()) {
             var pending = executor.submit( worker::runOnce );
             try {
@@ -903,7 +926,7 @@ public final class EndToEndSupport {
     }
 
     private void drain( FirebaseAdminGateway gateway ) {
-        var worker = new JdbcIdentityCommandWorker( jdbc, application.getBean( "firebaseSecurityTransactions", TransactionTemplate.class ), application.getBean( SecurityEventSink.class ), application.getBean( "firebaseSecurityDataSource", DataSource.class ), gateway, application.getBean( Clock.class ), Duration.ofSeconds( 30 ) );
+        var worker = new JdbcIdentityCommandWorker( jdbc, application.getBean( "firebaseSecurityTransactions", TransactionTemplate.class ), application.getBean( SecurityEventSink.class ), application.getBean( "firebaseSecurityDataSource", DataSource.class ), gateway, application.getBean( Clock.class ), Duration.ofSeconds( 30 ), catalog );
         for ( int index = 0; index < 100 && worker.runOnce(); index++ ) {
         }
     }
