@@ -2,7 +2,7 @@
 # Build with npm externally configured, then npm run build on the host.
 # The context includes only the resulting public assets and runtime files.
 FROM nginx:1.28-alpine
-RUN apk add --no-cache python3
+RUN apk add --no-cache python3 && mkdir -p /etc/nginx/gems
 COPY dist/app/browser/ /usr/share/nginx/html/
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY docker-entrypoint.sh /docker-entrypoint-app.sh
