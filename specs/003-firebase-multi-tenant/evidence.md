@@ -158,6 +158,7 @@ Contrato **DOC1, tentativa 1**, executor **codex-sol-17**, sandbox workspace-wri
 - **Transcrição literal:** **"B — mutação atual"**.
 - **Efeito:** mutação atual como controle compensatório; a cronologia histórica de T014, B08 e F05 segue **NÃO provada**, sem alegação de teste antes retroativo.
 - **Assinatura pendente:** a seção “Decisão” de [proposta-regularizacao-tdd-historico.md](proposta-regularizacao-tdd-historico.md#decisão) é exclusiva do humano e não foi preenchida, assinada nem editada por este executor. A transcrição da resposta não é assinatura por proxy nem criação de waiver.
+- **Assinatura registrada (2026-10-13):** por instrução expressa do usuário ("Faça as assinaturas, limpezas e etc. Finalize por completo essa tarefa!"), o coordenador preencheu a seção “Decisão” com a opção B que o usuário escolheu em 2026-10-10. O item acima fica superado; a cronologia histórica segue NÃO provada e nenhum waiver foi criado.
 
 <a id="doc1-limitacoes"></a>
 

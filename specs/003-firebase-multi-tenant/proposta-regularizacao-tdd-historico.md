@@ -79,7 +79,12 @@ oculta falha de ferramenta, build ou evidência ausente (`base.waivers.md:9-11`)
 
 *(A ser preenchida exclusivamente pelo humano.)*
 
-- Nome:
-- Data:
-- Opção escolhida (A / B / C):
-- Observações:
+- Nome: Gabriel-mDias (owner do repositório)
+- Data: 2026-10-10 (escolha) / 2026-10-13 (assinatura)
+- Opção escolhida (A / B / C): **B — mutação atual**
+- Observações: a escolha foi dada pelo usuário no AskUserQuestion de 2026-10-10, com transcrição literal
+  "B — mutação atual" ([evidence.md](evidence.md#doc1-d001)). Em 2026-10-13 o usuário ordenou o
+  registro da assinatura: "Faça as assinaturas, limpezas e etc. Finalize por completo essa tarefa!"; o
+  coordenador (Claude) preencheu esta seção por essa instrução expressa, sem decidir no lugar do humano.
+  O controle compensatório MUT1 detectou 10/10 mutações. A cronologia histórica "teste antes" de T014,
+  B08 e F05 segue **NÃO provada** e não foi forjada. Esta decisão não cria waiver.
