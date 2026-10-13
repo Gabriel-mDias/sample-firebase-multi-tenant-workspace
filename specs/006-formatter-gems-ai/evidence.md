@@ -160,10 +160,29 @@ dos repositórios:
 
 A instalação é do usuário (C7).
 
-## Pendente (NOT_RUN)
+## T027 e T028 — PRs e CI (2026-10-12)
 
-- S8 e A8: a CI dos PRs, que exige o ok do usuário para push e PR.
-- Mutação na CI (prova 5 da §6).
+O push e os PRs foram autorizados pelo usuário ("Dê o push e prossiga com as demais tarefas").
+
+- **A8, sample [PR #12](https://github.com/Gabriel-mDias/sample-firebase-multi-tenant-workspace/pull/12):**
+  os 4 jobs passaram no run `38329633006`. O job GEMS AI baixou a action `@v3.1.0` (SHA `909c69aa`), e a
+  CLI 3.1.0 conferiu com o `gems-ai.json`. O backend rodou 202 testes no `app-deploy`, incluindo o
+  `FirebaseEndToEndIntegrationTest` com Firebase real.
+- **Prova 5, mutação na CI:** o PR draft temporário #13 (base: a branch da 006) acrescentou um espaço
+  na indentação de `BootstrapOperator.java`. O job GEMS AI falhou: `gems-ai check-java --project . --all
+  (exit 10)`, com o diff apontando o arquivo (run `38330816105`). O run foi cancelado depois disso, para
+  não gastar o E2E real. O PR foi fechado sem merge, e a branch, apagada.
+- **S8, SDK [PR #49](https://github.com/Gabriel-mDias/Java-GEMS-SDK/pull/49):** o job `gems-ai` não
+  subiu ("Unable to resolve action `gabriel-mdias/gems-ai-sdk`, not found"). O Java-GEMS-SDK é público, e
+  o GitHub não deixa repositório público usar a action de um repositório privado. **Decisão do usuário:
+  gate só local no SDK**. O commit `18f276c` reverte o `4f85c3e`, e no PR passaram Build & Test (JDK 21),
+  Analisar (Java) e CodeQL. **Limitação:** a CI do SDK não barra Java desformatado. O formato do SDK
+  depende do gate local (`gems-ai check --strict` e `check-java --all`, provados em S2 e S6) e de quem
+  revisa o PR.
+
+## Pendente
+
+- Merge dos PRs #49 (SDK) e #12 (sample), pelo usuário. Depois disso, fechar T027, T028 e T029.
 
 ## Linha de base dos testes Python do sample (R11)
 

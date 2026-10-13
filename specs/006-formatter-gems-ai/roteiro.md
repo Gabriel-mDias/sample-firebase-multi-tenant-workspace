@@ -49,6 +49,7 @@ Decisões tomadas com o product owner em 2026-10-12.
 | 6 | Spotless e Checkstyle **do SDK** | **Manter os dois** (proposta da fase 2, aceita no portão). No SDK, o Spotless não formata nada, só aplica `trimTrailingWhitespace` e `endWithNewline`. O Checkstyle só tem `FileTabCharacter`, `NewlineAtEndOfFile` e `RegexpSinglelineJava`. Com o código formatado, os dois passaram nos 18 módulos (research R6). A decisão 2 foi tomada sobre o Spotless do sample, que é um formatter completo | Nada oscila e nenhuma checagem de higiene se perde. Se você preferir tirar também o do SDK, vira uma tarefa a mais em T012 |
 | 7 | `commit` do `gems-ai.json` do sample | **`909c69aa…`**, o commit da tag `v3.1.0` (proposta da fase 2, aceita no portão). O `update` mantém o `51b94e3a` da 3.0.0, e o wrapper local compara esse campo com a fonte (research R2) | O pin fica coerente com a versão |
 | 8 | Inicializador, clean-demo e testes Python | **Entram na 006** (2026-10-12, depois do portão, resposta à pergunta de escopo: "Tudo na 006"). O `scripts/sample.py` passa a formatar com o gems-ai em vez do `mvnw spotless:apply`; o `scripts/demo-manifest.json` é regenerado sobre o código formatado; os testes Python ficam verdes (research R11) | O PR da 006 não deixa o inicializador quebrado. Sai da [005](../005-endurecimento-frontend-docs/roteiro.md) (decisão 4 de lá) |
+| 9 | Job `gems-ai` na CI do SDK | **Fica fora; o gate do SDK é só local** (2026-10-12, decisão do usuário depois da falha no PR #49). O Java-GEMS-SDK é público, e o GitHub não deixa repositório público usar a action do `gems-ai-sdk`, que é privado. O commit `18f276c` reverte o job | A CI do SDK não barra Java desformatado. Quem barra é o gate local (S2, S6) e a revisão do PR. A prova de mutação na CI foi feita no sample |
 
 ### Decisões tomadas por convenção, sem pergunta
 
@@ -76,7 +77,7 @@ de 2026-10-12 ([research](research.md)).
 | 1 | `chore(gems-ai): adota GEMS AI 3.1.0 com perfil java` | `gems-ai.json` (3.1.0, `909c69aa…`, `java`), saída do `apply`: 24 regras, catálogo, 4 schemas, 5 arquivos de skill, snapshot do formatter, adapters `AGENTS.md`/`GEMINI.md`/`.cursor`/`copilot-instructions` e bloco no `CLAUDE.md`, lock. `.gitattributes` com CRLF para o snapshot (R3) | `check --strict` exit 0, inclusive em clone limpo |
 | 2 | `style: formata o Java com o formatter do GEMS AI 3.1.0` | **só `.java`**: 208 de 220 arquivos, +6.598/−4.860 | `.class` idênticos com `-g:none` (R7); `mvn clean verify` verde com a mesma contagem |
 | 3 | `chore: ignora o commit de estilo no blame` | `.git-blame-ignore-revs` | `git blame` aponta o commit anterior |
-| 4 | `ci: gate GEMS AI e formato Java` | job `gems-ai` em `windows-latest` no `pr-validation.yml`: JDK 21, action `@v3.1.0`, `check --strict`, `check-java --all` | PR com o job verde; com a mutação, vermelho |
+| 4 | `ci: gate GEMS AI e formato Java` | job `gems-ai` em `windows-latest` no `pr-validation.yml`: JDK 21, action `@v3.1.0`, `check --strict`, `check-java --all` | PR com o job verde; com a mutação, vermelho. **Revertido em `18f276c`** (decisão 9) |
 
 O Spotless e o Checkstyle do SDK ficam (decisão 6). Sem release: não há mudança de API nem de
 comportamento, e a 3.5.0 da 004 já sai formatada.
@@ -265,8 +266,8 @@ O sample pode correr depois de T012, sem esperar o merge do SDK. T016 e T017 sã
 - [x] `.\mvnw.cmd clean install` verde no reator inteiro do sample, com 290 testes e Firebase real
 - [x] `npm test`, `npm run build` e `prettier --check` verdes
 - [x] Gate GEMS e contexto de agentes verdes; clone limpo conforme
-- [ ] Mutação de formato observada localmente e na CI
-- [ ] CI verde nos dois PRs, com o log mostrando a CLI 3.1.0 instalada do ref `v3.1.0`
+- [x] Mutação de formato observada localmente e na CI (na CI, só no sample: PR #13, `check-java` exit 10; decisão 9)
+- [x] CI verde nos dois PRs, com o log mostrando a CLI 3.1.0 instalada do ref `v3.1.0` (sample #12, 4 jobs; o SDK #49 ficou verde sem o job `gems-ai`, decisão 9)
 - [ ] Os gates do [quickstart.md](quickstart.md) marcados
 - [ ] **Zero regressão** nas features já entregues
 
