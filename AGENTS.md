@@ -1,6 +1,6 @@
 # AGENTS.md — entrada local Firebase multi-tenant
 
-A constituição 3.1.0 é autoridade. A spec aprovada é contrato de comportamento; código/testes
+A constituição 3.1.1 é autoridade. A spec aprovada é contrato de comportamento; código/testes
 mostram o estado real. Regras GEMS vencem código consolidado sob constituição, segurança e API
 publicada. Nenhum waiver/exceção ou baseline é criado pelo agente para passar gate. Referências
 anteriores servem à forma de código. Adoção SDK exige publicação, alcance medido, garantia nomeada,

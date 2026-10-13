@@ -2,7 +2,7 @@
 applyTo: "specs/**/*,.specify/**/*"
 ---
 
-A constituição 3.1.0 é autoridade. A spec aprovada define comportamento; código/testes
+A constituição 3.1.1 é autoridade. A spec aprovada define comportamento; código/testes
 mostram o estado atual. Regras GEMS prevalecem sob constituição, segurança e APIs publicadas.
 Adoção de SDK exige publicação, alcance medido, garantia nomeada, equivalência/mutação no
 consumidor e remoção da classe duplicada. Agente não cria waiver/exceção para passar gate.
