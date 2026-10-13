@@ -35,7 +35,7 @@ Formato: `- [ ] Tnnn [P] [USn] descrição com caminho`.
 - [x] T007 [P] [US3] Criar `frontend/public/robots.txt` (R4)
 - [x] T008 [US3] Em `frontend/nginx.conf`, `location` para assets com hash (`immutable`), `no-cache` no `index.html` e `location = /robots.txt` (R3 e R4), sempre com o include de headers
 - [x] T009 [US1] [US2] [US3] Smoke do container: `npm run build`, `docker build`, `nginx -t` (F2), subida sem host `backend` (F3), `curl -I` de F4 a F6 e upstream real e inválido (F7); registrar em `evidence.md`
-- [ ] T010 [US1] Login em tela com a CSP ativa: senha pelo coordenador e Google pelo product owner (F8); Lighthouse depois (F9); registrar em `evidence.md`
+- [x] T010 [US1] Login em tela com a CSP ativa: senha pelo coordenador e Google pelo product owner (F8); Lighthouse depois (F9); registrar em `evidence.md`
 - [x] T011 [US1] Commit `feat(frontend): headers de segurança, cache, robots e upstream configurável no nginx`
 
 ## Phase 5: User Story 4 — documentação e scripts (P2)

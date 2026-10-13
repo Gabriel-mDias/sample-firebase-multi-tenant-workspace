@@ -84,7 +84,7 @@ Lighthouse 12.6.1, Chrome headless, sobre a imagem `gems-005-frontend:smoke` em 
 
 `errors-in-console` veio vazio, então o carregamento da `/login` não gerou nenhuma violação de CSP. `csp-xss` passou. Ficaram dois itens: `font-size` em Melhores práticas e `meta-description` em SEO, ambos fora do escopo da 005.
 
-**F8, login em tela com a CSP:** pendente com o product owner. Exige o backend com Firebase real e o login por Google e por senha (quickstart F8).
+**F8, login em tela com a CSP:** feito pelo product owner em 2026-10-12. Fala literal: "realizei os novos testes manualmente". Ele não detalhou o resultado por cenário, então o registro é a declaração dele.
 
 ## T016 — Review independente
 
