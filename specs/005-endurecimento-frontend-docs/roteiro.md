@@ -196,13 +196,19 @@ merge da 006 → T001 → (T002→T011) ─┐
 
 ### Para aprovar esta rodada (antes do código)
 
-- [ ] O escopo da §1 é o que se espera da próxima entrega
-- [ ] As decisões da §2 refletem o que foi combinado
-- [ ] As mudanças da §5, em especial a política de conteúdo, são aceitáveis
-- [ ] O impacto da §7 é aceitável, inclusive o que fica frouxo
-- [ ] A cobertura de provas da §6 é suficiente para o risco assumido
-- [ ] A decisão de delegação da §8 está adequada
-- [ ] Os itens fora de escopo (§11) podem mesmo esperar
+- [x] O escopo da §1 é o que se espera da próxima entrega
+- [x] As decisões da §2 refletem o que foi combinado
+- [x] As mudanças da §5, em especial a política de conteúdo, são aceitáveis
+- [x] O impacto da §7 é aceitável, inclusive o que fica frouxo
+- [x] A cobertura de provas da §6 é suficiente para o risco assumido
+- [x] A decisão de delegação da §8 está adequada
+- [x] Os itens fora de escopo (§11) podem mesmo esperar
+
+> ✅ **PORTÃO APROVADO pelo product owner em 2026-10-12.** Resposta literal à pergunta do portão, que
+> resumia a CSP gerada na subida do container, os 7 headers, o cache imutável dos assets, o upstream
+> configurável e o `robots.txt`: "Aprovo a fase 2". A implementação começa sobre a `main` com a 006
+> (`f768fbe`, merge do PR #12), conforme a condição C6. Push, PR e merge continuam exigindo ok próprio.
+> **O `/speckit-implement` está liberado.**
 
 ### Para considerar a rodada concluída (depois do código)
 
