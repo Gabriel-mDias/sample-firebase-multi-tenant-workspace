@@ -89,7 +89,7 @@
             <artifactId>testcontainers-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
-    <dependency><groupId>com.tngtech.archunit</groupId><artifactId>archunit-junit5</artifactId><version>1.5.0</version><scope>test</scope></dependency>
+    <dependency><groupId>com.tngtech.archunit</groupId><artifactId>archunit-junit5</artifactId><version>1.5.1</version><scope>test</scope></dependency>
 <dependency><groupId>com.github.javaparser</groupId><artifactId>javaparser-core</artifactId><version>3.28.2</version><scope>test</scope></dependency>
 <dependency><groupId>org.mapstruct</groupId><artifactId>mapstruct</artifactId><version>1.6.3</version><scope>test</scope></dependency>
 </dependencies>
