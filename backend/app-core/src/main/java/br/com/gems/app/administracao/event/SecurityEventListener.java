@@ -9,8 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class SecurityEventListener {
+
     @EventListener
     public void onSecurityChange( SegurancaAlteradaEvent event ) {
         log.info( "Evento de segurança entregue: id={} tipo={} tenant={}", event.id(), event.tipo(), event.tenantId() );
     }
+
 }

@@ -3,44 +3,122 @@
   "$id": "https://gems.example/schemas/gems-ai.schema.json",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version", "commit", "profile"],
+  "required": [
+    "version",
+    "commit",
+    "profile"
+  ],
   "properties": {
-    "version": { "const": "3.0.0" },
-    "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
-    "profile": { "enum": ["java", "angular", "workspace"] },
+    "version": {
+      "const": "3.1.0"
+    },
+    "commit": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "profile": {
+      "enum": [
+        "java",
+        "angular",
+        "workspace"
+      ]
+    },
     "localAssertions": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["rule", "claim", "value"],
+        "required": [
+          "rule",
+          "claim",
+          "value"
+        ],
         "properties": {
-          "rule": { "type": "string" },
-          "claim": { "type": "string" },
-          "value": { "type": "boolean" }
+          "rule": {
+            "type": "string"
+          },
+          "claim": {
+            "type": "string"
+          },
+          "value": {
+            "type": "boolean"
+          }
         }
       },
       "default": []
     },
     "waivers": {
       "type": "array",
-      "items": { "$ref": "#/$defs/waiver" },
+      "items": {
+        "$ref": "#/$defs/waiver"
+      },
       "default": []
+    },
+    "javaFormatter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "include": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "javaExecutable": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
     }
   },
   "$defs": {
     "waiver": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["rule", "scope", "justification", "owner", "expires", "compensation", "approvedBy"],
+      "required": [
+        "rule",
+        "scope",
+        "justification",
+        "owner",
+        "expires",
+        "compensation",
+        "approvedBy"
+      ],
       "properties": {
-        "rule": { "type": "string", "pattern": "\\S" },
-        "scope": { "type": "string", "pattern": "\\S" },
-        "justification": { "type": "string", "pattern": "\\S" },
-        "owner": { "type": "string", "pattern": "\\S" },
-        "expires": { "type": "string", "format": "date" },
-        "compensation": { "type": "string", "pattern": "\\S" },
-        "approvedBy": { "type": "string", "pattern": "\\S" }
+        "rule": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "scope": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "justification": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "owner": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "expires": {
+          "type": "string",
+          "format": "date"
+        },
+        "compensation": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "approvedBy": {
+          "type": "string",
+          "pattern": "\\S"
+        }
       }
     }
   }

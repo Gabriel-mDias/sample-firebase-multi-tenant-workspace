@@ -42,10 +42,10 @@ NOT_RUN até execução observada; installlocal não comprova publicação.
   containers/portas/bancos pelos arquivos antes de MCP; nunca copiar credenciais para config.toml.
 - Backend Windows usa mvnw.cmd; gate completo uma vez no fechamento após iteração focada.
 - Sem filhos neste contrato documental. Delegação futura precisa ownership/READ/EDIT/CREATE/TEST.
-- Snapshot gerenciado e blocos GEMS-AI somente CLI oficial. Configuração 3.0.0 é gems-ai.json;
+- Snapshot gerenciado e blocos GEMS-AI somente CLI oficial. Configuração 3.1.0 é gems-ai.json;
   snapshot oficial aplicado e comprovado em evidence.md, sem handedit de snapshot.
 
 Instruções por camada: backend/AGENTS.md, frontend/AGENTS.md, environments/AGENTS.md e specs/AGENTS.md.
-GEMS AI snapshot oficial 3.0.0 aplicado pela CLI autorizada; versão 3.0.0
-pin 51b94e3a5479da74e06444f4133e07db85ece3cc. Antes de alterar código rode `scripts/gems-ai.ps1 rules bundle --project . --task <tipo>`; antes de concluir rode
+GEMS AI snapshot oficial 3.1.0 aplicado pela CLI autorizada; versão 3.1.0
+pin 909c69aa846ea97b3aea06a08fdfed8c6657d391. Antes de alterar código rode `scripts/gems-ai.ps1 rules bundle --project . --task <tipo>`; antes de concluir rode
 `scripts/gems-ai-gate.ps1` (o Stop hook do Claude e o job CI `gems-ai` executam o gate).

@@ -20,20 +20,19 @@ import static org.assertj.core.api.Assertions.assertThat;
  * With {@code T029_FIREBASE_REAL=skip} (fork pull requests) the test is ignored with an explicit warning.
  */
 class FirebaseEndToEndIntegrationTest {
+
     @Test
     void deveIntegrarHttpBrowserEFirebaseReal_quandoNamespaceDaExecucaoEIsolado() throws Exception {
         // Fail-closed preflight before Docker, before any network call and before any mutation.
         Mode mode = FirebaseRealTestProject.checkEnvironment( System::getenv );
         Assumptions.assumeTrue( mode == Mode.RUN, FirebaseRealTestProject.SKIP_NOTICE );
         Namespace namespace = Namespace.create( System::getenv, UUID::randomUUID );
-        try ( var session = FirebaseRealTestProject.Session.open( "t029-parent" ) ) {
+        try (var session = FirebaseRealTestProject.Session.open( "t029-parent" )) {
             session.verifyAccess();
             var webConfig = FirebaseRealTestProject.publicWebConfig( System::getenv, session );
             var directory = session.directory();
-            int swept = FirebaseRealTestProject.sweepOrphans( directory, namespace, Instant.now(),
-                    FirebaseRealTestProject.ORPHAN_MAX_AGE );
-            System.out.println( "T029 ORPHAN_SWEEP prefix=" + FirebaseRealTestProject.AUTOMATION_PREFIX + " deleted="
-                    + swept );
+            int swept = FirebaseRealTestProject.sweepOrphans( directory, namespace, Instant.now(), FirebaseRealTestProject.ORPHAN_MAX_AGE );
+            System.out.println( "T029 ORPHAN_SWEEP prefix=" + FirebaseRealTestProject.AUTOMATION_PREFIX + " deleted=" + swept );
             var cleanup = new RunCleanup( namespace, directory );
             // The child cleans its own registry; this authoritative finally pass removes and rejects any residue.
             FirebaseRealTestProject.runAndClean( cleanup, () -> runSuite( namespace, webConfig ) );
@@ -43,17 +42,12 @@ class FirebaseEndToEndIntegrationTest {
     private void runSuite( Namespace namespace, FirebaseRealTestProject.PublicWebConfig webConfig ) throws Exception {
         var guard = Path.of( "../../frontend/src/app/core/guards/role.guard.ts" ).toAbsolutePath().normalize();
         var guardSnapshot = Files.readAllBytes( guard );
-        try ( var database = new PostgreSQLContainer( "postgres:16-alpine" ).withLabel( "com.gems.sample.test",
-                "T029" ) ) {
+        try (var database = new PostgreSQLContainer( "postgres:16-alpine" ).withLabel( "com.gems.sample.test", "T029" )) {
             database.start();
             var arguments = Files.createTempFile( Path.of( "target" ), "t029-classpath-", ".args" );
-            Files.writeString( arguments, "-Dspring.devtools.restart.enabled=false\n-cp\n\""
-                    + System.getProperty( "surefire.test.class.path", System.getProperty( "java.class.path" ) )
-                            .replace( "\\", "/" )
-                    + "\"\n" + EndToEndSupport.class.getName() + "\n" );
-            var process = new ProcessBuilder(
-                    Path.of( System.getProperty( "java.home" ), "bin", "java" ).toString(),
-                    "@" + arguments.toAbsolutePath() );
+            Files.writeString( arguments, "-Dspring.devtools.restart.enabled=false\n-cp\n\"" + System.getProperty( "surefire.test.class.path", System.getProperty( "java.class.path" ) )
+                    .replace( "\\", "/" ) + "\"\n" + EndToEndSupport.class.getName() + "\n" );
+            var process = new ProcessBuilder( Path.of( System.getProperty( "java.home" ), "bin", "java" ).toString(), "@" + arguments.toAbsolutePath() );
             var environment = process.environment();
             // ADC (GOOGLE_APPLICATION_CREDENTIALS) is inherited on purpose; the emulator is never reachable.
             environment.remove( "FIREBASE_AUTH_EMULATOR_HOST" );
@@ -67,7 +61,7 @@ class FirebaseEndToEndIntegrationTest {
             process.redirectErrorStream( true );
             var child = process.start();
             var output = Thread.ofVirtual().start( () -> {
-                try ( var lines = child.inputReader() ) {
+                try (var lines = child.inputReader()) {
                     lines.lines().forEach( System.out::println );
                 } catch ( java.io.IOException failure ) {
                     System.err.println( "T029 output stream closed" );
@@ -89,4 +83,5 @@ class FirebaseEndToEndIntegrationTest {
             }
         }
     }
+
 }

@@ -19,15 +19,12 @@ import static org.mockito.Mockito.when;
 
 /** Contrato do adapter: validar antes de tocar SQL ou alterar a sessão emprestada. */
 class SampleTenantMigrationTest {
+
     private final SampleTenantMigration migration = new SampleTenantMigration();
 
     @ParameterizedTest
     @NullAndEmptySource
-    @ValueSource(strings = {"alpha", "public", "modelo", "TENANT_alpha", "tenant_Alpha", "tenant_",
-            "tenant_public", "tenant_security", "tenant_administracao", "tenant_auditoria", "tenant_modelo",
-            "tenant_information_schema", "tenant_global", "tenant_pg_catalog", "tenant_tenant_alpha",
-            "tenant_área", "tenant_ alpha",
-            "tenant_alpha ", "tenant_alpha;DROP SCHEMA security", "tenant_alpha.beta", "tenant_1alpha"})
+    @ValueSource(strings = { "alpha", "public", "modelo", "TENANT_alpha", "tenant_Alpha", "tenant_", "tenant_public", "tenant_security", "tenant_administracao", "tenant_auditoria", "tenant_modelo", "tenant_information_schema", "tenant_global", "tenant_pg_catalog", "tenant_tenant_alpha", "tenant_área", "tenant_ alpha", "tenant_alpha ", "tenant_alpha;DROP SCHEMA security", "tenant_alpha.beta", "tenant_1alpha" })
     void deveRecusarSemTocarSessao_quandoSchemaNaoCanonico( String schema ) {
         var session = mock( Connection.class );
 
@@ -38,6 +35,7 @@ class SampleTenantMigrationTest {
 
         verifyNoInteractions( session );
     }
+
     @ParameterizedTest
     @MethodSource("schemasLongos")
     void deveRecusarAntesDoSQL_quandoAliasExcedeLimitePostgreSQL( String schema ) {
@@ -49,6 +47,7 @@ class SampleTenantMigrationTest {
 
         verifyNoInteractions( session );
     }
+
     @ParameterizedTest
     @MethodSource("schemasCanonicos")
     void deveConsultarRevisaoSemFecharSessao_quandoSchemaCanonico( String schema ) throws Exception {
@@ -70,10 +69,13 @@ class SampleTenantMigrationTest {
         verify( statement ).close();
         verify( rows ).close();
     }
+
     private static Stream<String> schemasLongos() {
         return Stream.of( "tenant_" + "a".repeat( 57 ), "tenant_" + "a".repeat( 64 ) );
     }
+
     private static Stream<String> schemasCanonicos() {
         return Stream.of( "tenant_a", "tenant_alpha", "tenant_alpha_01", "tenant_" + "a".repeat( 56 ) );
     }
+
 }

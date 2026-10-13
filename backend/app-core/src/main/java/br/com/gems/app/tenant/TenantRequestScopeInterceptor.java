@@ -17,7 +17,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 /** Instala scope antes do controller/service e nunca troca dentro de EM/transação. */
 public class TenantRequestScopeInterceptor implements HandlerInterceptor {
+
     private static final String ATTRIBUTE = TenantRequestScopeInterceptor.class.getName();
+
     @Override
     public boolean preHandle( HttpServletRequest request, HttpServletResponse response, Object handler ) {
         if ( TransactionSynchronizationManager.isActualTransactionActive()
@@ -48,9 +50,9 @@ public class TenantRequestScopeInterceptor implements HandlerInterceptor {
         }
         return true;
     }
+
     @Override
-    public void afterCompletion( HttpServletRequest request, HttpServletResponse response, Object handler,
-            Exception failure ) {
+    public void afterCompletion( HttpServletRequest request, HttpServletResponse response, Object handler, Exception failure ) {
         try {
             if ( request.getAttribute( ATTRIBUTE ) instanceof TenantScope scope ) {
                 scope.close();
@@ -60,4 +62,5 @@ public class TenantRequestScopeInterceptor implements HandlerInterceptor {
             JpaTenantContext.clear();
         }
     }
+
 }

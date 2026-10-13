@@ -27,9 +27,7 @@ final class LocalizadorDeFonte {
      * do repositório.
      */
     static final Path RAIZ_DO_REPOSITORIO = Path.of( "..", ".." ).toAbsolutePath().normalize();
-
-    private static final List<String> MODULOS = List.of( "app-model", "app-security", "app-events",
-            "app-core", "app-deploy" );
+    private static final List<String> MODULOS = List.of( "app-model", "app-security", "app-events", "app-core", "app-deploy" );
 
     private LocalizadorDeFonte() {
     }
@@ -68,7 +66,7 @@ final class LocalizadorDeFonte {
     }
 
     private static Stream<String> arquivosJava( Path raizRelativa ) {
-        try ( var caminhos = Files.walk( RAIZ_DO_REPOSITORIO.resolve( raizRelativa ) ) ) {
+        try (var caminhos = Files.walk( RAIZ_DO_REPOSITORIO.resolve( raizRelativa ) )) {
             return caminhos.filter( caminho -> caminho.toString().endsWith( ".java" ) )
                     .map( caminho -> RAIZ_DO_REPOSITORIO.relativize( caminho ).toString().replace( '\\', '/' ) )
                     .toList()
@@ -77,4 +75,5 @@ final class LocalizadorDeFonte {
             throw new IllegalStateException( "Não foi possível varrer " + raizRelativa, e );
         }
     }
+
 }

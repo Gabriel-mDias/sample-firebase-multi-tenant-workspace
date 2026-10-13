@@ -1,0 +1,290 @@
+{
+  "schemaVersion": 1,
+  "version": "3.1.0",
+  "commit": "51b94e3a5479da74e06444f4133e07db85ece3cc",
+  "profile": "workspace",
+  "transaction": "20261012T224650Z542008",
+  "rules": [
+    {
+      "id": "base.precedence",
+      "path": ".gems-ai\\rules\\base.precedence.md",
+      "sha256": "af0d2337273a7629145223d7616f3a0df3fe9f6a79dc86eab25eeae47f2b7c08"
+    },
+    {
+      "id": "base.safe-change",
+      "path": ".gems-ai\\rules\\base.safe-change.md",
+      "sha256": "1eb1984966b0818fe60a354a5d962196875ebcd237e2f1028096d716d842e53a"
+    },
+    {
+      "id": "base.waivers",
+      "path": ".gems-ai\\rules\\base.waivers.md",
+      "sha256": "fb10ba739abd4ad58063bfcc55c9d02b8f344f0b06a47691468582209152eea9"
+    },
+    {
+      "id": "java.formatting",
+      "path": ".gems-ai\\rules\\java.formatting.md",
+      "sha256": "c81cd9b613e1babb60b5e214bbcc11a05b2e1c8a10afd209354b4dc6d48a34a6"
+    },
+    {
+      "id": "profile.angular",
+      "path": ".gems-ai\\rules\\profile.angular.md",
+      "sha256": "0a7533805865b46ba15f7cc51c1662fc4f32a544f0b10bbdce649ca86261b6cb"
+    },
+    {
+      "id": "profile.java",
+      "path": ".gems-ai\\rules\\profile.java.md",
+      "sha256": "cdf6c8a123ae06863e53f5e38db72b006fef603721a9baef8232090d64edaa5a"
+    },
+    {
+      "id": "java.architecture",
+      "path": ".gems-ai\\rules\\java.architecture.md",
+      "sha256": "40d893ebfe7da06b6b9eb2ce54c0dcd3f6fb6ad221cbfc4c86afc6c93a389e79"
+    },
+    {
+      "id": "angular.auth",
+      "path": ".gems-ai\\rules\\angular.auth.md",
+      "sha256": "37d688d2f0af41584e91fd7ebd3632048a1a8e27e1e4601d44241f46eaa82d82"
+    },
+    {
+      "id": "angular.feedback-alerts",
+      "path": ".gems-ai\\rules\\angular.feedback-alerts.md",
+      "sha256": "d99b5423b49d998dea8305f156b1bc2902415b65f5a273488eb934e0f8106c7b"
+    },
+    {
+      "id": "angular.forms",
+      "path": ".gems-ai\\rules\\angular.forms.md",
+      "sha256": "b160e5eff81f244affe51794e72fe15defd5c73d18996caf9b21462478e34423"
+    },
+    {
+      "id": "angular.gems-components",
+      "path": ".gems-ai\\rules\\angular.gems-components.md",
+      "sha256": "8030105a10e0671b6edfa34b5f4fc808fbf0740569b49b362872bff671a13eb6"
+    },
+    {
+      "id": "angular.http-interceptors",
+      "path": ".gems-ai\\rules\\angular.http-interceptors.md",
+      "sha256": "2ea75f99bf1fe38c43098e0882ad197ef2ebb732867c4a45a29a212b331b4137"
+    },
+    {
+      "id": "angular.lists",
+      "path": ".gems-ai\\rules\\angular.lists.md",
+      "sha256": "1259f7258bd26fbc3e7fad08ed4c93b4cf94a6b343cdd0848e35bee2230e803d"
+    },
+    {
+      "id": "angular.organization",
+      "path": ".gems-ai\\rules\\angular.organization.md",
+      "sha256": "a97e09c528936b15417ca0bac44607df134a9d09d4f69299df7fdd4aba002e67"
+    },
+    {
+      "id": "angular.signals-standards",
+      "path": ".gems-ai\\rules\\angular.signals-standards.md",
+      "sha256": "c50755c1cf2ad88f5ba55b1d9eb4e365e22c4a7483605d9db8523e2816ca4d01"
+    },
+    {
+      "id": "angular.stepper",
+      "path": ".gems-ai\\rules\\angular.stepper.md",
+      "sha256": "7f4b814faec67779c3fa922d8cdcd7981655ce2b4fb6288d18879aa1f5162586"
+    },
+    {
+      "id": "angular.stores",
+      "path": ".gems-ai\\rules\\angular.stores.md",
+      "sha256": "6fe408bd368f3ad993ff40b2fa277b3a3b81917084a444e02bdfadf48dd56827"
+    },
+    {
+      "id": "angular.testing",
+      "path": ".gems-ai\\rules\\angular.testing.md",
+      "sha256": "54ef25fc7ea5b1ea3dcfc0b2628b8427cdf2d0004b86e942aabe5a553bfa0245"
+    },
+    {
+      "id": "angular.visual-standards",
+      "path": ".gems-ai\\rules\\angular.visual-standards.md",
+      "sha256": "2845d4ec177d33d9da1bbe3f0689239c7d0bfe7fa42cfa50b48c38f020cd9cc4"
+    },
+    {
+      "id": "java.controllers",
+      "path": ".gems-ai\\rules\\java.controllers.md",
+      "sha256": "30644fb1f449d8379d1bdfd89f1bd859a14fc4a3f1ab0572cde073e8eee52f2b"
+    },
+    {
+      "id": "java.events",
+      "path": ".gems-ai\\rules\\java.events.md",
+      "sha256": "f586ade56ededc63313a8cbfa7c21e103a5a8b25db50516caca0e905f5e9e288"
+    },
+    {
+      "id": "java.mapping",
+      "path": ".gems-ai\\rules\\java.mapping.md",
+      "sha256": "97de6239877ecf7745c3d8a6386582f8fd418c79490017d801af38d15ede54c9"
+    },
+    {
+      "id": "java.multi-tenant",
+      "path": ".gems-ai\\rules\\java.multi-tenant.md",
+      "sha256": "fa929e9a5eed2b7838054c862c3e2f757ef7810df4ae670d5e860992ac871b6b"
+    },
+    {
+      "id": "java.observability",
+      "path": ".gems-ai\\rules\\java.observability.md",
+      "sha256": "021a77432c6c8059abcb4215eb558b8bb80a31664abe740bf314148374b5e700"
+    },
+    {
+      "id": "java.openapi",
+      "path": ".gems-ai\\rules\\java.openapi.md",
+      "sha256": "61bd78e7fd214cae29a567c7033f33d572feddb04d032e7702e21b410dbc5273"
+    },
+    {
+      "id": "java.persistence-db",
+      "path": ".gems-ai\\rules\\java.persistence-db.md",
+      "sha256": "17a694e01f8a55e6578aaef55749f208b023f0434bd3ce7db1362b202d4ca753"
+    },
+    {
+      "id": "java.repositories",
+      "path": ".gems-ai\\rules\\java.repositories.md",
+      "sha256": "24f3f489b91b6b33d2ef4446a7c384ad1c73d1be29fb5e6147938d4ed3a93880"
+    },
+    {
+      "id": "java.rest-common",
+      "path": ".gems-ai\\rules\\java.rest-common.md",
+      "sha256": "1e8c5e1fdd91aead7722a15460676236ff53873e207ba923a97b5334b1a6d866"
+    },
+    {
+      "id": "java.security",
+      "path": ".gems-ai\\rules\\java.security.md",
+      "sha256": "7667920217a9346944eae5ea17c093e7b7557f3a902018123ac99bd64f3b644d"
+    },
+    {
+      "id": "java.services",
+      "path": ".gems-ai\\rules\\java.services.md",
+      "sha256": "2ed579617c9029ebf9c039321fe7adc4fef6de9be90f9442c4cf996358573bff"
+    },
+    {
+      "id": "java.storage-s3",
+      "path": ".gems-ai\\rules\\java.storage-s3.md",
+      "sha256": "d44698ba9fbefb40889ab07c94afa9e1dcfdd8e889303b4263a83af2fc0d0b9c"
+    },
+    {
+      "id": "java.testing",
+      "path": ".gems-ai\\rules\\java.testing.md",
+      "sha256": "3f1ddd6ccee5b80e906ce0f39574f7ec0c0ee552a60493a05503571e686d45ab"
+    },
+    {
+      "id": "java.utils",
+      "path": ".gems-ai\\rules\\java.utils.md",
+      "sha256": "3dc6aaf07a1fdfba6ffa0ddf4f8ae9da4dd56591fc04c31e9f01217cfceb5983"
+    },
+    {
+      "id": "java.validation",
+      "path": ".gems-ai\\rules\\java.validation.md",
+      "sha256": "3847afadcb15fff50106a33835815ad6d5d55546c371a9fcdc2c9ace85f27018"
+    },
+    {
+      "id": "profile.workspace",
+      "path": ".gems-ai\\rules\\profile.workspace.md",
+      "sha256": "280f32cadc00eb46689e182bc7b4265a557c861ffc648712b0d20b2f6a5f8b9c"
+    },
+    {
+      "id": "sdd.round",
+      "path": ".gems-ai\\rules\\sdd.round.md",
+      "sha256": "ff87ac554da8bcde2033074347774016ca44383e5b3c02735c79cfda5a3d424b"
+    },
+    {
+      "id": "stories.traceability",
+      "path": ".gems-ai\\rules\\stories.traceability.md",
+      "sha256": "1d5d84bf0ff2592d64676d921fc2e33762cfdeb920b9140fca4c86a370f0bbb3"
+    },
+    {
+      "id": "signature.invariants",
+      "path": ".gems-ai\\rules\\signature.invariants.md",
+      "sha256": "efe40e248ca026f3f4cd3d799f1f0ae78ecdbe6f73015a0a7a6998df51cd0158"
+    }
+  ],
+  "assets": [
+    {
+      "kind": "catalog",
+      "path": ".gems-ai\\catalog.json",
+      "sha256": "e8daee21fe283dace564198c8e847ffdafa9e9bcfae5a3b1e7162074453285f4"
+    },
+    {
+      "kind": "version",
+      "path": ".gems-ai\\.version",
+      "sha256": "5e33023692f9444ef9f77fcd732c57f3015cee605f326e5bf57502a67a2b77ce"
+    },
+    {
+      "kind": "schema",
+      "path": ".gems-ai\\schemas\\gems-ai-lock.schema.json",
+      "sha256": "d61671b31c1767ece850630ad4d3a34c5bae0ebd9df0cbc8797ee26201c7f951"
+    },
+    {
+      "kind": "schema",
+      "path": ".gems-ai\\schemas\\gems-ai.schema.json",
+      "sha256": "e945bde6730ecbdcf5fb89f025b9be61cc89044f9dea17b2135f0f10bf9d8c33"
+    },
+    {
+      "kind": "schema",
+      "path": ".gems-ai\\schemas\\round-state.schema.json",
+      "sha256": "a69536e9249ba59dc13f7e440cd1e44b1eac00e8786d6400bc645e69dc1820b3"
+    },
+    {
+      "kind": "schema",
+      "path": ".gems-ai\\schemas\\rule.schema.json",
+      "sha256": "ee64b1f481c4430d45f79e428636631f3ee4b9d3b860782b4c1a570f5b591268"
+    },
+    {
+      "kind": "skill",
+      "path": ".agents\\skills\\gems-ai-sdk\\agents\\openai.yaml",
+      "sha256": "2adde4e8d9a81636aa7db2a4adcea9d842f087f37edcfba55bed79a69873eafc"
+    },
+    {
+      "kind": "skill",
+      "path": ".agents\\skills\\gems-ai-sdk\\SKILL.md",
+      "sha256": "711be92252869d0deb0e4e4b7632033d12ebb1cadb93fe45411df41763a212e7"
+    },
+    {
+      "kind": "skill",
+      "path": ".agents\\skills\\rodada-sdd\\agents\\openai.yaml",
+      "sha256": "e14de1d138fd16a6afe9e693d68307d996370f95e23d843483270fcf6bd78b67"
+    },
+    {
+      "kind": "skill",
+      "path": ".agents\\skills\\rodada-sdd\\references\\phases.md",
+      "sha256": "5ef43b4b609e2fc5aec0958ab097dcd69b556931da5fc14e0dfc06e292e48365"
+    },
+    {
+      "kind": "skill",
+      "path": ".agents\\skills\\rodada-sdd\\SKILL.md",
+      "sha256": "163649f1886a1af72ad4ddc310e3508d568f808abaf5989ca0d8fd6fb521f62d"
+    },
+    {
+      "kind": "formatter",
+      "path": ".gems-ai\\java\\engine.json",
+      "sha256": "23de584b42d141395e069ca0bc90453012e9571637ea80447eb18dc7454a2eb1"
+    },
+    {
+      "kind": "formatter",
+      "path": ".gems-ai\\java\\profile.properties",
+      "sha256": "9f3fe0454c675698885ee668fa2be0a2f6f1ab13aef6a77a6aa6fe4ef6938fec"
+    }
+  ],
+  "adapters": [
+    {
+      "path": "AGENTS.md",
+      "managedSha256": "801122f2399d9f5313edeaa9e19dd554115d017b1c812e2b04023b0ea61c2bd9"
+    },
+    {
+      "path": "CLAUDE.md",
+      "managedSha256": "801122f2399d9f5313edeaa9e19dd554115d017b1c812e2b04023b0ea61c2bd9"
+    },
+    {
+      "path": "GEMINI.md",
+      "managedSha256": "801122f2399d9f5313edeaa9e19dd554115d017b1c812e2b04023b0ea61c2bd9"
+    },
+    {
+      "path": ".cursor/rules/gems.mdc",
+      "managedSha256": "801122f2399d9f5313edeaa9e19dd554115d017b1c812e2b04023b0ea61c2bd9"
+    },
+    {
+      "path": ".github/copilot-instructions.md",
+      "managedSha256": "801122f2399d9f5313edeaa9e19dd554115d017b1c812e2b04023b0ea61c2bd9"
+    }
+  ],
+  "waivers": [],
+  "localAssertions": []
+}

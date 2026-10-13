@@ -25,6 +25,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class AdministracaoServiceValidationTest {
+
     private static final String NOME_USUARIO = "Informe nome de até 150 caracteres.";
     private static final String EMAIL_USUARIO = "Informe e-mail válido de até 254 caracteres.";
     private UserAdministration users;
@@ -45,11 +46,8 @@ class AdministracaoServiceValidationTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"GOOGLE,@", "PASSWORD,@", "GOOGLE,local@", "PASSWORD,local@",
-            "GOOGLE,local..part@example.test", "PASSWORD,local..part@example.test",
-            "GOOGLE,local@example", "PASSWORD,local@example"})
-    void deveValidarEmailAntesDaPortaSQL_quandoUsuarioTemEnderecoMalformado( UsuarioCadastroDTO.Method method,
-            String email ) {
+    @CsvSource({ "GOOGLE,@", "PASSWORD,@", "GOOGLE,local@", "PASSWORD,local@", "GOOGLE,local..part@example.test", "PASSWORD,local..part@example.test", "GOOGLE,local@example", "PASSWORD,local@example" })
+    void deveValidarEmailAntesDaPortaSQL_quandoUsuarioTemEnderecoMalformado( UsuarioCadastroDTO.Method method, String email ) {
         var dto = new UsuarioCadastroDTO( "Válido", email, method );
 
         assertThatThrownBy( () -> service.createUser( dto ) )
@@ -113,17 +111,16 @@ class AdministracaoServiceValidationTest {
 
     @ParameterizedTest
     @MethodSource("invalidInputs")
-    void deveAcumularValidacaoAntesDaPortaSQL_quandoCamposAdministrativosSaoInvalidos( String operation,
-            String codeOrAlias, String name, List<String> expected ) {
+    void deveAcumularValidacaoAntesDaPortaSQL_quandoCamposAdministrativosSaoInvalidos( String operation, String codeOrAlias, String name, List<String> expected ) {
         var tenant = UUID.randomUUID();
 
         assertThatThrownBy( () -> {
             switch ( operation ) {
-                case "tenant" -> service.createTenant( new TenantCadastroDTO( codeOrAlias, name ) );
-                case "rename" -> service.renameTenant( tenant, name );
-                case "profile" -> service.createProfile( tenant, codeOrAlias, name );
-                case "group" -> service.createGroup( tenant, codeOrAlias, name );
-                default -> throw new AssertionError( operation );
+            case "tenant" -> service.createTenant( new TenantCadastroDTO( codeOrAlias, name ) );
+            case "rename" -> service.renameTenant( tenant, name );
+            case "profile" -> service.createProfile( tenant, codeOrAlias, name );
+            case "group" -> service.createGroup( tenant, codeOrAlias, name );
+            default -> throw new AssertionError( operation );
             }
         } ).isInstanceOf( BusinessException.class )
                 .extracting( failure -> ((BusinessException) failure).getDetalhes() ).isEqualTo( expected );
@@ -137,19 +134,20 @@ class AdministracaoServiceValidationTest {
         var cases = new java.util.ArrayList<Arguments>();
         cases.add( Arguments.of( "tenant", "valido", "n".repeat( 256 ), List.of( name ) ) );
         cases.add( Arguments.of( "tenant", "a".repeat( 57 ), "n".repeat( 256 ), List.of( alias, name ) ) );
-        for ( String missing : new String[]{null, "", " "} ) {
+        for ( String missing : new String[] { null, "", " " } ) {
             cases.add( Arguments.of( "tenant", missing, missing, List.of( alias, name ) ) );
             cases.add( Arguments.of( "rename", "unused", missing, List.of( name ) ) );
         }
         cases.add( Arguments.of( "rename", "unused", "n".repeat( 256 ), List.of( name ) ) );
-        for ( String operation : new String[]{"profile", "group"} ) {
+        for ( String operation : new String[] { "profile", "group" } ) {
             cases.add( Arguments.of( operation, "c".repeat( 129 ), "n".repeat( 256 ), List.of( code, name ) ) );
             cases.add( Arguments.of( operation, "c".repeat( 129 ), "", List.of( code, name ) ) );
             cases.add( Arguments.of( operation, "", "n".repeat( 256 ), List.of( code, name ) ) );
-            for ( String missing : new String[]{null, "", " "} ) {
+            for ( String missing : new String[] { null, "", " " } ) {
                 cases.add( Arguments.of( operation, missing, missing, List.of( code, name ) ) );
             }
         }
         return cases.stream();
     }
+
 }

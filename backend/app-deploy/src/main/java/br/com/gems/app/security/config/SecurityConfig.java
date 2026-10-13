@@ -25,15 +25,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableMethodSecurity
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class SecurityConfig {
+
     @Bean
-    public SecurityFilterChain filterChain( HttpSecurity http, FirebaseAuthenticationFilter firebase,
-            @Qualifier("corsConfigurationSource") CorsConfigurationSource cors,
-            @Value("${springdoc.api-docs.enabled:false}") boolean docs )
-            throws Exception {
+    public SecurityFilterChain filterChain( HttpSecurity http, FirebaseAuthenticationFilter firebase, @Qualifier("corsConfigurationSource") CorsConfigurationSource cors, @Value("${springdoc.api-docs.enabled:false}") boolean docs ) throws Exception {
         http.csrf( AbstractHttpConfigurer::disable ).cors( config -> config.configurationSource( cors ) )
                 .sessionManagement( config -> config.sessionCreationPolicy( SessionCreationPolicy.STATELESS ) )
                 .exceptionHandling( config -> config
-                        .authenticationEntryPoint( new HttpStatusEntryPoint( HttpStatus.UNAUTHORIZED ) ) )
+                .authenticationEntryPoint( new HttpStatusEntryPoint( HttpStatus.UNAUTHORIZED ) ) )
                 .authorizeHttpRequests( auth -> {
                     auth.requestMatchers( "/api/aws/s3/**" ).denyAll();
                     auth.requestMatchers( HttpMethod.OPTIONS, "/**" ).permitAll();
@@ -45,9 +43,9 @@ public class SecurityConfig {
                 } ).addFilterBefore( firebase, UsernamePasswordAuthenticationFilter.class );
         return http.build();
     }
+
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(
-            @Value("${app.security.cors.allowed-origins:http://localhost:4200}") List<String> origins ) {
+    public CorsConfigurationSource corsConfigurationSource( @Value("${app.security.cors.allowed-origins:http://localhost:4200}") List<String> origins ) {
         var config = new CorsConfiguration();
         config.setAllowedOrigins( origins );
         config.setAllowedMethods( List.of( "GET", "POST", "PUT", "DELETE", "OPTIONS" ) );
@@ -57,4 +55,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration( "/**", config );
         return source;
     }
+
 }

@@ -55,16 +55,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public abstract class FirebaseContractSupport {
+
     protected static final String PROJECT = "sample-isolated-test";
     protected static final String ISSUER = "https://securetoken.google.com/" + PROJECT;
     @Container
     static final PostgreSQLContainer DATABASE = new PostgreSQLContainer( "postgres:16-alpine" );
+
     @DynamicPropertySource
     static void database( DynamicPropertyRegistry registry ) {
         registry.add( "spring.datasource.url", DATABASE::getJdbcUrl );
         registry.add( "spring.datasource.username", DATABASE::getUsername );
         registry.add( "spring.datasource.password", DATABASE::getPassword );
     }
+
     @Autowired
     protected MockMvc mvc;
     @Autowired
@@ -111,9 +114,7 @@ public abstract class FirebaseContractSupport {
     void prepareContract() throws ClassNotFoundException {
         // O fixture original é package-private; o acesso fica restrito ao suporte de testes.
         var fixture = Class.forName( "br.com.gems.app.FirebaseBackendIntegrationTest" );
-        firebase = new DeterministicFirebase( originalAdmin,
-                (Map<String, VerifiedIdentity>) ReflectionTestUtils.getField( fixture, "IDENTITIES" ),
-                (AtomicBoolean) ReflectionTestUtils.getField( fixture, "REMOTE_FAILURE" ) );
+        firebase = new DeterministicFirebase( originalAdmin, (Map<String, VerifiedIdentity>) ReflectionTestUtils.getField( fixture, "IDENTITIES" ), (AtomicBoolean) ReflectionTestUtils.getField( fixture, "REMOTE_FAILURE" ) );
         firebase.reset();
         JpaTenantContext.clear();
         SecurityContextHolder.clearContext();
@@ -181,16 +182,13 @@ public abstract class FirebaseContractSupport {
     }
 
     protected void postponeCommands() {
-        jdbc.sql( "UPDATE security.comando_identidade SET dt_proxima_tentativa=now()+interval '1 day' "
-                + "WHERE cd_estado IN ('PENDING','RETRY')" ).update();
+        jdbc.sql( "UPDATE security.comando_identidade SET dt_proxima_tentativa=now()+interval '1 day' " + "WHERE cd_estado IN ('PENDING','RETRY')" ).update();
     }
 
     protected void revokeAction( String action, boolean tenant ) {
         String table = tenant ? "usuario_tenant_role" : "usuario_role_global";
         String owner = tenant ? "id_usuario_tenant" : "id_usuario";
-        UUID id = jdbc.sql( "SELECT g.id_" + table + " FROM security." + table + " g "
-                + "JOIN security.role_seguranca r ON r.id_role=g.id_role WHERE g." + owner
-                + "=:owner AND r.cd_acao=:action AND g.dt_fim IS NULL" )
+        UUID id = jdbc.sql( "SELECT g.id_" + table + " FROM security." + table + " g " + "JOIN security.role_seguranca r ON r.id_role=g.id_role WHERE g." + owner + "=:owner AND r.cd_acao=:action AND g.dt_fim IS NULL" )
                 .param( "owner", tenant ? operatorMember : operator.id() ).param( "action", action )
                 .query( UUID.class ).single();
         if ( tenant ) {
@@ -205,8 +203,7 @@ public abstract class FirebaseContractSupport {
         for ( String table : jdbc.sql( "SELECT tablename FROM pg_tables WHERE schemaname='security'" )
                 .query( String.class ).list() ) {
             assertThat( table ).matches( "[a-z_]+" );
-            state.put( table, jdbc.sql( "SELECT coalesce(jsonb_agg(to_jsonb(row) "
-                    + "ORDER BY to_jsonb(row)::text),'[]'::jsonb)::text FROM security." + table + " row" )
+            state.put( table, jdbc.sql( "SELECT coalesce(jsonb_agg(to_jsonb(row) " + "ORDER BY to_jsonb(row)::text),'[]'::jsonb)::text FROM security." + table + " row" )
                     .query( String.class ).single() );
         }
         return state;
@@ -241,89 +238,105 @@ public abstract class FirebaseContractSupport {
     }
 
     protected record Account(UUID id, String uid, String email) {
+
     }
 
     /** Observa o estado remoto e sempre encaminha comandos ao gateway fake já existente. */
     public static class DeterministicFirebase implements FirebaseAdminGateway {
+
         private final FirebaseAdminGateway delegate;
         public final Map<String, VerifiedIdentity> identities;
         public final Map<String, User> remote = new ConcurrentHashMap<>();
         public final AtomicBoolean failure;
-        DeterministicFirebase( FirebaseAdminGateway delegate, Map<String, VerifiedIdentity> identities,
-                AtomicBoolean failure ) {
+
+        DeterministicFirebase( FirebaseAdminGateway delegate, Map<String, VerifiedIdentity> identities, AtomicBoolean failure ) {
             this.delegate = delegate;
             this.identities = identities;
             this.failure = failure;
         }
+
         public void reset() {
             identities.clear();
             remote.clear();
             failure.set( false );
         }
+
         public String administrativeToken( String uid ) {
-            String payload = "{\"sub\":\"" + uid + "\",\"aud\":\"" + PROJECT + "\",\"iss\":\"" + ISSUER
-                    + "\",\"admin\":true,\"roles\":[\"ADMIN\",\"CONSULTAR_TENANT\"],"
-                    + "\"realm_access\":{\"roles\":[\"ADMIN\",\"CONSULTAR_TENANT\"]},"
-                    + "\"firebase\":{\"sign_in_provider\":\"google.com\"}}";
-            String token = encode( "{\"alg\":\"RS256\",\"typ\":\"JWT\"}" ) + "." + encode( payload )
-                    + ".assinatura-do-verificador-fake";
+            String payload = "{\"sub\":\"" + uid + "\",\"aud\":\"" + PROJECT + "\",\"iss\":\"" + ISSUER + "\",\"admin\":true,\"roles\":[\"ADMIN\",\"CONSULTAR_TENANT\"]," + "\"realm_access\":{\"roles\":[\"ADMIN\",\"CONSULTAR_TENANT\"]}," + "\"firebase\":{\"sign_in_provider\":\"google.com\"}}";
+            String token = encode( "{\"alg\":\"RS256\",\"typ\":\"JWT\"}" ) + "." + encode( payload ) + ".assinatura-do-verificador-fake";
             identities.put( token, identities.get( uid ) );
             return token;
         }
+
         private String encode( String value ) {
             return Base64.getUrlEncoder().withoutPadding().encodeToString( value.getBytes( StandardCharsets.UTF_8 ) );
         }
+
         @Override
         public User getUser( String uid ) {
             return Optional.ofNullable( remote.get( uid ) )
                     .orElseGet( () -> delegate.getUser( uid ) );
         }
+
         @Override
         public User createUser( String uid, String email, String displayName ) {
             var created = delegate.createUser( uid, email, displayName );
             remote.putIfAbsent( uid, created );
             return remote.get( uid );
         }
+
         @Override
         public void setDisabled( String uid, boolean disabled ) {
             delegate.setDisabled( uid, disabled );
             var user = getUser( uid );
             remote.put( uid, new User( uid, user.email(), uid, disabled, true ) );
         }
+
         @Override
         public void revokeRefreshTokens( String uid ) {
             delegate.revokeRefreshTokens( uid );
         }
+
         @Override
         public String passwordResetLink( String email ) {
             throw new UnsupportedOperationException( "O contrato não envia links." );
         }
+
     }
 
     protected static class ForwardingGateway implements FirebaseAdminGateway {
+
         protected final FirebaseAdminGateway delegate;
+
         protected ForwardingGateway( FirebaseAdminGateway delegate ) {
             this.delegate = delegate;
         }
+
         @Override
         public User getUser( String uid ) {
             return delegate.getUser( uid );
         }
+
         @Override
         public User createUser( String uid, String email, String name ) {
             return delegate.createUser( uid, email, name );
         }
+
         @Override
         public void setDisabled( String uid, boolean disabled ) {
             delegate.setDisabled( uid, disabled );
         }
+
         @Override
         public void revokeRefreshTokens( String uid ) {
             delegate.revokeRefreshTokens( uid );
         }
+
         @Override
         public String passwordResetLink( String email ) {
             throw new UnsupportedOperationException( "O contrato não envia links." );
         }
+
     }
+
 }

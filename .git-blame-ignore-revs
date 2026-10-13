@@ -1,0 +1,5 @@
+# Commits só de formatação, ignorados pelo git blame.
+# Uso local: git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# style: formata o Java com o formatter do GEMS AI 3.1.0 (rodada 006)
+083ed4ded5f91c91aa879db05fde7886387c7d08

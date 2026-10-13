@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.1.0",
   "rules": [
     {
       "id": "base.precedence",
@@ -1068,6 +1068,31 @@
         "signature-score"
       ],
       "required_rules": []
+    },
+    {
+      "id": "java.formatting",
+      "title": "Universal Java formatting",
+      "version": "3.1.0",
+      "status": "candidate",
+      "path": "contract/profiles/java/formatting.md",
+      "mandatory": true,
+      "profiles": [
+        "java",
+        "workspace"
+      ],
+      "tasks": [
+        "all"
+      ],
+      "risk": "high",
+      "precedence": 11,
+      "related_rules": [
+        "profile.java",
+        "java.testing"
+      ],
+      "required_rules": [],
+      "required_gates": [
+        "gems-ai-check-java"
+      ]
     }
   ]
 }

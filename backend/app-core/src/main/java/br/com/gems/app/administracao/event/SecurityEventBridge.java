@@ -11,10 +11,12 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class SecurityEventBridge implements SecurityEventPublisher {
+
     private final ApplicationEventPublisher publisher;
+
     @Override
     public void emit( SecurityEventSink.Event event ) {
-        publisher.publishEvent( new SegurancaAlteradaEvent( event.id(), event.type(), event.userId(), event.tenantId(),
-                event.occurredAt() ) );
+        publisher.publishEvent( new SegurancaAlteradaEvent( event.id(), event.type(), event.userId(), event.tenantId(), event.occurredAt() ) );
     }
+
 }

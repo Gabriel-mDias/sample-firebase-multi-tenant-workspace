@@ -45,6 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Import(FirebaseBackendIntegrationTest.Ports.class)
 class FirebaseAdoptionContractIntegrationTest extends FirebaseContractSupport {
+
     @Autowired
     ApplicationContext context;
     @Autowired
@@ -60,16 +61,13 @@ class FirebaseAdoptionContractIntegrationTest extends FirebaseContractSupport {
         jdbc.sql( "UPDATE security.usuario_tenant_role SET dt_fim=dt_inicio WHERE id_usuario_tenant=:id" )
                 .param( "id", subjectMember ).update();
         String token = firebase.administrativeToken( subject.uid() );
-        String payload = new String( Base64.getUrlDecoder().decode( token.split( "\\." )[1] ),
-                StandardCharsets.UTF_8 );
+        String payload = new String( Base64.getUrlDecoder().decode( token.split( "\\." )[1] ), StandardCharsets.UTF_8 );
         assertThat( (Boolean) com.jayway.jsonpath.JsonPath.read( payload, "$.admin" ) ).isTrue();
         assertThat( (java.util.List<String>) com.jayway.jsonpath.JsonPath.read( payload, "$.roles" ) )
                 .contains( "ADMIN", "CONSULTAR_TENANT" );
-        assertThat( jdbc.sql( "SELECT count(*) FROM security.usuario_role_global "
-                + "WHERE id_usuario=:id AND dt_fim IS NULL" )
+        assertThat( jdbc.sql( "SELECT count(*) FROM security.usuario_role_global " + "WHERE id_usuario=:id AND dt_fim IS NULL" )
                 .param( "id", subject.id() ).query( Long.class ).single() ).isZero();
-        assertThat( jdbc.sql( "SELECT count(*) FROM security.usuario_tenant_role "
-                + "WHERE id_usuario_tenant=:id AND dt_fim IS NULL" )
+        assertThat( jdbc.sql( "SELECT count(*) FROM security.usuario_tenant_role " + "WHERE id_usuario_tenant=:id AND dt_fim IS NULL" )
                 .param( "id", subjectMember ).query( Long.class ).single() ).isZero();
 
         mvc.perform( get( "/api/demo/global" ).header( "Authorization", "Bearer " + token ) )
@@ -81,8 +79,7 @@ class FirebaseAdoptionContractIntegrationTest extends FirebaseContractSupport {
         mvc.perform( get( "/api/demo/global" ).header( "Authorization", "Bearer " + token ) )
                 .andExpect( status().isForbidden() );
 
-        var resolution = resolver.resolve( firebase.identities.get( token ), java.util.Optional.empty(),
-                clock.instant() );
+        var resolution = resolver.resolve( firebase.identities.get( token ), java.util.Optional.empty(), clock.instant() );
         var authentication = new FirebaseAuthenticationToken( resolution );
         assertThat( authentication ).isInstanceOf( AuthorizationContextAware.class );
         assertThat( authentication.authorizationContext() ).isInstanceOf( JwtAuthorizationContext.class );
@@ -98,11 +95,11 @@ class FirebaseAdoptionContractIntegrationTest extends FirebaseContractSupport {
         var path = Path.of( location.toURI() );
 
         assertThat( path.getFileName().toString() ).isEqualTo( "gems-firebase-auth-3.4.1.jar" );
-        try ( var jar = new JarFile( path.toFile() ) ) {
+        try (var jar = new JarFile( path.toFile() )) {
             var metadata = jar.getJarEntry( "META-INF/maven/br.com.gems/gems-firebase-auth/pom.properties" );
             assertThat( metadata ).isNotNull();
             var properties = new Properties();
-            try ( var stream = jar.getInputStream( metadata ) ) {
+            try (var stream = jar.getInputStream( metadata )) {
                 properties.load( stream );
             }
             assertThat( properties ).containsEntry( "groupId", "br.com.gems" )
@@ -121,9 +118,7 @@ class FirebaseAdoptionContractIntegrationTest extends FirebaseContractSupport {
                 .filter( registration -> registration.getFilter() == firebaseFilter ).toList();
         assertThat( registrations ).hasSize( 1 );
         assertThat( registrations.getFirst().isEnabled() ).isFalse();
-        for ( Class<?> port : List.of( AuthorizationResolver.class, UserAdministration.class,
-                TenantAdministration.class, GrantAdministration.class, TenantAdministratorBootstrap.class,
-                JdbcIdentityCommandWorker.class ) ) {
+        for ( Class<?> port : List.of( AuthorizationResolver.class, UserAdministration.class, TenantAdministration.class, GrantAdministration.class, TenantAdministratorBootstrap.class, JdbcIdentityCommandWorker.class ) ) {
             var implementation = AopUtils.getTargetClass( context.getBean( port ) );
             assertThat( implementation.getProtectionDomain().getCodeSource().getLocation() )
                     .as( "Garantia %s ligada à implementação no JAR adotado.", port.getSimpleName() )
@@ -132,9 +127,8 @@ class FirebaseAdoptionContractIntegrationTest extends FirebaseContractSupport {
     }
 
     @ParameterizedTest
-    @CsvSource({"invalid,401", "unavailable,503"})
-    void deveFalharFechadoComStatusDistinto_quandoVerificadorRecusaToken( String token, int expected )
-            throws Exception {
+    @CsvSource({ "invalid,401", "unavailable,503" })
+    void deveFalharFechadoComStatusDistinto_quandoVerificadorRecusaToken( String token, int expected ) throws Exception {
         mvc.perform( get( "/api/auth/me" ).header( "Authorization", "Bearer " + token ) )
                 .andExpect( status().is( expected ) );
     }
@@ -145,8 +139,7 @@ class FirebaseAdoptionContractIntegrationTest extends FirebaseContractSupport {
         var tenant = new HashSet<>( catalog.tenantActions() );
         tenant.remove( "CONSULTAR_DEMO" );
         global.add( "CONSULTAR_DEMO" );
-        var mutated = new JdbcSecurityCatalog( jdbc, tx, events, new AuthorizationCatalog( global, tenant ),
-                () -> tenant, clock, PROJECT );
+        var mutated = new JdbcSecurityCatalog( jdbc, tx, events, new AuthorizationCatalog( global, tenant ), () -> tenant, clock, PROJECT );
 
         try {
             assertThatThrownBy( mutated::initialize ).isInstanceOf( IllegalStateException.class );
@@ -187,8 +180,11 @@ class FirebaseAdoptionContractIntegrationTest extends FirebaseContractSupport {
     }
 
     public static class UnclassifiedEndpoint {
+
         public String read() {
             return "Sem classificação.";
         }
+
     }
+
 }

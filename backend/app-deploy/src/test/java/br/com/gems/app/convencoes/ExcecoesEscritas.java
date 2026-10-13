@@ -12,8 +12,8 @@ import java.util.Optional;
 
 /**
  * O leitor da exceção escrita ({@code conformance-exceptions.md}) nos comentários que o JavaParser
- * entrega — o terceiro portador de T077, ao lado do {@code SuppressWithNearbyCommentFilter} do
- * Checkstyle e do {@code toggleOffOn} do Spotless.
+ * entrega — o portador de T077 ao lado do {@code SuppressWithNearbyCommentFilter} do Checkstyle. O
+ * {@code toggleOffOn} do Spotless saiu com o próprio Spotless, na rodada 006.
  *
  * <p>
  * A forma canônica é {@code GEMS-EXCEPTION(<arquivo-de-regra>#<seção>): <motivo>; expira AAAA-MM-DD},
@@ -35,8 +35,7 @@ final class ExcecoesEscritas {
      * Uma exceção lida do código. {@code problema} é {@code null} quando os quatro campos estão
      * presentes e bem formados; caso contrário diz o que faltou, e a exceção não suprime nada.
      */
-    record Excecao(String caminho, int linhaDoComentario, int linhaCoberta, String regra, String motivo,
-            LocalDate expira, String problema) {
+    record Excecao(String caminho, int linhaDoComentario, int linhaCoberta, String regra, String motivo, LocalDate expira, String problema) {
 
         boolean bemFormada() {
             return problema == null;
@@ -50,6 +49,7 @@ final class ExcecoesEscritas {
         boolean cobre( String regraDoRelatorio ) {
             return regra != null && regra.equals( "backend-java/" + regraDoRelatorio );
         }
+
     }
 
     private final List<Excecao> excecoes;
@@ -134,13 +134,11 @@ final class ExcecoesEscritas {
     static Excecao interpretar( String caminho, int linhaDoComentario, int linhaCoberta, String texto ) {
         var fechaRegra = texto.indexOf( ')' );
         if ( !texto.startsWith( MARCA ) || fechaRegra < 0 ) {
-            return malformada( caminho, linhaDoComentario, linhaCoberta,
-                    "não tem a forma GEMS-EXCEPTION(<regra>#<seção>)" );
+            return malformada( caminho, linhaDoComentario, linhaCoberta, "não tem a forma GEMS-EXCEPTION(<regra>#<seção>)" );
         }
         var regra = texto.substring( MARCA.length(), fechaRegra ).strip();
         if ( regra.isEmpty() || regra.indexOf( '#' ) < 0 ) {
-            return malformada( caminho, linhaDoComentario, linhaCoberta,
-                    "a regra precisa ser <arquivo-de-regra>#<seção>" );
+            return malformada( caminho, linhaDoComentario, linhaCoberta, "a regra precisa ser <arquivo-de-regra>#<seção>" );
         }
 
         var depoisDaRegra = texto.substring( fechaRegra + 1 ).strip();
@@ -164,11 +162,9 @@ final class ExcecoesEscritas {
 
         var data = prazo.substring( EXPIRA.length() ).strip();
         try {
-            return new Excecao( caminho, linhaDoComentario, linhaCoberta, regra, motivo, LocalDate.parse( data ),
-                    null );
+            return new Excecao( caminho, linhaDoComentario, linhaCoberta, regra, motivo, LocalDate.parse( data ), null );
         } catch ( DateTimeParseException e ) {
-            return malformada( caminho, linhaDoComentario, linhaCoberta,
-                    "a data '" + data + "' não está no formato AAAA-MM-DD" );
+            return malformada( caminho, linhaDoComentario, linhaCoberta, "a data '" + data + "' não está no formato AAAA-MM-DD" );
         }
     }
 
@@ -179,4 +175,5 @@ final class ExcecoesEscritas {
     private static boolean contem( StringBuilder texto, String trecho ) {
         return texto.indexOf( trecho ) >= 0;
     }
+
 }

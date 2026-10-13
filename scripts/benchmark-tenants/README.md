@@ -6,8 +6,8 @@ reais. PostgreSQL 16 Alpine descartável via Testcontainers; nenhuma credencial 
 chamada ao Firebase. As portas determinísticas do fixture existente são reutilizadas.
 
 Pré-requisitos de execução: Java 21, Docker disponível e dependências Maven do projeto.
-O executor T030 não executa Maven/Docker; VBM1 (100 tenants) e VBM2 (Spotless) são
-executados pelo coordenador no espelho.
+O executor T030 não executa Maven/Docker; VBM1 (100 tenants) e VBM2 (formato Java, hoje
+`gems-ai check-java`) são executados pelo coordenador no espelho.
 
 ```powershell
 .\scripts\benchmark-tenants\run.ps1 -N 100

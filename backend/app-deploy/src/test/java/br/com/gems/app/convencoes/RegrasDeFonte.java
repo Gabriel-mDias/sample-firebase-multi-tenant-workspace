@@ -32,8 +32,7 @@ final class RegrasDeFonte {
     private static final Set<String> PREFIXOS_DE_JOIN = Set.of( "LEFT", "RIGHT", "INNER", "OUTER", "FULL" );
     private static final Set<String> ANOTACOES_DE_TESTE = Set.of( "Test", "ParameterizedTest", "RepeatedTest" );
     /** A ordem canônica de {@code services.md} §2 (FR-017a). Métodos fora dela não têm posição prescrita. */
-    private static final List<String> ORDEM_CANONICA = List.of( "findById", "findAll", "search", "delete", "insert",
-            "save" );
+    private static final List<String> ORDEM_CANONICA = List.of( "findById", "findAll", "search", "delete", "insert", "save" );
 
     private RegrasDeFonte() {
     }
@@ -56,11 +55,7 @@ final class RegrasDeFonte {
             var joinsDoCount = joins( tokensDeHql( count ) );
             var joinsDoSearch = joins( tokensDeHql( search ) );
             if ( !joinsDoCount.equals( joinsDoSearch ) ) {
-                relatorio.registrar( chave( repositorio.caminho(), "joins-identicos" ), repositorio.caminho(),
-                        linha( count ), "repositories.md#5",
-                        "countQuery declara " + joinsDoCount + " e searchQuery declara " + joinsDoSearch,
-                        "JOINs idênticos em countQuery e searchQuery — sem isso o total da página não corresponde "
-                                + "à lista, e nenhum erro é lançado" );
+                relatorio.registrar( chave( repositorio.caminho(), "joins-identicos" ), repositorio.caminho(), linha( count ), "repositories.md#5", "countQuery declara " + joinsDoCount + " e searchQuery declara " + joinsDoSearch, "JOINs idênticos em countQuery e searchQuery — sem isso o total da página não corresponde " + "à lista, e nenhum erro é lançado" );
             }
         }
     }
@@ -79,12 +74,9 @@ final class RegrasDeFonte {
                 var comparaComNulo = (operador == BinaryExpr.Operator.NOT_EQUALS
                         || operador == BinaryExpr.Operator.EQUALS)
                         && (comparacao.getLeft() instanceof NullLiteralExpr
-                                || comparacao.getRight() instanceof NullLiteralExpr);
+                        || comparacao.getRight() instanceof NullLiteralExpr);
                 if ( comparaComNulo ) {
-                    relatorio.registrar( chave( repositorio.caminho(), "null-em-appendFilters|" + comparacao ),
-                            repositorio.caminho(), linha( comparacao ), "repositories.md#2.4",
-                            "appendFilters compara com null: " + comparacao,
-                            "ObjectUtil.isNotNullAndNotEmpty( ... ) — nunca != null nem == null" );
+                    relatorio.registrar( chave( repositorio.caminho(), "null-em-appendFilters|" + comparacao ), repositorio.caminho(), linha( comparacao ), "repositories.md#2.4", "appendFilters compara com null: " + comparacao, "ObjectUtil.isNotNullAndNotEmpty( ... ) — nunca != null nem == null" );
                 }
             }
         }
@@ -106,11 +98,7 @@ final class RegrasDeFonte {
 
             var primeiro = campos.get( 0 );
             if ( primeiro != mapper.get() ) {
-                relatorio.registrar( chave( service.caminho(), "mapper-primeiro-campo" ), service.caminho(),
-                        linha( primeiro ), "services.md#1",
-                        service.tipo().getNameAsString() + " tem " + nomeDoTipo( mapper.get() )
-                                + " mas o primeiro campo é " + nomeDoTipo( primeiro ),
-                        "o mapper do domínio como primeiro campo, e o repository da entidade como segundo" );
+                relatorio.registrar( chave( service.caminho(), "mapper-primeiro-campo" ), service.caminho(), linha( primeiro ), "services.md#1", service.tipo().getNameAsString() + " tem " + nomeDoTipo( mapper.get() ) + " mas o primeiro campo é " + nomeDoTipo( primeiro ), "o mapper do domínio como primeiro campo, e o repository da entidade como segundo" );
             }
         }
     }
@@ -129,11 +117,7 @@ final class RegrasDeFonte {
             var comecaComWhereUmIgualUm = tokens.size() == 2 && tokens.get( 0 ).equalsIgnoreCase( "WHERE" )
                     && tokens.get( 1 ).equals( "1=1" );
             if ( !comecaComWhereUmIgualUm ) {
-                relatorio.registrar( chave( repositorio.caminho(), "where-1-1" ), repositorio.caminho(),
-                        appends.isEmpty() ? linha( appendFilters ) : linha( appends.get( 0 ) ), "repositories.md#2.4",
-                        "appendFilters não começa com \" WHERE 1=1 \"",
-                        "hql.append( \" WHERE 1=1 \" ) como primeira linha — é o que permite todo filtro "
-                                + "ser um AND condicional" );
+                relatorio.registrar( chave( repositorio.caminho(), "where-1-1" ), repositorio.caminho(), appends.isEmpty() ? linha( appendFilters ) : linha( appends.get( 0 ) ), "repositories.md#2.4", "appendFilters não começa com \" WHERE 1=1 \"", "hql.append( \" WHERE 1=1 \" ) como primeira linha — é o que permite todo filtro " + "ser um AND condicional" );
             }
         }
     }
@@ -147,10 +131,7 @@ final class RegrasDeFonte {
             var jpa = nomes.indexOf( "JpaRepository" );
             var base = nomes.indexOf( "BaseCustomJpaRepository" );
             if ( jpa >= 0 && base >= 0 && base < jpa ) {
-                relatorio.registrar( chave( repositorio.caminho(), "ordem-do-extends" ), repositorio.caminho(),
-                        linha( repositorio.tipo().getExtendedTypes().get( 0 ) ), "repositories.md#1",
-                        "extends " + String.join( ", ", nomes ),
-                        "extends JpaRepository<Entidade, UUID>, BaseCustomJpaRepository<Entidade> — nesta ordem" );
+                relatorio.registrar( chave( repositorio.caminho(), "ordem-do-extends" ), repositorio.caminho(), linha( repositorio.tipo().getExtendedTypes().get( 0 ) ), "repositories.md#1", "extends " + String.join( ", ", nomes ), "extends JpaRepository<Entidade, UUID>, BaseCustomJpaRepository<Entidade> — nesta ordem" );
             }
         }
     }
@@ -178,12 +159,7 @@ final class RegrasDeFonte {
             var construido = tokens.size() > 2 && tokens.get( 0 ).equalsIgnoreCase( "SELECT" )
                     && tokens.get( 1 ).equals( "new" ) ? nomeSimples( tokens.get( 2 ) ) : null;
             if ( construido == null || !construido.equals( elemento ) ) {
-                relatorio.registrar( chave( repositorio.caminho(), "projecao-por-construtor" ), repositorio.caminho(),
-                        linha( searchQuery ), "repositories.md#2.3",
-                        "searchQuery devolve List<" + elemento + "> e o HQL "
-                                + (construido == null ? "não projeta por construtor" : "constrói " + construido),
-                        "hql.append( \" SELECT new <pacote>." + elemento + "( \" ) — a projeção constrói o DTO que "
-                                + "o método devolve" );
+                relatorio.registrar( chave( repositorio.caminho(), "projecao-por-construtor" ), repositorio.caminho(), linha( searchQuery ), "repositories.md#2.3", "searchQuery devolve List<" + elemento + "> e o HQL " + (construido == null ? "não projeta por construtor" : "constrói " + construido), "hql.append( \" SELECT new <pacote>." + elemento + "( \" ) — a projeção constrói o DTO que " + "o método devolve" );
             }
         }
     }
@@ -206,10 +182,7 @@ final class RegrasDeFonte {
                     ultimoPublico = metodo;
                     var posicao = ORDEM_CANONICA.indexOf( metodo.getNameAsString() );
                     if ( posicao >= 0 && posicao < ultimaPosicao ) {
-                        relatorio.registrar( chave( service.caminho(), "ordem-canonica|" + metodo.getNameAsString() ),
-                                service.caminho(), linha( metodo ), "services.md#2",
-                                metodo.getNameAsString() + " vem depois de " + ORDEM_CANONICA.get( ultimaPosicao ),
-                                "findById > findAll > search > delete > insert > save, e os privados por último" );
+                        relatorio.registrar( chave( service.caminho(), "ordem-canonica|" + metodo.getNameAsString() ), service.caminho(), linha( metodo ), "services.md#2", metodo.getNameAsString() + " vem depois de " + ORDEM_CANONICA.get( ultimaPosicao ), "findById > findAll > search > delete > insert > save, e os privados por último" );
                     }
                     ultimaPosicao = Math.max( ultimaPosicao, posicao );
                 }
@@ -217,12 +190,7 @@ final class RegrasDeFonte {
 
             for ( var metodo : metodos ) {
                 if ( metodo.isPrivate() && ultimoPublico != null && linha( metodo ) < linha( ultimoPublico ) ) {
-                    relatorio.registrar(
-                            chave( service.caminho(), "privado-antes-de-publico|" + metodo.getNameAsString() ),
-                            service.caminho(), linha( metodo ), "services.md#2",
-                            "o privado " + metodo.getNameAsString() + " vem antes do público "
-                                    + ultimoPublico.getNameAsString(),
-                            "métodos privados (validate e auxiliares) depois de todos os públicos" );
+                    relatorio.registrar( chave( service.caminho(), "privado-antes-de-publico|" + metodo.getNameAsString() ), service.caminho(), linha( metodo ), "services.md#2", "o privado " + metodo.getNameAsString() + " vem antes do público " + ultimoPublico.getNameAsString(), "métodos privados (validate e auxiliares) depois de todos os públicos" );
                 }
             }
         }
@@ -241,9 +209,7 @@ final class RegrasDeFonte {
                         .anyMatch( anotacao -> ANOTACOES_DE_TESTE.contains( anotacao.getNameAsString() ) );
                 var nome = metodo.getNameAsString();
                 if ( ehTeste && !nomeDeTesteSegueOPadrao( nome ) ) {
-                    relatorio.registrar( chave( entrada.getKey(), "nome-de-teste|" + nome ), entrada.getKey(),
-                            linha( metodo ), "testing.md#4", "método de teste chamado " + nome,
-                            "deve{Acao}_quando{Condicao}, em camelCase e português" );
+                    relatorio.registrar( chave( entrada.getKey(), "nome-de-teste|" + nome ), entrada.getKey(), linha( metodo ), "testing.md#4", "método de teste chamado " + nome, "deve{Acao}_quando{Condicao}, em camelCase e português" );
                 }
             }
         }
@@ -256,6 +222,7 @@ final class RegrasDeFonte {
     // ---------------------------------------------------------------- leitura da árvore
 
     record Declaracao(String caminho, ClassOrInterfaceDeclaration tipo) {
+
     }
 
     static List<Declaracao> repositorios() {
@@ -268,8 +235,7 @@ final class RegrasDeFonte {
                 && tipo.getNameAsString().endsWith( "Service" ) && tipo.isAnnotationPresent( "Service" ) );
     }
 
-    private static List<Declaracao> declaracoes( Map<String, CompilationUnit> unidades,
-            java.util.function.Predicate<ClassOrInterfaceDeclaration> filtro ) {
+    private static List<Declaracao> declaracoes( Map<String, CompilationUnit> unidades, java.util.function.Predicate<ClassOrInterfaceDeclaration> filtro ) {
         var encontradas = new ArrayList<Declaracao>();
         for ( var entrada : unidades.entrySet() ) {
             for ( var tipo : entrada.getValue().findAll( ClassOrInterfaceDeclaration.class ) ) {
@@ -378,4 +344,5 @@ final class RegrasDeFonte {
     private static String chave( String caminho, String regra ) {
         return caminho + "|" + regra;
     }
+
 }

@@ -42,17 +42,17 @@ NOT_RUN até execução observada; installlocal não comprova publicação.
   containers/portas/bancos pelos arquivos antes de MCP; nunca copiar credenciais para config.toml.
 - Backend Windows usa mvnw.cmd; gate completo uma vez no fechamento após iteração focada.
 - Sem filhos neste contrato documental. Delegação futura precisa ownership/READ/EDIT/CREATE/TEST.
-- Snapshot gerenciado e blocos GEMS-AI somente CLI oficial. Configuração 3.0.0 é gems-ai.json;
+- Snapshot gerenciado e blocos GEMS-AI somente CLI oficial. Configuração 3.1.0 é gems-ai.json;
   snapshot oficial aplicado e comprovado em evidence.md, sem handedit de snapshot.
 
 Instruções por camada: backend/AGENTS.md, frontend/AGENTS.md, environments/AGENTS.md e specs/AGENTS.md.
-GEMS AI snapshot oficial 3.0.0 aplicado pela CLI autorizada; versão 3.0.0
-pin 51b94e3a5479da74e06444f4133e07db85ece3cc. Antes de alterar código rode `scripts/gems-ai.ps1 rules bundle --project . --task <tipo>`; antes de concluir rode
+GEMS AI snapshot oficial 3.1.0 aplicado pela CLI autorizada; versão 3.1.0
+pin 909c69aa846ea97b3aea06a08fdfed8c6657d391. Antes de alterar código rode `scripts/gems-ai.ps1 rules bundle --project . --task <tipo>`; antes de concluir rode
 `scripts/gems-ai-gate.ps1` (o Stop hook do Claude e o job CI `gems-ai` executam o gate).
 
 
 <!-- GEMS-AI:BEGIN -->
-GEMS AI SDK 3.0.0 is mandatory for this repository. Law, security and the local constitution govern
+GEMS AI SDK 3.1.0 is mandatory for this repository. Law, security and the local constitution govern
 the consumer's domain; published SDK contracts govern API facts. Toolkit base rules govern safe
 operation. Profiles, task overlays and local facts specialize them without weakening higher duties.
 Material conflicts name IDs and paths and fail closed before mutation. Generated files
@@ -62,4 +62,11 @@ Before changing code, run `gems-ai rules bundle --project . --task <type>` and f
 rule and required gate. Run `gems-ai check --project . --strict` before completion. A waiver must be
 explicitly approved, scoped, unexpired, and recorded in `gems-ai.lock.json`; it cannot hide a broken
 tool, build, functional gate, or infrastructure failure.
+
+For every authored Java file, including tests, follow universal `java.formatting`. Use the pinned
+canonical executor `gems-ai check-java --project . --changed --base <revision>` on whole changed
+files; apply only with `gems-ai format java --project . --changed --apply`. A separate full audit is
+`gems-ai check-java --project . --all`. All agents (Codex, Claude, Gemini, Cursor, Copilot) share
+this authority; controller-only style and a plain IDE JDT profile do not replace the executor.
+Preserve tokens, comments, literal values and logical groups. Java formatter failures fail closed.
 <!-- GEMS-AI:END -->

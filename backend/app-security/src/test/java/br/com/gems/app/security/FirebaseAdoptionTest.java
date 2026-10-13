@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class FirebaseAdoptionTest {
+
     @Test
     void deveCarregarArtefatoComVersaoMavenEOrigemJar_quandoAdotaGarantiasFirebase() throws Exception {
         assertArtifact( FirebaseAuthenticationFilter.class, "gems-firebase-auth" );
@@ -29,11 +30,11 @@ class FirebaseAdoptionTest {
         assertThat( location.getProtocol() ).isEqualTo( "file" );
         assertThat( Files.isRegularFile( path ) ).as( "JAR carregado por %s", type.getName() ).isTrue();
         assertThat( path.getFileName().toString() ).isEqualTo( artifact + "-3.4.1.jar" );
-        try ( var jar = new JarFile( path.toFile() ) ) {
+        try (var jar = new JarFile( path.toFile() )) {
             var metadata = jar.getJarEntry( "META-INF/maven/br.com.gems/" + artifact + "/pom.properties" );
             assertThat( metadata ).as( "Metadados Maven no JAR efetivamente carregado" ).isNotNull();
             var properties = new Properties();
-            try ( var stream = jar.getInputStream( metadata ) ) {
+            try (var stream = jar.getInputStream( metadata )) {
                 properties.load( stream );
             }
             assertThat( properties.getProperty( "groupId" ) ).isEqualTo( "br.com.gems" );
@@ -45,4 +46,5 @@ class FirebaseAdoptionTest {
                     .isEqualTo( "jar:" + location.toExternalForm() + "!/" + classEntry );
         }
     }
+
 }

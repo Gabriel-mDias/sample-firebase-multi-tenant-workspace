@@ -3,23 +3,60 @@
   "$id": "https://gems.example/schemas/gems-ai-lock.schema.json",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "version", "commit", "profile", "transaction", "rules", "assets", "adapters", "waivers"],
+  "required": [
+    "schemaVersion",
+    "version",
+    "commit",
+    "profile",
+    "transaction",
+    "rules",
+    "assets",
+    "adapters",
+    "waivers"
+  ],
   "properties": {
-    "schemaVersion": { "const": 1 },
-    "version": { "const": "3.0.0" },
-    "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
-    "profile": { "enum": ["java", "angular", "workspace"] },
-    "transaction": { "type": "string", "minLength": 1 },
+    "schemaVersion": {
+      "const": 1
+    },
+    "version": {
+      "const": "3.1.0"
+    },
+    "commit": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "profile": {
+      "enum": [
+        "java",
+        "angular",
+        "workspace"
+      ]
+    },
+    "transaction": {
+      "type": "string",
+      "minLength": 1
+    },
     "rules": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "path", "sha256"],
+        "required": [
+          "id",
+          "path",
+          "sha256"
+        ],
         "properties": {
-          "id": { "type": "string" },
-          "path": { "type": "string" },
-          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+          "id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
         }
       }
     },
@@ -28,11 +65,28 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["kind", "path", "sha256"],
+        "required": [
+          "kind",
+          "path",
+          "sha256"
+        ],
         "properties": {
-          "kind": { "enum": ["catalog", "schema", "skill", "version"] },
-          "path": { "type": "string" },
-          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+          "kind": {
+            "enum": [
+              "catalog",
+              "schema",
+              "skill",
+              "version",
+              "formatter"
+            ]
+          },
+          "path": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
         }
       }
     },
@@ -41,31 +95,122 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["path", "managedSha256"],
+        "required": [
+          "path",
+          "managedSha256"
+        ],
         "properties": {
-          "path": { "enum": ["AGENTS.md", "CLAUDE.md", "GEMINI.md"] },
-          "managedSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+          "path": {
+            "enum": [
+              "AGENTS.md",
+              "CLAUDE.md",
+              "GEMINI.md",
+              ".cursor/rules/gems.mdc",
+              ".github/copilot-instructions.md"
+            ]
+          },
+          "managedSha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
         }
       }
     },
     "waivers": {
       "type": "array",
-      "items": { "$ref": "#/$defs/waiver" }
+      "items": {
+        "$ref": "#/$defs/waiver"
+      }
+    },
+    "javaFormatter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "include": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "javaExecutable": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "localAssertions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "rule",
+          "claim",
+          "value"
+        ],
+        "properties": {
+          "rule": {
+            "type": "string"
+          },
+          "claim": {
+            "type": "string"
+          },
+          "value": {
+            "type": "boolean"
+          }
+        }
+      },
+      "default": []
     }
   },
   "$defs": {
     "waiver": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["rule", "scope", "justification", "owner", "expires", "compensation", "approvedBy"],
+      "required": [
+        "rule",
+        "scope",
+        "justification",
+        "owner",
+        "expires",
+        "compensation",
+        "approvedBy"
+      ],
       "properties": {
-        "rule": { "type": "string", "pattern": "\\S" },
-        "scope": { "type": "string", "pattern": "\\S" },
-        "justification": { "type": "string", "pattern": "\\S" },
-        "owner": { "type": "string", "pattern": "\\S" },
-        "expires": { "type": "string", "format": "date" },
-        "compensation": { "type": "string", "pattern": "\\S" },
-        "approvedBy": { "type": "string", "pattern": "\\S" }
+        "rule": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "scope": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "justification": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "owner": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "expires": {
+          "type": "string",
+          "format": "date"
+        },
+        "compensation": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "approvedBy": {
+          "type": "string",
+          "pattern": "\\S"
+        }
       }
     }
   }

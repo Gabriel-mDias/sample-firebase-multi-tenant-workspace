@@ -14,9 +14,11 @@ import org.hibernate.annotations.CreationTimestamp;
 @MappedSuperclass
 @Auditable
 public abstract class EntidadeAuditavel {
+
     @CreationTimestamp
     @Column(name = "DT_CRIACAO", updatable = false, nullable = false)
     private Instant dataCriacao;
     @Column(name = "DT_EXCLUSAO", insertable = false)
     private Instant dataExclusao;
+
 }

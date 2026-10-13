@@ -28,6 +28,8 @@
 .gems-ai/schemas/*.json                      text eol=crlf
 .gems-ai/catalog.json                        text eol=crlf
 .gems-ai/.version                            text eol=crlf
+# Snapshot do formatter Java (3.1.0). Vem depois do `*.properties` porque o último atributo vence.
+.gems-ai/java/**                             text eol=crlf
 .agents/skills/gems-ai-sdk/**                text eol=crlf
 .agents/skills/rodada-sdd/**                 text eol=crlf
 

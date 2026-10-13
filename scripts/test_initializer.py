@@ -19,11 +19,16 @@ MODULES = ['security', 'model', 'events', 'core', 'deploy']
 NS = 'http://maven.apache.org/POM/4.0.0'
 
 
+GEMS_AI_VERSION = json.loads((SOURCE / 'gems-ai.json').read_text('utf-8'))['version']
+
+
 def fake_formatter(argv, cwd, timeout=120):
-    """External tool double: no Maven, Java, dependency resolution or network."""
+    """External tool double: no GEMS AI CLI, Java, dependency resolution or network."""
     if argv[-1] == '-version':
         return 'java 21'
-    if argv[1:] != ['-B', '-q', 'spotless:apply']:
+    if argv[1:] == ['--version']:
+        return GEMS_AI_VERSION
+    if argv[1:4] != ['format', 'java', '--project'] or argv[5:] != ['--all', '--apply']:
         raise AssertionError('Unexpected formatter command: ' + repr(argv))
     for path in Path(cwd).rglob('*.java'):
         lines = []
@@ -73,6 +78,7 @@ class InitializerSafety(unittest.TestCase):
         self.write('AGENTS.md', 'Product governance\n<!-- GEMS-AI:BEGIN -->\npinned\n<!-- GEMS-AI:END -->\n')
         self.write('.gems-ai/rules/base.safe-change.md', 'Managed bytes br.com.gems.app app-deploy\n')
         self.write('gems-ai.lock.json', '{"pin":"untouched"}\n')
+        self.write('gems-ai.json', json.dumps({'version': GEMS_AI_VERSION, 'profile': 'workspace'}) + '\n')
         self.write('backend/pom.xml', '<project xmlns="' + NS + '"><modelVersion>4.0.0</modelVersion>'
                    '<parent><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-parent</artifactId></parent>'
                    '<groupId>br.com.gems</groupId><artifactId>app</artifactId><name>App</name>'
@@ -188,7 +194,7 @@ class InitializerSafety(unittest.TestCase):
             self.assertIn('String uid, IdTokenVerifier verifier,', raw, 'Rename must not format individual files')
             self.assertNotEqual(jobs.read_text('utf-8'), raw)
             result = hashes(self.root)
-            fake_formatter(['mvnw.cmd', '-B', '-q', 'spotless:apply'], self.root / 'backend')
+            fake_formatter(['gems-ai', *fixture_module(self.root).formatter_arguments(self.root)], self.root)
             self.assertEqual(hashes(self.root), result, 'Result must equal another formatter apply')
             report = json.loads(applied.stdout)
             self.assertTrue(json.loads(dry.stdout)['formatting']['enabled'])
@@ -220,23 +226,28 @@ class InitializerSafety(unittest.TestCase):
         self.refuse('--name', 'con', '--apply')
         self.refuse('--group', 'com.aux', '--apply')
 
-    def test_wrapper_and_java_are_required_before_mutation(self):
+    def test_gems_ai_cli_version_and_java_are_required_before_mutation(self):
         module = fixture_module(self.root)
-        wrapper = self.root / 'backend' / ('mvnw.cmd' if os.name == 'nt' else 'mvnw')
-        wrapper.unlink()
+        self.write('gems-ai.json', json.dumps({'version': '9.9.9', 'profile': 'workspace'}) + '\n')
         self.git('add', '.')
         self.commit()
-        self.assertIn('Maven wrapper', self.refuse('--apply').stderr)
-        self.write(wrapper.relative_to(self.root).as_posix(), 'fixture wrapper\n')
-        wrapper.chmod(0o755)
+        self.assertIn('GEMS AI CLI version differs', self.refuse('--apply').stderr)
+        self.write('gems-ai.json', json.dumps({'version': GEMS_AI_VERSION, 'profile': 'workspace'}) + '\n')
         self.git('add', '.')
         self.commit()
         init = module.initialize_plan(self.root, 'vendas', 'br.com.gems', '')
         before = hashes(self.root)
-        def unavailable(*args, **kwargs):
+        def cli_unavailable(*args, **kwargs):
+            raise FileNotFoundError('unit GEMS AI CLI unavailable')
+        with self.assertRaisesRegex(module.Refusal, 'requires the GEMS AI CLI'):
+            module.initialize_apply(self.root, *init, tool_runner=cli_unavailable)
+        self.assertEqual(hashes(self.root), before)
+        def java_unavailable(argv, cwd, timeout=120):
+            if argv[1:] == ['--version']:
+                return GEMS_AI_VERSION
             raise FileNotFoundError('unit Java unavailable')
         with self.assertRaisesRegex(module.Refusal, 'requires available Java'):
-            module.initialize_apply(self.root, *init, tool_runner=unavailable)
+            module.initialize_apply(self.root, *init, tool_runner=java_unavailable)
         self.assertEqual(hashes(self.root), before)
 
     def test_formatter_failure_restores_all_sources_and_manifest(self):
@@ -248,6 +259,8 @@ class InitializerSafety(unittest.TestCase):
         def failing(argv, cwd, timeout):
             if argv[-1] == '-version':
                 return ''
+            if argv[1:] == ['--version']:
+                return GEMS_AI_VERSION
             fake_formatter(argv, cwd, timeout)
             raise module.Refusal('unit formatter failure')
         with contextlib.redirect_stderr(io.StringIO()), self.assertRaisesRegex(module.Refusal, 'rolled back'):
@@ -307,7 +320,7 @@ class InitializerSafety(unittest.TestCase):
             self.assertEqual(entry['sha256'], module.digest(actual))
             result = hashes(self.root)
             java.write_bytes(entry['after'].encode())
-            fake_formatter(['mvnw.cmd', '-B', '-q', 'spotless:apply'], self.root / 'backend')
+            fake_formatter(['gems-ai', *module.formatter_arguments(self.root)], self.root)
             self.assertEqual(java.read_bytes(), entry['after'].encode(), 'Stored payload must already be formatted')
             java.write_bytes(actual)
             if iteration:
@@ -815,7 +828,7 @@ class CleanDemoPayloadRegression(unittest.TestCase):
                    and not module.secret_path(relative)
                    and Path(relative).suffix in {'.java', '.xml', '.ts', '.html', '.css', '.json',
                                                  '.mjs', '.yml', '.yaml', '.properties'}]
-        selected = sorted(set(runtime + ['backend/mvnw', 'backend/mvnw.cmd'] + [entry['path'] for entry in manifest['files']
+        selected = sorted(set(runtime + ['backend/mvnw', 'backend/mvnw.cmd', 'gems-ai.json'] + [entry['path'] for entry in manifest['files']
                                          + manifest['metadata_entries']] + manifest['metadata']))
         demo = re.compile(r'demo[-_ ]?registro|(?:CONSULTAR|INSERIR|ALTERAR|EXCLUIR)_DEMO'
                           r'|VISUALIZAR_VALOR_RESTRITO|/api/demo/', re.I)
@@ -854,7 +867,8 @@ class CleanDemoPayloadRegression(unittest.TestCase):
                     init = module.initialize_plan(root, 'vendas', group, '')
                     with contextlib.redirect_stderr(io.StringIO()):
                         # This regression concerns payload removals; external formatting is injected.
-                        module.initialize_apply(root, *init, tool_runner=lambda *args, **kwargs: '')
+                        module.initialize_apply(root, *init, tool_runner=lambda argv, *args, **kwargs:
+                                                GEMS_AI_VERSION if argv[1:] == ['--version'] else '')
                 module.MANIFEST = root / 'scripts/demo-manifest.json'
                 module.MANIFEST_SHA256 = module.digest(module.MANIFEST.read_bytes())
                 initialized = json.loads(module.MANIFEST.read_text('utf-8'))

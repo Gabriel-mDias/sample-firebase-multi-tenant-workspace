@@ -29,6 +29,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class DemoRegistroServiceTest {
+
     private static final String ID_NAO_INFORMADO = "O id não foi informado!";
     private final DemoRegistroRepository repository = mock( DemoRegistroRepository.class );
     private final UsuarioAutenticadoService usuario = mock( UsuarioAutenticadoService.class );
@@ -85,8 +86,7 @@ class DemoRegistroServiceTest {
     void deveRestringirProjecaoNaBusca_quandoNaoPodeLerCampo() {
         var filter = new DemoRegistroFilterParams( "Registro" );
         var pageable = PageRequest.of( 0, 10 );
-        when( repository.search( eq( filter ), eq( pageable ), eq( false ) ) ).thenReturn(
-                new PageImpl<>( List.of( new DemoRegistroResponseDTO( id, "Registro", "Descrição", null ) ) ) );
+        when( repository.search( eq( filter ), eq( pageable ), eq( false ) ) ).thenReturn( new PageImpl<>( List.of( new DemoRegistroResponseDTO( id, "Registro", "Descrição", null ) ) ) );
 
         var page = service.search( filter, pageable );
 
@@ -112,9 +112,7 @@ class DemoRegistroServiceTest {
 
         assertThatThrownBy( () -> service.insert( dto ) ).isInstanceOf( BusinessException.class )
                 .extracting( failure -> ((BusinessException) failure).getDetalhes() )
-                .isEqualTo( List.of( "Informe o nome.", "Descrição deve ter no máximo 1000 caracteres.",
-                        "ID é gerado pelo servidor.",
-                        "Valor restrito deve ter até 17 dígitos inteiros e 2 decimais." ) );
+                .isEqualTo( List.of( "Informe o nome.", "Descrição deve ter no máximo 1000 caracteres.", "ID é gerado pelo servidor.", "Valor restrito deve ter até 17 dígitos inteiros e 2 decimais." ) );
         verifyNoInteractions( repository );
     }
 
@@ -125,8 +123,7 @@ class DemoRegistroServiceTest {
 
         assertThatThrownBy( () -> service.save( id, dto ) ).isInstanceOf( BusinessException.class )
                 .extracting( failure -> ((BusinessException) failure).getDetalhes() )
-                .isEqualTo( List.of( "Nome deve ter no máximo 150 caracteres.",
-                        "Valor restrito deve ter até 17 dígitos inteiros e 2 decimais." ) );
+                .isEqualTo( List.of( "Nome deve ter no máximo 150 caracteres.", "Valor restrito deve ter até 17 dígitos inteiros e 2 decimais." ) );
         verifyNoInteractions( repository );
     }
 
@@ -150,7 +147,7 @@ class DemoRegistroServiceTest {
 
     @ParameterizedTest
     @NullAndEmptySource
-    @ValueSource(strings = {" ", "\t"})
+    @ValueSource(strings = { " ", "\t" })
     void deveLancarExcecaoDeNegocio_quandoIdTextoNaoInformado( String texto ) {
         assertThatThrownBy( () -> service.findById( texto ) ).isInstanceOf( BusinessException.class )
                 .hasMessage( ID_NAO_INFORMADO );
@@ -194,4 +191,5 @@ class DemoRegistroServiceTest {
         return DemoRegistro.builder().id( id ).nome( "Registro" ).descricao( "Descrição" )
                 .valorRestrito( new BigDecimal( "123.45" ) ).build();
     }
+
 }

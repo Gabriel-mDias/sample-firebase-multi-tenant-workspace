@@ -42,16 +42,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(TenantProvisioningBenchmark.FixturePorts.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class TenantProvisioningBenchmark {
+
     @Container
     static final PostgreSQLContainer DATABASE = new PostgreSQLContainer( "postgres:16-alpine" )
-            .withCommand( "postgres", "-c", "shared_preload_libraries=pg_stat_statements",
-                    "-c", "pg_stat_statements.track=all" );
+            .withCommand( "postgres", "-c", "shared_preload_libraries=pg_stat_statements", "-c", "pg_stat_statements.track=all" );
+
     @DynamicPropertySource
     static void database( DynamicPropertyRegistry registry ) {
         registry.add( "spring.datasource.url", DATABASE::getJdbcUrl );
         registry.add( "spring.datasource.username", DATABASE::getUsername );
         registry.add( "spring.datasource.password", DATABASE::getPassword );
     }
+
     @Autowired
     SecurityEventSink events;
     @Autowired
@@ -102,9 +104,7 @@ class TenantProvisioningBenchmark {
                 .query( String.class ).list();
         long readyTime = System.nanoTime() - readyStart;
         long inventory = System.nanoTime() - inventoryStart;
-        long sql = jdbc.sql( "SELECT COALESCE(sum(calls),0)::bigint FROM pg_stat_statements "
-                + "WHERE dbid=(SELECT oid FROM pg_database WHERE datname=current_database()) "
-                + "AND query NOT LIKE '%pg_stat_statements%'" ).query( Long.class ).single();
+        long sql = jdbc.sql( "SELECT COALESCE(sum(calls),0)::bigint FROM pg_stat_statements " + "WHERE dbid=(SELECT oid FROM pg_database WHERE datname=current_database()) " + "AND query NOT LIKE '%pg_stat_statements%'" ).query( Long.class ).single();
         long heapAfter = usedHeap();
         var actual = jdbc.sql( "SELECT nspname FROM pg_namespace WHERE left(nspname,7)='tenant_'" )
                 .query( String.class ).list();
@@ -127,27 +127,28 @@ class TenantProvisioningBenchmark {
                   "sdkVersion": "%s",
                   "postgresqlVersion": "%s"
                 }
-                """, n, ms( total ), percentile( durations, 0.50 ), percentile( durations, 0.95 ),
-                ms( durations[n - 1] ), ms( inventory ), ms( expectedTime ), ms( readyTime ),
-                heapBefore, heapAfter, sql, sdk, postgres );
+                """, n, ms( total ), percentile( durations, 0.50 ), percentile( durations, 0.95 ), ms( durations[n - 1] ), ms( inventory ), ms( expectedTime ), ms( readyTime ), heapBefore, heapAfter, sql, sdk, postgres );
         Path output = Path.of( System.getProperty( "benchmark.output", "target/benchmark-tenants.json" ) )
                 .toAbsolutePath();
         Files.createDirectories( output.getParent() );
         Files.writeString( output, json );
-        System.out.printf( Locale.ROOT, "BENCHMARK N=%d total=%.3fms p95=%.3fms inventario=%.3fms sql=%d%n",
-                n, ms( total ), percentile( durations, 0.95 ), ms( inventory ), sql );
+        System.out.printf( Locale.ROOT, "BENCHMARK N=%d total=%.3fms p95=%.3fms inventario=%.3fms sql=%d%n", n, ms( total ), percentile( durations, 0.95 ), ms( inventory ), sql );
     }
+
     private static long usedHeap() {
         System.gc();
         Runtime runtime = Runtime.getRuntime();
         return runtime.totalMemory() - runtime.freeMemory();
     }
+
     private static double ms( long nanos ) {
         return nanos / 1_000_000.0;
     }
+
     private static double percentile( long[] sorted, double percentile ) {
         return ms( sorted[(int) Math.ceil( sorted.length * percentile ) - 1] );
     }
+
     private static String sdkVersion() throws Exception {
         var properties = new Properties();
         var resource = JdbcTenantService.class.getResource( "JdbcTenantService.class" );
@@ -158,7 +159,7 @@ class TenantProvisioningBenchmark {
                 var entry = entries.nextElement();
                 if ( entry.getName().startsWith( "META-INF/maven/br.com.gems/" )
                         && entry.getName().endsWith( "/pom.properties" ) ) {
-                    try ( InputStream input = jar.getInputStream( entry ) ) {
+                    try (InputStream input = jar.getInputStream( entry )) {
                         properties.load( input );
                     }
                     return properties.getProperty( "version" );
@@ -170,9 +171,12 @@ class TenantProvisioningBenchmark {
 
     /** Importa as portas existentes apesar da visibilidade package-private do fixture. */
     public static class FixturePorts implements ImportSelector {
+
         @Override
         public String[] selectImports( AnnotationMetadata metadata ) {
-            return new String[]{"br.com.gems.app.FirebaseBackendIntegrationTest$Ports"};
+            return new String[] { "br.com.gems.app.FirebaseBackendIntegrationTest$Ports" };
         }
+
     }
+
 }

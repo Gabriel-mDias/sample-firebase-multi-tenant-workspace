@@ -7,7 +7,7 @@ consumidor e remoção da classe duplicada. Agente não cria waiver/exceção pa
 Leia o AGENTS mais próximo e a feature ativa .specify/feature.json; somente contexto necessário.
 Plano Firebase multi-tenant aprovado: "Implement the plan." após PLAN_REV3_20261007 PASS;
 registrar autorização existente sem assinatura humana fabricada ou confirmação repetida.
-GEMS AI 3.0.0 pin 51b94e3a5479da74e06444f4133e07db85ece3cc; snapshot/blocos só CLI oficial.
+GEMS AI 3.1.0 pin 909c69aa846ea97b3aea06a08fdfed8c6657d391; snapshot/blocos só CLI oficial.
 Builds, publicação, consumers, conformance do código, E2E e homologação permanecem NOT_RUN.
 Preserve alterações existentes. Não leia segredos nem gerados node_modules/target/dist/.angular
 ou imagens business. Nunca docker compose down -v, commit ou push delegado.

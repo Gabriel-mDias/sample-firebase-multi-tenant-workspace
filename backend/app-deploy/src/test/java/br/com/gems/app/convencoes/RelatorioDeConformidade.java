@@ -42,15 +42,16 @@ final class RelatorioDeConformidade {
      * exige decisão humana registrada, e é o que a mutação de T082 prova.
      */
     static final int MAXIMO_DE_ENTRADAS = 0;
-
     private static final Path BASELINE = Path.of( "src", "test", "resources", "archunit-baseline.txt" );
 
     /** Como o relatório trata a exceção escrita. */
     enum Modo {
+
         /** O normal do gate: exceção válida sobre a linha suprime a violação. */
         SUPRIMIR,
         /** Toda violação é registrada, com exceção ou sem — a leitura que revela a órfã. */
         BRUTO
+
     }
 
     /** Uma violação registrada, na forma que o §2 do contrato manda imprimir. */
@@ -64,6 +65,7 @@ final class RelatorioDeConformidade {
                       violação: %s
                       esperado: %s""".formatted( cabecalho, regra, violacao, esperado );
         }
+
     }
 
     private final String gate;
@@ -123,12 +125,9 @@ final class RelatorioDeConformidade {
         if ( Boolean.getBoolean( "gems.convencoes.relatorio" ) ) {
             try {
                 var destino = Path.of( "target", "convencoes-medicao.txt" );
-                Files.write( destino,
-                        violacoes.stream()
-                                .map( v -> v.chave() + "\t" + v.formatada().replace( "\n", " " ).replace( "\r", " " ) )
-                                .toList(),
-                        StandardCharsets.UTF_8,
-                        java.nio.file.StandardOpenOption.CREATE, java.nio.file.StandardOpenOption.APPEND );
+                Files.write( destino, violacoes.stream()
+                        .map( v -> v.chave() + "\t" + v.formatada().replace( "\n", " " ).replace( "\r", " " ) )
+                        .toList(), StandardCharsets.UTF_8, java.nio.file.StandardOpenOption.CREATE, java.nio.file.StandardOpenOption.APPEND );
                 System.out.println( gate + ": " + violacoes.size() + " violações (relatório)" );
                 return;
             } catch ( IOException e ) {
@@ -136,9 +135,7 @@ final class RelatorioDeConformidade {
             }
         }
         if ( !violacoes.isEmpty() ) {
-            throw new AssertionError( "%s reprovou — %d violação(ões):%n%n%s%n".formatted( gate, violacoes.size(),
-                    String.join( System.lineSeparator() + System.lineSeparator(),
-                            violacoes.stream().map( Violacao::formatada ).toList() ) ) );
+            throw new AssertionError( "%s reprovou — %d violação(ões):%n%n%s%n".formatted( gate, violacoes.size(), String.join( System.lineSeparator() + System.lineSeparator(), violacoes.stream().map( Violacao::formatada ).toList() ) ) );
         }
     }
 
@@ -182,4 +179,5 @@ final class RelatorioDeConformidade {
             throw new UncheckedIOException( e );
         }
     }
+
 }

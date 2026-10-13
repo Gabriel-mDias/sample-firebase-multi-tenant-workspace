@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 /** Security JDBC and model validation must follow the explicit platform migrations. */
 @Configuration
 public class DatabaseOrderConfiguration {
+
     @Bean
     public static BeanFactoryPostProcessor migrationDependencies() {
         return factory -> {
@@ -17,4 +18,5 @@ public class DatabaseOrderConfiguration {
             }
         };
     }
+
 }

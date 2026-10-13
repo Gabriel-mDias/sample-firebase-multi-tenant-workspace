@@ -31,6 +31,7 @@ import org.hibernate.annotations.SQLRestriction;
 @Setter
 @ToString
 public class DemoRegistro extends EntidadeAuditavel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID_DEMO_REGISTRO")
@@ -43,4 +44,5 @@ public class DemoRegistro extends EntidadeAuditavel {
     @ToString.Exclude
     @Column(name = "VL_RESTRITO", precision = 19, scale = 2)
     private BigDecimal valorRestrito;
+
 }

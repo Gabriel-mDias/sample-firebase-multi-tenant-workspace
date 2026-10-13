@@ -16,14 +16,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DemoRegistroRepository
-        extends
-            JpaRepository<DemoRegistro, UUID>,
-            BaseCustomJpaRepository<DemoRegistro> {
-    default Page<DemoRegistroResponseDTO> search( DemoRegistroFilterParams filter, Pageable pageable,
-            boolean restricted ) {
+public interface DemoRegistroRepository extends JpaRepository<DemoRegistro, UUID>, BaseCustomJpaRepository<DemoRegistro> {
+
+    default Page<DemoRegistroResponseDTO> search( DemoRegistroFilterParams filter, Pageable pageable, boolean restricted ) {
         return new PageImpl<>( searchQuery( filter, pageable, restricted ), pageable, countQuery( filter ) );
     }
+
     private Long countQuery( DemoRegistroFilterParams filter ) {
         var hql = new StringBuilder();
         var params = new HashMap<String, Object>();
@@ -32,8 +30,8 @@ public interface DemoRegistroRepository
         appendFilters( filter, hql, params );
         return executeCountHql( hql, params );
     }
-    private List<DemoRegistroResponseDTO> searchQuery( DemoRegistroFilterParams filter, Pageable pageable,
-            boolean restricted ) {
+
+    private List<DemoRegistroResponseDTO> searchQuery( DemoRegistroFilterParams filter, Pageable pageable, boolean restricted ) {
         var hql = new StringBuilder();
         var params = new HashMap<String, Object>();
         hql.append( " SELECT new br.com.gems.app.model.response.DemoRegistroResponseDTO( " );
@@ -44,6 +42,7 @@ public interface DemoRegistroRepository
         appendFilters( filter, hql, params );
         return executeHql( hql, params, pageable, DemoRegistroResponseDTO.class );
     }
+
     private void appendFilters( DemoRegistroFilterParams filter, StringBuilder hql, HashMap<String, Object> params ) {
         hql.append( " WHERE 1=1 " );
         if ( ObjectUtil.isNotNullAndNotEmpty( filter ) && ObjectUtil.isNotNullAndNotEmpty( filter.nome() ) ) {
@@ -51,4 +50,5 @@ public interface DemoRegistroRepository
             params.put( "nome", "%" + filter.nome().toLowerCase( Locale.ROOT ) + "%" );
         }
     }
+
 }

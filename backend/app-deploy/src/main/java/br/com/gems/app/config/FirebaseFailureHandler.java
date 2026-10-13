@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class FirebaseFailureHandler {
+
     @ExceptionHandler(FirebaseAuthException.class)
     public ResponseEntity<Map<String, String>> firebase( FirebaseAuthException failure ) {
         return ResponseEntity.status( failure.reason().status() ).body( Map.of( "code", failure.reason().name() ) );
     }
+
 }
