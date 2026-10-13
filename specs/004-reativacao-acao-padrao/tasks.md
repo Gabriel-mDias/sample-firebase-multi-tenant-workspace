@@ -9,14 +9,14 @@ Caminhos: `SDK/` = `Java-GEMS-SDK/`; `SAMPLE/` = `sample-firebase-multi-tenant-w
 
 ## Phase 1: Setup
 
-- [ ] T001 Criar a branch `feature/3.5.0-reativacao-acao-padrao` a partir de `origin/main` em `SDK/` e registrar a contagem atual de testes de `gems-firebase-auth` (`mvn -pl gems-firebase-auth -am test`) em `SAMPLE/specs/004-reativacao-acao-padrao/evidence.md`
-- [ ] T002 Rodar `mvn versions:set -DnewVersion=3.5.0 -DgenerateBackupPoms=false` na raiz de `SDK/`, sem editar `<version>` à mão
+- [x] T001 Criar a branch `feature/3.5.0-reativacao-acao-padrao` a partir de `origin/main` em `SDK/` e registrar a contagem atual de testes de `gems-firebase-auth` (`mvn -pl gems-firebase-auth -am test`) em `SAMPLE/specs/004-reativacao-acao-padrao/evidence.md`
+- [x] T002 Rodar `mvn versions:set -DnewVersion=3.5.0 -DgenerateBackupPoms=false` na raiz de `SDK/`, sem editar `<version>` à mão
 
 ## Phase 2: Foundational
 
-- [ ] T003 Acrescentar o construtor de `JdbcIdentityCommandWorker` com `AuthorizationCatalog` e marcar o atual `@Deprecated(since = "3.5.0")`, sem mudar comportamento ainda, em `SDK/gems-firebase-auth/src/main/java/br/com/gems/firebase/auth/jdbc/JdbcIdentityCommandWorker.java`
-- [ ] T004 Fazer o bean do worker usar o construtor novo em `SDK/gems-firebase-auth/src/main/java/br/com/gems/firebase/auth/config/FirebaseJdbcAutoConfiguration.java:146-149`
-- [ ] T005 Ajustar o helper `worker(...)` do teste para o construtor novo em `SDK/gems-firebase-auth/src/test/java/br/com/gems/firebase/auth/jdbc/JdbcSecurityPostgresTest.java:220`
+- [x] T003 Acrescentar o construtor de `JdbcIdentityCommandWorker` com `AuthorizationCatalog` e marcar o atual `@Deprecated(since = "3.5.0")`, sem mudar comportamento ainda, em `SDK/gems-firebase-auth/src/main/java/br/com/gems/firebase/auth/jdbc/JdbcIdentityCommandWorker.java`
+- [x] T004 Fazer o bean do worker usar o construtor novo em `SDK/gems-firebase-auth/src/main/java/br/com/gems/firebase/auth/config/FirebaseJdbcAutoConfiguration.java:146-149`
+- [x] T005 Ajustar o helper `worker(...)` do teste para o construtor novo em `SDK/gems-firebase-auth/src/test/java/br/com/gems/firebase/auth/jdbc/JdbcSecurityPostgresTest.java:220`
 
 **Checkpoint**: o reator do SDK compila, e os testes existentes continuam verdes.
 
@@ -28,16 +28,16 @@ Caminhos: `SDK/` = `Java-GEMS-SDK/`; `SAMPLE/` = `sample-firebase-multi-tenant-w
 
 ### Tests (escrever primeiro, ver falhar)
 
-- [ ] T006 [US1] Teste: suspender e reativar um usuário com a ação padrão, outra ação global e um vínculo; depois do ACK, há exatamente 1 concessão vigente da ação padrão, nenhuma das demais, nenhum `usuario_tenant` vigente, a linha antiga continua encerrada e há 1 evento `GLOBAL_SELF_ACTION_RESTORED`, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
-- [ ] T007 [US1] Teste: concessão manual vigente da ação padrão antes do ACK → nenhuma duplicata e nenhum evento de devolução, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
-- [ ] T008 [US1] Teste: catálogo sem `CONSULTAR_PROPRIA_CONTA` → a reativação conclui sem concessão, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
-- [ ] T009 [US1] Teste: worker com o construtor antigo → comportamento da 3.4.1 (nenhuma devolução), em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
-- [ ] T009b [US1] Teste: depois do ACK, um segundo `runOnce` não faz nada (continua 1 concessão), e `requestReactivation` de usuário vigente não altera concessões, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
+- [x] T006 [US1] Teste: suspender e reativar um usuário com a ação padrão, outra ação global e um vínculo; depois do ACK, há exatamente 1 concessão vigente da ação padrão, nenhuma das demais, nenhum `usuario_tenant` vigente, a linha antiga continua encerrada e há 1 evento `GLOBAL_SELF_ACTION_RESTORED`, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
+- [x] T007 [US1] Teste: concessão manual vigente da ação padrão antes do ACK → nenhuma duplicata e nenhum evento de devolução, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
+- [x] T008 [US1] Teste: catálogo sem `CONSULTAR_PROPRIA_CONTA` → a reativação conclui sem concessão, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
+- [x] T009 [US1] Teste: worker com o construtor antigo → comportamento da 3.4.1 (nenhuma devolução), em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
+- [x] T009b [US1] Teste: depois do ACK, um segundo `runOnce` não faz nada (continua 1 concessão), e `requestReactivation` de usuário vigente não altera concessões, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
 
 ### Implementation
 
-- [ ] T010 [US1] Implementar a devolução no ramo `ENABLE` de `acknowledge`, depois do CAS, com `INSERT ... SELECT ... WHERE NOT EXISTS` e o evento `GLOBAL_SELF_ACTION_RESTORED`, em `SDK/.../jdbc/JdbcIdentityCommandWorker.java:118-123`
-- [ ] T011 [US1] Mutação: remover o `INSERT` de T010, confirmar T006 vermelho e restaurar por edição inversa; registrar em `SAMPLE/specs/004-reativacao-acao-padrao/evidence.md`
+- [x] T010 [US1] Implementar a devolução no ramo `ENABLE` de `acknowledge`, depois do CAS, com `INSERT ... SELECT ... WHERE NOT EXISTS` e o evento `GLOBAL_SELF_ACTION_RESTORED`, em `SDK/.../jdbc/JdbcIdentityCommandWorker.java:118-123`
+- [x] T011 [US1] Mutação: remover o `INSERT` de T010, confirmar T006 vermelho e restaurar por edição inversa; registrar em `SAMPLE/specs/004-reativacao-acao-padrao/evidence.md`
 
 **Checkpoint**: US1 verde no SDK.
 
@@ -45,9 +45,9 @@ Caminhos: `SDK/` = `Java-GEMS-SDK/`; `SAMPLE/` = `sample-firebase-multi-tenant-w
 
 **Independent Test**: reativar, suspender de novo antes do worker, rodar o worker → usuário suspenso e sem concessão vigente.
 
-- [ ] T012 [US2] Teste: `requestReactivation` seguido de `cancelReactivation` (ou `suspend`) antes do worker → o ENABLE fica `OBSOLETE`, o usuário continua com `dt_fim` e não há concessão vigente nem evento de devolução, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
-- [ ] T013 [US2] Teste: ENABLE de versão antiga reivindicado depois de nova versão → nenhuma concessão, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
-- [ ] T014 [US2] Mutação: fazer a devolução de T010 rodar antes de `current(command)`, confirmar T012/T013 vermelhos e restaurar; registrar em `evidence.md`
+- [x] T012 [US2] Teste: `requestReactivation` seguido de `cancelReactivation` (ou `suspend`) antes do worker → o ENABLE fica `OBSOLETE`, o usuário continua com `dt_fim` e não há concessão vigente nem evento de devolução, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
+- [x] T013 [US2] Teste: ENABLE de versão antiga reivindicado depois de nova versão → nenhuma concessão, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
+- [x] T014 [US2] Mutação: fazer a devolução de T010 rodar antes de `current(command)`, confirmar T012/T013 vermelhos e restaurar; registrar em `evidence.md`
 
 ## Phase 5: User Story 3 — Confirmação de comando registrada uma vez (P3)
 
@@ -55,19 +55,19 @@ Caminhos: `SDK/` = `Java-GEMS-SDK/`; `SAMPLE/` = `sample-firebase-multi-tenant-w
 
 **Independent Test**: produzir um evento num processo que também drena a outbox e contar as emissões por `id_evento`.
 
-- [ ] T015 [US3] Teste: um evento com `afterCommit` bem-sucedido seguido de `publishNext` → 1 emissão e `entrega_evento` `ACKED` **lido por outra conexão** (prova de `REQUIRES_NEW`), em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
-- [ ] T016 [US3] Teste: `afterCommit` cujo publisher lança exceção → linha `PENDING` com backoff, e `publishNext` posterior emite 1 vez, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
-- [ ] T017 [US3] Teste: linha já `CLAIMED` pelo dispatcher quando o `afterCommit` roda → o `afterCommit` não emite, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
-- [ ] T018 [US3] Implementar no `afterCommit` a reivindicação CAS da própria linha (`PENDING`→`CLAIMED` com lease), a emissão e a marcação `ACKED`/`PENDING`+backoff, em transação `PROPAGATION_REQUIRES_NEW`, em `SDK/.../jdbc/SecurityJdbcSupport.java:47-53`
-- [ ] T018b [US3] Ajustar os testes do SDK que drenam a outbox esperando eventos recém-criados (`JdbcSecurityPostgresTest.java:273-278`, `:469-493`, `:787-797` e outros que o gate apontar), preservando a garantia de cada um (retry, poison, lease concorrente, restart), em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
-- [ ] T019 [US3] Mutação: retirar a reivindicação de T018, confirmar T015 vermelho e restaurar; registrar em `evidence.md`
+- [x] T015 [US3] Teste: um evento com `afterCommit` bem-sucedido seguido de `publishNext` → 1 emissão e `entrega_evento` `ACKED` **lido por outra conexão** (prova de `REQUIRES_NEW`), em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
+- [x] T016 [US3] Teste: `afterCommit` cujo publisher lança exceção → linha `PENDING` com backoff, e `publishNext` posterior emite 1 vez, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
+- [x] T017 [US3] Teste: linha já `CLAIMED` pelo dispatcher quando o `afterCommit` roda → o `afterCommit` não emite, em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
+- [x] T018 [US3] Implementar no `afterCommit` a reivindicação CAS da própria linha (`PENDING`→`CLAIMED` com lease), a emissão e a marcação `ACKED`/`PENDING`+backoff, em transação `PROPAGATION_REQUIRES_NEW`, em `SDK/.../jdbc/SecurityJdbcSupport.java:47-53`
+- [x] T018b [US3] Ajustar os testes do SDK que drenam a outbox esperando eventos recém-criados (`JdbcSecurityPostgresTest.java:273-278`, `:469-493`, `:787-797` e outros que o gate apontar), preservando a garantia de cada um (retry, poison, lease concorrente, restart), em `SDK/.../jdbc/JdbcSecurityPostgresTest.java`
+- [x] T019 [US3] Mutação: retirar a reivindicação de T018, confirmar T015 vermelho e restaurar; registrar em `evidence.md`
 
 ## Phase 6: SDK — documentação, review e gate
 
-- [ ] T020 [P] Atualizar o lifecycle (devolução e exceção) e a entrega de eventos em `SDK/docs/FIREBASE-AUTH.md:158-174`
-- [ ] T021 [P] Criar `SDK/RELEASE-NOTES-3.5.0.md` com os itens do [contrato](contracts/sdk-gems-firebase-auth-3.5.0.md) e atualizar a seção de candidato em `SDK/CLAUDE.md`
-- [ ] T022 Review independente (Sol read-only) do diff do SDK contra spec, data-model e contrato
-- [ ] T023 Gate `mvn --batch-mode clean verify` em `SDK/` observado pelo coordenador; registrar a contagem de testes antes e depois em `evidence.md`
+- [x] T020 [P] Atualizar o lifecycle (devolução e exceção) e a entrega de eventos em `SDK/docs/FIREBASE-AUTH.md:158-174`
+- [x] T021 [P] Criar `SDK/RELEASE-NOTES-3.5.0.md` com os itens do [contrato](contracts/sdk-gems-firebase-auth-3.5.0.md) e atualizar a seção de candidato em `SDK/CLAUDE.md`
+- [x] T022 Review independente (Sol read-only) do diff do SDK contra spec, data-model e contrato
+- [x] T023 Gate `mvn --batch-mode clean verify` em `SDK/` observado pelo coordenador; registrar a contagem de testes antes e depois em `evidence.md`
 - [ ] T024 Commit, push e PR do SDK para `main` (com ok do usuário); CI verde
 - [ ] T025 **Usuário**: merge, tag `v3.5.0` e workflow `release.yml` verde (publicação no GitHub Packages)
 
