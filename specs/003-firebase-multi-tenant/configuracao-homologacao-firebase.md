@@ -168,6 +168,7 @@ $env:GEMS_FIREBASE_AUTH_CHECK_REVOKED = 'true'
 Remove-Item Env:FIREBASE_AUTH_EMULATOR_HOST -ErrorAction SilentlyContinue
 Remove-Item Env:GEMS_FIREBASE_AUTH_EMULATOR_HOST -ErrorAction SilentlyContinue
 $env:SERVER_PORT = '8081'
+$env:APP_SECURITY_CORS_ALLOWED_ORIGINS = 'http://localhost:4280'
 $env:DB_URL = Read-Host 'JDBC do banco exclusivo (ex.: jdbc:postgresql://localhost:55432/sample_homolog)'
 $env:DB_USERNAME = Read-Host 'Usuário exclusivo do banco de homologação'
 $env:DB_PASSWORD = Read-HomologSecret 'Senha desse banco'
@@ -177,6 +178,8 @@ Set-Location backend
 ```
 
 `homolog` é um nome de perfil para separar o processo; **não existe um `application-homolog.yml` pronto**. Ele usa `application.yml` base e as variáveis acima. Evite os profiles `local/test/ci/demo`, cujo bloco adicional exige host do emulator. Retire também overrides externos que configurem `gems.firebase.auth.emulator.host` ou desativem `check-revoked`. O código recusa mistura entre projeto real e emulator. A porta 8081 evita colisão com a API demo em 8080.
+
+`APP_SECURITY_CORS_ALLOWED_ORIGINS` configura `app.security.cors.allowed-origins` (padrão `http://localhost:4200`). Para o frontend desta receita, use `http://localhost:4280`; para várias origens autorizadas, separe-as por vírgula, por exemplo `http://localhost:4280,http://localhost:4200`. Informe origens exatas, sem caminho nem wildcard.
 
 Confirme saúde sem credenciais:
 
@@ -188,7 +191,7 @@ Saúde positiva prova startup e migração, não prova ADC/Admin nem T032. A pri
 
 ### Frontend real com runtime público em container
 
-O entrypoint existente aceita `APP_RUNTIME_PROFILE=production`, os quatro campos Firebase Web e `API_BASE_URL`. `production` aqui seleciona **modo real sem emulator**, mesmo usando um projeto de homologação. A API absoluta aceita HTTP loopback. Esta opção conecta diretamente ao backend no host; requer CORS para a origem da SPA, que deve ser validado antes dos testes. Não presuma que o proxy `/api` de demo resolve a API real em 8081.
+O entrypoint aceita `APP_RUNTIME_PROFILE=production`, os quatro campos Firebase Web, `API_BASE_URL` e `API_UPSTREAM`. `production` aqui seleciona **modo real sem emulator**, mesmo usando um projeto de homologação. A API absoluta aceita HTTP loopback e conecta diretamente ao backend no host; requer `APP_SECURITY_CORS_ALLOWED_ORIGINS` para a origem da SPA. Como alternativa, `API_BASE_URL=/api` usa o proxy nginx e `API_UPSTREAM` informa a origem do backend acessível pelo container (HTTP/HTTPS, porta opcional, sem caminho, query, fragmento ou credenciais). O padrão é `http://backend:8080` no Compose; a resolução DNS ocorre nas requisições, permitindo startup sem esse host.
 
 Em outro PowerShell, na raiz da cópia isolada, gere os assets pelo build real e use apenas configuração pública:
 
@@ -200,17 +203,18 @@ Set-Location ..
 docker build --tag gems-homolog-frontend:local ./frontend
 $env:APP_RUNTIME_PROFILE = 'production'
 $env:API_BASE_URL = 'http://localhost:8081/api'
+$env:API_UPSTREAM = 'http://host.docker.internal:8081'
 $env:FIREBASE_PROJECT_ID = 'sample-firebase-multi-tenant'
 $env:FIREBASE_API_KEY = Read-Host 'apiKey pública do app Web'
 $env:FIREBASE_AUTH_DOMAIN = Read-Host 'authDomain público do app Web'
 $env:FIREBASE_APP_ID = Read-Host 'appId público do app Web'
 Remove-Item Env:AUTH_EMULATOR_URL -ErrorAction SilentlyContinue
-docker run --detach --name gems-homolog-frontend --publish 127.0.0.1:4280:80 --env APP_RUNTIME_PROFILE --env API_BASE_URL --env FIREBASE_PROJECT_ID --env FIREBASE_API_KEY --env FIREBASE_AUTH_DOMAIN --env FIREBASE_APP_ID gems-homolog-frontend:local
+docker run --detach --name gems-homolog-frontend --publish 127.0.0.1:4280:80 --env APP_RUNTIME_PROFILE --env API_BASE_URL --env API_UPSTREAM --env FIREBASE_PROJECT_ID --env FIREBASE_API_KEY --env FIREBASE_AUTH_DOMAIN --env FIREBASE_APP_ID gems-homolog-frontend:local
 ```
 
 Abra `http://localhost:4280/login`. O browser chama a API em `localhost:8081`; o container não recebe ADC, senha SQL ou token. O arquivo público `/env.js` deve indicar `production:true`, o projeto real e ausência de `authEmulatorUrl`. Não use `npm start` sem override: o environment de desenvolvimento tem `demo-gems` e emulator como defaults.
 
-**Pendência operacional:** o Compose real/proxy de homologação não está entregue. Se o navegador bloquear CORS, prepare uma topologia local de mesma origem com proxy para a API real, ou configure uma origem permitida pelo mecanismo efetivamente suportado após revisão. Não invente uma variável `CORS_*`, não desative a segurança do navegador e não marque login como testado enquanto esse bloqueio existir. O snippet acima é receita de preparação **NOT_RUN**, não prova de rede aprovada.
+Para usar a mesma origem, troque `API_BASE_URL` por `/api` antes do `docker run`; o caminho `/api/...` é preservado pelo proxy. `host.docker.internal` é o exemplo para Docker Desktop: em outra topologia, informe o hostname/IP realmente acessível pelo container. `localhost` no upstream apontaria ao próprio container. Se o navegador bloquear CORS na opção absoluta, confira a origem exata em `APP_SECURITY_CORS_ALLOWED_ORIGINS` e reinicie o backend; não desative a segurança do navegador. O snippet acima é receita de preparação **NOT_RUN**, não prova de rede aprovada.
 
 ## 6. Criar o operador central por bootstrap explícito
 
