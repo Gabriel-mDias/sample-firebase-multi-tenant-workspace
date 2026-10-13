@@ -19,6 +19,7 @@ target/
 dist/
 node_modules/
 .angular/
+__pycache__/
 
 # Sistema operacional e editores
 .DS_Store

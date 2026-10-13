@@ -7,8 +7,11 @@ Firebase corresponde a um produto/ambiente. A referência de 100–1000 empresas
 
 O código de autenticação, tenancy, administração central e DemoRegistro está implementado.
 A rodada [003](specs/003-firebase-multi-tenant/roteiro.md) registra a autorização e os
-[gates](specs/003-firebase-multi-tenant/tasks.md) pendentes: E2E integral, cleanup/rename,
-benchmark e homologação real ainda precisam de execução e revisão independentes.
+[gates](specs/003-firebase-multi-tenant/tasks.md) executados: E2E integral (T029),
+cleanup/rename (T028), benchmark (T030) e homologação local estão registrados nas
+[evidências da 003](specs/003-firebase-multi-tenant/evidence.md#homologacao-local-20261012).
+O clean-demo e o inicializador foram provados em A10 e A11 nas
+[evidências da 006](specs/006-formatter-gems-ai/evidence.md).
 
 ## Ambiente local isolado
 
@@ -86,8 +89,9 @@ python scripts/verify-operational-legacy.py --stage runtime --strict
 python scripts/verify-operational-legacy.py --strict
 ```
 
-O último comando é o gate integral e continua pendente enquanto initializer/CI/docs
-posteriores mantiverem referências antigas; o gate runtime reporta esses caminhos.
+O último comando é o gate integral; a remoção das referências antigas e as provas do
+clean-demo/inicializador constam nas [evidências da 006](specs/006-formatter-gems-ai/evidence.md)
+(A10 e A11). O gate runtime reporta os caminhos pendentes quando houver regressão.
 GEMS strict valida o snapshot e é separado da conformance efetiva do código:
 use a CLI oficial por `../.tooling/run-gems-ai.ps1`, sem editar `.gems-ai/` manualmente.
 
@@ -95,9 +99,11 @@ Ausência de token em `/api/auth/me` e `/api/auth/context` retorna 401. Bootstra
 exige operador UID Google verificado e job explícito; login não concede administração.
 Tenant admin concede somente ações delegáveis que possui. Lifecycle usa bloqueio SQL,
 outbox durável e CAS antes de reconhecer a operação remota. DemoRegistro demonstra CRUD,
-campo restrito e isolamento; cleanup e rename serão comprovados em cópia descartável.
+campo restrito e isolamento; cleanup e rename foram comprovados em cópia descartável
+([003, T028](specs/003-firebase-multi-tenant/evidence.md)).
 
 Homologação real exige projeto Firebase isolado, ADC externo, Google/password habilitados
-e testers confirmados. Não foi executada pela preparação local. Hosting permanece fora
+e testers confirmados. A homologação local foi executada e registrada nas
+[evidências da 003](specs/003-firebase-multi-tenant/evidence.md#homologacao-local-20261012). Hosting permanece fora
 desta fase. Constituição [.specify/memory/constitution.md](.specify/memory/constitution.md)
 3.1.0, specs aprovadas e AGENTS continuam a autoridade do projeto.

@@ -180,9 +180,9 @@ O push e os PRs foram autorizados pelo usuário ("Dê o push e prossiga com as d
   depende do gate local (`gems-ai check --strict` e `check-java --all`, provados em S2 e S6) e de quem
   revisa o PR.
 
-## Pendente
+## Merge
 
-- Merge dos PRs #49 (SDK) e #12 (sample), pelo usuário. Depois disso, fechar T027, T028 e T029.
+Com o ok do usuário ("Merge dos dois"): SDK #49 em `24a7809` e sample #12 em `f768fbe`, os dois com merge commit, que preserva o hash do commit de estilo citado no `.git-blame-ignore-revs`.
 
 ## Linha de base dos testes Python do sample (R11)
 
