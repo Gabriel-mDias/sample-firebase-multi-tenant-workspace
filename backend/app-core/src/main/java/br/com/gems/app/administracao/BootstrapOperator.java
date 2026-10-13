@@ -11,7 +11,7 @@ import java.util.UUID;
 /** Explicit CLI-only capability, after Admin verification of the requested UID. */
 public record BootstrapOperator(SecurityActorProvider actor, VerifiedIdentity identity) {
 
-    public static BootstrapOperator verify( String project, String uid, String token, IdTokenVerifier verifier, FirebaseAdminGateway admin ) {
+     public static BootstrapOperator verify( String project, String uid, String token, IdTokenVerifier verifier, FirebaseAdminGateway admin ) {
         if ( ObjectUtil.isNullOrEmpty( project ) || ObjectUtil.isNullOrEmpty( uid )
                 || ObjectUtil.isNullOrEmpty( token ) ) {
             throw new IllegalArgumentException( "Bootstrap exige projeto, UID e prova efêmera." );
