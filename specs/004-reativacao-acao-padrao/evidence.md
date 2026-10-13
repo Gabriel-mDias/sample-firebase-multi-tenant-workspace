@@ -72,3 +72,42 @@ exit 0.
 ### T024 — PR do SDK
 
 [Java-GEMS-SDK #51](https://github.com/Gabriel-mDias/Java-GEMS-SDK/pull/51), com push autorizado pelo usuário. Build & Test (JDK 21) passou. Analisar (Java) (CodeQL) falhou com `Code scanning is not enabled for this repository`. O repositório passou a ser privado, e o code scanning em repositório privado exige o GitHub Code Security. O job `gems-ai` volta pelo PR #50.
+
+### T024 e T025 — Merge e publicação
+
+- O PR #50 do SDK restaurou o job `gems-ai` e retirou o CodeQL, por decisão do usuário; foi mergeado em `e863f36`.
+  O SDK passou a ser privado, então a action privada resolve.
+- O PR #51 foi mergeado em `3364c33`, com a CI verde: GEMS AI e Build & Test (JDK 21).
+- Tag `v3.5.0` criada pelo coordenador, com o ok do usuário para "fechar autonomamente". O workflow `release.yml`
+  (run `38344226286`) terminou em `success`, e o GitHub Release `v3.5.0` foi publicado em 2026-10-13 04:12 UTC.
+
+## Sample — adoção (fase 7)
+
+- **T026:** `dependency:tree -pl app-deploy -am -Dincludes=br.com.gems`. Antes, os 12 módulos (`gems-auditing`, `gems-aws`,
+  `gems-exception`, `gems-firebase-auth`, `gems-jpa`, `gems-jpa-multi-tenant`, `gems-mapstruct`, `gems-observability`,
+  `gems-openapi`, `gems-rest-common`, `gems-security-authorization` e `gems-utils`) estavam em 3.4.1; depois, todos em 3.5.0.
+  A 3.5.0 nunca foi instalada localmente; o POM e o jar vieram do registro.
+- **T027–T030:** o Sol escreveu os testes, e o coordenador conferiu:
+  - o worker de teste usa o construtor com catálogo;
+  - o E2E afirma a devolução da ação padrão;
+  - a reativação cancelada não concede nada;
+  - o `identity-worker` emite cada evento uma vez;
+  - o teste de restart da outbox prepara a linha com um sink que falha.
+  As provas de adoção (jar, metadados Maven e benchmark) passaram a afirmar 3.5.0, e o README do `app-deploy`
+  também foi atualizado.
+- **Manifesto do clean-demo:** os payloads `after` de `FirebaseBackendIntegrationTest` e `EndToEndSupport` eram
+  anteriores aos testes novos, então o `clean-demo` os apagaria. Eles foram recalculados por merge de 3 vias (base: o
+  `before` antigo; nossa versão: o arquivo atual; a deles: o `after` antigo). Houve 1 conflito, nos imports, resolvido
+  mantendo os 2 imports novos e tirando os 2 do demo. Depois disso, os hashes e o pin `MANIFEST_SHA256` foram
+  regenerados. Os testes Python, entre eles o G16, que confere que os testes da fundação sobrevivem ao `clean-demo`,
+  ficaram com 70 verdes, e o `clean-demo --dry-run` foi aceito.
+- **T031, mutação no consumidor:** com o worker do E2E no construtor antigo, `FirebaseEndToEndIntegrationTest` ficou
+  vermelho: `Expecting actual: [] to contain exactly ["CONSULTAR_PROPRIA_CONTA"]`. A limpeza do Firebase real foi
+  completa (`registered=10 deletedByCleanup=10 remaining=0`), e o arquivo foi restaurado.
+- **T033:**
+  - backend `mvnw clean install`, com ADC por caminho e o reator em duas invocações por causa da memória:
+    1 + 87 + 205 = **293 testes** (eram 290), `T029 SUITE PASS`;
+  - frontend: 419 testes, build e Prettier verdes;
+  - `gems-ai-gate.ps1` verde e contexto de agentes aprovado.
+- **T034, verificação humana com o Tester:** dispensada pelo usuário em 2026-10-13 ("eu aceito o skip dos testes
+  com tester").- **T032:** review independente do Sol (read-only, esforço medium) sobre `backend` e `scripts`: **PASS**, sem findings.

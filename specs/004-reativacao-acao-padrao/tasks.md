@@ -68,23 +68,23 @@ Caminhos: `SDK/` = `Java-GEMS-SDK/`; `SAMPLE/` = `sample-firebase-multi-tenant-w
 - [x] T021 [P] Criar `SDK/RELEASE-NOTES-3.5.0.md` com os itens do [contrato](contracts/sdk-gems-firebase-auth-3.5.0.md) e atualizar a seção de candidato em `SDK/CLAUDE.md`
 - [x] T022 Review independente (Sol read-only) do diff do SDK contra spec, data-model e contrato
 - [x] T023 Gate `mvn --batch-mode clean verify` em `SDK/` observado pelo coordenador; registrar a contagem de testes antes e depois em `evidence.md`
-- [ ] T024 Commit, push e PR do SDK para `main` (com ok do usuário); CI verde
-- [ ] T025 **Usuário**: merge, tag `v3.5.0` e workflow `release.yml` verde (publicação no GitHub Packages)
+- [x] T024 Commit, push e PR do SDK para `main` (com ok do usuário); CI verde
+- [x] T025 **Usuário**: merge, tag `v3.5.0` e workflow `release.yml` verde (publicação no GitHub Packages)
 
 ## Phase 7: Sample — adoção (bloqueada até T025)
 
-- [ ] T026 `dependency:tree` de `app-deploy` antes da troca; trocar `<gems.version>` para `3.5.0` em `SAMPLE/backend/pom.xml:34`; `dependency:tree` depois; registrar o alcance em `evidence.md`
-- [ ] T027 [P] [US1] Passar o worker de teste para o construtor com catálogo em `SAMPLE/backend/app-deploy/src/test/java/br/com/gems/app/support/FirebaseContractSupport.java:180` e `SAMPLE/backend/app-deploy/src/test/java/br/com/gems/app/EndToEndSupport.java:568,964`
-- [ ] T028 [US1] E2E com o Firebase real: depois do ACK do `ENABLE`, `/auth/me` 200, nenhuma empresa e 1 concessão vigente da ação padrão, em `SAMPLE/backend/app-deploy/src/test/java/br/com/gems/app/EndToEndSupport.java` (fluxo de `:379`)
-- [ ] T029 [US2] Contrato: reativação cancelada antes do worker não concede, em `SAMPLE/backend/app-deploy/src/test/java/br/com/gems/app/IdentityLifecycleContractIntegrationTest.java`
-- [ ] T030 [US3] Teste: o fluxo do job `identity-worker` emite cada evento 1 vez para o `SecurityEventPublisher` do sample; ajustar o teste de restart da outbox (`:586-604`) preservando a garantia dele, em `SAMPLE/backend/app-deploy/src/test/java/br/com/gems/app/FirebaseBackendIntegrationTest.java`
-- [ ] T031 Mutação no consumidor: voltar o worker de T027 ao construtor antigo, confirmar T028 vermelho e restaurar; registrar em `evidence.md`
-- [ ] T032 Review independente (Sol read-only) do diff do sample
+- [x] T026 `dependency:tree` de `app-deploy` antes da troca; trocar `<gems.version>` para `3.5.0` em `SAMPLE/backend/pom.xml:34`; `dependency:tree` depois; registrar o alcance em `evidence.md`
+- [x] T027 [P] [US1] Passar o worker de teste para o construtor com catálogo em `SAMPLE/backend/app-deploy/src/test/java/br/com/gems/app/support/FirebaseContractSupport.java:180` e `SAMPLE/backend/app-deploy/src/test/java/br/com/gems/app/EndToEndSupport.java:568,964`
+- [x] T028 [US1] E2E com o Firebase real: depois do ACK do `ENABLE`, `/auth/me` 200, nenhuma empresa e 1 concessão vigente da ação padrão, em `SAMPLE/backend/app-deploy/src/test/java/br/com/gems/app/EndToEndSupport.java` (fluxo de `:379`)
+- [x] T029 [US2] Contrato: reativação cancelada antes do worker não concede, em `SAMPLE/backend/app-deploy/src/test/java/br/com/gems/app/IdentityLifecycleContractIntegrationTest.java`
+- [x] T030 [US3] Teste: o fluxo do job `identity-worker` emite cada evento 1 vez para o `SecurityEventPublisher` do sample; ajustar o teste de restart da outbox (`:586-604`) preservando a garantia dele, em `SAMPLE/backend/app-deploy/src/test/java/br/com/gems/app/FirebaseBackendIntegrationTest.java`
+- [x] T031 Mutação no consumidor: voltar o worker de T027 ao construtor antigo, confirmar T028 vermelho e restaurar; registrar em `evidence.md`
+- [x] T032 Review independente (Sol read-only) do diff do sample
 
 ## Phase 8: Fechamento
 
-- [ ] T033 Gate completo do sample uma vez: `.\mvnw.cmd clean install` com ADC, `npm ci`, `npm test -- --watch=false`, `npm run build` e `npx prettier --check .` em `frontend/` (sem mudança, mas exigidos pelo gate de merge da Constituição VII) e `scripts/gems-ai-gate.ps1`; registrar em `evidence.md`
-- [ ] T034 **Usuário**: verificação humana do [quickstart §4](quickstart.md#4-verificação-humana) (suspender, reativar e entrar com o Tester)
+- [x] T033 Gate completo do sample uma vez: `.\mvnw.cmd clean install` com ADC, `npm ci`, `npm test -- --watch=false`, `npm run build` e `npx prettier --check .` em `frontend/` (sem mudança, mas exigidos pelo gate de merge da Constituição VII) e `scripts/gems-ai-gate.ps1`; registrar em `evidence.md`
+- [x] T034 (dispensada pelo usuário em 2026-10-13) **Usuário**: verificação humana do [quickstart §4](quickstart.md#4-verificação-humana) (suspender, reativar e entrar com o Tester)
 - [ ] T035 Commit, push e PR do sample (com ok do usuário); CI verde nos 4 jobs
 
 ## Dependencies & Execution Order
