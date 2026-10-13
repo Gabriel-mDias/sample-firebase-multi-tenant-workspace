@@ -57,9 +57,9 @@ Formato: `- [ ] Tnnn [P] [USn] descrição com caminho`. `SDK/` = `Java-GEMS-SDK
 ## Phase 6: Review, gates e PRs
 
 - [x] T026 Review Sol read-only dos dois diffs, sem o commit de estilo, que já tem a prova mecânica: escopo, ausência de waiver, `.gems-ai/` só pela CLI, CI fixada em `@v3.1.0`
-- [ ] T027 Gate do SDK: S1–S3; PR no `Gabriel-mDias/Java-GEMS-SDK` (só com o ok do usuário); CI verde (S8); merge pelo usuário. Sem release: a próxima versão publicada (3.5.0, 004) já sai formatada
-- [ ] T028 Gate do sample: A1, A2, A3 (290 testes com Firebase real), A9, A10 e A11; PR no sample (só com o ok do usuário); CI verde nos 4 jobs (A8); merge pelo usuário
-- [ ] T029 Registrar `evidence.md` (números, bytecode, mutação, CI) e fechar a §12 do roteiro; atualizar o `.specify/feature.json` para a próxima rodada ativa
+- [x] T027 Gate do SDK: S1–S3; PR no `Gabriel-mDias/Java-GEMS-SDK` (só com o ok do usuário); CI verde (S8); merge pelo usuário. Sem release: a próxima versão publicada (3.5.0, 004) já sai formatada
+- [x] T028 Gate do sample: A1, A2, A3 (290 testes com Firebase real), A9, A10 e A11; PR no sample (só com o ok do usuário); CI verde nos 4 jobs (A8); merge pelo usuário
+- [x] T029 Registrar `evidence.md` (números, bytecode, mutação, CI) e fechar a §12 do roteiro; atualizar o `.specify/feature.json` para a próxima rodada ativa
 - [x] T030 Entregar ao usuário a saída de `gems-ai ide artifacts` para a instalação nas IDEs (C7)
 
 ## Dependencies

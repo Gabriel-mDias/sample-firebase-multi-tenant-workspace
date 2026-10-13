@@ -268,8 +268,12 @@ O sample pode correr depois de T012, sem esperar o merge do SDK. T016 e T017 sã
 - [x] Gate GEMS e contexto de agentes verdes; clone limpo conforme
 - [x] Mutação de formato observada localmente e na CI (na CI, só no sample: PR #13, `check-java` exit 10; decisão 9)
 - [x] CI verde nos dois PRs, com o log mostrando a CLI 3.1.0 instalada do ref `v3.1.0` (sample #12, 4 jobs; o SDK #49 ficou verde sem o job `gems-ai`, decisão 9)
-- [ ] Os gates do [quickstart.md](quickstart.md) marcados
-- [ ] **Zero regressão** nas features já entregues
+- [x] Os gates do [quickstart.md](quickstart.md) registrados em [evidence.md](evidence.md); S8 sem o job `gems-ai` (decisão 9)
+- [x] **Zero regressão** nas features já entregues: SDK com 402 testes e sample com 290, com os mesmos resultados de antes; CI verde
+
+> ✅ **RODADA CONCLUÍDA em 2026-10-12.** PRs mergeados pelo coordenador com o ok do product owner ("Merge dos
+> dois"): Java-GEMS-SDK #49 (`24a7809`) e sample #12 (`f768fbe`). Limitação aceita: o SDK fica sem gate de formato na CI
+> (decisão 9). Pendência fora da rodada: a tabela Factory da constituição ainda cita GEMS AI 3.0.0, e a emenda é decisão do product owner.
 
 ---
 
