@@ -66,3 +66,30 @@ Os containers e a rede do smoke foram removidos.
 
 - `npm test -- --watch=false`: 419 verdes; `npm run build` verde; `npx prettier --check .` verde.
 - `scripts/gems-ai-gate.ps1` (CLI 3.1.0 da fonte `.tooling/gems-ai-sdk/src` no pin `909c69a`): exit 0. `verificar-contexto-agentes.ps1`: aprovado.
+
+## F12 — A11 da 006 sobre a 005
+
+Variante custom (`com.acme`) num clone descartável de `875713d`, em `.tooling/a11-005`: `initialize` com dry-run, apply, replay do formatter e reapply recusado; `clean-demo` com dry-run e apply; `check-java --all`; `mvnw clean install` (1 + 69 + 189 testes, 1 ignorado pelo `T029_FIREBASE_REAL=skip` desta cópia, 0 Spotless); e frontend com test, build e prettier. Resultado: `RESULT PASS`. O backend com Firebase real da 005 fica provado pela CI do PR, porque a 005 não toca no backend.
+
+## F9 — Lighthouse da `/login` depois (2026-10-12)
+
+Lighthouse 12.6.1, Chrome headless, sobre a imagem `gems-005-frontend:smoke` em `http://localhost:4280`. A configuração pública do Firebase foi copiada do container da homologação pelo Docker, sem exibir os valores.
+
+| Categoria | Antes (003) | Depois |
+| :--- | :-: | :-: |
+| Performance | 52 | 61 |
+| Acessibilidade | 100 | 100 |
+| Melhores práticas | 77 | 96 |
+| SEO | 83 | 92 |
+
+`errors-in-console` veio vazio, então o carregamento da `/login` não gerou nenhuma violação de CSP. `csp-xss` passou. Ficaram dois itens: `font-size` em Melhores práticas e `meta-description` em SEO, ambos fora do escopo da 005.
+
+**F8, login em tela com a CSP:** pendente com o product owner. Exige o backend com Firebase real e o login por Google e por senha (quickstart F8).
+
+## T016 — Review independente
+
+O Sol (`gpt-6.1-sol`, read-only, esforço medium) revisou `f768fbe..HEAD` e deu **PASS**, sem finding high. Os critérios 1 a 9 passaram: CSP mínima, valores validados, herança de `add_header`, cache, upstream, escrita atômica em `sh`, Compose intacto, documentação sem segredo e testes significativos.
+
+Houve dois findings medium:
+- **Escopo do diff:** ele inclui o fechamento da 006 e a troca do `.specify/feature.json`. Foi intencional. O commit `541579b` fecha a T029 da 006 depois do merge, e a única branch pendente em que ele cabia era esta. O PR vai explicar.
+- **F8, F9 e F12 sem registro na hora do review:** F12 e F9 foram registradas acima. F8 fica com o product owner.
