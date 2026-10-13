@@ -112,7 +112,7 @@ class TenantProvisioningBenchmark {
         assertThat( actual ).as( "N schemas tenant_ distintos" ).hasSize( n ).doesNotHaveDuplicates();
         assertThat( expected ).as( "Inventário corresponde aos schemas físicos" )
                 .containsExactlyInAnyOrderElementsOf( actual );
-        assertThat( sdk ).as( "SDK aprovado" ).isEqualTo( "3.4.1" );
+        assertThat( sdk ).as( "SDK aprovado" ).isEqualTo( "3.5.0" );
         Arrays.sort( durations );
         String json = String.format( Locale.ROOT, """
                 {

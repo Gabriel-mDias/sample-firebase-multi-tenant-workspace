@@ -1,5 +1,8 @@
 <!--
-SYNC IMPACT REPORT — v3.1.0
+SYNC IMPACT REPORT — v3.1.1
+Emenda 2026-10-13 (3.1.0 → 3.1.1, PATCH: correção factual da tabela de stack). A linha Factory passa de GEMS AI 3.0.0, pin 51b94e3a, para 3.1.0, pin 909c69aa (tag v3.1.0, igual à main do gems-ai-sdk). Essa versão foi adotada pela rodada 006 (PR #12) e traz o formatter Java oficial no lugar do Spotless. Nenhum princípio muda. Decisão do usuário: "Revise para utilizar a versão mais recente, da main". As referências à "constituição 3.1.0" nos arquivos de agente foram atualizadas para 3.1.1 na mesma alteração. Nenhuma assinatura humana adicional foi criada.
+
+Histórico anterior — v3.1.0
 Emenda 2026-10-09 (3.0.0 → 3.1.0, MINOR: expansão material da orientação do Princípio IX e da tabela de stack; nenhum princípio removido nem redefinido de forma incompatível). Decisão do usuário 6B ("6 - opcao b"; contexto: "Esse projeto em si é um TESTE"; usar o ambiente Firebase entregue): suíte automatizada e CI usam o projeto Firebase real de testes sample-firebase-multi-tenant via ADC; emulador só opção demo/offline do Compose local; Google OAuth real e entrega de reset por e-mail são verificação humana. A ratificação vem da decisão do usuário nesta data; nenhuma assinatura humana adicional foi criada.
 
 Histórico anterior — v3.0.0
@@ -403,7 +406,7 @@ passa pelo Princípio VIII.
 | Frontend | Angular 22/TypeScript 6, core Angular GEMS 3.0.0 alvo, Vitest/Prettier |
 | Identidade | Firebase Admin 9.11.0, Web JS 12.19.0; Google+email/senha |
 | Local/CI | DockerCompose local (AuthEmulator/CLI 15.32.1, demo-gems, só demo/offline); suíte e CI no projeto Firebase real de testes via ADC, PostgreSQL por Testcontainers |
-| Factory | GEMS AI 3.0.0 pin 51b94e3a5479da74e06444f4133e07db85ece3cc |
+| Factory | GEMS AI 3.1.0 pin 909c69aa846ea97b3aea06a08fdfed8c6657d391 (formatter Java oficial no lugar do Spotless) |
 
 - No Windows use mvnw.cmd; iterar -pl/-am, gate final reator inteiro. npm ci segue lockfile sem
   legacy-peer-deps improvisado. Versões SDK só entram após publicação e consumidor externo isolado.
@@ -496,4 +499,4 @@ Toda revisão de PR MUST verificar conformidade com estes princípios. Complexid
 justificada por escrito no `plan.md` da feature — ausência de justificativa é motivo suficiente para
 recusar o PR.
 
-**Version**: 3.1.0 | **Ratified**: 2026-09-05 | **Last Amended**: 2026-10-09
+**Version**: 3.1.1 | **Ratified**: 2026-09-05 | **Last Amended**: 2026-10-13

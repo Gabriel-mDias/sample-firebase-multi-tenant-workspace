@@ -29,7 +29,7 @@ class FirebaseAdoptionTest {
 
         assertThat( location.getProtocol() ).isEqualTo( "file" );
         assertThat( Files.isRegularFile( path ) ).as( "JAR carregado por %s", type.getName() ).isTrue();
-        assertThat( path.getFileName().toString() ).isEqualTo( artifact + "-3.4.1.jar" );
+        assertThat( path.getFileName().toString() ).isEqualTo( artifact + "-3.5.0.jar" );
         try (var jar = new JarFile( path.toFile() )) {
             var metadata = jar.getJarEntry( "META-INF/maven/br.com.gems/" + artifact + "/pom.properties" );
             assertThat( metadata ).as( "Metadados Maven no JAR efetivamente carregado" ).isNotNull();
@@ -39,7 +39,7 @@ class FirebaseAdoptionTest {
             }
             assertThat( properties.getProperty( "groupId" ) ).isEqualTo( "br.com.gems" );
             assertThat( properties.getProperty( "artifactId" ) ).isEqualTo( artifact );
-            assertThat( properties.getProperty( "version" ) ).isEqualTo( "3.4.1" );
+            assertThat( properties.getProperty( "version" ) ).isEqualTo( "3.5.0" );
             String classEntry = type.getName().replace( '.', '/' ) + ".class";
             assertThat( jar.getJarEntry( classEntry ) ).isNotNull();
             assertThat( type.getResource( "/" + classEntry ).toExternalForm() )
