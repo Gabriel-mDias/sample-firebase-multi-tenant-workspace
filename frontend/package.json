@@ -24,7 +24,7 @@
     "@fortawesome/fontawesome-free": "^7.3.0",
     "@gabriel-mdias/angular-gems-sdk": "3.0.0",
     "animate.css": "^4.1.1",
-    "firebase": "12.19.0",
+    "firebase": "13.0.0",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.26.25",
     "tslib": "^2.3.0"
